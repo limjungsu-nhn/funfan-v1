@@ -1,0 +1,52 @@
+/* ============================================
+   Navbar Component
+
+   HTML 구조:
+     <header class="navbar">
+       <div class="navbar-logo">
+         <svg>…</svg>  ← FunFan 로고
+       </div>
+       <div class="navbar-actions">
+         <button class="btn btn-ghost">
+           <i class="icon icon-{name}"></i>
+           <span class="text-assist-w5">Label</span>
+         </button>
+         <button class="btn btn-filled">
+           <i class="icon icon-{name}"></i>
+           <span class="text-assist-w5">Label</span>
+         </button>
+       </div>
+     </header>
+   ============================================ */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  min-height: 64px;
+  padding: 0 20px;
+  background: var(--color-white-100);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--color-gray-5);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100; /* 모달(1000+) 제외 최상위 고정 */
+}
+
+/* ---------- Logo ---------- */
+.navbar-logo {
+  width: 92px;
+  height: 30px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* ---------- Actions (우측 버튼 그룹) ---------- */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

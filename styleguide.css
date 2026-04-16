@@ -1,0 +1,466 @@
+/* ============================================
+   Style Guide Layout
+   ============================================ */
+
+:root {
+  --sg-bg:           #F7F7F8;
+  --sg-surface:      #FFFFFF;
+  --sg-border:       #E5E5E7;
+  --sg-border-light: #F0F0F2;
+  --sg-text-primary: #1A1A1A;
+  --sg-text-meta:    #8A8A8E;
+  --sg-text-tag:     #5A5A5E;
+  --sg-accent:       #0066FF;
+  --sg-tag-bg:       #EEF3FF;
+  --sg-tag-color:    #0047CC;
+  --sg-nav-width:    220px;
+  --sg-header-h:     56px;
+}
+
+/* ---------- Reset ---------- */
+html, body { margin: 0; padding: 0; height: 100%; }
+body {
+  background: var(--sg-bg);
+  color: var(--sg-text-primary);
+}
+
+/* ---------- Header ---------- */
+.sg-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--sg-header-h);
+  background: var(--sg-surface);
+  border-bottom: 1px solid var(--sg-border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 12px;
+  z-index: 200;
+}
+.sg-header-logo {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--sg-text-primary);
+  letter-spacing: -0.3px;
+}
+.sg-header-sep {
+  width: 1px;
+  height: 16px;
+  background: var(--sg-border);
+}
+.sg-header-subtitle {
+  font-size: 13px;
+  color: var(--sg-text-meta);
+}
+.sg-header-badge {
+  margin-left: auto;
+  font-size: 11px;
+  font-weight: 500;
+  background: var(--sg-tag-bg);
+  color: var(--sg-tag-color);
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+
+/* ---------- Layout ---------- */
+.sg-layout {
+  display: flex;
+  padding-top: var(--sg-header-h);
+  min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+.sg-nav {
+  position: fixed;
+  top: var(--sg-header-h);
+  left: 0;
+  bottom: 0;
+  width: var(--sg-nav-width);
+  background: var(--sg-surface);
+  border-right: 1px solid var(--sg-border);
+  overflow-y: auto;
+  padding: 20px 0;
+  z-index: 200;
+}
+.sg-nav-section {
+  padding: 0 16px;
+  margin-bottom: 4px;
+}
+.sg-nav-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--sg-text-meta);
+  padding: 8px 8px 4px;
+}
+.sg-nav a {
+  display: block;
+  font-size: 13px;
+  color: var(--sg-text-tag);
+  text-decoration: none;
+  padding: 6px 8px;
+  border-radius: 6px;
+  transition: background 0.15s, color 0.15s;
+}
+.sg-nav a:hover { background: var(--sg-bg); color: var(--sg-text-primary); }
+.sg-nav a.active { background: var(--sg-tag-bg); color: var(--sg-accent); font-weight: 500; }
+.sg-nav-divider {
+  height: 1px;
+  background: var(--sg-border-light);
+  margin: 12px 16px;
+}
+
+/* ---------- Main Content ---------- */
+.sg-main {
+  margin-left: var(--sg-nav-width);
+  flex: 1;
+  padding: 40px 48px;
+  min-width: 0;
+}
+
+/* ---------- Section ---------- */
+.sg-section {
+  margin-bottom: 64px;
+}
+.sg-section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--sg-border);
+}
+.sg-section-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--sg-text-primary);
+  margin: 0;
+}
+.sg-section-desc {
+  font-size: 13px;
+  color: var(--sg-text-meta);
+}
+
+/* ---------- Subsection ---------- */
+.sg-subsection {
+  margin-bottom: 40px;
+}
+.sg-subsection-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: var(--sg-text-meta);
+  margin: 0 0 12px;
+}
+
+/* ---------- Type Table ---------- */
+.sg-type-table {
+  background: var(--sg-surface);
+  border: 1px solid var(--sg-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.sg-type-row {
+  display: grid;
+  grid-template-columns: 1fr 180px 120px;
+  align-items: center;
+  padding: 0 20px;
+  min-height: 64px;
+  border-bottom: 1px solid var(--sg-border-light);
+  gap: 16px;
+}
+.sg-type-row:last-child { border-bottom: none; }
+.sg-type-row:hover { background: #FAFAFA; }
+
+.sg-type-preview {
+  padding: 16px 0;
+  color: var(--sg-text-primary);
+  word-break: keep-all;
+  pointer-events: none;   /* 클릭 시 :focus 발생 방지 — 전역 focus reset과의 충돌 차단 */
+  user-select: none;
+}
+.sg-type-classname {
+  font-family: "SF Mono", "Fira Code", "Menlo", monospace;
+  font-size: 11px;
+  color: var(--sg-accent);
+  background: var(--sg-tag-bg);
+  padding: 3px 7px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.sg-type-meta {
+  font-size: 11px;
+  color: var(--sg-text-meta);
+  line-height: 1.6;
+  text-align: right;
+}
+.sg-type-meta strong {
+  color: var(--sg-text-tag);
+  font-weight: 500;
+}
+
+/* ---------- Table Header ---------- */
+.sg-type-thead {
+  display: grid;
+  grid-template-columns: 1fr 180px 120px;
+  padding: 8px 20px;
+  gap: 16px;
+  background: var(--sg-border-light);
+  border-bottom: 1px solid var(--sg-border);
+}
+.sg-type-thead span {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--sg-text-meta);
+}
+
+/* ---------- Placeholder Section ---------- */
+.sg-placeholder {
+  background: var(--sg-surface);
+  border: 1px dashed var(--sg-border);
+  border-radius: 10px;
+  padding: 40px;
+  text-align: center;
+  color: var(--sg-text-meta);
+  font-size: 13px;
+}
+.sg-placeholder strong {
+  display: block;
+  font-size: 15px;
+  color: var(--sg-text-tag);
+  margin-bottom: 6px;
+}
+
+/* ---------- Weight Badge ---------- */
+.sg-weight-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 4px;
+  vertical-align: middle;
+}
+.sg-weight-w3 { background: #F0F0F2; color: #666; }
+.sg-weight-w5 { background: #E8F0FF; color: #0047CC; }
+.sg-weight-w7 { background: #FFF0E8; color: #CC4700; }
+
+/* ---------- Color Grid ---------- */
+.sg-color-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+.sg-color-card {
+  background: var(--sg-surface);
+  border: 1px solid var(--sg-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.sg-color-card--dark {
+  background: #1A1A1A;
+  border-color: #333;
+}
+.sg-color-swatch {
+  height: 80px;
+  width: 100%;
+}
+.sg-color-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px 12px;
+}
+.sg-color-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sg-text-primary);
+}
+.sg-color-card--dark .sg-color-name {
+  color: #E5E5EA;
+}
+.sg-color-var {
+  font-family: "SF Mono", "Fira Code", "Menlo", monospace;
+  font-size: 10px;
+  color: var(--sg-accent);
+  background: var(--sg-tag-bg);
+  padding: 2px 5px;
+  border-radius: 3px;
+  width: fit-content;
+}
+.sg-color-card--dark .sg-color-var {
+  background: rgba(0, 102, 255, 0.15);
+}
+.sg-color-hex {
+  font-size: 11px;
+  color: var(--sg-text-meta);
+}
+.sg-color-card--dark .sg-color-hex {
+  color: #8E8E93;
+}
+
+/* ---------- Icon Grid ---------- */
+.sg-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+.sg-icon-card {
+  background: var(--sg-surface);
+  border: 1px solid var(--sg-border);
+  border-radius: 10px;
+  padding: 20px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  transition: border-color 0.15s;
+}
+.sg-icon-card:hover {
+  border-color: var(--sg-accent);
+}
+.sg-icon-preview {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--sg-text-primary);
+}
+.sg-icon-preview .icon {
+  width: 24px;
+  height: 24px;
+}
+.sg-type-table--icon-color .sg-type-preview .icon {
+  width: 24px;
+  height: 24px;
+}
+.sg-icon-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+.sg-icon-name {
+  font-size: 11px;
+  color: var(--sg-text-tag);
+  text-align: center;
+  word-break: break-all;
+}
+.sg-icon-info .sg-type-classname {
+  font-size: 10px;
+  text-align: center;
+  white-space: normal;
+  word-break: break-all;
+}
+
+/* ---------- Button Preview Row ---------- */
+.sg-type-preview--btns {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 12px 0;
+}
+
+/* ---------- Layout Token Table (override) ---------- */
+.sg-type-table--layout .sg-type-thead,
+.sg-type-table--layout .sg-type-row {
+  grid-template-columns: 160px 140px 1fr;
+}
+
+/* 시각화 열: 1440px 고정 스케일 컨테이너 */
+.sg-layout-scale-wrap {
+  overflow-x: auto;
+  flex: 1;
+  min-width: 0;        /* grid 셀이 자식 크기에 맞게 늘어나는 것 방지 */
+  padding: 14px 0;
+  /* 스크롤바 얇게 */
+  scrollbar-width: thin;
+  scrollbar-color: var(--sg-border) transparent;
+}
+.sg-layout-scale-wrap::-webkit-scrollbar { height: 4px; }
+.sg-layout-scale-wrap::-webkit-scrollbar-track { background: transparent; }
+.sg-layout-scale-wrap::-webkit-scrollbar-thumb { background: var(--sg-border); border-radius: 2px; }
+
+.sg-layout-scale {
+  position: relative;
+  width: var(--base);      /* 1440px — layout.css에서 정의 */
+  height: 20px;
+  background: var(--sg-border-light);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.sg-layout-bar {
+  height: 100%;
+  background: var(--sg-accent);
+  border-radius: 3px;
+  opacity: 0.25;
+  min-width: 2px;
+}
+
+/* ---------- Scroll spy active ---------- */
+.sg-section[data-section] { scroll-margin-top: calc(var(--sg-header-h) + 24px); }
+
+/* ---------- Interactive Demo Canvas ---------- */
+.sg-demo-canvas {
+  background: var(--sg-surface);
+  border: 1px solid var(--sg-border);
+  border-radius: 10px;
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  min-height: 120px;
+  margin-bottom: 12px;
+}
+.sg-demo-canvas--dark {
+  background: var(--color-font-primary-black-100);
+}
+.sg-demo-canvas--list {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* ── Navbar 컴포넌트: styleguide 내부에서 position:fixed 해제 ── */
+.sg-section .navbar {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  width: 100%;
+}
+
+.sg-demo-canvas--gray {
+  background: var(--color-gray-6);
+}
+.sg-demo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.sg-demo-item-label {
+  font-size: 11px;
+  color: var(--sg-text-meta);
+}
+.sg-demo-live-label {
+  font-size: 12px;
+  color: var(--sg-text-meta);
+  min-height: 18px;
+  transition: color 0.15s;
+}
+.sg-demo-live-label.is-active {
+  color: var(--sg-accent);
+  font-weight: 500;
+}

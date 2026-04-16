@@ -1,0 +1,114 @@
+/* ============================================
+   Checkbox Component — v2
+   React 코드 기준 완전 재작성
+
+   HTML 구조:
+     <button class="checkbox [--state]">
+       <i class="icon icon-check-small checkbox-icon"></i>
+     </button>
+
+   States:
+     .checkbox                   Default   — Gray-5 border, no check
+     .checkbox--hover             Hover     — Black border, no check
+     .checkbox--focus             Focus     — Black border + 3px ring, no check
+     .checkbox--pressed           Pressed   — Black border, no check
+     .checkbox--checked           Checked   — Nature-2 bg + white checkmark
+     .checkbox--disabled          Disabled  — Gray-6 bg + Gray-5 border, no check
+   ============================================ */
+
+/* ---------- Base ---------- */
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: var(--color-white-100);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  outline: 1px solid var(--color-gray-5);
+  outline-offset: -1px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  flex-shrink: 0;
+  border: none;
+  padding: 0;
+}
+
+/* ---------- Checkmark ----------
+   icon.css의 .icon.icon-check-small 사용
+   기본 opacity:0 → Checked에서만 opacity:1
+---------------------------------------- */
+.checkbox-icon {
+  opacity: 0;
+  color: var(--color-white-100);
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+/* ---------- Hover ---------- */
+.checkbox--hover,
+.checkbox:hover:not(.checkbox--disabled):not(.checkbox--checked) {
+  outline-color: var(--color-black-100);
+}
+
+/* ---------- Focus ----------
+   .checkbox--focus        : States Reference 표기용 — outline-color + box-shadow
+   :focus-visible (실제 동작): outline-color + box-shadow
+---------------------------------------- */
+.checkbox--focus {
+  outline-color: var(--color-black-100);
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+.checkbox:focus-visible:not(.checkbox--disabled) {
+  outline-color: var(--color-black-100);
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- Pressed ---------- */
+.checkbox--pressed,
+.checkbox:active:not(.checkbox--disabled):not(.checkbox--checked) {
+  outline: 1px solid var(--color-black-100);
+  outline-offset: -1px;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- Checked ---------- */
+.checkbox--checked {
+  background: var(--color-nature-3);
+  outline: none;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+.checkbox--checked .checkbox-icon {
+  opacity: 1;
+}
+
+/* ---------- Disabled ---------- */
+.checkbox--disabled {
+  background: var(--color-gray-6);
+  outline: 1px solid var(--color-gray-5);
+  outline-offset: -1px;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ---------- Native input wrapper ---------- */
+.checkbox-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+.checkbox-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.checkbox-input:focus-visible + .checkbox { box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05); }
+.checkbox-input:checked + .checkbox { background: var(--color-nature-3); outline: none; }
+.checkbox-input:checked + .checkbox .checkbox-icon { opacity: 1; }
+.checkbox-input:disabled + .checkbox { background: var(--color-gray-6); outline-color: var(--color-gray-5); cursor: not-allowed; pointer-events: none; }

@@ -1,0 +1,189 @@
+/* ============================================
+   Right Panel Component — 오른쪽 채팅 패널
+
+   HTML 구조:
+     <div class="right-panel">
+
+       <!-- Header -->
+       <div class="right-panel__header">
+         <i class="avatar avatar-01 avatar--md"></i>
+         <div class="right-panel__header-info">
+           <p class="right-panel__name">はな</p>
+           <div class="right-panel__meta">
+             <p class="right-panel__subtitle">漫画鑑定士</p>
+             <div class="right-panel__settings-link">
+               <span>設定</span>
+               <i class="icon icon-chevron-right"></i>
+             </div>
+           </div>
+         </div>
+       </div>
+
+       <!-- Chat area -->
+       <div class="right-panel__chat">
+         ... chat-msg / my-msg 컴포넌트 ...
+       </div>
+
+       <!-- Footer -->
+       <div class="right-panel__footer">
+         <div class="right-panel__suggestions">
+           <button class="msg-bubble" type="button"><span class="text-caption-w3">最近描いててつまずいてることがある</span></button>
+           ...
+         </div>
+         <div class="chat-input">
+           <div class="chat-input__field">
+             <textarea class="chat-input__textarea" placeholder="はなに話しかけてみましょう..." rows="1"></textarea>
+           </div>
+           <div class="chat-input__actions">
+             <button class="icon-btn" type="button" aria-label="添付">
+               <i class="icon icon-add"></i>
+             </button>
+             <button class="send-btn" type="button" aria-label="送信">
+               <i class="icon icon-arrow-upward-alt"></i>
+             </button>
+           </div>
+         </div>
+         <p class="right-panel__disclaimer">AIのため、誤りを含む可能性があります</p>
+       </div>
+
+     </div>
+   ============================================ */
+
+/* ---------- Main Container ---------- */
+.right-panel {
+  width: 288px;
+  height: 100%;
+  background: var(--color-white-100);
+  box-shadow: -1px 0 0 0 var(--color-gray-5);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* ---------- Header ---------- */
+.right-panel__header {
+  align-self: stretch;
+  height: 72px;
+  padding: 14px 20px;
+  background: var(--color-white-100);
+  border-bottom: 1px var(--color-gray-6) solid;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+.right-panel__header-info {
+  flex: 1;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.right-panel__name {
+  align-self: stretch;
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-body-sm);
+  font-weight: var(--font-weight-w7);
+  line-height: var(--line-height-body-sm);
+  color: var(--color-font-primary-black-100);
+  word-wrap: break-word;
+}
+
+.right-panel__meta {
+  align-self: stretch;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.right-panel__subtitle {
+  flex: 1;
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-overline);
+  font-weight: var(--font-weight-w3);
+  line-height: var(--line-height-overline);
+  color: var(--color-font-primary-black-50);
+  word-wrap: break-word;
+}
+
+.right-panel__settings-link {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.right-panel__settings-link span {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-overline);
+  font-weight: var(--font-weight-w5);
+  line-height: var(--line-height-overline);
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Chat Area ---------- */
+.right-panel__chat {
+  align-self: stretch;
+  flex: 1;
+  padding: 8px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow-y: auto;
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE / Edge */
+}
+
+.right-panel__chat::-webkit-scrollbar {
+  display: none;                /* Chrome / Safari */
+}
+
+/* ---------- Footer ---------- */
+.right-panel__footer {
+  align-self: stretch;
+  padding: 0 16px 24px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+}
+
+/* ---------- Suggestion Chips ---------- */
+.right-panel__suggestions {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+/* Suggestion Chip → msg-bubble.css 재활용 + text-caption-w3 (12px/18px) */
+
+/* ---------- Compose Box → chat-input.css + icon-btn.css + send-btn.css 재활용 ---------- */
+
+/* ---------- AI Disclaimer ---------- */
+.right-panel__disclaimer {
+  align-self: stretch;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-overline);
+  font-weight: var(--font-weight-w3);
+  line-height: var(--line-height-overline);
+  color: var(--color-font-primary-black-50);
+}

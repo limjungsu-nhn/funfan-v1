@@ -1,0 +1,34 @@
+/* ============================================
+   Left Panel — 채널 좌측 패널
+
+   기존 컴포넌트 조합:
+     panel-header.css  · panel-header (아바타 + 이름 + 서브텍스트 + 링크)
+     menu-item.css     · menu-item (아이콘 + 라벨)
+
+   HTML 구조:
+     <div class="left-panel">
+       <div class="panel-header">…</div>
+       <nav class="left-panel__menu">
+         <button class="menu-item menu-item--selected">…</button>
+         <button class="menu-item">…</button>
+         …
+       </nav>
+     </div>
+   ============================================ */
+
+.left-panel {
+  width: 288px;
+  background: var(--color-white-100);
+  box-shadow: 1px 0 0 0 var(--color-gray-5);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+/* ---------- Menu 영역 ---------- */
+.left-panel__menu {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}

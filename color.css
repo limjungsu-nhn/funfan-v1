@@ -1,0 +1,44 @@
+/* ============================================
+   Color Tokens
+   ============================================ */
+
+:root {
+
+  /* ---------- White ---------- */
+  --color-white-100:  rgba(255, 255, 255, 1);
+  --color-white-50:   rgba(255, 255, 255, 0.5);
+  --color-white-20:   rgba(255, 255, 255, 0.2);
+  --color-white-0:    rgba(255, 255, 255, 0);
+
+  /* ---------- Black ---------- */
+  --color-black-100:  rgba(0, 0, 0, 1);
+  --color-black-50:   rgba(0, 0, 0, 0.5);
+  --color-black-20:   rgba(0, 0, 0, 0.2);
+  --color-black-0:    rgba(0, 0, 0, 0);
+
+  /* ---------- Font ---------- */
+  --color-font-primary-black-100:  rgba(29, 29, 31, 1);
+  --color-font-primary-black-50:   rgba(29, 29, 31, 0.5);
+  --color-font-primary-black-20:   rgba(29, 29, 31, 0.2);
+  --color-font-primary-white-100:  rgba(255, 255, 255, 1);
+  --color-font-primary-white-50:   rgba(255, 255, 255, 0.5);
+  --color-font-primary-white-20:   rgba(255, 255, 255, 0.2);
+  --color-font-secondary:          #6E6E73;
+  --color-font-divider:            #C7C7CC;
+
+  /* ---------- Gray ---------- */
+  --color-gray-1: #8E8E93;
+  --color-gray-2: #AEAEB2;
+  --color-gray-3: #C7C7CC;
+  --color-gray-4: #D1D1D6;
+  --color-gray-5: #E5E5EA;
+  --color-gray-6: #F2F2F7;
+
+  /* ---------- Nature ---------- */
+  --color-nature-1: #244D01;
+  --color-nature-2: #326502;
+  --color-nature-3: #558C03;
+  --color-nature-4: #B3D92B;
+  --color-nature-5: #DDF291;
+  --color-nature-7: #EDFAB8;
+}

@@ -1,0 +1,64 @@
+/* ============================================
+   My Chat Message Component — 나의 채팅 메시지
+
+   HTML 구조:
+     <div class="my-msg">
+       <div class="my-msg__bubble">
+         <p class="my-msg__text">メッセージ本文</p>
+         <svg class="my-msg__tail" width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg">
+           <path d="M0 0H12L15.111 9.33315C15.4129 10.2387 14.4188 11.027 13.6059 10.5267C10.9214 8.87468 7.83106 8 4.67894 8H0V0Z"/>
+         </svg>
+       </div>
+     </div>
+   ============================================ */
+
+/* ---------- Container ---------- */
+.my-msg {
+  width: 288px;
+  padding: 8px 20px 8px 48px;
+  background: var(--color-white-100);
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 8px;
+  box-sizing: border-box;
+}
+
+/* ---------- Bubble ---------- */
+.my-msg__bubble {
+  align-self: stretch;
+  padding: 12px 16px;
+  position: relative;
+  background: var(--color-gray-6);
+  border-radius: 16px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ---------- Text ---------- */
+.my-msg__text {
+  flex: 1;
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-subtext);
+  line-height: var(--line-height-subtext);
+  font-weight: var(--font-weight-w3);
+  color: var(--color-font-primary-black-100);
+  word-wrap: break-word;
+}
+
+/* ---------- Tail (말풍선 꼬리) ---------- */
+.my-msg__tail {
+  position: absolute;
+  bottom: -3px;
+  right: 0;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.my-msg__tail path {
+  fill: var(--color-gray-6);
+}

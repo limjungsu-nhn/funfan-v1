@@ -1,0 +1,187 @@
+/* ============================================
+   Button Component
+
+   HTML 구조:
+     <button class="btn btn-line">
+       <i class="icon icon-{name}"></i>   ← 선택
+       <span class="text-assist-w5">Label</span>
+       <i class="icon icon-{name}"></i>   ← 선택
+     </button>
+
+   Variants:
+     .btn-line                Line   — 테두리형
+     .btn-ghost               Ghost  — 라인 없는 버튼
+     .btn-filled              Filled — 면 컬러 버튼
+   ============================================ */
+
+/* ---------- Base ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: var(--font-family-base);
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Size Variants ---------- */
+/* 기본(md): min-height 40px */
+.btn--lg { min-height: 48px; }
+
+/* ---------- Line ---------- */
+.btn-line {
+  background: var(--color-white-100);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  outline: 1px solid var(--color-gray-5);
+  outline-offset: -1px;
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Hover ---------- */
+.btn-line--hover,
+.btn-line:hover:not(.btn-line--disabled) {
+  outline-color: var(--color-gray-2);
+}
+
+/* ---------- Focus ----------
+   .btn-line--focus  : States Reference 표기용 — outline + box-shadow
+   :focus-visible    : 실제 동작 — box-shadow만
+---------------------------------------- */
+.btn-line--focus {
+  outline-color: var(--color-gray-2);
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+.btn-line:focus-visible:not(.btn-line--disabled) {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- Pressed ---------- */
+.btn-line--pressed,
+.btn-line:active:not(.btn-line--disabled) {
+  background: var(--color-gray-6);
+  outline-color: var(--color-gray-2);
+}
+
+/* ---------- Disabled ---------- */
+.btn-line--disabled {
+  color: var(--color-font-primary-black-20);
+  outline-color: var(--color-gray-5);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
+/* ============================================
+   Ghost — 라인 없는 버튼
+
+   States:
+     .btn-ghost               Default  — 투명 배경
+     .btn-ghost--hover         Hover    — Gray-6 배경
+     .btn-ghost--focus         Focus    — Gray-6 배경 + 3px ring (Reference용)
+     .btn-ghost--pressed       Pressed  — Gray-5 배경
+     .btn-ghost--disabled      Disabled — 투명, 20% opacity
+   ============================================ */
+
+/* ---------- Ghost Default ---------- */
+.btn-ghost {
+  background: transparent;
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Hover ---------- */
+.btn-ghost--hover,
+.btn-ghost:hover:not(.btn-ghost--disabled) {
+  background: var(--color-gray-6);
+}
+
+/* ---------- Focus ----------
+   .btn-ghost--focus  : States Reference 표기용 — 배경 + box-shadow
+   :focus-visible     : 실제 동작 — box-shadow만
+---------------------------------------- */
+.btn-ghost--focus {
+  background: var(--color-gray-6);
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+.btn-ghost:focus-visible:not(.btn-ghost--disabled) {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- Pressed ---------- */
+.btn-ghost--pressed,
+.btn-ghost:active:not(.btn-ghost--disabled) {
+  background: var(--color-gray-5);
+}
+
+/* ---------- Disabled ---------- */
+.btn-ghost--disabled {
+  color: var(--color-font-primary-black-20);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+
+/* ============================================
+   Filled — 면 컬러 버튼
+
+   States:
+     .btn-filled               Default  — Nature-2 배경, white 텍스트, Nature-4 아이콘
+     .btn-filled--hover         Hover    — Nature-1 배경
+     .btn-filled--focus         Focus    — Nature-1 배경 + 3px ring (Reference용)
+     .btn-filled--pressed       Pressed  — Nature-1 배경
+     .btn-filled--disabled      Disabled — Gray-5 배경, white 아이콘
+   ============================================ */
+
+/* ---------- Filled Default ---------- */
+.btn-filled {
+  background: var(--color-nature-3);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  color: var(--color-font-primary-white-100);
+}
+.btn-filled .icon {
+  color: var(--color-nature-4);
+}
+
+/* ---------- Hover ---------- */
+.btn-filled--hover,
+.btn-filled:hover:not(.btn-filled--disabled) {
+  background: var(--color-nature-2);
+}
+
+/* ---------- Focus ----------
+   .btn-filled--focus  : States Reference 표기용 — 배경 + box-shadow
+   :focus-visible      : 실제 동작 — box-shadow만
+---------------------------------------- */
+.btn-filled--focus {
+  background: var(--color-nature-2);
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+.btn-filled:focus-visible:not(.btn-filled--disabled) {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- Pressed ---------- */
+.btn-filled--pressed,
+.btn-filled:active:not(.btn-filled--disabled) {
+  background: var(--color-nature-1);
+}
+
+/* ---------- Disabled ---------- */
+.btn-filled--disabled {
+  background: var(--color-gray-5);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.btn-filled--disabled .icon {
+  color: var(--color-white-100);
+}

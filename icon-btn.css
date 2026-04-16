@@ -1,0 +1,60 @@
+/* ============================================
+   Icon Button Component — 아이콘 전용 소형 버튼
+
+   HTML 구조:
+     <button class="icon-btn" type="button" aria-label="설명">
+       <i class="icon icon-{name}"></i>
+     </button>
+
+   States:
+     Default     .icon-btn
+     Hover       .icon-btn--hover  /  :hover       (외관 변화 없음)
+     Focus       .icon-btn--focus  /  :focus-visible
+     Pressed     .icon-btn--pressed / :active       (외관 변화 없음)
+     Disabled    .icon-btn--disabled
+   ============================================ */
+
+/* ---------- Base ---------- */
+.icon-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100px;
+  border: none;
+  background: var(--color-white-100);
+  cursor: pointer;
+  padding: 0;
+  flex-shrink: 0;
+  color: var(--color-font-primary-black-100);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* ---------- Hover ---------- */
+/* Figma 기준 — 외관 변화 없음 */
+.icon-btn:hover,
+.icon-btn--hover {}
+
+/* ---------- Focus ---------- */
+.icon-btn:focus-visible,
+.icon-btn--focus {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- Pressed ---------- */
+/* Figma 기준 — 외관 변화 없음 */
+.icon-btn:active,
+.icon-btn--pressed {}
+
+/* ---------- Disabled ---------- */
+.icon-btn--disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.icon-btn--disabled .icon {
+  opacity: 0.2;
+}

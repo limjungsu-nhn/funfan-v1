@@ -1,0 +1,102 @@
+/* ============================================
+   Menu Item Component — 채널 좌측 메뉴 리스트
+
+   HTML 구조:
+     <button class="menu-item">
+       <i class="icon icon-{name}"></i>
+       <span class="menu-item__label">Menu</span>
+       <i class="icon icon-chevron-right menu-item__chevron"></i>
+     </button>
+
+   States:
+     기본        .menu-item
+     Hover       .menu-item--hover  /  :hover
+     Focus       .menu-item--focus  /  :focus
+     Pressed     .menu-item--pressed / :active
+     Selected    .menu-item--selected
+     Disabled    .menu-item--disabled
+   ============================================ */
+
+/* ---------- Base ---------- */
+.menu-item {
+  width: 288px;
+  min-height: 44px;
+  padding: 0 14px 0 24px;
+  background: var(--color-white-100);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  text-align: left;
+  cursor: pointer;
+  position: relative; /* z-index 활성화 */
+  z-index: 0;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* ---------- Label ---------- */
+.menu-item__label {
+  flex: 1;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-subtext);
+  line-height: var(--line-height-subtext);
+  font-weight: var(--font-weight-w5);
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Chevron (Selected 에서만 표시) ---------- */
+.menu-item__chevron {
+  opacity: 0;
+  flex-shrink: 0;
+}
+
+/* ---------- Hover ---------- */
+.menu-item:hover,
+.menu-item--hover {
+  background: var(--color-gray-6);
+}
+
+/* ---------- Focus ---------- */
+.menu-item:focus {
+  outline: none;
+}
+.menu-item:focus-visible,
+.menu-item--focus {
+  background: var(--color-gray-6);
+  box-shadow: 0 0 0 3px var(--color-gray-5), 0 1px 2px rgba(0, 0, 0, 0.05);
+  outline: none;
+  z-index: 1; /* 포커스 시 최상위 — 인접 아이템 위에 포커스 링 표시 */
+}
+
+/* ---------- Pressed ---------- */
+.menu-item:active,
+.menu-item--pressed {
+  background: var(--color-gray-5);
+}
+
+/* ---------- Selected ---------- */
+.menu-item--selected {
+  background: var(--color-gray-6);
+}
+
+.menu-item--selected .menu-item__chevron {
+  opacity: 1;
+}
+
+/* ---------- Disabled ---------- */
+.menu-item--disabled {
+  background: var(--color-white-100);
+  cursor: default;
+  pointer-events: none;
+}
+
+.menu-item--disabled .icon {
+  opacity: 0.2;
+}
+
+.menu-item--disabled .menu-item__label {
+  color: var(--color-font-primary-black-20);
+}
