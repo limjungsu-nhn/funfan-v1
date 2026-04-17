@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workroom — FunFan</title>
+
+  <!-- Design Tokens -->
+  <link rel="stylesheet" href="css/tokens/typography.css">
+  <link rel="stylesheet" href="css/tokens/layout.css">
+  <link rel="stylesheet" href="css/tokens/color.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/logo.css">
+  <link rel="stylesheet" href="css/components/icon.css">
+  <link rel="stylesheet" href="css/components/avatar.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/panel-header.css">
+  <link rel="stylesheet" href="css/components/menu-item.css">
+  <link rel="stylesheet" href="css/components/left-panel.css">
+  <link rel="stylesheet" href="css/components/msg-bubble.css">
+  <link rel="stylesheet" href="css/components/chat-msg.css">
+  <link rel="stylesheet" href="css/components/my-msg.css">
+  <link rel="stylesheet" href="css/components/radio-card.css">
+  <link rel="stylesheet" href="css/components/chat-input.css">
+  <link rel="stylesheet" href="css/components/icon-btn.css">
+  <link rel="stylesheet" href="css/components/send-btn.css">
+  <link rel="stylesheet" href="css/components/right-panel.css">
+  <link rel="stylesheet" href="css/components/badge.css">
+  <link rel="stylesheet" href="css/components/float-btn.css">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --navbar-height: 64px; /* 네비게이션 높이 — 여기만 수정하면 전체 자동 반영 */
+      --p2_5: 36px;          /* layout.css 캐시 대응 — 1440 × 2.5% */
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-width: var(--base);
+      height: 100%;
+      overscroll-behavior: none; /* 페이지 레벨 스크롤 차단 — overflow:hidden 없이 box-shadow 클리핑 방지 */
+      background: var(--color-gray-6);
+      font-family: var(--font-family-base);
+    }
+
+    /* navbar — 최소 너비 (fixed 요소는 body min-width 미적용) */
+    .navbar { min-width: var(--base); }
+
+    /* ---------- App Shell ---------- */
+    .workspace {
+      display: flex;
+      height: 100%;
+      position: relative;
+      overflow: hidden; /* 패널 translateX 슬라이드 클리핑 */
+    }
+
+    /* left-panel: 화면 최상단부터 시작, 내부 콘텐츠만 navbar 아래로 밀어냄 */
+    .workspace .left-panel {
+      padding-top: var(--navbar-height);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10; /* navbar(100) 아래, 일반 콘텐츠 위 */
+    }
+
+    /* right-panel wrapper — flex 공간 점유 + translateX 슬라이드 컨테이너 */
+    #ws-right-wrapper {
+      flex-shrink: 0;
+      flex-grow: 0;
+      flex-basis: var(--p20);
+      min-width: 0;       /* min-content-size 제약 해제 → 0까지 collapse 가능 */
+      position: relative;
+      z-index: 10;
+      overflow: visible;  /* float btn이 왼쪽으로 돌출 — 클리핑 금지 */
+      transition: flex-basis 0.6s cubic-bezier(.4,0,.1,1);
+    }
+
+    /* 패널 닫힘 — flex 공간 해제 → 중앙 영역 확장 */
+    #ws-right-wrapper.is-panel-closed {
+      flex-basis: 0;
+    }
+
+    /* right-panel: wrapper 오른쪽 면 앵커 → wrapper 축소와 translateX 중첩 방지 */
+    .workspace .right-panel {
+      padding-top: var(--navbar-height);
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+    }
+
+    /* ---------- Main Content ---------- */
+    .workspace__main {
+      flex: 1;
+      min-width: 0;
+      overflow: auto;
+      padding-top: var(--navbar-height);
+      background: var(--color-white-50);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .workspace__content {
+      flex: 1;
+      min-height: 0;
+      padding: var(--p2_5);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
+      border-left: 1px var(--color-gray-5) solid;
+      border-right: 1px var(--color-gray-5) solid;
+    }
+
+    /* Float Button — wrapper 기준 absolute, 레이아웃과 함께 이동 */
+    #ws-float-btn {
+      position: absolute;
+      top: calc(var(--navbar-height) + 8px);
+      left: calc(-28px - 8px); /* button 28px + gap 8px */
+      z-index: 50;
+    }
+
+    /* 패널 닫힌 상태 — 아이콘 좌우 반전 */
+    #ws-float-btn.is-panel-closed .icon {
+      transform: scaleX(-1);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <!-- Logo -->
+    <div class="navbar-logo">
+      <i class="logo logo-funfan"></i>
+    </div>
+
+    <!-- Actions -->
+    <div class="navbar-actions">
+      <button class="btn btn-ghost">
+        <i class="icon icon-account-circle"></i>
+        <span class="text-assist-w4">マイページ</span>
+      </button>
+      <button class="btn btn-filled">
+        <i class="icon icon-laptop-mac"></i>
+        <span class="text-assist-w4">ワークスペース</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- App Shell -->
+  <div class="workspace">
+
+    <!-- Left Panel (fixed 288px = 1440 × 20%) -->
+    <div class="left-panel">
+
+      <!-- Panel Header — styleguide.html Case 1 -->
+      <div class="panel-header">
+        <i class="avatar avatar-01"></i>
+        <div class="panel-header__body">
+          <span class="panel-header__name">つちだ さん</span>
+        </div>
+      </div>
+
+      <!-- Menu List -->
+      <nav class="left-panel__menu">
+        <button class="menu-item">
+          <i class="icon icon-bar-chart"></i>
+          <span class="menu-item__label">トップ</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+        <button class="menu-item menu-item--selected">
+          <i class="icon icon-edit"></i>
+          <span class="menu-item__label">作業室</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+        <button class="menu-item">
+          <i class="icon icon-folder"></i>
+          <span class="menu-item__label">作品管理</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+        <button class="menu-item">
+          <i class="icon icon-settings"></i>
+          <span class="menu-item__label">アカウント設定</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+      </nav>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="workspace__main">
+      <div class="workspace__content">
+
+      </div>
+    </div>
+
+    <!-- Right Wrapper: float-btn + right-panel 묶음 -->
+    <div id="ws-right-wrapper">
+
+    <!-- Float Button — wrapper 왼쪽 8px, navbar 바닥 8px -->
+    <button class="float-btn" id="ws-float-btn" type="button" aria-label="パネルを開く">
+      <i class="icon icon-horizontal-align-right"></i>
+    </button>
+
+    <!-- Right Panel (fixed 288px = 1440 × 20%) -->
+    <div class="right-panel">
+
+      <!-- Header — panel-header.css Case 2 재활용 -->
+      <div class="panel-header">
+        <i class="avatar avatar-02"></i>
+        <div class="panel-header__body">
+          <span class="panel-header__name">はな</span>
+          <div class="panel-header__meta">
+            <span class="panel-header__subtext">漫画鑑定士</span>
+            <a class="panel-header__link">
+              設定
+              <svg class="panel-header__link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.40016 8L5.3335 4.93333L6.26683 4L10.2668 8L6.26683 12L5.3335 11.0667L8.40016 8Z" fill="var(--color-black-100)"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Area -->
+      <div class="right-panel__chat">
+
+        <div class="chat-msg">
+          <div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>
+          <div class="chat-msg__body"><p class="chat-msg__text">こんにちは！漫画についてなんでも聞いてください。</p></div>
+        </div>
+
+        <div class="my-msg">
+          <div class="my-msg__bubble">
+            <p class="my-msg__text">最近キャラクターの顔がうまく描けなくて悩んでいます</p>
+            <svg class="my-msg__tail" width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0H12L15.111 9.33315C15.4129 10.2387 14.4188 11.027 13.6059 10.5267C10.9214 8.87468 7.83106 8 4.67894 8H0V0Z"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="chat-msg">
+          <div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>
+          <div class="chat-msg__body"><p class="chat-msg__text">キャラクターで大事なのは「シルエットで誰かわかること」です。
+
+まず全身を描く前に、シルエットだけで個性が出るか確認してみて。髪型・体型・服装の組み合わせでキャラが立ちます。表情は目の形と眉の角度の2点で印象が大きく変わりますよ。</p></div>
+        </div>
+
+        <div class="my-msg">
+          <div class="my-msg__bubble">
+            <p class="my-msg__text">シルエットから考えるのは試したことがなかったです。やってみます！</p>
+            <svg class="my-msg__tail" width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0H12L15.111 9.33315C15.4129 10.2387 14.4188 11.027 13.6059 10.5267C10.9214 8.87468 7.83106 8 4.67894 8H0V0Z"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="chat-msg">
+          <div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>
+          <div class="chat-msg__body"><p class="chat-msg__text">ぜひ！まずはお気に入りのキャラのシルエットをトレースするところから始めると感覚がつかみやすいですよ。また何かあれば聞いてくださいね。</p></div>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <div class="right-panel__footer">
+        <div class="chat-input">
+          <div class="chat-input__field">
+            <textarea class="chat-input__textarea" placeholder="はなに話しかけてみましょう..." rows="1"></textarea>
+          </div>
+          <div class="chat-input__actions">
+            <button class="icon-btn" type="button" aria-label="添付">
+              <i class="icon icon-add"></i>
+            </button>
+            <button class="send-btn" type="button" aria-label="送信">
+              <i class="icon icon-arrow-upward-alt"></i>
+            </button>
+          </div>
+        </div>
+        <p class="right-panel__disclaimer">AIのため、誤りを含む可能性があります</p>
+      </div>
+
+    </div>
+
+    </div><!-- /#ws-right-wrapper -->
+
+  </div>
+
+  <script>
+    // ── キーワードベース応答 ────────────────────────────────
+    const RESPONSES = [
+      {
+        keywords: ['つまず', '悩', '困', 'うまく', 'できない', 'むずか', '難し'],
+        reply: 'つまずくのはむしろ成長のサインです！どんな部分で詰まっていますか？\n\nよくあるのは「頭の中のイメージと手が追いつかない」パターン。そんなときは、描きたいものを一度シンプルな図形に分解してみると突破口が見えやすいですよ。'
+      },
+      {
+        keywords: ['練習', 'うまくなり', '上達', '描き方', 'スキル'],
+        reply: 'おすすめの練習法は「模写→観察→オリジナル」の3ステップです。\n\n好きな作家のコマを模写→なぜそう描いているか観察→自分のキャラに応用。この繰り返しが一番早く上達できます。毎日15分でも続けることが大切です！'
+      },
+      {
+        keywords: ['キャラ', 'キャラクター', '人物', '顔', '表情'],
+        reply: 'キャラクターで大事なのは「シルエットで誰かわかること」です。\n\nまず全身を描く前に、シルエットだけで個性が出るか確認してみて。髪型・体型・服装の組み合わせでキャラが立ちます。表情は目の形と眉の角度の2点で印象が大きく変わりますよ。'
+      },
+      {
+        keywords: ['構図', 'コマ', 'レイアウト', 'ページ', '配置'],
+        reply: '構図で迷ったら「三分割法」から始めてみて。\n\nページを縦横3分割した交点にキャラや視線の focal point を置くと、自然とバランスよく見えます。コマ割りは「大→小→大」のリズムをつけると読者の目線が自然に流れます。'
+      },
+      {
+        keywords: ['背景', '風景', '建物', 'パース', '遠近'],
+        reply: '背景が苦手な人は多いです。コツは「1点透視図法」から慣れること。\n\n消失点を1つ決めて、すべての線をそこに向かわせるだけで、それらしい空間が生まれます。最初は写真トレスで構造を掴んでから、オリジナルに応用するのが近道です。'
+      },
+      {
+        keywords: ['ストーリー', 'プロット', '話', 'シナリオ', 'ネーム'],
+        reply: 'ストーリーに詰まったときは「キャラが何を欲しているか・何を恐れているか」の2点を整理してみて。\n\nその2つが噛み合うシーンがドラマの核になります。ネームは完成度より「感情の流れ」を優先して、まず粗くラフを描き切ることが大事です。'
+      },
+      {
+        keywords: ['モチベ', 'やる気', 'スランプ', '続か', '飽き'],
+        reply: 'スランプは誰にでも来ます。無理に描こうとしないで、好きな漫画を読んだり映画を見たりインプットに徹する期間があってもいいんです。\n\n「完璧に描こう」より「とりあえず1コマだけ」という小さなハードルに切り替えると、また動き出せることが多いですよ。'
+      },
+      {
+        keywords: ['デジタル', 'ツール', 'ソフト', 'iPad', 'クリスタ', 'Procreate'],
+        reply: 'デジタルに慣れるには最初の1〜2ヶ月が山場です。\n\nまずブラシは1〜2種類に絞って。選択肢が多いほど迷って進まなくなります。クリスタなら「Gペン」1本でほとんどの線は描けます。ショートカットキーを少しずつ覚えると作業速度がぐっと上がります。'
+      },
+      {
+        keywords: ['投稿', '公開', 'SNS', 'X', 'pixiv', '見てもらい'],
+        reply: '作品を公開するのは勇気がいりますよね。でも早めに出すほど、フィードバックをもとに成長できます。\n\nSNSはタグを3〜5個、投稿時間は夜20〜22時が反応を得やすいです。完成度より「継続して投稿する」ことが、長期的にフォロワーが増えるコツです。'
+      }
+    ];
+
+    const DEFAULT_REPLY = 'なるほど、それは大切なテーマですね。\n\nもう少し具体的に教えてもらえると、より的確なアドバイスができます。どんな場面で困っているか、描いているジャンルや目標なども一緒に教えてみてください！';
+
+    function getReply(text) {
+      for (const item of RESPONSES) {
+        if (item.keywords.some(k => text.includes(k))) {
+          return item.reply;
+        }
+      }
+      return DEFAULT_REPLY;
+    }
+
+    function typeText(el, text, chatArea, onDone) {
+      let i = 0;
+      const interval = setInterval(() => {
+        el.textContent += text[i];
+        chatArea.scrollTop = chatArea.scrollHeight;
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+          if (onDone) onDone();
+        }
+      }, 30);
+    }
+
+    // ── 채팅 스크롤 초기화 ───────────────────────────────────
+    (() => {
+      const chatArea = document.querySelector('.right-panel__chat');
+      if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
+    })();
+
+    // ── 마우스/키보드 구분 ───────────────────────────────────
+    document.addEventListener('mousedown', () => document.body.classList.add('using-mouse'));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Tab') document.body.classList.remove('using-mouse'); });
+
+    // ── Left Panel 스크롤 차단 ───────────────────────────────
+    document.querySelector('.left-panel').addEventListener('wheel', (e) => {
+      e.preventDefault();
+    }, { passive: false });
+
+    // ── Right Panel 스크롤 ───────────────────────────────────
+    document.querySelector('.right-panel').addEventListener('wheel', (e) => {
+      e.stopPropagation();
+    }, { passive: true });
+
+    // ── 채팅 인터랙션 ────────────────────────────────────────
+    (() => {
+      const textarea  = document.querySelector('.right-panel .chat-input__textarea');
+      const sendBtn   = document.querySelector('.right-panel .send-btn');
+      const chatArea  = document.querySelector('.right-panel__chat');
+      const suggestions = document.querySelector('.right-panel__suggestions');
+
+      if (!textarea || !sendBtn || !chatArea) return;
+
+      let isWaiting = false;
+
+      // textarea 자동 높이
+      textarea.addEventListener('input', () => {
+        textarea.style.height = '32px';
+        textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+      });
+
+      // はな 답변 버블 생성 → 스트리밍으로 채움
+      function appendBotMessage() {
+        const wrap = document.createElement('div');
+        wrap.className = 'chat-msg';
+        wrap.innerHTML =
+          '<div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>' +
+          '<div class="chat-msg__body"><p class="chat-msg__text"></p></div>';
+        chatArea.appendChild(wrap);
+        chatArea.scrollTop = chatArea.scrollHeight;
+        return wrap.querySelector('.chat-msg__text');
+      }
+
+      // 전송
+      async function sendMessage() {
+        if (isWaiting) return;
+        const text = textarea.value.trim();
+        if (!text) return;
+
+        isWaiting = true;
+        sendBtn.disabled = true;
+
+        // 내 메시지 추가
+        const myMsg = document.createElement('div');
+        myMsg.className = 'my-msg';
+        myMsg.innerHTML =
+          '<div class="my-msg__bubble">' +
+            '<p class="my-msg__text">' + text.replace(/</g, '&lt;') + '</p>' +
+            '<svg class="my-msg__tail" width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg">' +
+              '<path d="M0 0H12L15.111 9.33315C15.4129 10.2387 14.4188 11.027 13.6059 10.5267C10.9214 8.87468 7.83106 8 4.67894 8H0V0Z"/>' +
+            '</svg>' +
+          '</div>';
+        chatArea.appendChild(myMsg);
+        chatArea.scrollTop = chatArea.scrollHeight;
+        if (suggestions) suggestions.style.display = 'none';
+
+        textarea.value = '';
+        textarea.style.height = '32px';
+        textarea.focus();
+
+        // はな 답변 버블 (빈 상태) — 약간의 딜레이 후 타이핑
+        setTimeout(() => {
+          const botTextEl = appendBotMessage();
+          const reply = getReply(text);
+          typeText(botTextEl, reply, chatArea, () => {
+            isWaiting = false;
+            sendBtn.disabled = false;
+          });
+        }, 400);
+      }
+
+      sendBtn.addEventListener('click', sendMessage);
+      textarea.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+    })();
+
+    // ── Float Button — 패널 열림/닫힘 토글 ─────────────────────
+    (() => {
+      const floatBtn   = document.getElementById('ws-float-btn');
+      const wrapper    = document.getElementById('ws-right-wrapper');
+      const rightPanel = document.querySelector('.right-panel');
+      if (!floatBtn || !wrapper || !rightPanel) return;
+
+      let isOpen = true;
+
+      floatBtn.addEventListener('click', () => {
+        isOpen = !isOpen;
+        wrapper.classList.toggle('is-panel-closed', !isOpen);            /* flex-basis 0 → 중앙 확장 */
+        rightPanel.classList.toggle('right-panel--collapsed', !isOpen);  /* translateX → 패널 슬라이드 */
+        floatBtn.classList.toggle('is-panel-closed', !isOpen);           /* 아이콘 반전 전용 */
+        floatBtn.setAttribute('aria-label', isOpen ? 'パネルを閉じる' : 'パネルを開く');
+      });
+    })();
+  </script>
+
+</body>
+</html>
