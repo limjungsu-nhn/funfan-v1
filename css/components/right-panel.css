@@ -158,6 +158,12 @@
   flex-basis: 0;
 }
 
+/* 초기 로드 시 transition 억제 */
+.right-panel-wrapper--instant,
+.right-panel-wrapper--instant .right-panel {
+  transition: none;
+}
+
 /* 랜딩 중 wrapper 확장 → 중앙 영역 flex 공간 축소 */
 .workspace--landing .right-panel-wrapper {
   flex-basis: var(--p40);

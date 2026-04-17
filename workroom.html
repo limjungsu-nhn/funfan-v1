@@ -163,24 +163,24 @@
 
         <div class="radio-group-card">
           <div class="radio-group-card__header">
-            <p class="radio-group-card__title">AIキャラクターを選ぶ</p>
-            <p class="radio-group-card__desc">あなたの作業をサポートするキャラクターを選択してください</p>
+            <p class="radio-group-card__title">作業室へようこそ</p>
+            <p class="radio-group-card__desc">どのモードで作業しますか？</p>
           </div>
           <div class="radio-group-card__list">
             <label class="radio-card">
               <input type="radio" class="radio-card__input" name="character" value="hana">
               <div class="radio-card__avatar">👀</div>
               <div class="radio-card__content">
-                <span class="radio-card__title">はな</span>
-                <span class="radio-card__sub">漫画鑑定士</span>
+                <span class="radio-card__title">公開</span>
+                <span class="radio-card__sub">読者に「今創作中」と知らせます</span>
               </div>
             </label>
             <label class="radio-card">
               <input type="radio" class="radio-card__input" name="character" value="taro">
               <div class="radio-card__avatar">🗝️</div>
               <div class="radio-card__content">
-                <span class="radio-card__title">たろう</span>
-                <span class="radio-card__sub">ストーリーライター</span>
+                <span class="radio-card__title">非公開</span>
+                <span class="radio-card__sub">ひとりで集中して作業します。読者には表示されません</span>
               </div>
             </label>
           </div>
@@ -193,7 +193,7 @@
           </label>
           <div class="radio-group-card__footer">
             <button class="btn btn-filled" id="start-btn" disabled>
-              <span class="text-assist-w4">作業を始める</span>
+              <span class="text-assist-w4">入室する</span>
             </button>
           </div>
         </div>
@@ -371,6 +371,9 @@
       radios.forEach(r => r.addEventListener('change', () => {
         startBtn.disabled = !Array.from(radios).some(r => r.checked);
       }));
+      startBtn.addEventListener('click', () => {
+        window.open('workroom.html?mode=mini', '_blank', 'width=1440,height=1024,resizable=yes');
+      });
     })();
 
     // ── 마우스/키보드 구분 ───────────────────────────────────
@@ -470,14 +473,24 @@
       const rightPanel = document.querySelector('.right-panel');
       if (!floatBtn || !wrapper || !rightPanel) return;
 
-      let isOpen = true;
+      const PANEL_KEY = 'rightPanelOpen';
+      let isOpen = localStorage.getItem(PANEL_KEY) !== 'false';
+
+      function applyState() {
+        wrapper.classList.toggle('is-panel-closed', !isOpen);
+        rightPanel.classList.toggle('right-panel--collapsed', !isOpen);
+        floatBtn.classList.toggle('is-panel-closed', !isOpen);
+        floatBtn.setAttribute('aria-label', isOpen ? 'パネルを閉じる' : 'パネルを開く');
+      }
+
+      wrapper.classList.add('right-panel-wrapper--instant');
+      applyState();
+      requestAnimationFrame(() => requestAnimationFrame(() => wrapper.classList.remove('right-panel-wrapper--instant')));
 
       floatBtn.addEventListener('click', () => {
         isOpen = !isOpen;
-        wrapper.classList.toggle('is-panel-closed', !isOpen);            /* flex-basis 0 → 중앙 확장 */
-        rightPanel.classList.toggle('right-panel--collapsed', !isOpen);  /* translateX → 패널 슬라이드 */
-        floatBtn.classList.toggle('is-panel-closed', !isOpen);           /* 아이콘 반전 전용 */
-        floatBtn.setAttribute('aria-label', isOpen ? 'パネルを閉じる' : 'パネルを開く');
+        localStorage.setItem(PANEL_KEY, isOpen);
+        applyState();
       });
     })();
   </script>

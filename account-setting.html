@@ -323,13 +323,24 @@
       const wrapper    = document.getElementById('ws-right-wrapper');
       const rightPanel = document.querySelector('.right-panel');
       if (!floatBtn || !wrapper || !rightPanel) return;
-      let isOpen = true;
-      floatBtn.addEventListener('click', () => {
-        isOpen = !isOpen;
+      const PANEL_KEY = 'rightPanelOpen';
+      let isOpen = localStorage.getItem(PANEL_KEY) !== 'false';
+
+      function applyState() {
         wrapper.classList.toggle('is-panel-closed', !isOpen);
         rightPanel.classList.toggle('right-panel--collapsed', !isOpen);
         floatBtn.classList.toggle('is-panel-closed', !isOpen);
         floatBtn.setAttribute('aria-label', isOpen ? 'パネルを閉じる' : 'パネルを開く');
+      }
+
+      wrapper.classList.add('right-panel-wrapper--instant');
+      applyState();
+      requestAnimationFrame(() => requestAnimationFrame(() => wrapper.classList.remove('right-panel-wrapper--instant')));
+
+      floatBtn.addEventListener('click', () => {
+        isOpen = !isOpen;
+        localStorage.setItem(PANEL_KEY, isOpen);
+        applyState();
       });
     })();
   </script>
