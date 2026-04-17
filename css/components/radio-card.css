@@ -80,7 +80,7 @@ body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: transparent;
+  background: var(--color-white-100);
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -91,7 +91,7 @@ body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
 
 .radio-card--selected .radio-card__avatar,
 .radio-card:has(.radio-card__input:checked) .radio-card__avatar {
-  background: transparent;
+  background: var(--color-gray-6);
 }
 
 /* ---------- Content ---------- */
