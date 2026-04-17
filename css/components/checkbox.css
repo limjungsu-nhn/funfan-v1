@@ -95,17 +95,23 @@
 }
 
 /* ---------- Checkbox with Label ----------
+   label 안에서는 <button> 대신 <div> 사용.
+   <button>은 label 내 클릭을 흡수해 input 토글이 안 됨.
+   <div>를 쓰면 label이 클릭을 받아 input을 네이티브로 토글하고
+   CSS checkbox-input:checked + .checkbox 가 비주얼을 자동 처리.
+
    HTML 구조:
      <label class="checkbox-wrap">
        <input type="checkbox" class="checkbox-input">
-       <button class="checkbox [--state]" role="checkbox" aria-checked="false" tabindex="0">
+       <div class="checkbox">
          <i class="icon icon-check-small checkbox-icon"></i>
-       </button>
+       </div>
        <span class="text-caption-w4">Label text</span>
      </label>
 
    Disabled:
      <label class="checkbox-wrap checkbox-wrap--disabled">
+       <input type="checkbox" class="checkbox-input" disabled>
        ...
      </label>
 ---------------------------------------- */

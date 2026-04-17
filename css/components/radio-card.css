@@ -129,9 +129,9 @@ body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
        </div>
        <label class="radio-group-card__checkbox checkbox-wrap">
          <input type="checkbox" class="checkbox-input">
-         <button class="checkbox" role="checkbox" tabindex="0">
+         <div class="checkbox">
            <i class="icon icon-check-small checkbox-icon"></i>
-         </button>
+         </div>
          <span class="text-caption-w4">Label</span>
        </label>
        <div class="radio-group-card__footer">
