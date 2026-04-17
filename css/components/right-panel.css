@@ -158,6 +158,16 @@
   flex-basis: 0;
 }
 
+/* 랜딩 중 wrapper 확장 → 중앙 영역 flex 공간 축소 */
+.workspace--landing .right-panel-wrapper {
+  flex-basis: var(--p40);
+}
+
+/* 랜딩 중 패널 확장 */
+.workspace--landing .right-panel {
+  width: var(--p40);
+}
+
 /* right-panel: wrapper 오른쪽 면 앵커 → 축소와 translateX 중첩 방지 */
 .right-panel-wrapper .right-panel {
   padding-top: var(--navbar-height);
