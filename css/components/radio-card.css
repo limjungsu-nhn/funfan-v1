@@ -85,7 +85,7 @@ body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: var(--font-size-h1);
+  font-size: var(--font-size-h2);
   line-height: 1;
 }
 
