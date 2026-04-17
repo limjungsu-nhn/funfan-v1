@@ -32,7 +32,7 @@
   max-width: 100%;
   padding: 10px 16px;
   position: relative;
-  background: var(--color-gray-6);
+  background: var(--color-wood-6);
   border-radius: 16px;
   display: inline-flex;
   justify-content: center;
@@ -61,5 +61,5 @@
 }
 
 .my-msg__tail path {
-  fill: var(--color-gray-6);
+  fill: var(--color-wood-6);
 }
