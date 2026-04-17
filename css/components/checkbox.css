@@ -94,13 +94,32 @@
   pointer-events: none;
 }
 
-/* ---------- Native input wrapper ---------- */
+/* ---------- Checkbox with Label ----------
+   HTML 구조:
+     <label class="checkbox-wrap">
+       <input type="checkbox" class="checkbox-input">
+       <button class="checkbox [--state]" role="checkbox" aria-checked="false" tabindex="0">
+         <i class="icon icon-check-small checkbox-icon"></i>
+       </button>
+       <span class="text-caption-w4">Label text</span>
+     </label>
+
+   Disabled:
+     <label class="checkbox-wrap checkbox-wrap--disabled">
+       ...
+     </label>
+---------------------------------------- */
 .checkbox-wrap {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
 }
+.checkbox-wrap--disabled {
+  cursor: not-allowed;
+}
+
+/* ---------- Native input wrapper ---------- */
 .checkbox-input {
   position: absolute;
   opacity: 0;

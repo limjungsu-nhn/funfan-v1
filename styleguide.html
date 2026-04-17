@@ -1182,7 +1182,48 @@
       <section class="sg-section" id="checkbox" data-section="checkbox">
         <div class="sg-section-header">
           <h2 class="sg-section-title">Checkbox</h2>
-          <span class="sg-section-desc">checkbox.css · 6 states · 20×20px · border-radius 6px</span>
+          <span class="sg-section-desc">checkbox.css · 6 states · 20×20px · border-radius 6px · .checkbox-wrap으로 라벨 조합</span>
+        </div>
+
+        <!-- Checkbox with Label -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Checkbox with Label</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="checkbox-wrap">
+                  <input type="checkbox" class="checkbox-input">
+                  <button class="checkbox" role="checkbox" aria-checked="false" tabindex="0"><i class="icon icon-check-small checkbox-icon"></i></button>
+                  <span class="text-caption-w4">次回から確認せずに非公開で自動入室する</span>
+                </label>
+              </div>
+              <code class="sg-type-classname">.checkbox-wrap</code>
+              <div class="sg-type-meta"><strong>Unchecked</strong><br>gap 10px · <code>.text-caption-w4</code></div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="checkbox-wrap">
+                  <input type="checkbox" class="checkbox-input" checked>
+                  <button class="checkbox checkbox--checked" role="checkbox" aria-checked="true" tabindex="0"><i class="icon icon-check-small checkbox-icon"></i></button>
+                  <span class="text-caption-w4">次回から確認せずに非公開で自動入室する</span>
+                </label>
+              </div>
+              <code class="sg-type-classname">.checkbox-wrap</code>
+              <div class="sg-type-meta"><strong>Checked</strong></div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="checkbox-wrap checkbox-wrap--disabled">
+                  <input type="checkbox" class="checkbox-input" disabled>
+                  <button class="checkbox checkbox--disabled" role="checkbox" aria-checked="false" aria-disabled="true" tabindex="-1"><i class="icon icon-check-small checkbox-icon"></i></button>
+                  <span class="text-caption-w4 sg-text-disabled">次回から確認せずに非公開で自動入室する</span>
+                </label>
+              </div>
+              <code class="sg-type-classname">.checkbox-wrap--disabled</code>
+              <div class="sg-type-meta"><strong>Disabled</strong></div>
+            </div>
+          </div>
         </div>
 
         <!-- Interactive -->
