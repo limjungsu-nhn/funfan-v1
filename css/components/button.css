@@ -180,11 +180,13 @@
 }
 
 /* ---------- Disabled ---------- */
-.btn-filled--disabled {
+.btn-filled--disabled,
+.btn-filled:disabled {
   background: var(--color-gray-5);
   cursor: not-allowed;
   pointer-events: none;
 }
-.btn-filled--disabled .icon {
+.btn-filled--disabled .icon,
+.btn-filled:disabled .icon {
   color: var(--color-white-100);
 }

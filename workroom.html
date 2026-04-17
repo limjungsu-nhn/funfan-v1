@@ -192,7 +192,7 @@
             <span class="text-caption-w4">次回から確認せずに開始する</span>
           </label>
           <div class="radio-group-card__footer">
-            <button class="btn btn-filled">
+            <button class="btn btn-filled" id="start-btn" disabled>
               <span class="text-assist-w4">作業を始める</span>
             </button>
           </div>
@@ -362,6 +362,15 @@
     (() => {
       const chatArea = document.querySelector('.right-panel__chat');
       if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
+    })();
+
+    // ── 라디오 선택 → 버튼 활성화 ──────────────────────────────
+    (() => {
+      const startBtn = document.getElementById('start-btn');
+      const radios = document.querySelectorAll('input[name="character"]');
+      radios.forEach(r => r.addEventListener('change', () => {
+        startBtn.disabled = !Array.from(radios).some(r => r.checked);
+      }));
     })();
 
     // ── 마우스/키보드 구분 ───────────────────────────────────
