@@ -1,0 +1,79 @@
+/* ============================================
+   Water Card Component — 最近の水やり カード
+
+   HTML 구조 (Empty):
+     <div class="water-card">
+       <span class="text-body-md-w6 water-card__title">最近の水やり</span>
+       <div class="water-card__empty">
+         <span class="water-card__empty-icon">
+           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">...</svg>
+         </span>
+         <span class="text-caption-w4 water-card__empty-text">まだ記録がありません</span>
+       </div>
+     </div>
+
+   HTML 구조 (Filled):
+     <div class="water-card">
+       <span class="text-body-md-w6 water-card__title">最近の水やり</span>
+       <div class="water-card__list">
+         <div class="review-item">...</div>
+         ...5 items (review-item.css 재활용)
+       </div>
+     </div>
+
+   의존 컴포넌트:
+     review-item.css  — 리스트 아이템 (.review-item)
+     badge.css        — 태그 필 (.badge)
+   ============================================ */
+
+/* ---------- Container ---------- */
+.water-card {
+  width: 100%;
+  padding: 24px 24px 0;
+  background: var(--color-white-100);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.02), 0px 0px 1px rgba(0, 0, 0, 0.10);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* ---------- Title ---------- */
+.water-card__title {
+  color: var(--color-font-primary-black-100);
+  flex-shrink: 0;
+}
+
+/* ---------- Empty State ---------- */
+.water-card__empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 40px;
+}
+
+.water-card__empty-icon {
+  color: var(--color-black-30);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.water-card__empty-text {
+  color: var(--color-font-primary-black-50);
+}
+
+/* ---------- List ---------- */
+.water-card__list {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-bottom: 24px;
+  overflow: hidden;
+}

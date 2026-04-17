@@ -27,7 +27,7 @@
        <!-- Footer -->
        <div class="right-panel__footer">
          <div class="right-panel__suggestions">
-           <button class="msg-bubble" type="button"><span class="text-caption-w3">最近描いててつまずいてることがある</span></button>
+           <button class="msg-bubble" type="button"><span class="text-caption-w4">最近描いててつまずいてることがある</span></button>
            ...
          </div>
          <div class="chat-input">
@@ -61,75 +61,24 @@
   align-items: flex-start;
   box-sizing: border-box;
   overflow: hidden;
+  transition: width 0.6s cubic-bezier(.4,0,.2,1);
 }
 
-/* ---------- Header ---------- */
-.right-panel__header {
+/* 랜딩 인터랙션 — 1440 × 40% = 576px */
+.right-panel--expanded {
+  width: 576px;
+}
+
+/* Chat Input — 패널 너비에 맞춰 반응형으로 stretch */
+.right-panel__footer .chat-input {
+  width: auto;
   align-self: stretch;
-  height: 72px;
-  padding: 14px 20px;
-  background: var(--color-white-100);
-  border-bottom: 1px var(--color-gray-6) solid;
-  display: inline-flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 12px;
-  box-sizing: border-box;
 }
 
-.right-panel__header-info {
-  flex: 1;
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 2px;
-}
-
-.right-panel__name {
-  align-self: stretch;
-  margin: 0;
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-body-sm);
-  font-weight: var(--font-weight-w7);
-  line-height: var(--line-height-body-sm);
-  color: var(--color-font-primary-black-100);
-  word-wrap: break-word;
-}
-
-.right-panel__meta {
-  align-self: stretch;
-  display: inline-flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.right-panel__subtitle {
-  flex: 1;
-  margin: 0;
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-overline);
-  font-weight: var(--font-weight-w3);
-  line-height: var(--line-height-overline);
-  color: var(--color-font-primary-black-50);
-  word-wrap: break-word;
-}
-
-.right-panel__settings-link {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 2px;
-  cursor: pointer;
-  text-decoration: none;
-}
-
-.right-panel__settings-link span {
-  font-family: var(--font-family-base);
-  font-size: var(--font-size-overline);
-  font-weight: var(--font-weight-w5);
-  line-height: var(--line-height-overline);
-  color: var(--color-font-primary-black-100);
+/* ---------- Header — panel-header.css 재활용 ---------- */
+/* panel-header 기본 width: 288px → 패널 너비에 맞게 stretch */
+.right-panel .panel-header {
+  width: 100%;
 }
 
 /* ---------- Chat Area ---------- */
@@ -172,7 +121,7 @@
   gap: 6px;
 }
 
-/* Suggestion Chip → msg-bubble.css 재활용 + text-caption-w3 (12px/18px) */
+/* Suggestion Chip → msg-bubble.css 재활용 + text-caption-w4 (12px/18px) */
 
 /* ---------- Compose Box → chat-input.css + icon-btn.css + send-btn.css 재활용 ---------- */
 
@@ -183,7 +132,7 @@
   text-align: center;
   font-family: var(--font-family-base);
   font-size: var(--font-size-overline);
-  font-weight: var(--font-weight-w3);
+  font-weight: var(--font-weight-w4);
   line-height: var(--line-height-overline);
   color: var(--color-font-primary-black-50);
 }

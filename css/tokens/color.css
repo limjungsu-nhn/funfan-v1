@@ -7,22 +7,22 @@
   /* ---------- White ---------- */
   --color-white-100:  rgba(255, 255, 255, 1);
   --color-white-50:   rgba(255, 255, 255, 0.5);
-  --color-white-20:   rgba(255, 255, 255, 0.2);
+  --color-white-30:   rgba(255, 255, 255, 0.3);
   --color-white-0:    rgba(255, 255, 255, 0);
 
   /* ---------- Black ---------- */
   --color-black-100:  rgba(0, 0, 0, 1);
   --color-black-50:   rgba(0, 0, 0, 0.5);
-  --color-black-20:   rgba(0, 0, 0, 0.2);
+  --color-black-30:   rgba(0, 0, 0, 0.3);
   --color-black-0:    rgba(0, 0, 0, 0);
 
   /* ---------- Font ---------- */
   --color-font-primary-black-100:  rgba(29, 29, 31, 1);
   --color-font-primary-black-50:   rgba(29, 29, 31, 0.5);
-  --color-font-primary-black-20:   rgba(29, 29, 31, 0.2);
+  --color-font-primary-black-30:   rgba(29, 29, 31, 0.3);
   --color-font-primary-white-100:  rgba(255, 255, 255, 1);
   --color-font-primary-white-50:   rgba(255, 255, 255, 0.5);
-  --color-font-primary-white-20:   rgba(255, 255, 255, 0.2);
+  --color-font-primary-white-30:   rgba(255, 255, 255, 0.3);
   --color-font-secondary:          #6E6E73;
   --color-font-divider:            #C7C7CC;
 

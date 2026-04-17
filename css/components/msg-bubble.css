@@ -3,7 +3,7 @@
 
    HTML 구조:
      <button class="msg-bubble [--state]" type="button">
-       <span class="text-assist-w3">Text</span>
+       <span class="text-assist-w4">Text</span>
      </button>
 
    States:
@@ -29,6 +29,7 @@
   box-sizing: border-box;
   cursor: pointer;
   font-family: var(--font-family-base);
+  transition: transform 0.08s ease-in;
   -webkit-appearance: none;
   appearance: none;
 }
@@ -51,6 +52,7 @@
 /* ---------- Pressed ---------- */
 .msg-bubble:active,
 .msg-bubble--pressed {
-  background: var(--color-gray-6);
+  background: var(--color-white-100);
   outline-color: var(--color-gray-2);
+  transform: scale(0.97);
 }

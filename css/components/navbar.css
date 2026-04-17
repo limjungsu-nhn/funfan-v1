@@ -9,11 +9,11 @@
        <div class="navbar-actions">
          <button class="btn btn-ghost">
            <i class="icon icon-{name}"></i>
-           <span class="text-assist-w5">Label</span>
+           <span class="text-assist-w4">Label</span>
          </button>
          <button class="btn btn-filled">
            <i class="icon icon-{name}"></i>
-           <span class="text-assist-w5">Label</span>
+           <span class="text-assist-w4">Label</span>
          </button>
        </div>
      </header>
@@ -38,7 +38,7 @@
 
 /* ---------- Logo ---------- */
 .navbar-logo {
-  width: 92px;
+  width: 80px;
   height: 30px;
   position: relative;
   flex-shrink: 0;

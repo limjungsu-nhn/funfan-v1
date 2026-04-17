@@ -1,0 +1,200 @@
+/* ============================================
+   Revenue Card Component — 推定収益 월별 바 차트 카드
+
+   HTML 구조:
+     <div class="revenue-card">
+       <div class="revenue-card__header">
+         <div class="revenue-card__info">
+           <span class="text-body-md-w6 revenue-card__title">推定収益（月別）</span>
+           <span class="text-overline-w4 revenue-card__desc">直近7日・全作品合計</span>
+         </div>
+         <div class="revenue-card__stats">
+           <div class="revenue-card__stat">
+             <span class="text-body-sm-w6 revenue-card__stat-month">3月</span>
+             <span class="text-body-lg-w6 revenue-card__stat-month-val">0円</span>
+           </div>
+           <div class="revenue-card__sep"></div>
+           <div class="revenue-card__stat">
+             <span class="text-body-sm-w6">累計</span>
+             <span class="text-h3-w6">0円</span>
+           </div>
+         </div>
+       </div>
+       <div class="revenue-card__chart">
+         <div class="revenue-card__bars">
+           <div class="revenue-card__col">
+             <div class="revenue-card__bar revenue-card__bar--empty"></div>
+           </div>
+           ...6 cols
+         </div>
+         <div class="revenue-card__xlabels">
+           <div class="revenue-card__col">
+             <p class="text-overline-w4 revenue-card__xlabel">10月<br>(0円)</p>
+           </div>
+           ...6 cols
+         </div>
+       </div>
+     </div>
+
+   Bar 레벨 (컬러 — 높이는 --bar-ratio CSS 변수로 결정):
+     --empty   1px    Gray-5    (데이터 없음, 모션 없음)
+     --lv1            Nature-5  (4~6위)
+     --lv3            Nature-4  (2~3위)
+     --lv5            Nature-3  (1위 — 최대값)
+   ============================================ */
+
+/* ---------- Container ---------- */
+.revenue-card {
+  width: 100%;
+  padding: 24px 24px 32px;
+  background: var(--color-white-100);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.02), 0px 0px 1px rgba(0, 0, 0, 0.10);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
+  box-sizing: border-box;
+}
+
+/* ---------- Header ---------- */
+.revenue-card__header {
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.revenue-card__info {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.revenue-card__title {
+  color: var(--color-font-primary-black-100);
+}
+
+.revenue-card__desc {
+  color: var(--color-font-primary-black-50);
+}
+
+/* ---------- Stats (우측 수치) ---------- */
+.revenue-card__stats {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.revenue-card__stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.revenue-card__stat-month {
+  color: var(--color-nature-2);
+}
+
+.revenue-card__stat-month-val {
+  color: var(--color-nature-2);
+}
+
+/* 구분선 */
+.revenue-card__sep {
+  width: 1px;
+  height: 16px;
+  background: var(--color-black-30);
+}
+
+/* ---------- Chart ---------- */
+.revenue-card__chart {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 바 영역 */
+.revenue-card__bars {
+  align-self: stretch;
+  height: 100px;
+  display: flex;
+  align-items: flex-end;
+}
+
+/* X축 레이블 영역 */
+.revenue-card__xlabels {
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* 공통 컬럼 */
+.revenue-card__col {
+  flex: 1;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ---------- Bar 등장 애니메이션 ---------- */
+@keyframes bar-grow {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+
+/* ---------- Bar ---------- */
+.revenue-card__bar {
+  width: 50%;
+  border-radius: 4px;
+  /* 높이: JS가 --bar-ratio(0~1)를 설정 → 최대값 대비 비율로 렌더 */
+  height: calc(var(--bar-ratio, 0) * 100%);
+  min-height: 2px; /* 극소값도 최소 2px 표시 */
+}
+
+/* 데이터 없음 — 모션 없음 */
+.revenue-card__bar--empty {
+  width: 50%;
+  height: 1px;
+  min-height: unset;
+  background: var(--color-gray-5);
+  border-radius: 0;
+  animation: none;
+}
+
+/* 데이터 있음 — 아래에서 위로 자라남 */
+.revenue-card__bar--lv1,
+.revenue-card__bar--lv2,
+.revenue-card__bar--lv3,
+.revenue-card__bar--lv4,
+.revenue-card__bar--lv5 {
+  transform-origin: bottom;
+  animation: bar-grow 0.4s ease-out both;
+}
+
+/* 컬러만 담당 — 높이는 --bar-ratio CSS 변수로 결정 */
+.revenue-card__bar--lv1 { background: var(--color-nature-5); }
+.revenue-card__bar--lv2 { background: var(--color-nature-5); }
+.revenue-card__bar--lv3 { background: var(--color-nature-4); }
+.revenue-card__bar--lv4 { background: var(--color-nature-4); }
+.revenue-card__bar--lv5 { background: var(--color-nature-3); }
+
+/* 순차 등장 — 0.15s 간격으로 겹쳐서 재생 */
+.revenue-card__bars .revenue-card__col:nth-child(1) .revenue-card__bar { animation-delay: 0s;     }
+.revenue-card__bars .revenue-card__col:nth-child(2) .revenue-card__bar { animation-delay: 0.15s;  }
+.revenue-card__bars .revenue-card__col:nth-child(3) .revenue-card__bar { animation-delay: 0.30s;  }
+.revenue-card__bars .revenue-card__col:nth-child(4) .revenue-card__bar { animation-delay: 0.45s;  }
+.revenue-card__bars .revenue-card__col:nth-child(5) .revenue-card__bar { animation-delay: 0.60s;  }
+.revenue-card__bars .revenue-card__col:nth-child(6) .revenue-card__bar { animation-delay: 0.75s;  }
+
+/* ---------- X축 레이블 ---------- */
+.revenue-card__xlabel {
+  margin: 0;
+  text-align: center;
+  color: var(--color-font-primary-black-100);
+}

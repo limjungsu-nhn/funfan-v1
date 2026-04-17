@@ -55,7 +55,7 @@ body {
 .sg-header-badge {
   margin-left: auto;
   font-size: 11px;
-  font-weight: 500;
+  font-weight: var(--font-weight-w6);
   background: var(--sg-tag-bg);
   color: var(--sg-tag-color);
   padding: 3px 8px;
@@ -104,7 +104,7 @@ body {
   transition: background 0.15s, color 0.15s;
 }
 .sg-nav a:hover { background: var(--sg-bg); color: var(--sg-text-primary); }
-.sg-nav a.active { background: var(--sg-tag-bg); color: var(--sg-accent); font-weight: 500; }
+.sg-nav a.active { background: var(--sg-tag-bg); color: var(--sg-accent); font-weight: var(--font-weight-w6); }
 .sg-nav-divider {
   height: 1px;
   background: var(--sg-border-light);
@@ -178,8 +178,6 @@ body {
   padding: 16px 0;
   color: var(--sg-text-primary);
   word-break: keep-all;
-  pointer-events: none;   /* 클릭 시 :focus 발생 방지 — 전역 focus reset과의 충돌 차단 */
-  user-select: none;
 }
 .sg-type-classname {
   font-family: "SF Mono", "Fira Code", "Menlo", monospace;
@@ -198,7 +196,7 @@ body {
 }
 .sg-type-meta strong {
   color: var(--sg-text-tag);
-  font-weight: 500;
+  font-weight: var(--font-weight-w6);
 }
 
 /* ---------- Table Header ---------- */
@@ -239,15 +237,14 @@ body {
 .sg-weight-badge {
   display: inline-block;
   font-size: 10px;
-  font-weight: 600;
+  font-weight: var(--font-weight-w6);
   padding: 2px 6px;
   border-radius: 4px;
   margin-right: 4px;
   vertical-align: middle;
 }
-.sg-weight-w3 { background: #F0F0F2; color: #666; }
-.sg-weight-w5 { background: #E8F0FF; color: #0047CC; }
-.sg-weight-w7 { background: #FFF0E8; color: #CC4700; }
+.sg-weight-w4 { background: #F0F0F2; color: #666; }
+.sg-weight-w6 { background: #E8F0FF; color: #0047CC; }
 
 /* ---------- Color Grid ---------- */
 .sg-color-grid {
@@ -277,7 +274,7 @@ body {
 }
 .sg-color-name {
   font-size: 12px;
-  font-weight: 500;
+  font-weight: var(--font-weight-w6);
   color: var(--sg-text-primary);
 }
 .sg-color-card--dark .sg-color-name {
@@ -462,5 +459,5 @@ body {
 }
 .sg-demo-live-label.is-active {
   color: var(--sg-accent);
-  font-weight: 500;
+  font-weight: var(--font-weight-w6);
 }

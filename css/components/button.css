@@ -4,7 +4,7 @@
    HTML 구조:
      <button class="btn btn-line">
        <i class="icon icon-{name}"></i>   ← 선택
-       <span class="text-assist-w5">Label</span>
+       <span class="text-assist-w4">Label</span>
        <i class="icon icon-{name}"></i>   ← 선택
      </button>
 
@@ -30,6 +30,7 @@
   font-family: var(--font-family-base);
   text-decoration: none;
   -webkit-tap-highlight-color: transparent;
+  transition: transform 0.08s ease-in;
 }
 
 /* ---------- Size Variants ---------- */
@@ -67,13 +68,13 @@
 /* ---------- Pressed ---------- */
 .btn-line--pressed,
 .btn-line:active:not(.btn-line--disabled) {
-  background: var(--color-gray-6);
   outline-color: var(--color-gray-2);
+  transform: scale(0.97);
 }
 
 /* ---------- Disabled ---------- */
 .btn-line--disabled {
-  color: var(--color-font-primary-black-20);
+  color: var(--color-font-primary-black-30);
   outline-color: var(--color-gray-5);
   cursor: not-allowed;
   pointer-events: none;
@@ -119,12 +120,13 @@
 /* ---------- Pressed ---------- */
 .btn-ghost--pressed,
 .btn-ghost:active:not(.btn-ghost--disabled) {
-  background: var(--color-gray-5);
+  background: var(--color-gray-6);
+  transform: scale(0.97);
 }
 
 /* ---------- Disabled ---------- */
 .btn-ghost--disabled {
-  color: var(--color-font-primary-black-20);
+  color: var(--color-font-primary-black-30);
   cursor: not-allowed;
   pointer-events: none;
 }
@@ -173,7 +175,8 @@
 /* ---------- Pressed ---------- */
 .btn-filled--pressed,
 .btn-filled:active:not(.btn-filled--disabled) {
-  background: var(--color-nature-1);
+  background: var(--color-nature-2);
+  transform: scale(0.97);
 }
 
 /* ---------- Disabled ---------- */

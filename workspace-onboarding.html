@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Workspace — FunFan</title>
+
+  <!-- Design Tokens -->
+  <link rel="stylesheet" href="css/tokens/typography.css">
+  <link rel="stylesheet" href="css/tokens/layout.css">
+  <link rel="stylesheet" href="css/tokens/color.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/logo.css">
+  <link rel="stylesheet" href="css/components/icon.css">
+  <link rel="stylesheet" href="css/components/avatar.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/panel-header.css">
+  <link rel="stylesheet" href="css/components/menu-item.css">
+  <link rel="stylesheet" href="css/components/left-panel.css">
+  <link rel="stylesheet" href="css/components/msg-bubble.css">
+  <link rel="stylesheet" href="css/components/chat-msg.css">
+  <link rel="stylesheet" href="css/components/my-msg.css">
+  <link rel="stylesheet" href="css/components/stat-card.css">
+  <link rel="stylesheet" href="css/components/revenue-card.css">
+  <link rel="stylesheet" href="css/components/water-card.css">
+  <link rel="stylesheet" href="css/components/review-item.css">
+  <link rel="stylesheet" href="css/components/chat-input.css">
+  <link rel="stylesheet" href="css/components/icon-btn.css">
+  <link rel="stylesheet" href="css/components/send-btn.css">
+  <link rel="stylesheet" href="css/components/right-panel.css">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --navbar-height: 64px; /* 네비게이션 높이 — 여기만 수정하면 전체 자동 반영 */
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-width: 1440px;
+      height: 100%;
+      overscroll-behavior: none; /* 페이지 레벨 스크롤 차단 — overflow:hidden 없이 box-shadow 클리핑 방지 */
+      background: var(--color-gray-6);
+      font-family: var(--font-family-base);
+    }
+
+    /* ---------- App Shell ---------- */
+    .workspace {
+      display: flex;
+      height: 100%;
+    }
+
+    /* left-panel: 화면 최상단부터 시작, 내부 콘텐츠만 navbar 아래로 밀어냄 */
+    .workspace .left-panel {
+      padding-top: var(--navbar-height);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10; /* navbar(100) 아래, 일반 콘텐츠 위 */
+    }
+
+    /* right-panel: left-panel과 동일 조건 */
+    .workspace .right-panel {
+      padding-top: var(--navbar-height);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ---------- Main Content ---------- */
+    .workspace__main {
+      flex: 1;
+      min-width: 0;
+      overflow: auto;
+      padding-top: var(--navbar-height);
+      background: var(--color-white-50);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .workspace__content {
+      flex: 1;
+      min-height: 0;
+      padding: 36px 72px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
+      border-left: 1px var(--color-gray-5) solid;
+      border-right: 1px var(--color-gray-5) solid;
+    }
+
+    /* Stat Cards Row */
+    .workspace__stat-row {
+      display: flex;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .workspace__stat-row .stat-card {
+      flex: 1;
+      min-width: 0;
+      width: auto;
+    }
+
+    /* Revenue Card — 크기 고정 */
+    .workspace__content .revenue-card {
+      flex-shrink: 0;
+    }
+
+    /* Water Card — 남은 공간 채움 */
+    .workspace__content .water-card {
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* ---------- Landing Interaction ---------- */
+    /* 좌측 패널 · 중앙 영역 — 평상시 복귀 트랜지션 */
+    .left-panel,
+    .workspace__content {
+      transition: opacity 0.6s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* 랜딩 상태 — 반투명 + 인터랙션 차단 */
+    .workspace--landing .left-panel,
+    .workspace--landing .workspace__content {
+      opacity: 0.5;
+      pointer-events: none;
+      user-select: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <!-- Logo -->
+    <div class="navbar-logo">
+      <i class="logo logo-funfan"></i>
+    </div>
+
+    <!-- Actions -->
+    <div class="navbar-actions">
+      <button class="btn btn-ghost">
+        <i class="icon icon-account-circle"></i>
+        <span class="text-assist-w4">マイページ</span>
+      </button>
+      <button class="btn btn-filled">
+        <i class="icon icon-laptop-mac"></i>
+        <span class="text-assist-w4">ワークスペース</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- App Shell -->
+  <div class="workspace">
+
+    <!-- Left Panel (fixed 288px = 1440 × 20%) -->
+    <div class="left-panel">
+
+      <!-- Panel Header — styleguide.html Case 1 -->
+      <div class="panel-header">
+        <i class="avatar avatar-01"></i>
+        <div class="panel-header__body">
+          <span class="panel-header__name">つちだ さん</span>
+        </div>
+      </div>
+
+      <!-- Menu List -->
+      <nav class="left-panel__menu">
+        <button class="menu-item menu-item--selected">
+          <i class="icon icon-bar-chart"></i>
+          <span class="menu-item__label">トップ</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+        <button class="menu-item">
+          <i class="icon icon-edit"></i>
+          <span class="menu-item__label">作業室</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+        <button class="menu-item">
+          <i class="icon icon-folder"></i>
+          <span class="menu-item__label">作品管理</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+        <button class="menu-item">
+          <i class="icon icon-settings"></i>
+          <span class="menu-item__label">アカウント設定</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+      </nav>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="workspace__main">
+      <div class="workspace__content">
+
+        <!-- Stat Cards Row -->
+        <div class="workspace__stat-row">
+          <div class="stat-card">
+            <div class="stat-card__info">
+              <span class="text-body-md-w6 stat-card__title">水の数</span>
+              <span class="text-overline-w4 stat-card__desc">直近7日・全作品合計</span>
+            </div>
+            <div class="stat-card__value">
+              <span class="text-h3-w6">💧</span>
+              <span class="text-h3-w6">0</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card__info">
+              <span class="text-body-md-w6 stat-card__title">閲覧数</span>
+              <span class="text-overline-w4 stat-card__desc">直近7日・全作品合計</span>
+            </div>
+            <div class="stat-card__value">
+              <span class="text-h3-w6">👁️</span>
+              <span class="text-h3-w6">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Revenue Card -->
+        <div class="revenue-card">
+          <div class="revenue-card__header">
+            <div class="revenue-card__info">
+              <span class="text-body-md-w6 revenue-card__title">推定収益（月別）</span>
+              <span class="text-overline-w4 revenue-card__desc">直近7日・全作品合計</span>
+            </div>
+            <div class="revenue-card__stats">
+              <div class="revenue-card__stat">
+                <span class="text-body-sm-w6 revenue-card__stat-month">3月</span>
+                <span class="text-body-lg-w6 revenue-card__stat-month-val">0円</span>
+              </div>
+              <div class="revenue-card__sep"></div>
+              <div class="revenue-card__stat">
+                <span class="text-body-sm-w6">累計</span>
+                <span class="text-h3-w6">0円</span>
+              </div>
+            </div>
+          </div>
+          <div class="revenue-card__chart">
+            <div class="revenue-card__bars">
+              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--empty"></div></div>
+              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--empty"></div></div>
+              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--empty"></div></div>
+              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--empty"></div></div>
+              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--empty"></div></div>
+              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--empty"></div></div>
+            </div>
+            <div class="revenue-card__xlabels">
+              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">10月<br>(0円)</p></div>
+              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">11月<br>(0円)</p></div>
+              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">12月<br>(0円)</p></div>
+              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">1月<br>(0円)</p></div>
+              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">2月<br>(0円)</p></div>
+              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">3月<br>(0円)</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Water Card (Empty) -->
+        <div class="water-card">
+          <span class="text-body-md-w6 water-card__title">最近の水やり</span>
+          <div class="water-card__empty">
+            <span class="water-card__empty-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.7125 16.7125C12.9042 16.5208 13 16.2833 13 16C13 15.7167 12.9042 15.4792 12.7125 15.2875C12.5208 15.0958 12.2833 15 12 15C11.7167 15 11.4792 15.0958 11.2875 15.2875C11.0958 15.4792 11 15.7167 11 16C11 16.2833 11.0958 16.5208 11.2875 16.7125C11.4792 16.9042 11.7167 17 12 17C12.2833 17 12.5208 16.9042 12.7125 16.7125ZM11 13H13V7H11V13ZM12 22C10.6167 22 9.31667 21.7375 8.1 21.2125C6.88333 20.6875 5.825 19.975 4.925 19.075C4.025 18.175 3.3125 17.1167 2.7875 15.9C2.2625 14.6833 2 13.3833 2 12C2 10.6167 2.2625 9.31667 2.7875 8.1C3.3125 6.88333 4.025 5.825 4.925 4.925C5.825 4.025 6.88333 3.3125 8.1 2.7875C9.31667 2.2625 10.6167 2 12 2C13.3833 2 14.6833 2.2625 15.9 2.7875C17.1167 3.3125 18.175 4.025 19.075 4.925C19.975 5.825 20.6875 6.88333 21.2125 8.1C21.7375 9.31667 22 10.6167 22 12C22 13.3833 21.7375 14.6833 21.2125 15.9C20.6875 17.1167 19.975 18.175 19.075 19.075C18.175 19.975 17.1167 20.6875 15.9 21.2125C14.6833 21.7375 13.3833 22 12 22ZM12 20C14.2333 20 16.125 19.225 17.675 17.675C19.225 16.125 20 14.2333 20 12C20 9.76667 19.225 7.875 17.675 6.325C16.125 4.775 14.2333 4 12 4C9.76667 4 7.875 4.775 6.325 6.325C4.775 7.875 4 9.76667 4 12C4 14.2333 4.775 16.125 6.325 17.675C7.875 19.225 9.76667 20 12 20Z"/>
+              </svg>
+            </span>
+            <span class="text-caption-w4 water-card__empty-text">まだ記録がありません</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right Panel (fixed 288px = 1440 × 20%) -->
+    <div class="right-panel">
+
+      <!-- Header — panel-header.css Case 2 재활용 -->
+      <div class="panel-header">
+        <i class="avatar avatar-02"></i>
+        <div class="panel-header__body">
+          <span class="panel-header__name">はな</span>
+          <div class="panel-header__meta">
+            <span class="panel-header__subtext">漫画鑑定士</span>
+            <a class="panel-header__link">
+              設定
+              <svg class="panel-header__link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.40016 8L5.3335 4.93333L6.26683 4L10.2668 8L6.26683 12L5.3335 11.0667L8.40016 8Z" fill="var(--color-black-100)"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Area -->
+      <div class="right-panel__chat"></div>
+
+      <!-- Footer -->
+      <div class="right-panel__footer">
+        <div class="right-panel__suggestions">
+          <button class="msg-bubble" type="button"><span class="text-caption-w4">最近描いててつまずいてることがある</span></button>
+          <button class="msg-bubble" type="button"><span class="text-caption-w4">描きたいアイデアがある</span></button>
+          <button class="msg-bubble" type="button"><span class="text-caption-w4">キャラクターのことを相談したい</span></button>
+          <button class="msg-bubble" type="button"><span class="text-caption-w4">まだ何も思い浮かばない</span></button>
+        </div>
+        <div class="chat-input">
+          <div class="chat-input__field">
+            <textarea class="chat-input__textarea" placeholder="はなに話しかけてみましょう..." rows="1"></textarea>
+          </div>
+          <div class="chat-input__actions">
+            <button class="icon-btn" type="button" aria-label="添付">
+              <i class="icon icon-add"></i>
+            </button>
+            <button class="send-btn" type="button" aria-label="送信">
+              <i class="icon icon-arrow-upward-alt"></i>
+            </button>
+          </div>
+        </div>
+        <p class="right-panel__disclaimer">AIのため、誤りを含む可能性があります</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // ── キーワードベース応答 ────────────────────────────────
+    const RESPONSES = [
+      {
+        keywords: ['つまず', '悩', '困', 'うまく', 'できない', 'むずか', '難し'],
+        reply: 'つまずくのはむしろ成長のサインです！どんな部分で詰まっていますか？\n\nよくあるのは「頭の中のイメージと手が追いつかない」パターン。そんなときは、描きたいものを一度シンプルな図形に分解してみると突破口が見えやすいですよ。'
+      },
+      {
+        keywords: ['練習', 'うまくなり', '上達', '描き方', 'スキル'],
+        reply: 'おすすめの練習法は「模写→観察→オリジナル」の3ステップです。\n\n好きな作家のコマを模写→なぜそう描いているか観察→自分のキャラに応用。この繰り返しが一番早く上達できます。毎日15分でも続けることが大切です！'
+      },
+      {
+        keywords: ['キャラ', 'キャラクター', '人物', '顔', '表情'],
+        reply: 'キャラクターで大事なのは「シルエットで誰かわかること」です。\n\nまず全身を描く前に、シルエットだけで個性が出るか確認してみて。髪型・体型・服装の組み合わせでキャラが立ちます。表情は目の形と眉の角度の2点で印象が大きく変わりますよ。'
+      },
+      {
+        keywords: ['構図', 'コマ', 'レイアウト', 'ページ', '配置'],
+        reply: '構図で迷ったら「三分割法」から始めてみて。\n\nページを縦横3分割した交点にキャラや視線の focal point を置くと、自然とバランスよく見えます。コマ割りは「大→小→大」のリズムをつけると読者の目線が自然に流れます。'
+      },
+      {
+        keywords: ['背景', '風景', '建物', 'パース', '遠近'],
+        reply: '背景が苦手な人は多いです。コツは「1点透視図法」から慣れること。\n\n消失点を1つ決めて、すべての線をそこに向かわせるだけで、それらしい空間が生まれます。最初は写真トレスで構造を掴んでから、オリジナルに応用するのが近道です。'
+      },
+      {
+        keywords: ['ストーリー', 'プロット', '話', 'シナリオ', 'ネーム'],
+        reply: 'ストーリーに詰まったときは「キャラが何を欲しているか・何を恐れているか」の2点を整理してみて。\n\nその2つが噛み合うシーンがドラマの核になります。ネームは完成度より「感情の流れ」を優先して、まず粗くラフを描き切ることが大事です。'
+      },
+      {
+        keywords: ['モチベ', 'やる気', 'スランプ', '続か', '飽き'],
+        reply: 'スランプは誰にでも来ます。無理に描こうとしないで、好きな漫画を読んだり映画を見たりインプットに徹する期間があってもいいんです。\n\n「完璧に描こう」より「とりあえず1コマだけ」という小さなハードルに切り替えると、また動き出せることが多いですよ。'
+      },
+      {
+        keywords: ['デジタル', 'ツール', 'ソフト', 'iPad', 'クリスタ', 'Procreate'],
+        reply: 'デジタルに慣れるには最初の1〜2ヶ月が山場です。\n\nまずブラシは1〜2種類に絞って。選択肢が多いほど迷って進まなくなります。クリスタなら「Gペン」1本でほとんどの線は描けます。ショートカットキーを少しずつ覚えると作業速度がぐっと上がります。'
+      },
+      {
+        keywords: ['投稿', '公開', 'SNS', 'X', 'pixiv', '見てもらい'],
+        reply: '作品を公開するのは勇気がいりますよね。でも早めに出すほど、フィードバックをもとに成長できます。\n\nSNSはタグを3〜5個、投稿時間は夜20〜22時が反応を得やすいです。完成度より「継続して投稿する」ことが、長期的にフォロワーが増えるコツです。'
+      }
+    ];
+
+    const DEFAULT_REPLY = 'なるほど、それは大切なテーマですね。\n\nもう少し具体的に教えてもらえると、より的確なアドバイスができます。どんな場面で困っているか、描いているジャンルや目標なども一緒に教えてみてください！';
+
+    function getReply(text) {
+      for (const item of RESPONSES) {
+        if (item.keywords.some(k => text.includes(k))) {
+          return item.reply;
+        }
+      }
+      return DEFAULT_REPLY;
+    }
+
+    function typeText(el, text, chatArea, onDone) {
+      let i = 0;
+      const interval = setInterval(() => {
+        el.textContent += text[i];
+        chatArea.scrollTop = chatArea.scrollHeight;
+        i++;
+        if (i >= text.length) {
+          clearInterval(interval);
+          if (onDone) onDone();
+        }
+      }, 30);
+    }
+
+    // ── 페이지 로드 — 첫 메시지 타이핑 ─────────────────────
+    // 랜딩 확장 시작(500ms) + 트랜지션 완료(600ms) 후 아바타 + 텍스트 생성
+    setTimeout(() => {
+      const GREETING = 'こんにちは！漫画についてなんでも聞いてください。';
+      const chatArea = document.querySelector('.right-panel__chat');
+      if (!chatArea) return;
+      const wrap = document.createElement('div');
+      wrap.className = 'chat-msg';
+      wrap.innerHTML =
+        '<div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>' +
+        '<div class="chat-msg__body"><p class="chat-msg__text"></p></div>';
+      chatArea.appendChild(wrap);
+      const el = wrap.querySelector('.chat-msg__text');
+      let i = 0;
+      const interval = setInterval(() => {
+        el.textContent += GREETING[i];
+        i++;
+        if (i >= GREETING.length) clearInterval(interval);
+      }, 60);
+    }, 1100);
+
+    // ── 랜딩 인터랙션 ────────────────────────────────────────
+    const workspaceEl  = document.querySelector('.workspace');
+    const rightPanelEl = document.querySelector('.right-panel');
+    let landingReverted = false;
+
+    function revertLanding() {
+      if (landingReverted) return;
+      landingReverted = true;
+      setTimeout(() => {
+        workspaceEl.classList.remove('workspace--landing');
+        rightPanelEl.classList.remove('right-panel--expanded');
+      }, 1000);
+    }
+
+    // 페이지 로드 → 0.5초 후 확장 시작
+    setTimeout(() => {
+      workspaceEl.classList.add('workspace--landing');
+      rightPanelEl.classList.add('right-panel--expanded');
+    }, 500);
+
+    // ── 마우스/키보드 구분 ───────────────────────────────────
+    document.addEventListener('mousedown', () => document.body.classList.add('using-mouse'));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Tab') document.body.classList.remove('using-mouse'); });
+
+    // ── Left Panel 스크롤 차단 ───────────────────────────────
+    document.querySelector('.left-panel').addEventListener('wheel', (e) => {
+      e.preventDefault();
+    }, { passive: false });
+
+    // ── Right Panel 스크롤 ───────────────────────────────────
+    document.querySelector('.right-panel').addEventListener('wheel', (e) => {
+      e.stopPropagation();
+    }, { passive: true });
+
+    // ── 채팅 인터랙션 ────────────────────────────────────────
+    (() => {
+      const textarea  = document.querySelector('.right-panel .chat-input__textarea');
+      const sendBtn   = document.querySelector('.right-panel .send-btn');
+      const chatArea  = document.querySelector('.right-panel__chat');
+      const suggestions = document.querySelector('.right-panel__suggestions');
+
+      if (!textarea || !sendBtn || !chatArea) return;
+
+      let isWaiting = false;
+
+      // textarea 자동 높이
+      textarea.addEventListener('input', () => {
+        textarea.style.height = '32px';
+        textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+      });
+
+      // はな 답변 버블 생성 → 스트리밍으로 채움
+      function appendBotMessage() {
+        const wrap = document.createElement('div');
+        wrap.className = 'chat-msg';
+        wrap.innerHTML =
+          '<div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>' +
+          '<div class="chat-msg__body"><p class="chat-msg__text"></p></div>';
+        chatArea.appendChild(wrap);
+        chatArea.scrollTop = chatArea.scrollHeight;
+        return wrap.querySelector('.chat-msg__text');
+      }
+
+      // 전송
+      async function sendMessage() {
+        if (isWaiting) return;
+        const text = textarea.value.trim();
+        if (!text) return;
+
+        isWaiting = true;
+        sendBtn.disabled = true;
+
+        // 내 메시지 추가
+        const myMsg = document.createElement('div');
+        myMsg.className = 'my-msg';
+        myMsg.innerHTML =
+          '<div class="my-msg__bubble">' +
+            '<p class="my-msg__text">' + text.replace(/</g, '&lt;') + '</p>' +
+            '<svg class="my-msg__tail" width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg">' +
+              '<path d="M0 0H12L15.111 9.33315C15.4129 10.2387 14.4188 11.027 13.6059 10.5267C10.9214 8.87468 7.83106 8 4.67894 8H0V0Z"/>' +
+            '</svg>' +
+          '</div>';
+        chatArea.appendChild(myMsg);
+        chatArea.scrollTop = chatArea.scrollHeight;
+        if (suggestions) suggestions.style.display = 'none';
+
+        textarea.value = '';
+        textarea.style.height = '32px';
+        textarea.focus();
+
+        // はな 답변 버블 (빈 상태) — 약간의 딜레이 후 타이핑
+        setTimeout(() => {
+          const botTextEl = appendBotMessage();
+          const reply = getReply(text);
+          typeText(botTextEl, reply, chatArea, () => {
+            isWaiting = false;
+            sendBtn.disabled = false;
+            revertLanding(); // 첫 번째 답변 완료 → 1초 후 랜딩 복귀
+          });
+        }, 400);
+      }
+
+      sendBtn.addEventListener('click', sendMessage);
+      textarea.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+
+      // 칩 클릭 → 즉시 전송
+      document.querySelectorAll('.right-panel__suggestions .msg-bubble').forEach((chip) => {
+        chip.addEventListener('click', () => {
+          textarea.value = chip.querySelector('span')?.textContent || chip.textContent;
+          sendMessage();
+          textarea.blur();
+          if (suggestions) suggestions.style.display = 'none';
+        });
+      });
+
+      // 입력창 입력 후 보내기 클릭 → 버블 숨김 (sendMessage 내부에서 처리)
+    })();
+  </script>
+
+</body>
+</html>

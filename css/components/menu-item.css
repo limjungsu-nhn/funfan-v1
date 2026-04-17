@@ -43,7 +43,7 @@
   font-family: var(--font-family-base);
   font-size: var(--font-size-subtext);
   line-height: var(--line-height-subtext);
-  font-weight: var(--font-weight-w5);
+  font-weight: var(--font-weight-w4);
   color: var(--color-font-primary-black-100);
 }
 
@@ -74,7 +74,7 @@
 /* ---------- Pressed ---------- */
 .menu-item:active,
 .menu-item--pressed {
-  background: var(--color-gray-5);
+  background: var(--color-gray-6);
 }
 
 /* ---------- Selected ---------- */
@@ -98,5 +98,5 @@
 }
 
 .menu-item--disabled .menu-item__label {
-  color: var(--color-font-primary-black-20);
+  color: var(--color-font-primary-black-30);
 }
