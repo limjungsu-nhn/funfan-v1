@@ -84,6 +84,7 @@
         <a href="#send-btn">Send Button</a>
         <a href="#right-panel">Right Panel</a>
         <a href="#cards">Cards</a>
+        <a href="#radio-group-card">Radio Group Card</a>
         <a href="#badges">Badges</a>
       </div>
       <div class="sg-nav-divider"></div>
@@ -2479,53 +2480,6 @@
           </div>
         </div>
 
-        <!-- Radio Group Card -->
-        <div class="sg-subsection">
-          <p class="sg-subsection-title">Radio Group Card</p>
-          <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
-            <div class="sg-type-row">
-              <div class="sg-type-preview">
-                <div class="radio-group-card">
-                  <p class="radio-group-card__title">Title</p>
-                  <div class="radio-group-card__list">
-                    <label class="radio-card">
-                      <input type="radio" class="radio-card__input" name="sg-rgc-preview" value="1">
-                      <div class="radio-card__avatar"></div>
-                      <div class="radio-card__content">
-                        <span class="radio-card__title">Option A</span>
-                        <span class="radio-card__sub">Subtitle description</span>
-                      </div>
-                    </label>
-                    <label class="radio-card">
-                      <input type="radio" class="radio-card__input" name="sg-rgc-preview" value="2">
-                      <div class="radio-card__avatar"></div>
-                      <div class="radio-card__content">
-                        <span class="radio-card__title">Option B</span>
-                        <span class="radio-card__sub">Subtitle description</span>
-                      </div>
-                    </label>
-                    <label class="radio-card">
-                      <input type="radio" class="radio-card__input" name="sg-rgc-preview" value="3">
-                      <div class="radio-card__avatar"></div>
-                      <div class="radio-card__content">
-                        <span class="radio-card__title">Option C</span>
-                        <span class="radio-card__sub">Subtitle description</span>
-                      </div>
-                    </label>
-                  </div>
-                </div>
-              </div>
-              <code class="sg-type-classname">.radio-group-card</code>
-              <div class="sg-type-meta">
-                white bg · border-radius 20px · padding 24px<br>
-                <code>.radio-group-card__title</code> — body-md-w6<br>
-                <code>.radio-group-card__list</code> — gap 8px<br>
-                내부 <code>.radio-card</code>는 자동 width 100%
-              </div>
-            </div>
-          </div>
-        </div>
 
       </section>
 
@@ -2818,6 +2772,65 @@
               <div class="sg-type-meta">thumb 65×48px<br>badge.css 재활용<br>단독 재활용 가능</div>
             </div>
 
+          </div>
+        </div>
+
+        <!-- Radio Group Card -->
+        <div class="sg-subsection" id="radio-group-card">
+          <p class="sg-subsection-title">Radio Group Card</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="radio-group-card">
+                  <div class="radio-group-card__header">
+                    <p class="radio-group-card__title">作業室へようこそ</p>
+                    <p class="radio-group-card__desc">どのモードで作業しますか？</p>
+                  </div>
+                  <div class="radio-group-card__list">
+                    <label class="radio-card">
+                      <input type="radio" class="radio-card__input" name="sg-rgc-preview" value="1">
+                      <div class="radio-card__avatar"></div>
+                      <div class="radio-card__content">
+                        <span class="radio-card__title">公開</span>
+                        <span class="radio-card__sub">読者に「今創作中」と知らせます</span>
+                      </div>
+                    </label>
+                    <label class="radio-card">
+                      <input type="radio" class="radio-card__input" name="sg-rgc-preview" value="2">
+                      <div class="radio-card__avatar"></div>
+                      <div class="radio-card__content">
+                        <span class="radio-card__title">非公開</span>
+                        <span class="radio-card__sub">ひとりで集中して作業します。</span>
+                      </div>
+                    </label>
+                  </div>
+                  <label class="radio-group-card__checkbox checkbox-wrap">
+                    <input type="checkbox" class="checkbox-input">
+                    <button class="checkbox" role="checkbox" aria-checked="false" tabindex="0">
+                      <i class="icon icon-check-small checkbox-icon"></i>
+                    </button>
+                    <span class="text-caption-w4">次回から確認せずに非公開で自動入室する</span>
+                  </label>
+                  <div class="radio-group-card__footer">
+                    <button class="btn btn-filled">
+                      <span class="text-assist-w4">入室する</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.radio-group-card</code>
+              <div class="sg-type-meta">
+                width var(--p35) · white bg · border-radius 24px · padding 32px 28px · gap 24px<br>
+                shadow: 0px 4px 8px rgba(0,0,0,0.02), 0px 0px 1px rgba(0,0,0,0.10)<br><br>
+                <code>.radio-group-card__header</code> — flex-col, gap 2px<br>
+                <code>.radio-group-card__title</code> — body-md-w6<br>
+                <code>.radio-group-card__desc</code> — overline-w4, black-50<br>
+                <code>.radio-group-card__list</code> — gap 8px, radio-card width 100%<br>
+                <code>.radio-group-card__checkbox</code> — checkbox-wrap 조합<br>
+                <code>.radio-group-card__footer</code> — 우측 정렬 버튼 영역
+              </div>
+            </div>
           </div>
         </div>
 
