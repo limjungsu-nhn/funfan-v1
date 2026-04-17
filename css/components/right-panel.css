@@ -131,6 +131,55 @@
 
 /* ---------- Compose Box → chat-input.css + icon-btn.css + send-btn.css 재활용 ---------- */
 
+/* ============================================
+   Right Panel Wrapper — flex 공간 점유 + 슬라이드 컨테이너
+
+   HTML 구조:
+     <div id="..." class="right-panel-wrapper">
+       <button class="float-btn">...</button>
+       <div class="right-panel">...</div>
+     </div>
+   ============================================ */
+
+/* ---------- Wrapper ---------- */
+.right-panel-wrapper {
+  flex-shrink: 0;
+  flex-grow: 0;
+  flex-basis: var(--p20);
+  min-width: 0;       /* min-content-size 제약 해제 → 0까지 collapse 가능 */
+  position: relative;
+  z-index: 10;
+  overflow: visible;  /* float-btn이 왼쪽으로 돌출 — 클리핑 금지 */
+  transition: flex-basis 0.6s cubic-bezier(.4,0,.1,1);
+}
+
+/* 닫힘 — flex 공간 해제 → 중앙 영역 확장 */
+.right-panel-wrapper.is-panel-closed {
+  flex-basis: 0;
+}
+
+/* right-panel: wrapper 오른쪽 면 앵커 → 축소와 translateX 중첩 방지 */
+.right-panel-wrapper .right-panel {
+  padding-top: var(--navbar-height);
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+}
+
+/* ---------- Float Button 위치 ---------- */
+.right-panel-wrapper .float-btn {
+  position: absolute;
+  top: calc(var(--navbar-height) + 8px);
+  left: calc(-28px - 8px); /* button 28px + gap 8px */
+  z-index: 50;
+}
+
+/* 닫힌 상태 — 아이콘 좌우 반전 */
+.right-panel-wrapper .float-btn.is-panel-closed .icon {
+  transform: scaleX(-1);
+}
+
 /* ---------- AI Disclaimer ---------- */
 .right-panel__disclaimer {
   align-self: stretch;

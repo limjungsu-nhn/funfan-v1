@@ -34,7 +34,6 @@
     *, *::before, *::after { box-sizing: border-box; }
 
     :root {
-      --navbar-height: 64px; /* 네비게이션 높이 — 여기만 수정하면 전체 자동 반영 */
       --p2_5: 36px;          /* layout.css 캐시 대응 — 1440 × 2.5% */
     }
 
@@ -67,31 +66,6 @@
       z-index: 10; /* navbar(100) 아래, 일반 콘텐츠 위 */
     }
 
-    /* right-panel wrapper — flex 공간 점유 + translateX 슬라이드 컨테이너 */
-    #ws-right-wrapper {
-      flex-shrink: 0;
-      flex-grow: 0;
-      flex-basis: var(--p20);
-      min-width: 0;       /* min-content-size 제약 해제 → 0까지 collapse 가능 */
-      position: relative;
-      z-index: 10;
-      overflow: visible;  /* float btn이 왼쪽으로 돌출 — 클리핑 금지 */
-      transition: flex-basis 0.6s cubic-bezier(.4,0,.1,1);
-    }
-
-    /* 패널 닫힘 — flex 공간 해제 → 중앙 영역 확장 */
-    #ws-right-wrapper.is-panel-closed {
-      flex-basis: 0;
-    }
-
-    /* right-panel: wrapper 오른쪽 면 앵커 → wrapper 축소와 translateX 중첩 방지 */
-    .workspace .right-panel {
-      padding-top: var(--navbar-height);
-      position: absolute;
-      right: 0;
-      top: 0;
-      height: 100%;
-    }
 
     /* ---------- Main Content ---------- */
     .workspace__main {
@@ -116,18 +90,6 @@
       border-right: 1px var(--color-gray-5) solid;
     }
 
-    /* Float Button — wrapper 기준 absolute, 레이아웃과 함께 이동 */
-    #ws-float-btn {
-      position: absolute;
-      top: calc(var(--navbar-height) + 8px);
-      left: calc(-28px - 8px); /* button 28px + gap 8px */
-      z-index: 50;
-    }
-
-    /* 패널 닫힌 상태 — 아이콘 좌우 반전 */
-    #ws-float-btn.is-panel-closed .icon {
-      transform: scaleX(-1);
-    }
 
   </style>
 </head>
@@ -201,7 +163,7 @@
     </div>
 
     <!-- Right Wrapper: float-btn + right-panel 묶음 -->
-    <div id="ws-right-wrapper">
+    <div id="ws-right-wrapper" class="right-panel-wrapper">
 
     <!-- Float Button — wrapper 왼쪽 8px, navbar 바닥 8px -->
     <button class="float-btn" id="ws-float-btn" type="button" aria-label="パネルを開く">
