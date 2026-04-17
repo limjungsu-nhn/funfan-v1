@@ -19,7 +19,7 @@
 
 /* ---------- Base ---------- */
 .menu-item {
-  width: 288px;
+  width: var(--p20);
   min-height: 44px;
   padding: 0 14px 0 24px;
   background: var(--color-white-100);

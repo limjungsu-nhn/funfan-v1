@@ -29,7 +29,7 @@
    ============================================ */
 
 .panel-header {
-  width: 288px;
+  width: var(--p20);
   padding: 14px 20px;
   background: var(--color-white-100);
   border-bottom: 1px solid var(--color-gray-6);
@@ -97,4 +97,9 @@
 .panel-header__link-icon {
   display: block;
   flex-shrink: 0;
+}
+
+/* ---------- Modifier ---------- */
+.panel-header--no-border {
+  border-bottom: none;
 }

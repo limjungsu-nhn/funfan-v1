@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="css/components/chat-msg.css">
   <link rel="stylesheet" href="css/components/my-msg.css">
   <link rel="stylesheet" href="css/components/stat-card.css">
+  <script src="js/components/stat-card.js" defer></script>
   <link rel="stylesheet" href="css/components/revenue-card.css">
   <link rel="stylesheet" href="css/components/water-card.css">
   <link rel="stylesheet" href="css/components/review-item.css">
@@ -31,6 +32,7 @@
   <link rel="stylesheet" href="css/components/send-btn.css">
   <link rel="stylesheet" href="css/components/right-panel.css">
   <link rel="stylesheet" href="css/components/badge.css">
+  <link rel="stylesheet" href="css/components/float-btn.css">
 
   <!-- Styleguide -->
   <link rel="stylesheet" href="css/styleguide.css">
@@ -76,6 +78,7 @@
         <a href="#my-msg">My Message</a>
         <a href="#chat-input">Chat Input</a>
         <a href="#icon-btn">Icon Button</a>
+        <a href="#float-btn">Float Button</a>
         <a href="#send-btn">Send Button</a>
         <a href="#right-panel">Right Panel</a>
         <a href="#cards">Cards</a>
@@ -112,7 +115,7 @@
             <div class="sg-type-thead">
               <span>Preview</span>
               <span>Class</span>
-              <span style="text-align:right">Size / LH / Weight</span>
+              <span>Size / LH / Weight</span>
             </div>
 
             <div class="sg-type-row">
@@ -168,7 +171,7 @@
             <div class="sg-type-thead">
               <span>Preview</span>
               <span>Class</span>
-              <span style="text-align:right">Size / LH / Weight</span>
+              <span>Size / LH / Weight</span>
             </div>
 
             <div class="sg-type-row">
@@ -213,7 +216,7 @@
             <div class="sg-type-thead">
               <span>Preview</span>
               <span>Class</span>
-              <span style="text-align:right">Size / LH / Weight</span>
+              <span>Size / LH / Weight</span>
             </div>
 
             <div class="sg-type-row">
@@ -258,7 +261,7 @@
             <div class="sg-type-thead">
               <span>Preview</span>
               <span>Class</span>
-              <span style="text-align:right">Size / LH / Weight</span>
+              <span>Size / LH / Weight</span>
             </div>
 
             <div class="sg-type-row">
@@ -320,7 +323,7 @@
         <div class="sg-type-table sg-type-table--layout">
           <div class="sg-type-thead">
             <span>Variable</span>
-            <span style="text-align:right">값 / 비율</span>
+            <span>값 / 비율</span>
             <span>← 실제 px 스케일 (1440px 기준, 가로 스크롤)</span>
           </div>
 
@@ -639,17 +642,17 @@
             <div class="sg-type-thead">
               <span>Preview</span>
               <span>Class</span>
-              <span style="text-align:right">Size</span>
+              <span>Size</span>
             </div>
             <div class="sg-type-row">
-              <div class="sg-type-preview" style="display:flex;align-items:center;gap:8px">
+              <div class="sg-type-preview sg-preview-flex-sm">
                 <i class="icon icon-settings"></i>
               </div>
               <code class="sg-type-classname">(기본)</code>
               <div class="sg-type-meta"><strong>18px</strong> · 주로 사용</div>
             </div>
             <div class="sg-type-row">
-              <div class="sg-type-preview" style="display:flex;align-items:center;gap:8px">
+              <div class="sg-type-preview sg-preview-flex-sm">
                 <i class="icon icon-settings icon--sm"></i>
               </div>
               <code class="sg-type-classname">.icon--sm</code>
@@ -765,6 +768,36 @@
 
             <div class="sg-icon-card">
               <div class="sg-icon-preview">
+                <i class="icon icon-error"></i>
+              </div>
+              <div class="sg-icon-info">
+                <span class="sg-icon-name">error</span>
+                <code class="sg-type-classname">.icon-error</code>
+              </div>
+            </div>
+
+            <div class="sg-icon-card">
+              <div class="sg-icon-preview">
+                <i class="icon icon-fast-forward"></i>
+              </div>
+              <div class="sg-icon-info">
+                <span class="sg-icon-name">fast-forward</span>
+                <code class="sg-type-classname">.icon-fast-forward</code>
+              </div>
+            </div>
+
+            <div class="sg-icon-card">
+              <div class="sg-icon-preview">
+                <i class="icon icon-favorite"></i>
+              </div>
+              <div class="sg-icon-info">
+                <span class="sg-icon-name">favorite</span>
+                <code class="sg-type-classname">.icon-favorite</code>
+              </div>
+            </div>
+
+            <div class="sg-icon-card">
+              <div class="sg-icon-preview">
                 <i class="icon icon-folder"></i>
               </div>
               <div class="sg-icon-info">
@@ -780,6 +813,26 @@
               <div class="sg-icon-info">
                 <span class="sg-icon-name">format-paint</span>
                 <code class="sg-type-classname">.icon-format-paint</code>
+              </div>
+            </div>
+
+            <div class="sg-icon-card">
+              <div class="sg-icon-preview">
+                <i class="icon icon-horizontal-align-right"></i>
+              </div>
+              <div class="sg-icon-info">
+                <span class="sg-icon-name">horizontal-align-right</span>
+                <code class="sg-type-classname">.icon-horizontal-align-right</code>
+              </div>
+            </div>
+
+            <div class="sg-icon-card">
+              <div class="sg-icon-preview">
+                <i class="icon icon-humidity-low"></i>
+              </div>
+              <div class="sg-icon-info">
+                <span class="sg-icon-name">humidity-low</span>
+                <code class="sg-type-classname">.icon-humidity-low</code>
               </div>
             </div>
 
@@ -815,6 +868,26 @@
 
             <div class="sg-icon-card">
               <div class="sg-icon-preview">
+                <i class="icon icon-sentiment-excited"></i>
+              </div>
+              <div class="sg-icon-info">
+                <span class="sg-icon-name">sentiment-excited</span>
+                <code class="sg-type-classname">.icon-sentiment-excited</code>
+              </div>
+            </div>
+
+            <div class="sg-icon-card">
+              <div class="sg-icon-preview">
+                <i class="icon icon-sentiment-sad"></i>
+              </div>
+              <div class="sg-icon-info">
+                <span class="sg-icon-name">sentiment-sad</span>
+                <code class="sg-type-classname">.icon-sentiment-sad</code>
+              </div>
+            </div>
+
+            <div class="sg-icon-card">
+              <div class="sg-icon-preview">
                 <i class="icon icon-settings"></i>
               </div>
               <div class="sg-icon-info">
@@ -833,6 +906,16 @@
               </div>
             </div>
 
+            <div class="sg-icon-card">
+              <div class="sg-icon-preview">
+                <i class="icon icon-unfold-more"></i>
+              </div>
+              <div class="sg-icon-info">
+                <span class="sg-icon-name">unfold-more</span>
+                <code class="sg-type-classname">.icon-unfold-more</code>
+              </div>
+            </div>
+
           </div>
         </div>
 
@@ -843,25 +926,25 @@
             <div class="sg-type-thead">
               <span>Preview</span>
               <span>적용 방법</span>
-              <span style="text-align:right">Color Token</span>
+              <span>Color Token</span>
             </div>
             <div class="sg-type-row">
-              <div class="sg-type-preview" style="display:flex;gap:12px">
-                <i class="icon icon-check-circle" style="color:var(--color-font-primary-black-100)"></i>
+              <div class="sg-type-preview sg-preview-flex-gap">
+                <i class="icon icon-check-circle sg-icon-color--black"></i>
               </div>
               <code class="sg-type-classname">color: var(--color-font-primary-black-100)</code>
               <div class="sg-type-meta">#1D1D1F</div>
             </div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
-                <i class="icon icon-check-circle" style="color:var(--color-nature-3)"></i>
+                <i class="icon icon-check-circle sg-icon-color--nature"></i>
               </div>
               <code class="sg-type-classname">color: var(--color-nature-3)</code>
               <div class="sg-type-meta">#558C03</div>
             </div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
-                <i class="icon icon-check-circle" style="color:var(--color-gray-2)"></i>
+                <i class="icon icon-check-circle sg-icon-color--gray"></i>
               </div>
               <code class="sg-type-classname">color: var(--color-gray-2)</code>
               <div class="sg-type-meta">#AEAEB2</div>
@@ -883,7 +966,7 @@
           <div class="sg-type-thead">
             <span>Preview</span>
             <span>Class</span>
-            <span style="text-align:right">Size</span>
+            <span>Size</span>
           </div>
 
           <!-- Black on white -->
@@ -910,26 +993,26 @@
           </div>
 
           <!-- White on dark -->
-          <div class="sg-type-row" style="background: var(--color-font-primary-black-100); border-radius: 0;">
+          <div class="sg-type-row sg-row-dark">
             <div class="sg-type-preview">
               <i class="logo logo-funfan logo--sm logo--white"></i>
             </div>
-            <code class="sg-type-classname" style="background:rgba(255,255,255,0.08); color:#7aabff;">.logo-funfan.logo--sm.logo--white</code>
-            <div class="sg-type-meta" style="color:#8E8E93"><strong style="color:#E5E5EA">61 × 20</strong> · White</div>
+            <code class="sg-type-classname sg-type-classname--dark">.logo-funfan.logo--sm.logo--white</code>
+            <div class="sg-type-meta sg-type-meta--dark"><strong>61 × 20</strong> · White</div>
           </div>
-          <div class="sg-type-row" style="background: var(--color-font-primary-black-100);">
+          <div class="sg-type-row sg-row-dark">
             <div class="sg-type-preview">
               <i class="logo logo-funfan logo--white"></i>
             </div>
-            <code class="sg-type-classname" style="background:rgba(255,255,255,0.08); color:#7aabff;">.logo-funfan.logo--white</code>
-            <div class="sg-type-meta" style="color:#8E8E93"><strong style="color:#E5E5EA">92 × 30</strong> · White</div>
+            <code class="sg-type-classname sg-type-classname--dark">.logo-funfan.logo--white</code>
+            <div class="sg-type-meta sg-type-meta--dark"><strong>92 × 30</strong> · White</div>
           </div>
-          <div class="sg-type-row" style="background: var(--color-font-primary-black-100); border-radius: 0;">
+          <div class="sg-type-row sg-row-dark">
             <div class="sg-type-preview">
               <i class="logo logo-funfan logo--lg logo--white"></i>
             </div>
-            <code class="sg-type-classname" style="background:rgba(255,255,255,0.08); color:#7aabff;">.logo-funfan.logo--lg.logo--white</code>
-            <div class="sg-type-meta" style="color:#8E8E93"><strong style="color:#E5E5EA">138 × 45</strong> · White</div>
+            <code class="sg-type-classname sg-type-classname--dark">.logo-funfan.logo--lg.logo--white</code>
+            <div class="sg-type-meta sg-type-meta--dark"><strong>138 × 45</strong> · White</div>
           </div>
 
         </div>
@@ -951,10 +1034,10 @@
             <div class="sg-type-thead">
               <span>Preview</span>
               <span>Class</span>
-              <span style="text-align:right">Size</span>
+              <span>Size</span>
             </div>
             <div class="sg-type-row">
-              <div class="sg-type-preview" style="display:flex;align-items:center;gap:16px">
+              <div class="sg-type-preview sg-preview-flex">
                 <i class="avatar avatar-01 avatar--xs"></i>
                 <i class="avatar avatar-02 avatar--xs"></i>
               </div>
@@ -962,7 +1045,7 @@
               <div class="sg-type-meta"><strong>20px</strong></div>
             </div>
             <div class="sg-type-row">
-              <div class="sg-type-preview" style="display:flex;align-items:center;gap:16px">
+              <div class="sg-type-preview sg-preview-flex">
                 <i class="avatar avatar-01 avatar--sm"></i>
                 <i class="avatar avatar-02 avatar--sm"></i>
               </div>
@@ -970,7 +1053,7 @@
               <div class="sg-type-meta"><strong>32px</strong></div>
             </div>
             <div class="sg-type-row">
-              <div class="sg-type-preview" style="display:flex;align-items:center;gap:16px">
+              <div class="sg-type-preview sg-preview-flex">
                 <i class="avatar avatar-01"></i>
                 <i class="avatar avatar-02"></i>
               </div>
@@ -978,7 +1061,7 @@
               <div class="sg-type-meta"><strong>40px</strong></div>
             </div>
             <div class="sg-type-row">
-              <div class="sg-type-preview" style="display:flex;align-items:center;gap:16px">
+              <div class="sg-type-preview sg-preview-flex">
                 <i class="avatar avatar-01 avatar--lg"></i>
                 <i class="avatar avatar-02 avatar--lg"></i>
               </div>
@@ -986,7 +1069,7 @@
               <div class="sg-type-meta"><strong>56px</strong></div>
             </div>
             <div class="sg-type-row">
-              <div class="sg-type-preview" style="display:flex;align-items:center;gap:16px">
+              <div class="sg-type-preview sg-preview-flex">
                 <i class="avatar avatar-01 avatar--xl"></i>
                 <i class="avatar avatar-02 avatar--xl"></i>
               </div>
@@ -1001,7 +1084,7 @@
           <p class="sg-subsection-title">All Avatars</p>
           <div class="sg-icon-grid">
             <div class="sg-icon-card">
-              <div class="sg-icon-preview" style="width:56px;height:56px">
+              <div class="sg-icon-preview sg-icon-preview--lg">
                 <i class="avatar avatar-01 avatar--lg"></i>
               </div>
               <div class="sg-icon-info">
@@ -1010,7 +1093,7 @@
               </div>
             </div>
             <div class="sg-icon-card">
-              <div class="sg-icon-preview" style="width:56px;height:56px">
+              <div class="sg-icon-preview sg-icon-preview--lg">
                 <i class="avatar avatar-02 avatar--lg"></i>
               </div>
               <div class="sg-icon-info">
@@ -1049,10 +1132,10 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Interactive — 직접 클릭해보세요</p>
           <div class="sg-type-table sg-type-table--interactive">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">State</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
-                <label class="checkbox-wrap" style="cursor:pointer;">
+                <label class="checkbox-wrap">
                   <button class="checkbox" id="icb-1" role="checkbox" aria-checked="false" tabindex="0"><i class="icon icon-check-small checkbox-icon"></i></button>
                   <span class="text-body-sm-w4" id="icb-1-lbl">Unchecked</span>
                 </label>
@@ -1062,7 +1145,7 @@
             </div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
-                <label class="checkbox-wrap" style="cursor:pointer;">
+                <label class="checkbox-wrap">
                   <button class="checkbox checkbox--checked" id="icb-2" role="checkbox" aria-checked="true" tabindex="0"><i class="icon icon-check-small checkbox-icon"></i></button>
                   <span class="text-body-sm-w4" id="icb-2-lbl">Checked</span>
                 </label>
@@ -1072,9 +1155,9 @@
             </div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
-                <label class="checkbox-wrap" style="cursor:not-allowed;">
+                <label class="checkbox-wrap checkbox-wrap--disabled">
                   <button class="checkbox checkbox--disabled" role="checkbox" aria-checked="false" aria-disabled="true" tabindex="-1"><i class="icon icon-check-small checkbox-icon"></i></button>
-                  <span class="text-body-sm-w4" style="color:var(--color-gray-3);">Disabled</span>
+                  <span class="text-body-sm-w4 sg-text-disabled">Disabled</span>
                 </label>
               </div>
               <code class="sg-type-classname">.checkbox--disabled</code>
@@ -1090,7 +1173,7 @@
             <div class="sg-type-thead">
               <span>Preview</span>
               <span>Class</span>
-              <span style="text-align:right">State</span>
+              <span>State</span>
             </div>
 
             <div class="sg-type-row">
@@ -1157,7 +1240,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Line — Interactive</p>
           <div class="sg-type-table sg-type-table--interactive">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">Case</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Case</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview"><button class="btn btn-line"><i class="icon icon-account-circle"></i><span class="text-assist-w4">Button md</span></button></div>
               <code class="sg-type-classname">.btn.btn-line</code>
@@ -1178,7 +1261,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Line — States Reference</p>
           <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">State</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview"><button class="btn btn-line"><i class="icon icon-account-circle"></i><span class="text-assist-w4">Button md</span><i class="icon icon-account-circle"></i></button></div>
               <code class="sg-type-classname">.btn-line</code>
@@ -1211,7 +1294,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Ghost — Interactive</p>
           <div class="sg-type-table sg-type-table--interactive">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">Case</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Case</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview"><button class="btn btn-ghost"><i class="icon icon-account-circle"></i><span class="text-assist-w4">Button md</span></button></div>
               <code class="sg-type-classname">.btn.btn-ghost</code>
@@ -1232,7 +1315,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Ghost — States Reference</p>
           <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">State</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview"><button class="btn btn-ghost"><i class="icon icon-account-circle"></i><span class="text-assist-w4">Button md</span><i class="icon icon-account-circle"></i></button></div>
               <code class="sg-type-classname">.btn-ghost</code>
@@ -1265,7 +1348,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Filled md — Interactive</p>
           <div class="sg-type-table sg-type-table--interactive">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">Case</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Case</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview"><button class="btn btn-filled"><i class="icon icon-format-paint"></i><span class="text-assist-w4">Button md</span></button></div>
               <code class="sg-type-classname">.btn.btn-filled</code>
@@ -1286,7 +1369,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Filled md — States Reference</p>
           <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">State</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview"><button class="btn btn-filled"><i class="icon icon-format-paint"></i><span class="text-assist-w4">Button md</span><i class="icon icon-format-paint"></i></button></div>
               <code class="sg-type-classname">.btn-filled</code>
@@ -1319,7 +1402,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Filled lg — Interactive</p>
           <div class="sg-type-table sg-type-table--interactive">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">Case</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Case</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview"><button class="btn btn-filled btn--lg"><i class="icon icon-format-paint"></i><span class="text-assist-w4">Button lg</span></button></div>
               <code class="sg-type-classname">.btn.btn-filled.btn--lg</code>
@@ -1340,7 +1423,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Filled lg — States Reference</p>
           <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">State</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview"><button class="btn btn-filled btn--lg"><i class="icon icon-format-paint"></i><span class="text-assist-w4">Button lg</span><i class="icon icon-format-paint"></i></button></div>
               <code class="sg-type-classname">.btn-filled.btn--lg</code>
@@ -1384,10 +1467,10 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Preview</p>
           <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">Info</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Info</span></div>
             <div class="sg-type-row">
-              <div class="sg-type-preview" style="overflow:visible;">
-                <header class="navbar" style="position:relative; width:100%;">
+              <div class="sg-type-preview sg-preview-overflow">
+                <header class="navbar">
                   <div class="navbar-logo">
                     <i class="logo logo-funfan"></i>
                   </div>
@@ -1418,7 +1501,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Variants</p>
           <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">Case</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Case</span></div>
 
             <div class="sg-type-row">
               <div class="sg-type-preview">
@@ -1473,7 +1556,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Interactive — 클릭해보세요</p>
           <div class="sg-type-table sg-type-table--interactive">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">State</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
                 <button class="menu-item" id="mi-interactive"><i class="icon icon-format-paint"></i><span class="menu-item__label">Menu</span><i class="icon icon-chevron-right menu-item__chevron"></i></button>
@@ -1491,7 +1574,7 @@
             <div class="sg-type-thead">
               <span>Preview</span>
               <span>Class</span>
-              <span style="text-align:right">State</span>
+              <span>State</span>
             </div>
 
             <div class="sg-type-row">
@@ -1560,7 +1643,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Interactive — 클릭하거나 입력해보세요</p>
           <div class="sg-type-table sg-type-table--interactive">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">State</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
                 <div class="chat-input" id="ci-interactive">
@@ -1584,7 +1667,7 @@
             <div class="sg-type-thead">
               <span>Preview</span>
               <span>Class</span>
-              <span style="text-align:right">State</span>
+              <span>State</span>
             </div>
 
             <div class="sg-type-row">
@@ -1703,7 +1786,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Interactive — 클릭하거나 Tab으로 포커스해보세요</p>
           <div class="sg-type-table sg-type-table--interactive">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">State</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
                 <button class="icon-btn" type="button" id="ib-interactive" aria-label="추가"><i class="icon icon-add"></i></button>
@@ -1721,7 +1804,7 @@
             <div class="sg-type-thead">
               <span>Preview</span>
               <span>Class</span>
-              <span style="text-align:right">State</span>
+              <span>State</span>
             </div>
 
             <div class="sg-type-row">
@@ -1770,6 +1853,87 @@
       </section>
 
       <!-- ========================
+           FLOAT BUTTON
+      ========================= -->
+      <section class="sg-section" id="float-btn" data-section="float-btn">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Float Button</h2>
+          <span class="sg-section-desc">float-btn.css · 28×28px · border-radius 8px · 5 states · 그림자 있는 플로팅 소형 버튼</span>
+        </div>
+
+        <!-- ── Interactive ── -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Interactive — 호버하거나 클릭해보세요</p>
+          <div class="sg-type-table sg-type-table--interactive">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="float-btn" type="button" id="fb-interactive" aria-label="horizontal align right">
+                  <i class="icon icon-horizontal-align-right"></i>
+                </button>
+              </div>
+              <code class="sg-type-classname">.float-btn</code>
+              <div class="sg-type-meta"><span class="sg-demo-live-label" id="fb-state">default</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── States Reference ── -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">States Reference</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead">
+              <span>Preview</span>
+              <span>Class</span>
+              <span>State</span>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="float-btn" tabindex="-1"><i class="icon icon-horizontal-align-right"></i></button>
+              </div>
+              <code class="sg-type-classname">.float-btn</code>
+              <div class="sg-type-meta"><strong>Default</strong></div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="float-btn float-btn--hover" tabindex="-1"><i class="icon icon-horizontal-align-right"></i></button>
+              </div>
+              <code class="sg-type-classname">.float-btn--hover</code>
+              <div class="sg-type-meta"><strong>Hover</strong><br><small>검정 배경 · 흰 아이콘</small></div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="float-btn float-btn--focus" tabindex="-1"><i class="icon icon-horizontal-align-right"></i></button>
+              </div>
+              <code class="sg-type-classname">.float-btn--focus</code>
+              <div class="sg-type-meta"><strong>Focus</strong><br><small>검정 배경 · 흰 아이콘 · 포커스 링</small></div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="float-btn float-btn--pressed" tabindex="-1"><i class="icon icon-horizontal-align-right"></i></button>
+              </div>
+              <code class="sg-type-classname">.float-btn--pressed</code>
+              <div class="sg-type-meta"><strong>Pressed</strong><br><small>검정 배경 · 흰 아이콘 · scale 0.90</small></div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="float-btn float-btn--disabled" tabindex="-1"><i class="icon icon-horizontal-align-right"></i></button>
+              </div>
+              <code class="sg-type-classname">.float-btn--disabled</code>
+              <div class="sg-type-meta"><strong>Disabled</strong><br><small>흰 배경 · 검정 아이콘 30% 불투명도</small></div>
+            </div>
+
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================
            SEND BUTTON
       ========================= -->
       <section class="sg-section" id="send-btn" data-section="send-btn">
@@ -1782,11 +1946,11 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Interactive — 토글로 Active 상태를 전환하세요</p>
           <div class="sg-type-table sg-type-table--interactive">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">State</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
             <div class="sg-type-row">
-              <div class="sg-type-preview" style="gap:12px;">
+              <div class="sg-type-preview sg-preview-gap">
                 <button class="send-btn" type="button" id="sb-interactive" aria-label="전송"><i class="icon icon-arrow-upward-alt"></i></button>
-                <button class="btn btn-ghost" type="button" id="sb-toggle" style="font-size:12px; min-height:32px; padding:0 12px;">Active 전환</button>
+                <button class="btn btn-ghost sg-btn-demo" type="button" id="sb-toggle">Active 전환</button>
               </div>
               <code class="sg-type-classname">.send-btn</code>
               <div class="sg-type-meta"><span class="sg-demo-live-label" id="sb-state">default</span></div>
@@ -1801,7 +1965,7 @@
             <div class="sg-type-thead">
               <span>Preview</span>
               <span>Class</span>
-              <span style="text-align:right">State</span>
+              <span>State</span>
             </div>
 
             <div class="sg-type-row">
@@ -1870,10 +2034,10 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Preview</p>
           <div class="sg-type-table sg-type-table--interactive">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">Info</span></div>
-            <div class="sg-type-row" style="align-items: flex-start;">
-              <div class="sg-type-preview" style="height: 480px; overflow: hidden;">
-                <div class="right-panel" style="height: 480px;">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Info</span></div>
+            <div class="sg-type-row sg-row-top">
+              <div class="sg-type-preview sg-preview-panel">
+                <div class="right-panel sg-panel-h">
                   <div class="panel-header"><i class="avatar avatar-02"></i><div class="panel-header__body"><span class="panel-header__name">はな</span><div class="panel-header__meta"><span class="panel-header__subtext">漫画鑑定士</span><a class="panel-header__link">設定<svg class="panel-header__link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.40016 8L5.3335 4.93333L6.26683 4L10.2668 8L6.26683 12L5.3335 11.0667L8.40016 8Z" fill="var(--color-black-100)"/></svg></a></div></div></div>
                   <div class="right-panel__chat">
                     <div class="chat-msg"><div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div><div class="chat-msg__body"><p class="chat-msg__text">こんにちは！</p></div></div>
@@ -1903,8 +2067,8 @@
           <div class="sg-type-grid">
 
             <div class="sg-type-item">
-              <div class="sg-type-preview" style="background: var(--color-gray-6); padding: 8px 12px; border-radius: 8px;">
-                <div class="panel-header" style="border-bottom: none;">
+              <div class="sg-type-preview sg-preview-surface">
+                <div class="panel-header panel-header--no-border">
                   <i class="avatar avatar-02"></i>
                   <div class="panel-header__body">
                     <span class="panel-header__name">はな</span>
@@ -1925,7 +2089,7 @@
             </div>
 
             <div class="sg-type-item">
-              <div class="sg-type-preview" style="background: var(--color-gray-6); padding: 8px 12px; border-radius: 8px; display: flex; flex-direction: column; gap: 6px;">
+              <div class="sg-type-preview sg-preview-surface--col">
                 <button class="msg-bubble" type="button"><span class="text-caption-w4">最近描いててつまずいてることがある</span></button>
                 <button class="msg-bubble" type="button"><span class="text-caption-w4">おすすめの練習方法を教えて</span></button>
               </div>
@@ -1934,7 +2098,7 @@
             </div>
 
             <div class="sg-type-item">
-              <div class="sg-type-preview" style="background: var(--color-gray-6); padding: 8px 12px; border-radius: 8px;">
+              <div class="sg-type-preview sg-preview-surface">
                 <div class="chat-input">
                   <div class="chat-input__field">
                     <textarea class="chat-input__textarea" placeholder="はなに話しかけてみましょう..." rows="1"></textarea>
@@ -1969,15 +2133,15 @@
 
         <!-- Interactive -->
         <div class="sg-subsection">
-          <p class="sg-subsection-title">Interactive</p>
+          <p class="sg-subsection-title">Interactive — 호버하거나 클릭해보세요</p>
           <div class="sg-type-table sg-type-table--interactive">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">State</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
-                <button class="msg-bubble" type="button"><span class="text-assist-w4">Text</span></button>
+                <button class="msg-bubble" type="button" id="mb-interactive"><span class="text-assist-w4">Text</span></button>
               </div>
               <code class="sg-type-classname">.msg-bubble</code>
-              <div class="sg-type-meta"><strong>Default</strong></div>
+              <div class="sg-type-meta"><span class="sg-demo-live-label" id="mb-state">default</span></div>
             </div>
           </div>
         </div>
@@ -1989,7 +2153,7 @@
             <div class="sg-type-thead">
               <span>Preview</span>
               <span>Class</span>
-              <span style="text-align:right">State</span>
+              <span>State</span>
             </div>
 
             <div class="sg-type-row">
@@ -2042,7 +2206,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Preview</p>
           <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">State</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
                 <div class="chat-msg">
@@ -2071,7 +2235,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Preview</p>
           <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">State</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
                 <div class="my-msg">
@@ -2104,7 +2268,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Stat Card</p>
           <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">Notes</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
                 <div class="stat-card">
@@ -2114,12 +2278,12 @@
                   </div>
                   <div class="stat-card__value">
                     <span class="text-h3-w6">💧</span>
-                    <span class="text-h3-w6">0</span>
+                    <span class="text-h3-w6" data-count="47">0</span>
                   </div>
                 </div>
               </div>
               <code class="sg-type-classname">.stat-card</code>
-              <div class="sg-type-meta"><strong>100%</strong><br>hug height</div>
+              <div class="sg-type-meta"><strong>100%</strong><br>hug height<br><code>data-count="숫자"</code>로 카운팅 애니메이션 자동 재생<br><code>data-suffix="円"</code>으로 접미사 추가</div>
             </div>
           </div>
         </div>
@@ -2128,7 +2292,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Revenue Card</p>
           <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">State</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
 
             <div class="sg-type-row">
               <div class="sg-type-preview">
@@ -2185,12 +2349,12 @@
                     <div class="revenue-card__stats">
                       <div class="revenue-card__stat">
                         <span class="text-body-sm-w6 revenue-card__stat-month">3月</span>
-                        <span class="text-body-lg-w6 revenue-card__stat-month-val">9,500円</span>
+                        <span class="text-body-lg-w6 revenue-card__stat-month-val" data-count="9500" data-suffix="円">0円</span>
                       </div>
                       <div class="revenue-card__sep"></div>
                       <div class="revenue-card__stat">
                         <span class="text-body-sm-w6">累計</span>
-                        <span class="text-h3-w6">36,200円</span>
+                        <span class="text-h3-w6" data-count="36200" data-suffix="円">0円</span>
                       </div>
                     </div>
                   </div>
@@ -2398,7 +2562,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Preview</p>
           <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">State</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
                 <span class="badge"><span class="text-overline-w4">Badge</span></span>
@@ -2423,7 +2587,7 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Preview</p>
           <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span style="text-align:right">Info</span></div>
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Info</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
                 <div class="left-panel">
@@ -2565,6 +2729,32 @@
       btn.addEventListener('mouseup',     () => { lbl.textContent = 'hover'; });
       btn.addEventListener('focus',       () => { lbl.textContent = 'focus'; lbl.classList.add('is-active'); });
       btn.addEventListener('blur',        () => { lbl.textContent = isActive ? 'active' : 'default'; lbl.classList.toggle('is-active', isActive); });
+    })();
+
+    // Interactive float-btn
+    (function() {
+      const btn = document.getElementById('fb-interactive');
+      const lbl = document.getElementById('fb-state');
+      if (!btn || !lbl) return;
+      btn.addEventListener('mouseenter',  () => lbl.textContent = 'hover');
+      btn.addEventListener('mouseleave',  () => { lbl.textContent = 'default'; lbl.classList.remove('is-active'); });
+      btn.addEventListener('mousedown',   () => { lbl.textContent = 'pressed'; lbl.classList.add('is-active'); });
+      btn.addEventListener('mouseup',     () => { lbl.textContent = 'hover'; lbl.classList.remove('is-active'); });
+      btn.addEventListener('focus',       () => { lbl.textContent = 'focus'; lbl.classList.add('is-active'); });
+      btn.addEventListener('blur',        () => { lbl.textContent = 'default'; lbl.classList.remove('is-active'); });
+    })();
+
+    // Interactive msg-bubble
+    (function() {
+      const btn = document.getElementById('mb-interactive');
+      const lbl = document.getElementById('mb-state');
+      if (!btn || !lbl) return;
+      btn.addEventListener('mouseenter',  () => lbl.textContent = 'hover');
+      btn.addEventListener('mouseleave',  () => { lbl.textContent = 'default'; lbl.classList.remove('is-active'); });
+      btn.addEventListener('mousedown',   () => { lbl.textContent = 'pressed'; lbl.classList.add('is-active'); });
+      btn.addEventListener('mouseup',     () => { lbl.textContent = 'hover'; lbl.classList.remove('is-active'); });
+      btn.addEventListener('focus',       () => { lbl.textContent = 'focus'; lbl.classList.add('is-active'); });
+      btn.addEventListener('blur',        () => { lbl.textContent = 'default'; lbl.classList.remove('is-active'); });
     })();
 
     // Interactive icon-btn

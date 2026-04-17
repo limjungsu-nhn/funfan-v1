@@ -461,3 +461,57 @@ body {
   color: var(--sg-accent);
   font-weight: var(--font-weight-w6);
 }
+
+/* ---------- thead 마지막 열 우정렬 ---------- */
+.sg-type-thead span:last-child { text-align: right; }
+
+/* ---------- Preview Flex 레이아웃 ---------- */
+.sg-preview-flex-sm  { display: flex; align-items: center; gap: 8px; }
+.sg-preview-flex     { display: flex; align-items: center; gap: 16px; }
+.sg-preview-flex-gap { display: flex; gap: 12px; }
+.sg-preview-gap      { gap: 12px; }
+.sg-preview-overflow { overflow: visible; }
+
+/* ---------- Icon 컬러 토큰 ---------- */
+.sg-icon-color--black  { color: var(--color-font-primary-black-100); }
+.sg-icon-color--nature { color: var(--color-nature-3); }
+.sg-icon-color--gray   { color: var(--color-gray-2); }
+
+/* ---------- Dark Row (로고 White variant) ---------- */
+.sg-row-dark       { background: var(--color-font-primary-black-100); }
+.sg-row-dark:hover { background: var(--color-font-primary-black-100); }
+.sg-type-classname--dark { background: rgba(255,255,255,0.08); color: #7aabff; }
+.sg-type-meta--dark          { color: #8E8E93; }
+.sg-type-meta--dark strong   { color: #E5E5EA; }
+
+/* ---------- Checkbox disabled wrap ---------- */
+.checkbox-wrap--disabled { cursor: not-allowed; }
+.sg-text-disabled        { color: var(--color-gray-3); }
+
+/* ---------- Avatar 프리뷰 사이즈 ---------- */
+.sg-icon-preview--lg { width: 56px; height: 56px; }
+
+/* ---------- Row 정렬 ---------- */
+.sg-row-top { align-items: flex-start; }
+
+/* ---------- Right Panel 프리뷰 ---------- */
+.sg-preview-panel { height: 480px; overflow: hidden; }
+.sg-panel-h       { height: 480px; }
+
+/* ---------- Anatomy 서피스 프리뷰 ---------- */
+.sg-preview-surface {
+  background: var(--color-gray-6);
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+.sg-preview-surface--col {
+  background: var(--color-gray-6);
+  padding: 8px 12px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ---------- 데모 전용 소형 버튼 ---------- */
+.sg-btn-demo { font-size: 12px; min-height: 32px; padding: 0 12px; }

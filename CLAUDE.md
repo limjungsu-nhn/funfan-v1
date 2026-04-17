@@ -23,8 +23,15 @@
 - 필요한 스타일이 없으면 → CSS에 먼저 추가한 뒤 페이지에서 참조
 
 ### 2. 최소 페이지 너비 1440px
-- 모든 페이지에 `min-width: 1440px` 적용
+- 모든 페이지에 `min-width: var(--base)` 적용
 - 반응형 축소 금지 — 1440px 미만 뷰포트에서는 가로 스크롤 허용
+- `position: fixed` 요소(navbar 등)는 body `min-width`에 영향받지 않으므로 별도로 `min-width: var(--base)` 적용
+
+### 7. 수치는 반드시 layout.css 토큰 사용
+- 사용자가 "1440 기준 N%" 또는 "1440의 N%" 등으로 크기를 말하면 → `css/tokens/layout.css`에 등록된 `--p{n}` 변수 사용
+- 하드코딩 금지: `288px` → `var(--p20)`, `576px` → `var(--p40)`, `72px` → `var(--p5)` 등
+- 토큰에 없는 퍼센트가 필요하면 → `layout.css`에 먼저 추가한 뒤 사용
+- 기준값: `--base: 1440px` / 토큰 파일: `css/tokens/layout.css`
 
 ### 3. 마우스 클릭 시 focus ring 금지
 - 마우스 클릭으로 요소를 활성화할 때 focus ring(box-shadow) 표시 금지

@@ -17,7 +17,7 @@
    ============================================ */
 
 .left-panel {
-  width: 288px;
+  width: var(--p20);
   background: var(--color-white-100);
   box-shadow: 1px 0 0 0 var(--color-gray-5);
   display: flex;

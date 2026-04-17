@@ -23,6 +23,7 @@
   <link rel="stylesheet" href="css/components/chat-msg.css">
   <link rel="stylesheet" href="css/components/my-msg.css">
   <link rel="stylesheet" href="css/components/stat-card.css">
+  <script src="js/components/stat-card.js" defer></script>
   <link rel="stylesheet" href="css/components/revenue-card.css">
   <link rel="stylesheet" href="css/components/water-card.css">
   <link rel="stylesheet" href="css/components/review-item.css">
@@ -30,6 +31,7 @@
   <link rel="stylesheet" href="css/components/icon-btn.css">
   <link rel="stylesheet" href="css/components/send-btn.css">
   <link rel="stylesheet" href="css/components/right-panel.css">
+  <link rel="stylesheet" href="css/components/badge.css">
   <link rel="stylesheet" href="css/components/float-btn.css">
 
   <style>
@@ -86,11 +88,6 @@
       flex-basis: 0;
     }
 
-    /* 랜딩 중 wrapper 확장 → 중앙 영역 flex 공간 축소 */
-    .workspace--landing #ws-right-wrapper {
-      flex-basis: var(--p40);
-    }
-
     /* right-panel: wrapper 오른쪽 면 앵커 → wrapper 축소와 translateX 중첩 방지 */
     .workspace .right-panel {
       padding-top: var(--navbar-height);
@@ -99,22 +96,6 @@
       top: 0;
       height: 100%;
     }
-
-    /* 랜딩 중 패널 확장 */
-    .workspace--landing .right-panel {
-      width: var(--p40);
-    }
-
-    /* Float Button — wrapper 기준 absolute, 패널과 함께 이동 */
-    #ws-float-btn {
-      position: absolute;
-      top: calc(var(--navbar-height) + 8px);
-      left: calc(-28px - 8px); /* button 28px + gap 8px */
-      z-index: 50;
-    }
-
-    /* 닫힌 상태 — 아이콘 좌우반전 */
-    #ws-float-btn.is-panel-closed .icon { transform: scaleX(-1); }
 
     /* ---------- Main Content ---------- */
     .workspace__main {
@@ -163,20 +144,19 @@
       min-height: 0;
     }
 
-    /* ---------- Landing Interaction ---------- */
-    /* 좌측 패널 · 중앙 영역 — 평상시 복귀 트랜지션 */
-    .left-panel,
-    .workspace__content {
-      transition: opacity 0.6s cubic-bezier(.4,0,.1,1);
+    /* Float Button — wrapper 기준 absolute, 레이아웃과 함께 이동 */
+    #ws-float-btn {
+      position: absolute;
+      top: calc(var(--navbar-height) + 8px);
+      left: calc(-28px - 8px); /* button 28px + gap 8px */
+      z-index: 50;
     }
 
-    /* 랜딩 상태 — 반투명 + 인터랙션 차단 */
-    .workspace--landing .left-panel,
-    .workspace--landing .workspace__content {
-      opacity: 0.5;
-      pointer-events: none;
-      user-select: none;
+    /* 패널 닫힌 상태 — 아이콘 좌우 반전 */
+    #ws-float-btn.is-panel-closed .icon {
+      transform: scaleX(-1);
     }
+
   </style>
 </head>
 <body>
@@ -254,7 +234,7 @@
             </div>
             <div class="stat-card__value">
               <span class="text-h3-w6">💧</span>
-              <span class="text-h3-w6">0</span>
+              <span class="text-h3-w6" data-count="47">0</span>
             </div>
           </div>
           <div class="stat-card">
@@ -264,7 +244,7 @@
             </div>
             <div class="stat-card__value">
               <span class="text-h3-w6">👁️</span>
-              <span class="text-h3-w6">0</span>
+              <span class="text-h3-w6" data-count="1203">0</span>
             </div>
           </div>
         </div>
@@ -279,56 +259,260 @@
             <div class="revenue-card__stats">
               <div class="revenue-card__stat">
                 <span class="text-body-sm-w6 revenue-card__stat-month">3月</span>
-                <span class="text-body-lg-w6 revenue-card__stat-month-val">0円</span>
+                <span class="text-body-lg-w6 revenue-card__stat-month-val" data-count="3500" data-suffix="円">0円</span>
               </div>
               <div class="revenue-card__sep"></div>
               <div class="revenue-card__stat">
                 <span class="text-body-sm-w6">累計</span>
-                <span class="text-h3-w6">0円</span>
+                <span class="text-h3-w6" data-count="13000" data-suffix="円">0円</span>
               </div>
             </div>
           </div>
           <div class="revenue-card__chart">
-            <div class="revenue-card__bars">
-              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--empty"></div></div>
-              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--empty"></div></div>
-              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--empty"></div></div>
-              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--empty"></div></div>
-              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--empty"></div></div>
-              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--empty"></div></div>
+            <div class="revenue-card__bars" id="revenue-bars">
+              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--lv2"></div></div>
+              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--lv3"></div></div>
+              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--lv1"></div></div>
+              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--lv3"></div></div>
+              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--lv2"></div></div>
+              <div class="revenue-card__col"><div class="revenue-card__bar revenue-card__bar--lv5"></div></div>
             </div>
             <div class="revenue-card__xlabels">
-              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">10月<br>(0円)</p></div>
-              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">11月<br>(0円)</p></div>
-              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">12月<br>(0円)</p></div>
-              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">1月<br>(0円)</p></div>
-              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">2月<br>(0円)</p></div>
-              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">3月<br>(0円)</p></div>
+              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">10月<br>(1,200円)</p></div>
+              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">11月<br>(2,800円)</p></div>
+              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">12月<br>(800円)</p></div>
+              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">1月<br>(2,600円)</p></div>
+              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">2月<br>(2,100円)</p></div>
+              <div class="revenue-card__col"><p class="text-overline-w4 revenue-card__xlabel">3月<br>(3,500円)</p></div>
             </div>
           </div>
         </div>
 
-        <!-- Water Card (Empty) -->
+        <!-- Water Card (Filled) -->
         <div class="water-card">
           <span class="text-body-md-w6 water-card__title">最近の水やり</span>
-          <div class="water-card__empty">
-            <span class="water-card__empty-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12.7125 16.7125C12.9042 16.5208 13 16.2833 13 16C13 15.7167 12.9042 15.4792 12.7125 15.2875C12.5208 15.0958 12.2833 15 12 15C11.7167 15 11.4792 15.0958 11.2875 15.2875C11.0958 15.4792 11 15.7167 11 16C11 16.2833 11.0958 16.5208 11.2875 16.7125C11.4792 16.9042 11.7167 17 12 17C12.2833 17 12.5208 16.9042 12.7125 16.7125ZM11 13H13V7H11V13ZM12 22C10.6167 22 9.31667 21.7375 8.1 21.2125C6.88333 20.6875 5.825 19.975 4.925 19.075C4.025 18.175 3.3125 17.1167 2.7875 15.9C2.2625 14.6833 2 13.3833 2 12C2 10.6167 2.2625 9.31667 2.7875 8.1C3.3125 6.88333 4.025 5.825 4.925 4.925C5.825 4.025 6.88333 3.3125 8.1 2.7875C9.31667 2.2625 10.6167 2 12 2C13.3833 2 14.6833 2.2625 15.9 2.7875C17.1167 3.3125 18.175 4.025 19.075 4.925C19.975 5.825 20.6875 6.88333 21.2125 8.1C21.7375 9.31667 22 10.6167 22 12C22 13.3833 21.7375 14.6833 21.2125 15.9C20.6875 17.1167 19.975 18.175 19.075 19.075C18.175 19.975 17.1167 20.6875 15.9 21.2125C14.6833 21.7375 13.3833 22 12 22ZM12 20C14.2333 20 16.125 19.225 17.675 17.675C19.225 16.125 20 14.2333 20 12C20 9.76667 19.225 7.875 17.675 6.325C16.125 4.775 14.2333 4 12 4C9.76667 4 7.875 4.775 6.325 6.325C4.775 7.875 4 9.76667 4 12C4 14.2333 4.775 16.125 6.325 17.675C7.875 19.225 9.76667 20 12 20Z"/>
-              </svg>
-            </span>
-            <span class="text-caption-w4 water-card__empty-text">まだ記録がありません</span>
+          <div class="water-card__list">
+            <div class="review-item">
+              <img class="review-item__thumb" src="img/img_thumb01.png" alt="作品サムネイル">
+              <div class="review-item__body">
+                <p class="text-body-sm-w4 review-item__text">第3話の構図、すごく好きです。特に見開きのシーンは息をのみました！</p>
+                <div class="review-item__meta">
+                  <span class="text-overline-w6 review-item__meta-name">さくら✿</span>
+                  <span class="text-overline-w4 review-item__meta-sep">·</span>
+                  <span class="text-overline-w4 review-item__meta-time">5分前</span>
+                </div>
+                <div class="review-item__tags">
+                  <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
+                  <span class="badge"><span class="text-overline-w4">😭 感動した</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="review-item">
+              <img class="review-item__thumb" src="img/img_thumb02.png" alt="作品サムネイル">
+              <div class="review-item__body">
+                <p class="text-body-sm-w4 review-item__text">キャラクターの表情がとても豊かで、読んでいて感情移入できました。続きが気になる！</p>
+                <div class="review-item__meta">
+                  <span class="text-overline-w6 review-item__meta-name">たろう</span>
+                  <span class="text-overline-w4 review-item__meta-sep">·</span>
+                  <span class="text-overline-w4 review-item__meta-time">23分前</span>
+                </div>
+                <div class="review-item__tags">
+                  <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
+                  <span class="badge"><span class="text-overline-w4">😂 楽しい</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="review-item">
+              <img class="review-item__thumb" src="img/img_thumb01.png" alt="作品サムネイル">
+              <div class="review-item__body">
+                <p class="text-body-sm-w4 review-item__text">背景の描き込みが細かくて世界観に引き込まれます。毎話楽しみにしています。</p>
+                <div class="review-item__meta">
+                  <span class="text-overline-w6 review-item__meta-name">みずき</span>
+                  <span class="text-overline-w4 review-item__meta-sep">·</span>
+                  <span class="text-overline-w4 review-item__meta-time">1時間前</span>
+                </div>
+                <div class="review-item__tags">
+                  <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
+                  <span class="badge"><span class="text-overline-w4">🎨 絵が好き</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="review-item">
+              <img class="review-item__thumb" src="img/img_thumb02.png" alt="作品サムネイル">
+              <div class="review-item__body">
+                <p class="text-body-sm-w4 review-item__text">ストーリーの展開が予想外で面白い。主人公の成長が伝わってきてすごく良かったです。</p>
+                <div class="review-item__meta">
+                  <span class="text-overline-w6 review-item__meta-name">ゆいな</span>
+                  <span class="text-overline-w4 review-item__meta-sep">·</span>
+                  <span class="text-overline-w4 review-item__meta-time">3時間前</span>
+                </div>
+                <div class="review-item__tags">
+                  <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
+                  <span class="badge"><span class="text-overline-w4">🔥 熱い</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="review-item">
+              <img class="review-item__thumb" src="img/img_thumb01.png" alt="作品サムネイル">
+              <div class="review-item__body">
+                <p class="text-body-sm-w4 review-item__text">セリフのテンポが心地よくて読みやすい。友達にもおすすめしました！</p>
+                <div class="review-item__meta">
+                  <span class="text-overline-w6 review-item__meta-name">けんた</span>
+                  <span class="text-overline-w4 review-item__meta-sep">·</span>
+                  <span class="text-overline-w4 review-item__meta-time">5時間前</span>
+                </div>
+                <div class="review-item__tags">
+                  <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
+                  <span class="badge"><span class="text-overline-w4">😂 楽しい</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="review-item">
+              <img class="review-item__thumb" src="img/img_thumb02.png" alt="作品サムネイル">
+              <div class="review-item__body">
+                <p class="text-body-sm-w4 review-item__text">主人公の葛藤がリアルに伝わってきて、思わず読み込んでしまいました。</p>
+                <div class="review-item__meta">
+                  <span class="text-overline-w6 review-item__meta-name">あおい</span>
+                  <span class="text-overline-w4 review-item__meta-sep">·</span>
+                  <span class="text-overline-w4 review-item__meta-time">7時間前</span>
+                </div>
+                <div class="review-item__tags">
+                  <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
+                  <span class="badge"><span class="text-overline-w4">😭 感動した</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="review-item">
+              <img class="review-item__thumb" src="img/img_thumb01.png" alt="作品サムネイル">
+              <div class="review-item__body">
+                <p class="text-body-sm-w4 review-item__text">color palette がとってもおしゃれ。目が幸せになる作品です。</p>
+                <div class="review-item__meta">
+                  <span class="text-overline-w6 review-item__meta-name">りこ</span>
+                  <span class="text-overline-w4 review-item__meta-sep">·</span>
+                  <span class="text-overline-w4 review-item__meta-time">9時間前</span>
+                </div>
+                <div class="review-item__tags">
+                  <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
+                  <span class="badge"><span class="text-overline-w4">🎨 絵が好き</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="review-item">
+              <img class="review-item__thumb" src="img/img_thumb02.png" alt="作品サムネイル">
+              <div class="review-item__body">
+                <p class="text-body-sm-w4 review-item__text">第5話のラストで鳥肌が立ちました。次回が待ちきれません！</p>
+                <div class="review-item__meta">
+                  <span class="text-overline-w6 review-item__meta-name">そうた</span>
+                  <span class="text-overline-w4 review-item__meta-sep">·</span>
+                  <span class="text-overline-w4 review-item__meta-time">11時間前</span>
+                </div>
+                <div class="review-item__tags">
+                  <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
+                  <span class="badge"><span class="text-overline-w4">🔥 熱い</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="review-item">
+              <img class="review-item__thumb" src="img/img_thumb01.png" alt="作品サムネイル">
+              <div class="review-item__body">
+                <p class="text-body-sm-w4 review-item__text">ギャグとシリアスのバランスが絶妙で、飽きずに最後まで読めました。</p>
+                <div class="review-item__meta">
+                  <span class="text-overline-w6 review-item__meta-name">はるか</span>
+                  <span class="text-overline-w4 review-item__meta-sep">·</span>
+                  <span class="text-overline-w4 review-item__meta-time">14時間前</span>
+                </div>
+                <div class="review-item__tags">
+                  <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
+                  <span class="badge"><span class="text-overline-w4">😂 楽しい</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="review-item">
+              <img class="review-item__thumb" src="img/img_thumb02.png" alt="作品サムネイル">
+              <div class="review-item__body">
+                <p class="text-body-sm-w4 review-item__text">サブキャラクターも個性があって、誰ひとり無駄がない。脚本がすごいです。</p>
+                <div class="review-item__meta">
+                  <span class="text-overline-w6 review-item__meta-name">なな</span>
+                  <span class="text-overline-w4 review-item__meta-sep">·</span>
+                  <span class="text-overline-w4 review-item__meta-time">1日前</span>
+                </div>
+                <div class="review-item__tags">
+                  <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
+                  <span class="badge"><span class="text-overline-w4">😭 感動した</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="review-item">
+              <img class="review-item__thumb" src="img/img_thumb01.png" alt="作品サムネイル">
+              <div class="review-item__body">
+                <p class="text-body-sm-w4 review-item__text">線の強弱がとても丁寧で、動きが伝わってくる。アクションシーンが特に好き！</p>
+                <div class="review-item__meta">
+                  <span class="text-overline-w6 review-item__meta-name">だいき</span>
+                  <span class="text-overline-w4 review-item__meta-sep">·</span>
+                  <span class="text-overline-w4 review-item__meta-time">1日前</span>
+                </div>
+                <div class="review-item__tags">
+                  <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
+                  <span class="badge"><span class="text-overline-w4">🎨 絵が好き</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="review-item">
+              <img class="review-item__thumb" src="img/img_thumb02.png" alt="作品サムネイル">
+              <div class="review-item__body">
+                <p class="text-body-sm-w4 review-item__text">世界観の作り込みが素晴らしい。読むたびに新しい発見があります。</p>
+                <div class="review-item__meta">
+                  <span class="text-overline-w6 review-item__meta-name">まい</span>
+                  <span class="text-overline-w4 review-item__meta-sep">·</span>
+                  <span class="text-overline-w4 review-item__meta-time">2日前</span>
+                </div>
+                <div class="review-item__tags">
+                  <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
+                  <span class="badge"><span class="text-overline-w4">🔥 熱い</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="review-item">
+              <img class="review-item__thumb" src="img/img_thumb01.png" alt="作品サムネイル">
+              <div class="review-item__body">
+                <p class="text-body-sm-w4 review-item__text">毎話ちゃんと読者を引きつけるフックがある。構成力が高い作品です。</p>
+                <div class="review-item__meta">
+                  <span class="text-overline-w6 review-item__meta-name">ひろと</span>
+                  <span class="text-overline-w4 review-item__meta-sep">·</span>
+                  <span class="text-overline-w4 review-item__meta-time">2日前</span>
+                </div>
+                <div class="review-item__tags">
+                  <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
+                  <span class="badge"><span class="text-overline-w4">😂 楽しい</span></span>
+                </div>
+              </div>
+            </div>
+            <div class="review-item">
+              <img class="review-item__thumb" src="img/img_thumb02.png" alt="作品サムネイル">
+              <div class="review-item__body">
+                <p class="text-body-sm-w4 review-item__text">ヒロインの成長が丁寧に描かれていて、感情移入しやすかったです。</p>
+                <div class="review-item__meta">
+                  <span class="text-overline-w6 review-item__meta-name">ことね</span>
+                  <span class="text-overline-w4 review-item__meta-sep">·</span>
+                  <span class="text-overline-w4 review-item__meta-time">3日前</span>
+                </div>
+                <div class="review-item__tags">
+                  <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
+                  <span class="badge"><span class="text-overline-w4">😭 感動した</span></span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
       </div>
     </div>
 
-    <!-- Right Panel Wrapper — float btn + panel 묶음, 패널과 함께 이동 -->
+    <!-- Right Wrapper: float-btn + right-panel 묶음 -->
     <div id="ws-right-wrapper">
 
-    <!-- Float Button — wrapper 기준 absolute, 패널과 함께 이동 -->
-    <button class="float-btn float-btn--disabled" id="ws-float-btn" type="button" aria-label="パネルを閉じる" disabled>
+    <!-- Float Button — wrapper 왼쪽 8px, navbar 바닥 8px -->
+    <button class="float-btn" id="ws-float-btn" type="button" aria-label="パネルを開く">
       <i class="icon icon-horizontal-align-right"></i>
     </button>
 
@@ -353,16 +537,47 @@
       </div>
 
       <!-- Chat Area -->
-      <div class="right-panel__chat"></div>
+      <div class="right-panel__chat">
+
+        <div class="chat-msg">
+          <div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>
+          <div class="chat-msg__body"><p class="chat-msg__text">こんにちは！漫画についてなんでも聞いてください。</p></div>
+        </div>
+
+        <div class="my-msg">
+          <div class="my-msg__bubble">
+            <p class="my-msg__text">最近キャラクターの顔がうまく描けなくて悩んでいます</p>
+            <svg class="my-msg__tail" width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0H12L15.111 9.33315C15.4129 10.2387 14.4188 11.027 13.6059 10.5267C10.9214 8.87468 7.83106 8 4.67894 8H0V0Z"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="chat-msg">
+          <div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>
+          <div class="chat-msg__body"><p class="chat-msg__text">キャラクターで大事なのは「シルエットで誰かわかること」です。
+
+まず全身を描く前に、シルエットだけで個性が出るか確認してみて。髪型・体型・服装の組み合わせでキャラが立ちます。表情は目の形と眉の角度の2点で印象が大きく変わりますよ。</p></div>
+        </div>
+
+        <div class="my-msg">
+          <div class="my-msg__bubble">
+            <p class="my-msg__text">シルエットから考えるのは試したことがなかったです。やってみます！</p>
+            <svg class="my-msg__tail" width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg">
+              <path d="M0 0H12L15.111 9.33315C15.4129 10.2387 14.4188 11.027 13.6059 10.5267C10.9214 8.87468 7.83106 8 4.67894 8H0V0Z"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="chat-msg">
+          <div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>
+          <div class="chat-msg__body"><p class="chat-msg__text">ぜひ！まずはお気に入りのキャラのシルエットをトレースするところから始めると感覚がつかみやすいですよ。また何かあれば聞いてくださいね。</p></div>
+        </div>
+
+      </div>
 
       <!-- Footer -->
       <div class="right-panel__footer">
-        <div class="right-panel__suggestions">
-          <button class="msg-bubble" type="button"><span class="text-caption-w4">最近描いててつまずいてることがある</span></button>
-          <button class="msg-bubble" type="button"><span class="text-caption-w4">描きたいアイデアがある</span></button>
-          <button class="msg-bubble" type="button"><span class="text-caption-w4">キャラクターのことを相談したい</span></button>
-          <button class="msg-bubble" type="button"><span class="text-caption-w4">まだ何も思い浮かばない</span></button>
-        </div>
         <div class="chat-input">
           <div class="chat-input__field">
             <textarea class="chat-input__textarea" placeholder="はなに話しかけてみましょう..." rows="1"></textarea>
@@ -450,51 +665,20 @@
       }, 30);
     }
 
-    // ── 페이지 로드 — 첫 메시지 타이핑 ─────────────────────
-    // 랜딩 확장 시작(500ms) + 트랜지션 완료(600ms) 후 아바타 + 텍스트 생성
-    setTimeout(() => {
-      const GREETING = 'こんにちは！漫画についてなんでも聞いてください。';
+    // ── 바 차트 비율 설정 ────────────────────────────────────
+    (() => {
+      const values = [1200, 2800, 800, 2600, 2100, 3500];
+      const max = Math.max(...values);
+      document.querySelectorAll('#revenue-bars .revenue-card__bar').forEach((bar, i) => {
+        bar.style.setProperty('--bar-ratio', (values[i] / max).toFixed(3));
+      });
+    })();
+
+    // ── 채팅 스크롤 초기화 ───────────────────────────────────
+    (() => {
       const chatArea = document.querySelector('.right-panel__chat');
-      if (!chatArea) return;
-      const wrap = document.createElement('div');
-      wrap.className = 'chat-msg';
-      wrap.innerHTML =
-        '<div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>' +
-        '<div class="chat-msg__body"><p class="chat-msg__text"></p></div>';
-      chatArea.appendChild(wrap);
-      const el = wrap.querySelector('.chat-msg__text');
-      let i = 0;
-      const interval = setInterval(() => {
-        el.textContent += GREETING[i];
-        i++;
-        if (i >= GREETING.length) clearInterval(interval);
-      }, 60);
-    }, 1100);
-
-    // ── 랜딩 인터랙션 ────────────────────────────────────────
-    const workspaceEl    = document.querySelector('.workspace');
-    const rightPanelEl   = document.querySelector('.right-panel');
-    const wrapperEl      = document.getElementById('ws-right-wrapper');
-    const landingFloatBtn = document.getElementById('ws-float-btn');
-    let landingReverted = false;
-
-    function revertLanding() {
-      if (landingReverted) return;
-      landingReverted = true;
-      setTimeout(() => {
-        workspaceEl.classList.remove('workspace--landing');
-        // 트랜지션(0.4s) 완료 후 버튼 활성화
-        setTimeout(() => {
-          landingFloatBtn.disabled = false;
-          landingFloatBtn.classList.remove('float-btn--disabled');
-        }, 500);
-      }, 1000);
-    }
-
-    // 페이지 로드 → 0.5초 후 확장 시작
-    setTimeout(() => {
-      workspaceEl.classList.add('workspace--landing');
-    }, 500);
+      if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
+    })();
 
     // ── 마우스/키보드 구분 ───────────────────────────────────
     document.addEventListener('mousedown', () => document.body.classList.add('using-mouse'));
@@ -573,7 +757,6 @@
           typeText(botTextEl, reply, chatArea, () => {
             isWaiting = false;
             sendBtn.disabled = false;
-            revertLanding(); // 첫 번째 답변 완료 → 1초 후 랜딩 복귀
           });
         }, 400);
       }
@@ -599,16 +782,20 @@
       // 입력창 입력 후 보내기 클릭 → 버블 숨김 (sendMessage 내부에서 처리)
     })();
 
-    // ── Float Button 패널 토글 ───────────────────────────────
+    // ── Float Button — 패널 열림/닫힘 토글 ─────────────────────
     (() => {
-      const floatBtn = document.getElementById('ws-float-btn');
-      if (!floatBtn) return;
+      const floatBtn   = document.getElementById('ws-float-btn');
+      const wrapper    = document.getElementById('ws-right-wrapper');
+      const rightPanel = document.querySelector('.right-panel');
+      if (!floatBtn || !wrapper || !rightPanel) return;
+
       let isOpen = true;
+
       floatBtn.addEventListener('click', () => {
         isOpen = !isOpen;
-        wrapperEl.classList.toggle('is-panel-closed', !isOpen);            /* flex-basis 0 → 중앙 확장 */
-        rightPanelEl.classList.toggle('right-panel--collapsed', !isOpen);  /* translateX → 패널 슬라이드 */
-        floatBtn.classList.toggle('is-panel-closed', !isOpen);             /* 아이콘 반전 전용 */
+        wrapper.classList.toggle('is-panel-closed', !isOpen);            /* flex-basis 0 → 중앙 확장 */
+        rightPanel.classList.toggle('right-panel--collapsed', !isOpen);  /* translateX → 패널 슬라이드 */
+        floatBtn.classList.toggle('is-panel-closed', !isOpen);           /* 아이콘 반전 전용 */
         floatBtn.setAttribute('aria-label', isOpen ? 'パネルを閉じる' : 'パネルを開く');
       });
     })();
