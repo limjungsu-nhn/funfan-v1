@@ -1,0 +1,114 @@
+/* ============================================
+   Radio Card Component
+
+   HTML 구조:
+     <label class="radio-card [--selected]">
+       <input type="radio" class="radio-card__input" name="..." value="...">
+       <div class="radio-card__avatar"></div>
+       <div class="radio-card__content">
+         <span class="radio-card__title">Title</span>
+         <span class="radio-card__sub">Sub</span>
+       </div>
+     </label>
+
+   States:
+     .radio-card                — Default  (gray-6 bg)
+     .radio-card--hover         — Hover    (gray-5 bg)
+     .radio-card--focus         — Focus    (gray-5 bg + ring)
+     .radio-card--pressed       — Pressed  (gray-5 bg)
+     .radio-card--selected      — Selected (white bg + nature-2 outline)
+   ============================================ */
+
+/* ---------- Container ---------- */
+.radio-card {
+  width: 448px;
+  padding: 16px 20px;
+  background: var(--color-gray-6);
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+  overflow: hidden;
+  box-sizing: border-box;
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  transition: background 0.15s ease, outline-color 0.15s ease;
+}
+
+/* ---------- Hover ---------- */
+.radio-card--hover,
+.radio-card:hover:not(.radio-card--selected) {
+  background: var(--color-gray-5);
+}
+
+/* ---------- Pressed ---------- */
+.radio-card--pressed,
+.radio-card:active {
+  background: var(--color-gray-5);
+}
+
+/* ---------- Focus (keyboard only) ---------- */
+.radio-card--focus {
+  background: var(--color-gray-5);
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
+  background: var(--color-gray-5);
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- Selected ---------- */
+.radio-card--selected,
+.radio-card:has(.radio-card__input:checked) {
+  background: var(--color-white-100);
+  outline-color: var(--color-nature-2);
+}
+
+/* ---------- Input (hidden) ---------- */
+.radio-card__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ---------- Avatar ---------- */
+.radio-card__avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-white-100);
+  flex-shrink: 0;
+}
+
+.radio-card--selected .radio-card__avatar,
+.radio-card:has(.radio-card__input:checked) .radio-card__avatar {
+  background: var(--color-gray-6);
+}
+
+/* ---------- Content ---------- */
+.radio-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ---------- Title ---------- */
+.radio-card__title {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-subtext);
+  line-height: var(--line-height-subtext);
+  font-weight: var(--font-weight-w6);
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Sub ---------- */
+.radio-card__sub {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-overline);
+  line-height: var(--line-height-overline);
+  font-weight: var(--font-weight-w4);
+  color: var(--color-font-primary-black-50);
+}

@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="css/components/msg-bubble.css">
   <link rel="stylesheet" href="css/components/chat-msg.css">
   <link rel="stylesheet" href="css/components/my-msg.css">
+  <link rel="stylesheet" href="css/components/radio-card.css">
   <link rel="stylesheet" href="css/components/stat-card.css">
   <script src="js/components/stat-card.js" defer></script>
   <link rel="stylesheet" href="css/components/revenue-card.css">
@@ -76,6 +77,7 @@
         <a href="#msg-bubble">Message Bubble</a>
         <a href="#chat-msg">Chat Message</a>
         <a href="#my-msg">My Message</a>
+        <a href="#radio-card">Radio Card</a>
         <a href="#chat-input">Chat Input</a>
         <a href="#icon-btn">Icon Button</a>
         <a href="#float-btn">Float Button</a>
@@ -2304,6 +2306,134 @@
               </div>
               <code class="sg-type-classname">.my-msg</code>
               <div class="sg-type-meta"><strong>Default</strong></div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================
+           RADIO CARD
+      ========================= -->
+      <section class="sg-section" id="radio-card" data-section="radio-card">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Radio Card</h2>
+          <span class="sg-section-desc">radio-card.css · 라디오 선택 카드 · 448px · 5 states · :has(:checked) 기반 선택</span>
+        </div>
+
+        <!-- States -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">States</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-card">
+                  <input type="radio" class="radio-card__input" name="sg-rc-states" value="default">
+                  <div class="radio-card__avatar"></div>
+                  <div class="radio-card__content">
+                    <span class="radio-card__title">Title</span>
+                    <span class="radio-card__sub">Subtitle</span>
+                  </div>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-card</code>
+              <div class="sg-type-meta"><strong>Default</strong><br>bg gray-6</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-card radio-card--hover">
+                  <input type="radio" class="radio-card__input" name="sg-rc-hover" value="hover">
+                  <div class="radio-card__avatar"></div>
+                  <div class="radio-card__content">
+                    <span class="radio-card__title">Title</span>
+                    <span class="radio-card__sub">Subtitle</span>
+                  </div>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-card--hover</code>
+              <div class="sg-type-meta"><strong>Hover</strong><br>bg gray-5</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-card radio-card--focus">
+                  <input type="radio" class="radio-card__input" name="sg-rc-focus" value="focus">
+                  <div class="radio-card__avatar"></div>
+                  <div class="radio-card__content">
+                    <span class="radio-card__title">Title</span>
+                    <span class="radio-card__sub">Subtitle</span>
+                  </div>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-card--focus</code>
+              <div class="sg-type-meta"><strong>Focus</strong><br>bg gray-5 + 3px ring</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-card radio-card--pressed">
+                  <input type="radio" class="radio-card__input" name="sg-rc-pressed" value="pressed">
+                  <div class="radio-card__avatar"></div>
+                  <div class="radio-card__content">
+                    <span class="radio-card__title">Title</span>
+                    <span class="radio-card__sub">Subtitle</span>
+                  </div>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-card--pressed</code>
+              <div class="sg-type-meta"><strong>Pressed</strong><br>bg gray-5</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-card radio-card--selected">
+                  <input type="radio" class="radio-card__input" name="sg-rc-selected" value="selected" checked>
+                  <div class="radio-card__avatar"></div>
+                  <div class="radio-card__content">
+                    <span class="radio-card__title">Title</span>
+                    <span class="radio-card__sub">Subtitle</span>
+                  </div>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-card--selected</code>
+              <div class="sg-type-meta"><strong>Selected</strong><br>bg white + nature-2 outline<br>avatar → gray-6</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Interactive Demo -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Interactive Demo</p>
+          <div class="sg-demo-canvas">
+            <div style="display:flex; flex-direction:column; gap:8px;">
+              <label class="radio-card">
+                <input type="radio" class="radio-card__input" name="sg-rc-demo" value="1">
+                <div class="radio-card__avatar"></div>
+                <div class="radio-card__content">
+                  <span class="radio-card__title">Option A</span>
+                  <span class="radio-card__sub">Subtitle description</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" class="radio-card__input" name="sg-rc-demo" value="2">
+                <div class="radio-card__avatar"></div>
+                <div class="radio-card__content">
+                  <span class="radio-card__title">Option B</span>
+                  <span class="radio-card__sub">Subtitle description</span>
+                </div>
+              </label>
+              <label class="radio-card">
+                <input type="radio" class="radio-card__input" name="sg-rc-demo" value="3">
+                <div class="radio-card__avatar"></div>
+                <div class="radio-card__content">
+                  <span class="radio-card__title">Option C</span>
+                  <span class="radio-card__sub">Subtitle description</span>
+                </div>
+              </label>
             </div>
           </div>
         </div>
