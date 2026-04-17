@@ -112,3 +112,50 @@ body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
   font-weight: var(--font-weight-w4);
   color: var(--color-font-primary-black-50);
 }
+
+
+/* ============================================
+   Radio Group Card — radio-card를 담는 컨테이너
+
+   HTML 구조:
+     <div class="radio-group-card">
+       <p class="radio-group-card__title">Title</p>
+       <div class="radio-group-card__list">
+         <label class="radio-card">...</label>
+         <label class="radio-card">...</label>
+       </div>
+     </div>
+   ============================================ */
+
+/* ---------- Container ---------- */
+.radio-group-card {
+  background: var(--color-white-100);
+  border-radius: 20px;
+  padding: 24px;
+  display: inline-flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+}
+
+/* ---------- Title ---------- */
+.radio-group-card__title {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-body-md);
+  line-height: var(--line-height-body-md);
+  font-weight: var(--font-weight-w6);
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- List ---------- */
+.radio-group-card__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* radio-card가 컨테이너 안에 들어올 때 full-width */
+.radio-group-card .radio-card {
+  width: 100%;
+}
