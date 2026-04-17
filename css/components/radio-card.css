@@ -33,7 +33,7 @@
   box-sizing: border-box;
   outline: 1px solid transparent;
   outline-offset: -1px;
-  transition: background 0.15s ease, outline-color 0.15s ease;
+  transition: background 0.15s ease, outline-color 0.15s ease, transform 0.08s ease-in;
 }
 
 /* ---------- Hover ---------- */
@@ -46,6 +46,7 @@
 .radio-card--pressed,
 .radio-card:active {
   background: var(--color-gray-5);
+  transform: scale(0.98);
 }
 
 /* ---------- Focus (keyboard only) ---------- */
