@@ -22,6 +22,7 @@
   <link rel="stylesheet" href="css/components/msg-bubble.css">
   <link rel="stylesheet" href="css/components/chat-msg.css">
   <link rel="stylesheet" href="css/components/my-msg.css">
+  <link rel="stylesheet" href="css/components/checkbox.css">
   <link rel="stylesheet" href="css/components/radio-card.css">
   <link rel="stylesheet" href="css/components/chat-input.css">
   <link rel="stylesheet" href="css/components/icon-btn.css">
@@ -84,6 +85,8 @@
       padding: var(--p2_5);
       display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
       gap: 12px;
       overflow: hidden;
       border-left: 1px var(--color-gray-5) solid;
@@ -158,6 +161,43 @@
     <!-- Main Content -->
     <div class="workspace__main">
       <div class="workspace__content">
+
+        <div class="radio-group-card">
+          <div class="radio-group-card__header">
+            <p class="radio-group-card__title">AIキャラクターを選ぶ</p>
+            <p class="radio-group-card__desc">あなたの作業をサポートするキャラクターを選択してください</p>
+          </div>
+          <div class="radio-group-card__list">
+            <label class="radio-card">
+              <input type="radio" class="radio-card__input" name="character" value="hana">
+              <div class="radio-card__avatar"></div>
+              <div class="radio-card__content">
+                <span class="radio-card__title">はな</span>
+                <span class="radio-card__sub">漫画鑑定士</span>
+              </div>
+            </label>
+            <label class="radio-card">
+              <input type="radio" class="radio-card__input" name="character" value="taro">
+              <div class="radio-card__avatar"></div>
+              <div class="radio-card__content">
+                <span class="radio-card__title">たろう</span>
+                <span class="radio-card__sub">ストーリーライター</span>
+              </div>
+            </label>
+          </div>
+          <label class="radio-group-card__checkbox checkbox-wrap">
+            <input type="checkbox" class="checkbox-input">
+            <div class="checkbox">
+              <i class="icon icon-check-small checkbox-icon"></i>
+            </div>
+            <span class="text-caption-w4">次回から確認せずに開始する</span>
+          </label>
+          <div class="radio-group-card__footer">
+            <button class="btn btn-filled">
+              <span class="text-assist-w4">作業を始める</span>
+            </button>
+          </div>
+        </div>
 
       </div>
     </div>
