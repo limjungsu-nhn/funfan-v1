@@ -125,6 +125,20 @@
   cursor: not-allowed;
 }
 
+/* ---------- Wrap hover/active → Checkbox 상태 전파 ----------
+   텍스트 포함 label 전체 영역의 hover/active를
+   내부 .checkbox 에 동일하게 반영.
+   checked·disabled 상태에서는 전파 안 함.
+---------------------------------------- */
+.checkbox-wrap:not(.checkbox-wrap--disabled):not(:has(.checkbox-input:checked)):hover .checkbox {
+  outline-color: var(--color-black-100);
+}
+.checkbox-wrap:not(.checkbox-wrap--disabled):not(:has(.checkbox-input:checked)):active .checkbox {
+  outline: 1px solid var(--color-black-100);
+  outline-offset: -1px;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
 /* ---------- Native input wrapper ---------- */
 .checkbox-input {
   position: absolute;
