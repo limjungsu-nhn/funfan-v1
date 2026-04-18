@@ -1,0 +1,170 @@
+{
+  "$description": "FunFan v1.0 design tokens. Source of truth: css/tokens/*.css. Keep this file in sync when tokens change.",
+
+  "base": {
+    "minWidth": "1440px",
+    "navbarHeight": "64px",
+    "ringWidth": "3px",
+    "fontFamily": "\"Hiragino Sans\", \"ヒラギノ角ゴ ProN\", \"Hiragino Kaku Gothic ProN\", sans-serif"
+  },
+
+  "colors": {
+    "white": {
+      "100":  "rgba(255, 255, 255, 1)",
+      "50":   "rgba(255, 255, 255, 0.5)",
+      "30":   "rgba(255, 255, 255, 0.3)",
+      "0":    "rgba(255, 255, 255, 0)",
+      "warm": "#FCFBF7"
+    },
+    "black": {
+      "100": "rgba(0, 0, 0, 1)",
+      "50":  "rgba(0, 0, 0, 0.5)",
+      "30":  "rgba(0, 0, 0, 0.3)",
+      "0":   "rgba(0, 0, 0, 0)"
+    },
+    "font": {
+      "primary-black-100": "rgba(29, 29, 31, 1)",
+      "primary-black-50":  "rgba(29, 29, 31, 0.5)",
+      "primary-black-30":  "rgba(29, 29, 31, 0.3)",
+      "primary-black-0":   "rgba(29, 29, 31, 0)",
+      "primary-white-100": "rgba(255, 255, 255, 1)",
+      "primary-white-50":  "rgba(255, 255, 255, 0.5)",
+      "primary-white-30":  "rgba(255, 255, 255, 0.3)",
+      "primary-white-0":   "rgba(255, 255, 255, 0)",
+      "secondary":         "#6E6E73",
+      "divider":           "#C7C7CC"
+    },
+    "gray": {
+      "1": "#8E8E93",
+      "2": "#AEAEB2",
+      "3": "#C7C7CC",
+      "4": "#D1D1D6",
+      "5": "#E5E5EA",
+      "6": "#F2F2F7"
+    },
+    "red": {
+      "100": "rgba(255, 17, 0, 1)",
+      "50":  "rgba(255, 17, 0, 0.5)",
+      "30":  "rgba(255, 17, 0, 0.3)",
+      "0":   "rgba(255, 17, 0, 0)"
+    },
+    "nature": {
+      "1": "#244D01",
+      "2": "#326502",
+      "3": "#558C03",
+      "4": "#B3D92B",
+      "5": "#DDF291",
+      "6": "#EDFAB8"
+    },
+    "wood": {
+      "1": "#352619",
+      "2": "#60452E",
+      "3": "#8D6F4B",
+      "4": "#BB9E77",
+      "5": "#DACAAB",
+      "6": "#F5EFE3"
+    },
+    "shadow": {
+      "subtle": "rgba(0, 0, 0, 0.02)",
+      "light":  "rgba(0, 0, 0, 0.05)",
+      "mid":    "rgba(0, 0, 0, 0.10)"
+    }
+  },
+
+  "spacing": {
+    "$description": "컴포넌트 내부 간격(padding, gap, margin)용 절대값 스케일. --p{n}와 구분해서 사용.",
+    "1":  "4px",
+    "2":  "8px",
+    "3":  "12px",
+    "4":  "16px",
+    "5":  "20px",
+    "6":  "24px",
+    "7":  "28px",
+    "8":  "32px",
+    "10": "40px",
+    "12": "48px",
+    "16": "64px"
+  },
+
+  "layoutPercent": {
+    "$description": "1440px 기준 퍼센트 토큰. 페이지 레벨 width/padding/gap에 사용. 반응형 축소 금지 — 미만 뷰포트는 가로 스크롤.",
+    "base": "1440px",
+    "p1":   "14.4px",
+    "p2":   "28.8px",
+    "p2_5": "36px",
+    "p3":   "43.2px",
+    "p4":   "57.6px",
+    "p5":   "72px",
+    "p6":   "86.4px",
+    "p7":   "100.8px",
+    "p8":   "115.2px",
+    "p9":   "129.6px",
+    "p10":  "144px",
+    "p12":  "172.8px",
+    "p15":  "216px",
+    "p20":  "288px",
+    "p25":  "360px",
+    "p30":  "432px",
+    "p33":  "475.2px",
+    "p35":  "504px",
+    "p40":  "576px",
+    "p50":  "720px",
+    "p60":  "864px",
+    "p66":  "950.4px",
+    "p70":  "1008px",
+    "p75":  "1080px",
+    "p80":  "1152px",
+    "p83":  "1195.2px",
+    "p90":  "1296px",
+    "p100": "1440px"
+  },
+
+  "borderRadius": {
+    "sm":   "4px",
+    "md":   "8px",
+    "lg":   "12px",
+    "xl":   "16px",
+    "2xl":  "20px",
+    "3xl":  "24px",
+    "full": "100px"
+  },
+
+  "typography": {
+    "$description": "Hiragino Sans 기반. 네이밍: .text-{category}-w{weight}. w4=400, w6=600.",
+    "fontFamily": "\"Hiragino Sans\", \"ヒラギノ角ゴ ProN\", \"Hiragino Kaku Gothic ProN\", sans-serif",
+    "fontWeights": {
+      "w4": 400,
+      "w6": 600
+    },
+    "scale": {
+      "overline": { "fontSize": "11px", "lineHeight": "16px" },
+      "caption":  { "fontSize": "12px", "lineHeight": "18px" },
+      "assist":   { "fontSize": "13px", "lineHeight": "20px" },
+      "subtext":  { "fontSize": "14px", "lineHeight": "22px" },
+      "body-sm":  { "fontSize": "15px", "lineHeight": "24px" },
+      "body-md":  { "fontSize": "16px", "lineHeight": "26px" },
+      "body-lg":  { "fontSize": "18px", "lineHeight": "28px" },
+      "h3":       { "fontSize": "22px", "lineHeight": "32px" },
+      "h2":       { "fontSize": "28px", "lineHeight": "38px" },
+      "h1":       { "fontSize": "36px", "lineHeight": "48px" },
+      "display4": { "fontSize": "44px", "lineHeight": "52px" },
+      "display3": { "fontSize": "48px", "lineHeight": "58px" },
+      "display2": { "fontSize": "60px", "lineHeight": "72px" },
+      "display1": { "fontSize": "72px", "lineHeight": "84px" }
+    }
+  },
+
+  "boxShadow": {
+    "$description": "공용 그림자 프리셋.",
+    "sm":  "0px 1px 2px rgba(0, 0, 0, 0.05)",
+    "md":  "0px 4px 8px rgba(0, 0, 0, 0.02), 0px 0px 1px rgba(0, 0, 0, 0.10)",
+    "ring": "0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05)"
+  },
+
+  "transitions": {
+    "$description": "표준 트랜지션 타이밍.",
+    "press":        "transform 0.08s ease-in",
+    "hover":        "background 0.1s, outline-color 0.1s",
+    "collapse":     "opacity 0.22s ease, transform 0.22s ease, max-width 0.22s ease, padding-left 0.22s ease, padding-right 0.22s ease"
+  }
+}

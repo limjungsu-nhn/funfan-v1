@@ -1,0 +1,58 @@
+# FunFan v1.0 — 개발 핸드오프 자료
+
+이 폴더는 shadcn/ui + Tailwind 기반 개발팀에게 전달하는 **디자인 시스템 스펙**입니다.
+
+## 파일 안내
+
+| 파일 | 용도 | 대상 |
+|---|---|---|
+| [`design-tokens.json`](./design-tokens.json) | 모든 디자인 토큰 (color/spacing/typography/shadow/radius) | 참고용 원본 |
+| [`tailwind-preset.ts`](./tailwind-preset.ts) | Tailwind `theme.extend` 프리셋 | `tailwind.config.ts`에 직접 import |
+| [`COMPONENTS.md`](./COMPONENTS.md) | 26개 컴포넌트 → shadcn 매핑 + variant/size/state | cva 정의 작성 시 |
+| [`ICONS.md`](./ICONS.md) | 31개 아이콘 → lucide-react 매핑 | 아이콘 치환 시 |
+
+## 시작하기 (개발자)
+
+```bash
+npm install lucide-react class-variance-authority clsx tailwind-merge
+```
+
+```ts
+// tailwind.config.ts
+import funfanPreset from './path/to/handoff/tailwind-preset';
+
+export default {
+  presets: [funfanPreset],
+  content: ['./src/**/*.{ts,tsx}'],
+};
+```
+
+## 레퍼런스 (살아있는 문서)
+
+세부 스펙이 다르거나 의심스러울 땐 **프로토타입 저장소의 실제 페이지**를 확인:
+
+- `styleguide.html` — 모든 컴포넌트의 variant/size/state 렌더
+- `workspace.html`, `workroom.html`, `workspace-onboarding.html` — 실제 사용 예
+- `css/components/*.css` — BEM 네이밍, states, 애니메이션 원본
+- `js/core/keyboard-focus.js` + `js/components/chat.js` — 공용 인터랙션 로직
+- `CLAUDE.md` — 디자인 원칙 (1440px 최소 너비, focus ring 규칙, 토큰 사용 규칙)
+
+프로토타입은 **계속 진화 중**이므로 이 핸드오프 자료가 현행과 다를 수 있습니다.
+의심 시 저장소 원본이 진실.
+
+## 핵심 원칙 (꼭 지켜야 할 것)
+
+1. **최소 너비 1440px** — 반응형 축소 금지
+2. **focus ring은 키보드 전용** — 마우스 클릭 시 절대 금지 (`body.using-mouse` 또는 `:focus-visible`)
+3. **디자인 토큰만 사용** — 하드코딩 px·rgba 금지
+4. **icon-only 버튼은 반드시 `aria-label`**
+
+## 업데이트 정책
+
+- **토큰 추가/변경**: 디자인팀이 `design-tokens.json`·`tailwind-preset.ts` 동기화 후 공유
+- **새 컴포넌트**: `COMPONENTS.md`에 추가 후 공유
+- **아이콘 추가**: `ICONS.md`에 매핑 추가 후 공유
+
+## 문의
+
+디자인 프로토타입 저장소에 이슈 작성.
