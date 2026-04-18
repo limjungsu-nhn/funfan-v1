@@ -34,6 +34,12 @@
   --color-gray-5: #E5E5EA;
   --color-gray-6: #F2F2F7;
 
+  /* ---------- Red ---------- */
+  --color-red-100: rgba(255, 17, 0, 1);
+  --color-red-50:  rgba(255, 17, 0, 0.5);
+  --color-red-30:  rgba(255, 17, 0, 0.3);
+  --color-red-0:   rgba(255, 17, 0, 0);
+
   /* ---------- Nature ---------- */
   --color-nature-1: #244D01;
   --color-nature-2: #326502;
