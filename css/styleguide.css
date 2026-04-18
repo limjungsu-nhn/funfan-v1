@@ -441,6 +441,14 @@ body {
 .sg-demo-canvas--gray {
   background: var(--color-gray-6);
 }
+
+/* ---------- Tab Demo ---------- */
+.sg-tab-demo { /* tab-group 스타일 tab.css에서 상속 */ }
+
+/* 스타일가이드 프리뷰 내에서만 navbar-tabs 노출 */
+.sg-type-preview .navbar-tabs {
+  display: flex;
+}
 .sg-demo-item {
   display: flex;
   flex-direction: column;

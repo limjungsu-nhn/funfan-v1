@@ -7,14 +7,15 @@
          <svg>…</svg>  ← FunFan 로고
        </div>
        <div class="navbar-actions">
-         <button class="btn btn-ghost">
-           <i class="icon icon-{name}"></i>
-           <span class="text-assist-w4">Label</span>
-         </button>
-         <button class="btn btn-filled">
-           <i class="icon icon-{name}"></i>
-           <span class="text-assist-w4">Label</span>
-         </button>
+         <!-- 탭 슬롯 (기본 숨김, 필요한 페이지에서만 표시) -->
+         <div class="navbar-tabs">
+           <div class="tab-group">
+             <button class="tab tab--selected">Tab A</button>
+             <button class="tab">Tab B</button>
+           </div>
+         </div>
+         <button class="btn btn-ghost">…</button>
+         <button class="btn btn-filled">…</button>
        </div>
      </header>
    ============================================ */
@@ -50,4 +51,9 @@
   display: flex;
   align-items: center;
   gap: 8px;
+}
+
+/* ---------- Tabs 슬롯 ---------- */
+.navbar-tabs {
+  display: none; /* 기본 숨김 — 필요한 페이지에서 display: flex 로 활성화 */
 }

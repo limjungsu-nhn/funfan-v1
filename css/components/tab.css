@@ -1,0 +1,79 @@
+/* ============================================
+   Tab — Pill 형태의 탭 기본 단위
+
+   사용법:
+     <button class="tab">ラベル</button>
+     <button class="tab tab--selected">ラベル</button>
+
+   States Reference:
+     .tab                    Default  — 투명 bg, black-50 텍스트
+     .tab--hover             Hover    — 투명 bg, black-100 텍스트
+     .tab--selected          Active   — white bg, black-100 텍스트
+     .tab--pressed           Pressed  — 투명 bg, black-100 텍스트
+     .tab--focus             Focus    — white bg + 3px ring
+   ============================================ */
+
+/* ---------- Tab Group (wrapper) ---------- */
+.tab-group {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--color-gray-6);
+  border-radius: 100px;
+  padding: 4px;
+}
+
+/* ---------- Base ---------- */
+.tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 12px;
+  min-height: 32px;
+  min-width: var(--tab-min-w, auto);
+  border-radius: 100px;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  color: var(--color-black-50);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  font-weight: var(--font-weight-w4);
+  font-family: var(--font-family-base);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* ---------- Hover ---------- */
+.tab--hover,
+.tab:hover {
+  color: var(--color-black-100);
+}
+
+/* ---------- Selected / Active ---------- */
+.tab--selected {
+  background: var(--color-white-100);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  color: var(--color-black-100);
+}
+
+/* ---------- Pressed ---------- */
+.tab--pressed,
+.tab:active {
+  color: var(--color-black-100);
+}
+
+/* ---------- Focus ---------- */
+.tab--focus {
+  background: var(--color-white-100);
+  color: var(--color-black-100);
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+  outline: none;
+}
+.tab:focus-visible {
+  background: var(--color-white-100);
+  color: var(--color-black-100);
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+  outline: none;
+}

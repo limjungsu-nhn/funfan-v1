@@ -32,6 +32,7 @@
   <link rel="stylesheet" href="css/components/icon-btn.css">
   <link rel="stylesheet" href="css/components/send-btn.css">
   <link rel="stylesheet" href="css/components/right-panel.css">
+  <link rel="stylesheet" href="css/components/tab.css">
   <link rel="stylesheet" href="css/components/badge.css">
   <link rel="stylesheet" href="css/components/float-btn.css">
 
@@ -85,6 +86,7 @@
         <a href="#right-panel">Right Panel</a>
         <a href="#cards">Cards</a>
         <a href="#radio-group-card">Radio Group Card</a>
+        <a href="#tab">Tab</a>
         <a href="#badges">Badges</a>
       </div>
       <div class="sg-nav-divider"></div>
@@ -1582,6 +1584,27 @@
               <code class="sg-type-classname">.navbar</code>
               <div class="sg-type-meta"><strong>Default</strong><br><small>height 64px · fixed</small></div>
             </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview sg-preview-overflow">
+                <header class="navbar">
+                  <div class="navbar-logo">
+                    <i class="logo logo-funfan"></i>
+                  </div>
+                  <div class="navbar-actions">
+                    <div class="navbar-tabs">
+                      <div class="tab-group">
+                        <button class="tab tab--selected">公開</button>
+                        <button class="tab">非公開</button>
+                      </div>
+                    </div>
+                    <button class="btn btn-ghost"><i class="icon icon-account-circle"></i><span class="text-assist-w4">マイページ</span></button>
+                    <button class="btn btn-filled"><i class="icon icon-laptop-mac"></i><span class="text-assist-w4">ワークスペース</span></button>
+                  </div>
+                </header>
+              </div>
+              <code class="sg-type-classname">.navbar-tabs</code>
+              <div class="sg-type-meta"><strong>With Tabs</strong><br><small>기본 display:none · 필요 페이지에서 display:flex 활성화</small></div>
+            </div>
           </div>
         </div>
 
@@ -2835,6 +2858,73 @@
       </section>
 
       <!-- ========================
+           TAB
+      ========================= -->
+      <section class="sg-section" id="tab" data-section="tab">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Tab</h2>
+          <span class="sg-section-desc">tab.css · pill 형태 탭 기본 단위 · border-radius 100px</span>
+        </div>
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Tab</p>
+          <div class="sg-type-table">
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="tab">公開</button>
+              </div>
+              <code class="sg-type-classname">.tab</code>
+              <div class="sg-type-meta">Default — 투명 bg, black-50 텍스트</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="tab tab--hover">公開</button>
+              </div>
+              <code class="sg-type-classname">.tab--hover</code>
+              <div class="sg-type-meta">Hover — 투명 bg, black-100 텍스트</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="tab tab--selected">公開</button>
+              </div>
+              <code class="sg-type-classname">.tab--selected</code>
+              <div class="sg-type-meta">Selected — white bg, black-100 텍스트</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="tab tab--pressed">公開</button>
+              </div>
+              <code class="sg-type-classname">.tab--pressed</code>
+              <div class="sg-type-meta">Pressed — 투명 bg, black-100 텍스트</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="tab tab--focus">公開</button>
+              </div>
+              <code class="sg-type-classname">.tab--focus</code>
+              <div class="sg-type-meta">Focus — white bg, 3px ring (gray-5)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Demo -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Interactive Demo</p>
+          <div class="sg-type-table">
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="sg-tab-demo tab-group">
+                  <button class="tab tab--selected" data-tab="koukai">公開</button>
+                  <button class="tab" data-tab="hikoukai">非公開</button>
+                </div>
+              </div>
+              <code class="sg-type-classname">.tab<br>.tab--selected</code>
+              <div class="sg-type-meta">클릭으로 선택 전환 · 선택된 탭에 .tab--selected 적용</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================
            BADGES
       ========================= -->
       <section class="sg-section" id="badges" data-section="badges">
@@ -3134,6 +3224,25 @@
           const ratio = val / maxVal;
           bar.style.setProperty('--bar-ratio', ratio);
           bar.className = 'revenue-card__bar revenue-card__bar--' + lvByRank(val, sortedDesc);
+        });
+      });
+    })();
+
+    // ── Tab Demo ─────────────────────────────────────────────────
+    (() => {
+      const demo = document.querySelector('.sg-tab-demo');
+      if (!demo) return;
+      const tabs = demo.querySelectorAll('.tab');
+
+      // 가장 넓은 탭 기준으로 너비 균등화
+      let maxW = 0;
+      tabs.forEach(t => maxW = Math.max(maxW, t.getBoundingClientRect().width));
+      demo.style.setProperty('--tab-min-w', Math.ceil(maxW) + 'px');
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('tab--selected'));
+          tab.classList.add('tab--selected');
         });
       });
     })();
