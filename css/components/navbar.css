@@ -14,10 +14,10 @@
              <button class="tab">Tab B</button>
            </div>
          </div>
-         <!-- 탭 없는 경우: btn-ghost(マイページ) + btn-filled(ワークスペース) -->
+         <!-- 탭 없는 경우: btn-ghost(マイページ) + btn-filled-nature(ワークスペース) -->
          <!-- 탭 있는 경우: btn-ghost(作業終了 + icon-exit-to-app) only -->
          <button class="btn btn-ghost">…</button>
-         <button class="btn btn-filled">…</button>  <!-- 탭 활성 시 제거 -->
+         <button class="btn btn-filled-nature">…</button>  <!-- 탭 활성 시 제거 -->
        </div>
      </header>
    ============================================ */

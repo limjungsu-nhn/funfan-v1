@@ -1,0 +1,100 @@
+/* ============================================
+   Input Wood — wood 컬러 반투명 입력 필드
+
+   HTML 구조:
+     <div class="input-wood">
+       <input class="input-wood__field" type="text" placeholder="0">
+       <span class="input-wood__unit text-assist-w4">分</span>
+     </div>
+
+   States:
+     (기본)                Default  — white-50 배경, wood-5 아웃라인, 값 black-50
+     :hover                Hover    — white-100 배경, wood-3 아웃라인
+     :focus-within         Typing   — white-100 배경, wood-3 아웃라인, 값 black-100
+     body:not(.using-mouse):has(:focus-visible)
+                           Focus    — Typing + 3px gray-5 ring (키보드 전용)
+     .input-wood--disabled Disabled — white-50 배경, gray-5 아웃라인, 전체 black-30
+
+   주의: input :focus-visible 는 마우스에도 적용 → using-mouse 패턴 필수
+   ============================================ */
+
+/* ---------- Container ---------- */
+.input-wood {
+  width: 80px;
+  min-height: 36px;
+  padding: 0 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 12px;
+  background: var(--color-white-50);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  outline: 1px solid var(--color-wood-5);
+  outline-offset: -1px;
+  overflow: hidden;
+  box-sizing: border-box;
+  cursor: text;
+  transition: background 0.1s, outline-color 0.1s;
+}
+
+/* ---------- Field ---------- */
+.input-wood__field {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-assist);
+  line-height: var(--line-height-assist);
+  font-weight: var(--font-weight-w4);
+  color: var(--color-font-primary-black-100);
+}
+
+/* 기본값(placeholder): black-50 */
+.input-wood__field::placeholder {
+  color: var(--color-font-primary-black-50);
+  font-weight: var(--font-weight-w4);
+}
+
+/* ---------- Unit Suffix ---------- */
+.input-wood__unit {
+  flex-shrink: 0;
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Hover ---------- */
+.input-wood--hover,
+.input-wood:hover:not(.input-wood--disabled) {
+  background: var(--color-white-100);
+  outline-color: var(--color-wood-3);
+}
+
+/* ---------- Typing (포커스 중 — 마우스/키보드 공통) ---------- */
+.input-wood:focus-within:not(.input-wood--disabled) {
+  background: var(--color-white-100);
+  outline-color: var(--color-wood-3);
+}
+
+/* ---------- Focus Ring (키보드 전용) ---------- */
+body:not(.using-mouse) .input-wood:has(.input-wood__field:focus-visible):not(.input-wood--disabled),
+.input-wood--focus {
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- Disabled ---------- */
+.input-wood--disabled {
+  background: var(--color-white-50);
+  outline-color: var(--color-gray-5);
+  cursor: not-allowed;
+}
+
+.input-wood--disabled .input-wood__field {
+  color: var(--color-font-primary-black-30);
+  pointer-events: none;
+}
+
+.input-wood--disabled .input-wood__unit {
+  color: var(--color-font-primary-black-30);
+}

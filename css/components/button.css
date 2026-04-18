@@ -11,7 +11,14 @@
    Variants:
      .btn-line                Line   — 테두리형
      .btn-ghost               Ghost  — 라인 없는 버튼
-     .btn-filled              Filled — 면 컬러 버튼
+     .btn-filled-nature       Filled — 면 컬러 버튼 (nature)
+     .btn-filled-wood         Filled — 면 컬러 버튼 (wood)
+     .btn-glass               Glass  — 반투명 white 버튼
+
+   Size Modifiers:
+     (기본 md)  min-height 40px / padding 0 16px
+     .btn--sm   min-height 36px / padding 0 12px
+     .btn--lg   min-height 48px / padding 0 16px
    ============================================ */
 
 /* ---------- Base ---------- */
@@ -34,7 +41,8 @@
 }
 
 /* ---------- Size Variants ---------- */
-/* 기본(md): min-height 40px */
+/* 기본(md): min-height 40px, padding 0 16px */
+.btn--sm { min-height: 36px; padding: 0 12px; }
 .btn--lg { min-height: 48px; }
 
 /* ---------- Line ---------- */
@@ -136,57 +144,169 @@
    Filled — 면 컬러 버튼
 
    States:
-     .btn-filled               Default  — Nature-2 배경, white 텍스트, Nature-4 아이콘
-     .btn-filled--hover         Hover    — Nature-1 배경
-     .btn-filled--focus         Focus    — Nature-1 배경 + 3px ring (Reference용)
-     .btn-filled--pressed       Pressed  — Nature-1 배경
-     .btn-filled--disabled      Disabled — Gray-5 배경, white 아이콘
+     .btn-filled-nature               Default  — Nature-2 배경, white 텍스트, Nature-4 아이콘
+     .btn-filled-nature--hover         Hover    — Nature-1 배경
+     .btn-filled-nature--focus         Focus    — Nature-1 배경 + 3px ring (Reference용)
+     .btn-filled-nature--pressed       Pressed  — Nature-1 배경
+     .btn-filled-nature--disabled      Disabled — Gray-5 배경, white 아이콘
    ============================================ */
 
 /* ---------- Filled Default ---------- */
-.btn-filled {
+.btn-filled-nature {
   background: var(--color-nature-3);
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
   color: var(--color-font-primary-white-100);
 }
-.btn-filled .icon {
+.btn-filled-nature .icon {
   color: var(--color-nature-4);
 }
 
 /* ---------- Hover ---------- */
-.btn-filled--hover,
-.btn-filled:hover:not(.btn-filled--disabled) {
+.btn-filled-nature--hover,
+.btn-filled-nature:hover:not(.btn-filled-nature--disabled) {
   background: var(--color-nature-2);
 }
 
 /* ---------- Focus ----------
-   .btn-filled--focus  : States Reference 표기용 — 배경 + box-shadow
+   .btn-filled-nature--focus  : States Reference 표기용 — 배경 + box-shadow
    :focus-visible      : 실제 동작 — box-shadow만
 ---------------------------------------- */
-.btn-filled--focus {
+.btn-filled-nature--focus {
   background: var(--color-nature-2);
   box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
 }
-.btn-filled:focus-visible:not(.btn-filled--disabled) {
+.btn-filled-nature:focus-visible:not(.btn-filled-nature--disabled) {
   outline: none;
   box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 /* ---------- Pressed ---------- */
-.btn-filled--pressed,
-.btn-filled:active:not(.btn-filled--disabled) {
+.btn-filled-nature--pressed,
+.btn-filled-nature:active:not(.btn-filled-nature--disabled) {
   background: var(--color-nature-2);
   transform: scale(0.97);
 }
 
 /* ---------- Disabled ---------- */
-.btn-filled--disabled,
-.btn-filled:disabled {
+.btn-filled-nature--disabled,
+.btn-filled-nature:disabled {
   background: var(--color-gray-5);
   cursor: not-allowed;
   pointer-events: none;
 }
-.btn-filled--disabled .icon,
-.btn-filled:disabled .icon {
+.btn-filled-nature--disabled .icon,
+.btn-filled-nature:disabled .icon {
   color: var(--color-white-100);
+}
+
+/* ============================================
+   Filled Wood — wood 컬러 버튼 (구조 동일, 토큰만 wood)
+
+   States:
+     .btn-filled-wood               Default  — wood-3 배경, white 텍스트, wood-4 아이콘
+     .btn-filled-wood--hover         Hover    — wood-2 배경
+     .btn-filled-wood--focus         Focus    — wood-2 배경 + 3px ring (Reference용)
+     .btn-filled-wood--pressed       Pressed  — wood-2 배경
+     .btn-filled-wood--disabled      Disabled — Gray-5 배경, white 아이콘
+   ============================================ */
+
+/* ---------- Default ---------- */
+.btn-filled-wood {
+  background: var(--color-wood-3);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  color: var(--color-font-primary-white-100);
+}
+.btn-filled-wood .icon {
+  color: var(--color-wood-4);
+}
+
+/* ---------- Hover ---------- */
+.btn-filled-wood--hover,
+.btn-filled-wood:hover:not(.btn-filled-wood--disabled) {
+  background: var(--color-wood-2);
+}
+
+/* ---------- Focus ---------- */
+.btn-filled-wood--focus {
+  background: var(--color-wood-2);
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+.btn-filled-wood:focus-visible:not(.btn-filled-wood--disabled) {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- Pressed ---------- */
+.btn-filled-wood--pressed,
+.btn-filled-wood:active:not(.btn-filled-wood--disabled) {
+  background: var(--color-wood-2);
+  transform: scale(0.97);
+}
+
+/* ---------- Disabled ---------- */
+.btn-filled-wood--disabled,
+.btn-filled-wood:disabled {
+  background: var(--color-gray-5);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.btn-filled-wood--disabled .icon,
+.btn-filled-wood:disabled .icon {
+  color: var(--color-white-100);
+}
+
+/* ============================================
+   Glass — 반투명 white 버튼
+
+   States:
+     .btn-glass               Default  — white-50 배경
+     .btn-glass--hover         Hover    — white-100 배경
+     .btn-glass--focus         Focus    — white-100 배경 + 3px ring (Reference용)
+     .btn-glass--pressed       Pressed  — white-100 배경
+     .btn-glass--disabled      Disabled — 텍스트/아이콘 black-30
+   ============================================ */
+
+/* ---------- Default ---------- */
+.btn-glass {
+  background: var(--color-white-50);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  color: var(--color-font-primary-black-100);
+}
+.btn-glass .icon {
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Hover ---------- */
+.btn-glass--hover,
+.btn-glass:hover:not(.btn-glass--disabled) {
+  background: var(--color-white-100);
+}
+
+/* ---------- Focus ---------- */
+.btn-glass--focus {
+  background: var(--color-white-100);
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+.btn-glass:focus-visible:not(.btn-glass--disabled) {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ---------- Pressed ---------- */
+.btn-glass--pressed,
+.btn-glass:active:not(.btn-glass--disabled) {
+  background: var(--color-white-100);
+  transform: scale(0.97);
+}
+
+/* ---------- Disabled ---------- */
+.btn-glass--disabled,
+.btn-glass:disabled {
+  color: var(--color-font-primary-black-30);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.btn-glass--disabled .icon,
+.btn-glass:disabled .icon {
+  color: var(--color-font-primary-black-30);
 }

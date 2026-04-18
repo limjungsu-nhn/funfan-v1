@@ -141,7 +141,7 @@ body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
          <span class="text-caption-w4">Label</span>
        </label>
        <div class="radio-group-card__footer">
-         <button class="btn btn-filled">
+         <button class="btn btn-filled-nature">
            <span class="text-assist-w4">Action</span>
          </button>
        </div>
