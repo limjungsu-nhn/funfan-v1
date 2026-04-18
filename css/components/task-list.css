@@ -1,0 +1,261 @@
+/* ============================================
+   Task List Component — タスクリスト入力行
+
+   HTML 구조:
+     <div class="task-row [modifier]">
+       <div class="task-row__field">
+         <span class="task-row__num">1.</span>
+         <input class="task-row__input" type="text" placeholder="入力してください・・・">
+       </div>
+       <button class="task-row__btn" type="button" aria-label="完了">
+         <i class="icon icon-check-small"></i>
+       </button>
+     </div>
+
+   States:
+     .task-row                 Default  — placeholder 투명, 버튼 비표시
+     .task-row--hover          Hover    — placeholder 30%
+     .task-row--focus          Focus    — outline + placeholder 30%
+     .task-row--pressed        Pressed  — placeholder 30% (hover와 동일)
+     (내용 있음)               Typed    — 버튼 비표시
+     .task-row--typed-hover    TypedHover   — check 표시
+     .task-row--done           Completed    — strikethrough + red check
+
+   .task-row--empty: JS가 내용 없을 때 부여, 버튼 강제 숨김용
+   注意: input :focus-visible 는 마우스에도 적용 → JS using-mouse 패턴 필수
+   ============================================ */
+
+/* ---------- Row ---------- */
+.task-row {
+  width: 244px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+}
+
+/* ---------- Field ---------- */
+.task-row__field {
+  flex: 1;
+  min-width: 0;
+  padding-left: 2px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  position: relative;
+}
+
+/* ---------- Number ---------- */
+.task-row__num {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-assist);
+  line-height: var(--line-height-assist);
+  font-weight: var(--font-weight-w6);
+  color: var(--color-font-primary-black-100);
+  flex-shrink: 0;
+}
+
+/* ---------- Input ---------- */
+.task-row__input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-assist);
+  line-height: var(--line-height-assist);
+  font-weight: var(--font-weight-w4);
+  color: var(--color-font-primary-black-100);
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  word-wrap: break-word;
+}
+
+/* Placeholder — Default: 투명 (black-0) */
+.task-row__input::placeholder {
+  color: var(--color-font-primary-black-0);
+  font-weight: var(--font-weight-w4);
+}
+
+/* Hover / Focus / Pressed: placeholder 30% */
+.task-row:hover .task-row__input::placeholder,
+.task-row:focus-within .task-row__input::placeholder,
+.task-row--hover .task-row__input::placeholder,
+.task-row--focus .task-row__input::placeholder,
+.task-row--pressed .task-row__input::placeholder {
+  color: var(--color-font-primary-black-30);
+}
+
+/* Focus ring — input은 마우스에도 :focus-visible 적용 → JS using-mouse 패턴 */
+body:not(.using-mouse) .task-row:has(.task-row__input:focus-visible),
+.task-row--focus {
+  outline: 3px var(--color-gray-4) solid;
+  outline-offset: 0;
+  border-radius: 2px;
+}
+
+/* ---------- Action Button ---------- */
+.task-row__btn {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  color: var(--color-font-primary-black-100);
+  transition: opacity 0.1s;
+}
+
+/* 편집 모드 + 내용 있음: x 표시 */
+.task-list--editing .task-row:not(.task-row--empty) .task-row__btn {
+  opacity: 1;
+  color: var(--color-font-primary-black-100);
+}
+
+/* 저장 모드 + 내용 있음 + hover: check 표시 */
+.task-list:not(.task-list--editing) .task-row:not(.task-row--empty):hover .task-row__btn,
+.task-row--typed-hover .task-row__btn {
+  opacity: 1;
+}
+
+/* Done: check 항상 표시 + 빨간색 */
+.task-row--done .task-row__btn {
+  opacity: 1;
+  color: var(--color-red-100);
+}
+
+/* ==============================================
+   Task List Panel — ポストイット背景付きパネル
+
+   HTML 구조:
+     <div class="task-list-modal" id="task-list-modal">
+       <div class="task-list-panel">
+         <div class="task-list-panel__header">
+           <span class="task-list-panel__title text-assist-w6">今日のタスク</span>
+           <button class="task-list-panel__close" type="button">
+             <i class="icon icon-close"></i>
+           </button>
+         </div>
+         <div class="task-list" id="task-list">
+           <!-- task-row × n -->
+         </div>
+         <div class="task-list-panel__footer">
+           <button class="task-list-panel__add" type="button">
+             <i class="icon icon-add"></i>
+             <span class="text-assist-w4">タスクを追加</span>
+           </button>
+         </div>
+       </div>
+     </div>
+   ============================================== */
+
+/* ---------- Modal Overlay ---------- */
+.task-list-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.task-list-modal--open {
+  display: block;
+}
+
+/* ---------- Panel ---------- */
+.task-list-panel {
+  width: 294px;
+  background-image: url('../../img/postit.png');
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  padding: 24px 28px 38px 22px;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  pointer-events: auto;
+}
+
+/* ---------- Header ---------- */
+.task-list-panel__header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-list-panel__title {
+  color: var(--color-font-primary-black-100);
+}
+
+.task-list-panel__desc {
+  margin: 0;
+  padding: 0;
+  color: var(--color-font-primary-black-100);
+  opacity: 0.5;
+}
+
+/* ---------- Save Button ---------- */
+.task-save-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-font-primary-black-100);
+}
+
+/* Focus / Pressed: outline */
+body:not(.using-mouse) .task-save-btn:focus-visible,
+.task-save-btn--focus,
+.task-save-btn--pressed {
+  outline: 3px var(--color-gray-5) solid;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Disabled */
+.task-save-btn:disabled,
+.task-save-btn--disabled {
+  color: var(--color-font-primary-black-30);
+  pointer-events: none;
+  cursor: default;
+}
+
+/* ---------- List Area ---------- */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ---------- Footer ---------- */
+.task-list-panel__footer {
+  align-self: flex-end;
+  display: inline-flex;
+}
+
+/* ---------- Done State ---------- */
+.task-row--done .task-row__input {
+  color: var(--color-font-primary-black-100);
+}
+
+/* 취소선 — 216px = --p15 */
+.task-row--done .task-row__field::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--p15);
+  height: 6px;
+  background: var(--color-red-30);
+  pointer-events: none;
+}

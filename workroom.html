@@ -4,6 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Workroom — FunFan</title>
+  <!-- mini 모드 FOUC 방지: CSS 로드 전에 클래스 적용 -->
+  <script>
+    if (new URLSearchParams(location.search).get('mode') === 'mini') {
+      document.documentElement.classList.add('mini-mode');
+    }
+  </script>
 
   <!-- Design Tokens -->
   <link rel="stylesheet" href="css/tokens/typography.css">
@@ -20,6 +26,7 @@
   <link rel="stylesheet" href="css/components/panel-header.css">
   <link rel="stylesheet" href="css/components/menu-item.css">
   <link rel="stylesheet" href="css/components/left-panel.css">
+  <link rel="stylesheet" href="css/components/review-item.css">
   <link rel="stylesheet" href="css/components/msg-bubble.css">
   <link rel="stylesheet" href="css/components/chat-msg.css">
   <link rel="stylesheet" href="css/components/my-msg.css">
@@ -30,6 +37,7 @@
   <link rel="stylesheet" href="css/components/send-btn.css">
   <link rel="stylesheet" href="css/components/right-panel.css">
   <link rel="stylesheet" href="css/components/float-btn.css">
+  <link rel="stylesheet" href="css/components/task-list.css">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; }
@@ -62,6 +70,33 @@
       position: relative;
       z-index: 10; /* navbar(100) 아래, 일반 콘텐츠 위 */
     }
+
+    /* work-room-left-panel: mini 모드 전용 왼쪽 패널 */
+    .workspace .work-room-left-panel {
+      display: none;
+    }
+    .workspace--mini .work-room-left-panel,
+    html.mini-mode .workspace .work-room-left-panel {
+      display: flex;
+      height: 100%;
+    }
+    /* mini 모드: left-panel 숨김 */
+    .workspace--mini .left-panel,
+    html.mini-mode .workspace .left-panel {
+      display: none;
+    }
+
+    /* mini 모드에서만 task 패널 표시 */
+    html:not(.mini-mode) .task-list-modal--open { display: none; }
+
+    /* mini 모드: 가운데 라디오 카드 숨김 */
+    .workspace--mini .radio-group-card,
+    html.mini-mode .radio-group-card { display: none; }
+
+    /* mini 모드 FOUC 방지 — navbar */
+    html.mini-mode .navbar .navbar-tabs { display: flex; }
+    html.mini-mode .navbar .navbar-btn--normal { display: none; }
+    html.mini-mode .navbar .navbar-btn--work { display: inline-flex; }
 
 
     /* ---------- Main Content ---------- */
@@ -116,6 +151,10 @@
         <i class="icon icon-account-circle"></i>
         <span class="text-assist-w4">マイページ</span>
       </button>
+      <button class="btn btn-ghost navbar-btn--work" id="task-list-open-btn" style="display:none">
+        <i class="icon icon-check-circle"></i>
+        <span class="text-assist-w4">タスクリスト</span>
+      </button>
       <button class="btn btn-ghost navbar-btn--work">
         <i class="icon icon-exit-to-app"></i>
         <span class="text-assist-w4">作業終了</span>
@@ -126,6 +165,45 @@
       </button>
     </div>
   </header>
+
+  <!-- Task List Modal — body 직계 자식으로 배치 (flex 레이아웃 영향 방지) -->
+  <div class="task-list-modal task-list-modal--open" id="task-list-modal">
+    <div class="task-list-panel">
+      <div class="task-list-panel__header">
+        <span class="task-list-panel__title text-body-sm-w6">今日のタスク</span>
+        <p class="text-caption-w4 task-list-panel__desc">今日進めることを3件まで整理して、作業終了時に見返せます。</p>
+      </div>
+      <div class="task-list" id="task-list">
+        <div class="task-row task-row--empty">
+          <div class="task-row__field">
+            <span class="task-row__num">1.</span>
+            <input class="task-row__input" type="text" placeholder="入力してください・・・" autocomplete="off">
+          </div>
+          <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
+        </div>
+        <div class="task-row task-row--empty">
+          <div class="task-row__field">
+            <span class="task-row__num">2.</span>
+            <input class="task-row__input" type="text" placeholder="入力してください・・・" autocomplete="off">
+          </div>
+          <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
+        </div>
+        <div class="task-row task-row--empty">
+          <div class="task-row__field">
+            <span class="task-row__num">3.</span>
+            <input class="task-row__input" type="text" placeholder="入力してください・・・" autocomplete="off">
+          </div>
+          <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
+        </div>
+      </div>
+      <div class="task-list-panel__footer">
+        <button class="task-save-btn" type="button" id="task-save-btn" disabled>
+          <i class="icon icon-check-small"></i>
+          <span class="text-assist-w4">保存</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- App Shell -->
   <div class="workspace">
@@ -166,6 +244,149 @@
       </nav>
 
     </div>
+
+    <!-- Fan Feed Outer — mini 모드 전용 왼쪽 패널 -->
+    <div class="work-room-left-panel">
+    <div class="fan-feed">
+      <div class="fan-feed__header">
+        <span class="text-body-sm-w6">フィード</span>
+      </div>
+      <div class="fan-feed__body">
+        <div class="fan-feed__list">
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">💧</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">シオアナ、寂しかったんだね…クズが帰って来なければ平和なのに。</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">⭐</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">そっか<br>二人とも一目惚れだったんか<br>自覚ないけど<br>最初から読み直してきた笑</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">💬</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">この二人見てたらほっこりする。可愛いカプだわ。ホントお兄ちゃん帰って来なければ楽園なのに。🤢</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">💧</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">さくら✿さんが水をあげました</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">⭐</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">この兄貴と父親最低だな。<br>ってか、兄ちゃんは借金さえ無ければ帰ってこないほうが幸せだ。</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">💧</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">良いわ〜〜〜〜〜( *´艸`)<br>二人の間に吹く爽やかな風を感じるぅ！<br>シオも父兄と絡んでない時はこんなに明るくて自由なんだ。私も嬉しくなるわ。</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">💬</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">はるさんが作品をお気に入りにした</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">💧</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">シオアナ、寂しかったんだね…クズが帰って来なければ平和なのに。</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">💧</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">シオアナ、寂しかったんだね…クズが帰って来なければ平和なのに。</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">⭐</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">そっか<br>二人とも一目惚れだったんか<br>自覚ないけど<br>最初から読み直してきた笑</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">💬</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">この二人見てたらほっこりする。可愛いカプだわ。ホントお兄ちゃん帰って来なければ楽園なのに。🤢</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">💧</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">さくら✿さんが水をあげました</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">⭐</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">この兄貴と父親最低だな。<br>ってか、兄ちゃんは借金さえ無ければ帰ってこないほうが幸せだ。</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">💧</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">良いわ〜〜〜〜〜( *´艸`)<br>二人の間に吹く爽やかな風を感じるぅ！<br>シオも父兄と絡んでない時はこんなに明るくて自由なんだ。私も嬉しくなるわ。</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">💬</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">はるさんが作品をお気に入りにした</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+          <div class="review-item review-item--fan">
+            <div class="review-item__icon">💧</div>
+            <div class="review-item__body">
+              <p class="text-caption-w4 review-item__text">シオアナ、寂しかったんだね…クズが帰って来なければ平和なのに。</p>
+              <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+            </div>
+          </div>
+
+        </div>
+        <div class="fan-feed__fade"></div>
+      </div>
+    </div>
+    </div><!-- /.work-room-left-panel -->
 
     <!-- Main Content -->
     <div class="workspace__main">
@@ -479,6 +700,150 @@
       });
     })();
 
+    // ── Task List ──────────────────────────────────────
+    (() => {
+      const taskList = document.getElementById('task-list');
+      const saveBtn  = document.getElementById('task-save-btn');
+      if (!taskList || !saveBtn) return;
+
+      const STORAGE_KEY = 'funfan-task-list';
+      const saveBtnIcon = saveBtn.querySelector('.icon');
+      const saveBtnText = saveBtn.querySelector('span');
+      let isSaved = false;
+      let savedSnapshot = null; // 마지막 저장 시점의 데이터
+
+      function getSnapshot() {
+        return [...taskList.querySelectorAll('.task-row')].map(row => ({
+          text: row.querySelector('.task-row__input').value,
+          done: row.classList.contains('task-row--done')
+        }));
+      }
+
+      function hasChanges() {
+        const current = getSnapshot();
+        if (!savedSnapshot) {
+          // 저장된 적 없음 → 내용 있으면 변경으로 간주
+          return current.some(d => d.text.trim());
+        }
+        return current.some((d, i) => {
+          const s = savedSnapshot[i] || { text: '', done: false };
+          return d.text !== s.text || d.done !== s.done;
+        });
+      }
+
+      function updateFooterBtn(saved) {
+        if (saved) {
+          saveBtnIcon.hidden = true;
+          saveBtnText.textContent = '編集';
+          saveBtn.disabled = false;
+        } else {
+          saveBtnIcon.hidden = false;
+          saveBtnIcon.className = 'icon icon-check-small';
+          saveBtnText.textContent = '保存';
+          saveBtn.disabled = !hasChanges();
+        }
+      }
+
+      function setEditing(enabled) {
+        taskList.classList.toggle('task-list--editing', enabled);
+        taskList.querySelectorAll('.task-row').forEach(row => {
+          row.querySelector('.task-row__input').readOnly = !enabled;
+          const btnIcon = row.querySelector('.task-row__btn .icon');
+          if (enabled) {
+            btnIcon.className = 'icon icon--md icon-cancel';
+            row.querySelector('.task-row__btn').setAttribute('aria-label', 'クリア');
+          } else {
+            btnIcon.className = 'icon icon--md icon-check-small';
+            row.querySelector('.task-row__btn').setAttribute('aria-label', '完了');
+          }
+        });
+      }
+
+      function saveToStorage() {
+        const data = getSnapshot();
+        savedSnapshot = data;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      }
+
+      function loadFromStorage() {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        taskList.querySelectorAll('.task-row').forEach((row, i) => {
+          const d = data[i];
+          if (!d) return;
+          const input = row.querySelector('.task-row__input');
+          input.value = d.text || '';
+          row.classList.toggle('task-row--empty', !input.value.trim());
+          row.classList.toggle('task-row--done', !!d.done);
+        });
+        savedSnapshot = data;
+        // 저장된 값에 내용이 있을 때만 저장 모드로 전환
+        const hasContent = data.some(d => (d.text || '').trim());
+        if (hasContent) {
+          isSaved = true;
+          setEditing(false);
+          updateFooterBtn(true);
+        }
+      }
+
+      taskList.querySelectorAll('.task-row').forEach(row => {
+        const input = row.querySelector('.task-row__input');
+        const btn   = row.querySelector('.task-row__btn');
+
+        input.addEventListener('input', () => {
+          const empty = !input.value.trim();
+          row.classList.toggle('task-row--empty', empty);
+          if (empty) row.classList.remove('task-row--done');
+          updateFooterBtn(isSaved);
+        });
+
+        btn.addEventListener('click', () => {
+          if (taskList.classList.contains('task-list--editing')) {
+            // 편집 모드: x 버튼 → 텍스트 지우기
+            input.value = '';
+            row.classList.add('task-row--empty');
+            row.classList.remove('task-row--done');
+            updateFooterBtn(isSaved);
+          } else {
+            // 저장 모드: check 버튼 → 완료 토글
+            row.classList.toggle('task-row--done');
+            saveToStorage();
+          }
+        });
+      });
+
+      saveBtn.addEventListener('click', () => {
+        if (isSaved) {
+          // 編集 클릭 → 편집 모드 진입
+          setEditing(true);
+          isSaved = false;
+          updateFooterBtn(false);
+        } else {
+          // 保存 클릭 → 저장
+          saveToStorage();
+          const hasContent = getSnapshot().some(d => d.text.trim());
+          if (hasContent) {
+            setEditing(false);
+            isSaved = true;
+            updateFooterBtn(true);
+          } else {
+            // 모든 필드가 비어 있으면 편집 모드 유지
+            updateFooterBtn(false);
+          }
+        }
+      });
+
+      // 브라우저 세션 복원으로 인한 input 잔류값 초기화
+      taskList.querySelectorAll('.task-row').forEach(row => {
+        row.querySelector('.task-row__input').value = '';
+        row.classList.add('task-row--empty');
+        row.classList.remove('task-row--done');
+      });
+      setEditing(true);
+      loadFromStorage();
+    })();
+
     // ── Float Button — 패널 열림/닫힘 토글 ─────────────────────
     (() => {
       const floatBtn   = document.getElementById('ws-float-btn');
@@ -491,6 +856,7 @@
       if (params.get('mode') === 'mini') {
         document.querySelector('.navbar').classList.add('navbar--work-mode');
         document.querySelector('.workspace').classList.add('workspace--mini');
+        document.getElementById('ws-right-wrapper').classList.add('right-panel-wrapper--static');
 
         // 탭 너비 균등화 + 클릭 선택 전환 + 초기 선택 탭 적용
         document.querySelectorAll('.navbar .tab-group').forEach(group => {
@@ -500,10 +866,12 @@
           // 초기 선택 탭 적용
           tabs.forEach((t, i) => t.classList.toggle('tab--selected', i === tabIndex));
 
-          // 너비 균등화
+          // 너비 균등화 (측정 중 점프 방지)
+          group.style.visibility = 'hidden';
           let maxW = 0;
           tabs.forEach(t => maxW = Math.max(maxW, t.getBoundingClientRect().width));
           group.style.setProperty('--tab-min-w', Math.ceil(maxW) + 'px');
+          group.style.visibility = '';
 
           // 클릭 선택 전환
           tabs.forEach(tab => {
@@ -514,6 +882,9 @@
           });
         });
       }
+
+      // static 케이스 — 항상 표시, 토글 불가
+      if (wrapper.classList.contains('right-panel-wrapper--static')) return;
 
       const PANEL_KEY = 'rightPanelOpen';
       let isOpen = localStorage.getItem(PANEL_KEY) !== 'false';
@@ -536,6 +907,7 @@
       });
     })();
   </script>
+
 
 </body>
 </html>

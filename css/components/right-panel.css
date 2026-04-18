@@ -164,6 +164,14 @@
   transition: none;
 }
 
+/* Static — 항상 표시, 접기 불가 */
+.right-panel-wrapper--static {
+  transition: none;
+}
+.right-panel-wrapper--static .float-btn {
+  display: none;
+}
+
 /* 랜딩 중 wrapper 확장 → 중앙 영역 flex 공간 축소 */
 .workspace--landing .right-panel-wrapper {
   flex-basis: var(--p40);

@@ -442,6 +442,10 @@ body {
   background: var(--color-gray-6);
 }
 
+.sg-demo-footer {
+  margin-top: 16px;
+}
+
 /* ---------- Tab Demo ---------- */
 .sg-tab-demo { /* tab-group 스타일 tab.css에서 상속 */ }
 
@@ -457,6 +461,21 @@ body {
 }
 .sg-type-preview--fan-feed .fan-feed {
   height: 100%;
+}
+
+/* Work Room Left Panel 데모 프리뷰 높이 */
+.sg-type-preview--work-room-left-panel {
+  padding: 0;
+  height: 1080px; /* 696px 内パネル + 320px 上余白 + navbar-height 64px */
+}
+.sg-type-preview--work-room-left-panel .work-room-left-panel {
+  height: 1080px;
+}
+
+/* Task List Panel 프리뷰 */
+.sg-type-preview--task-list-panel {
+  padding: 0;
+  align-items: flex-start;
 }
 
 .sg-demo-item {

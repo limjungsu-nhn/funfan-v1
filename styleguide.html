@@ -35,6 +35,7 @@
   <link rel="stylesheet" href="css/components/tab.css">
   <link rel="stylesheet" href="css/components/badge.css">
   <link rel="stylesheet" href="css/components/float-btn.css">
+  <link rel="stylesheet" href="css/components/task-list.css">
 
   <!-- Styleguide -->
   <link rel="stylesheet" href="css/styleguide.css">
@@ -90,11 +91,13 @@
         <a href="#badges">Badges</a>
         <a href="#review-item">Review Item</a>
         <a href="#fan-feed">Fan Feed</a>
+        <a href="#task-list">Task List</a>
       </div>
       <div class="sg-nav-divider"></div>
       <div class="sg-nav-section">
         <div class="sg-nav-label">Patterns</div>
         <a href="#left-panel">Left Panel</a>
+        <a href="#work-room-left-panel">Work Room Left Panel</a>
         <a href="#navigation">Navigation</a>
         <a href="#forms">Forms</a>
         <a href="#modals">Modals</a>
@@ -478,6 +481,14 @@
                 <span class="sg-color-hex">#1D1D1F · 30%</span>
               </div>
             </div>
+            <div class="sg-color-card">
+              <div class="sg-color-swatch" style="background:var(--color-font-primary-black-0)"></div>
+              <div class="sg-color-info">
+                <span class="sg-color-name">Primary Black 0</span>
+                <code class="sg-color-var">--color-font-primary-black-0</code>
+                <span class="sg-color-hex">#1D1D1F · 0%</span>
+              </div>
+            </div>
             <div class="sg-color-card sg-color-card--dark">
               <div class="sg-color-swatch" style="background:var(--color-font-primary-white-100)"></div>
               <div class="sg-color-info">
@@ -500,6 +511,14 @@
                 <span class="sg-color-name">Primary White 30</span>
                 <code class="sg-color-var">--color-font-primary-white-30</code>
                 <span class="sg-color-hex">#FFFFFF · 30%</span>
+              </div>
+            </div>
+            <div class="sg-color-card sg-color-card--dark">
+              <div class="sg-color-swatch" style="background:var(--color-font-primary-white-0)"></div>
+              <div class="sg-color-info">
+                <span class="sg-color-name">Primary White 0</span>
+                <code class="sg-color-var">--color-font-primary-white-0</code>
+                <span class="sg-color-hex">#FFFFFF · 0%</span>
               </div>
             </div>
             <div class="sg-color-card">
@@ -733,7 +752,7 @@
       <section class="sg-section" id="icons" data-section="icons">
         <div class="sg-section-header">
           <h2 class="sg-section-title">Icons</h2>
-          <span class="sg-section-desc">icon.css · 17개 · mask-image 방식 · 기본 18px · color로 색상 제어</span>
+          <span class="sg-section-desc">icon.css · 18개 · mask-image 방식 · 기본 18px · color로 색상 제어</span>
         </div>
 
         <!-- Size variants -->
@@ -804,6 +823,16 @@
               <div class="sg-icon-info">
                 <span class="sg-icon-name">bar-chart</span>
                 <code class="sg-type-classname">.icon-bar-chart</code>
+              </div>
+            </div>
+
+            <div class="sg-icon-card">
+              <div class="sg-icon-preview">
+                <i class="icon icon-cancel"></i>
+              </div>
+              <div class="sg-icon-info">
+                <span class="sg-icon-name">cancel</span>
+                <code class="sg-type-classname">.icon-cancel</code>
               </div>
             </div>
 
@@ -3066,10 +3095,11 @@
       <section class="sg-section" id="fan-feed" data-section="fan-feed">
         <div class="sg-section-header">
           <h2 class="sg-section-title">Fan Feed</h2>
-          <span class="sg-section-desc">review-item.css · フィード パネル · スクロール可 · スクロールバー非表示 · width 288px</span>
+          <span class="sg-section-desc">review-item.css · フィード パネル + 外枠 · スクロール可 · width 288px</span>
         </div>
 
         <div class="sg-subsection">
+          <p class="sg-subsection-title">Fan Feed Panel (.fan-feed)</p>
           <div class="sg-type-table">
             <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
             <div class="sg-type-row">
@@ -3142,10 +3172,292 @@
                 </div>
               </div>
               <code class="sg-type-classname">.fan-feed<br>.fan-feed__header<br>.fan-feed__body<br>.fan-feed__list<br>.fan-feed__fade</code>
-              <div class="sg-type-meta">8개 아이템<br>스크롤 가능<br>스크롤바 숨김<br>상단 페이드 오버레이<br>review-item--fan 재활용</div>
+              <div class="sg-type-meta">8개 아이템 · 스크롤 가능<br>스크롤바 숨김 · 상단 페이드<br>review-item--fan 재활용<br>text-body-lg-w4 (18px)</div>
             </div>
           </div>
         </div>
+
+      </section>
+
+      <!-- ========================
+           TASK LIST
+      ========================= -->
+      <section class="sg-section" id="task-list" data-section="task-list">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Task List</h2>
+          <span class="sg-section-desc">task-list.css · タスク入力行 + ポストイットパネル · width 244px</span>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Row States</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+
+            <!-- Default -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="task-row task-row--empty">
+                  <div class="task-row__field">
+                    <span class="task-row__num">1.</span>
+                    <input class="task-row__input" type="text" placeholder="入力してください・・・" readonly>
+                  </div>
+                  <button class="task-row__btn" type="button" aria-label="完了"><i class="icon icon--md icon-check-small"></i></button>
+                </div>
+              </div>
+              <code class="sg-type-classname">.task-row.task-row--empty</code>
+              <div class="sg-type-meta">Default — placeholder 透明<br>ボタン非表示</div>
+            </div>
+
+            <!-- Hover -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="task-row task-row--empty task-row--hover">
+                  <div class="task-row__field">
+                    <span class="task-row__num">1.</span>
+                    <input class="task-row__input" type="text" placeholder="入力してください・・・" readonly>
+                  </div>
+                  <button class="task-row__btn" type="button" aria-label="完了"><i class="icon icon--md icon-check-small"></i></button>
+                </div>
+              </div>
+              <code class="sg-type-classname">.task-row--hover</code>
+              <div class="sg-type-meta">Hover — placeholder 30%<br>ボタン非表示</div>
+            </div>
+
+            <!-- Focus -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="task-row task-row--empty task-row--focus">
+                  <div class="task-row__field">
+                    <span class="task-row__num">1.</span>
+                    <input class="task-row__input" type="text" placeholder="入力してください・・・" readonly>
+                  </div>
+                  <button class="task-row__btn" type="button" aria-label="完了"><i class="icon icon--md icon-check-small"></i></button>
+                </div>
+              </div>
+              <code class="sg-type-classname">.task-row--focus</code>
+              <div class="sg-type-meta">Focus — outline 3px gray-4<br>placeholder 30%</div>
+            </div>
+
+            <!-- Pressed -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="task-row task-row--empty task-row--pressed">
+                  <div class="task-row__field">
+                    <span class="task-row__num">1.</span>
+                    <input class="task-row__input" type="text" placeholder="入力してください・・・" readonly>
+                  </div>
+                  <button class="task-row__btn" type="button" aria-label="完了"><i class="icon icon--md icon-check-small"></i></button>
+                </div>
+              </div>
+              <code class="sg-type-classname">.task-row--pressed</code>
+              <div class="sg-type-meta">Pressed — placeholder 30%<br>ボタン非表示</div>
+            </div>
+
+            <!-- Typing -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="task-row task-row--focus">
+                  <div class="task-row__field">
+                    <span class="task-row__num">1.</span>
+                    <input class="task-row__input" type="text" value="ご飯を食べる" readonly>
+                  </div>
+                  <button class="task-row__btn" type="button" aria-label="完了"><i class="icon icon--md icon-check-small"></i></button>
+                </div>
+              </div>
+              <code class="sg-type-classname">.task-row.task-row--focus<br>(内容あり · 入力中)</code>
+              <div class="sg-type-meta">Typing — ボタン非表示</div>
+            </div>
+
+            <!-- Typed -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="task-row">
+                  <div class="task-row__field">
+                    <span class="task-row__num">1.</span>
+                    <input class="task-row__input" type="text" value="ご飯を食べる" readonly>
+                  </div>
+                  <button class="task-row__btn" type="button" aria-label="完了"><i class="icon icon--md icon-check-small"></i></button>
+                </div>
+              </div>
+              <code class="sg-type-classname">.task-row<br>(内容あり · blur後)</code>
+              <div class="sg-type-meta">Typed — ボタン非表示</div>
+            </div>
+
+            <!-- Editing (x 버튼 표시) -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="task-list task-list--editing">
+                  <div class="task-row">
+                    <div class="task-row__field">
+                      <span class="task-row__num">1.</span>
+                      <input class="task-row__input" type="text" value="ご飯を食べる" readonly>
+                    </div>
+                    <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.task-list--editing<br>└ .task-row<br>(内容あり · 編集中)</code>
+              <div class="sg-type-meta">Editing — x ボタン表示</div>
+            </div>
+
+            <!-- TypedHover -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="task-row task-row--typed-hover">
+                  <div class="task-row__field">
+                    <span class="task-row__num">1.</span>
+                    <input class="task-row__input" type="text" value="ご飯を食べる" readonly>
+                  </div>
+                  <button class="task-row__btn" type="button" aria-label="完了"><i class="icon icon--md icon-check-small"></i></button>
+                </div>
+              </div>
+              <code class="sg-type-classname">.task-row--typed-hover</code>
+              <div class="sg-type-meta">TypedHover — check 表示</div>
+            </div>
+
+            <!-- Done -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="task-row task-row--done">
+                  <div class="task-row__field">
+                    <span class="task-row__num">1.</span>
+                    <input class="task-row__input" type="text" value="ご飯を食べる" readonly>
+                  </div>
+                  <button class="task-row__btn" type="button" aria-label="完了"><i class="icon icon--md icon-check-small"></i></button>
+                </div>
+              </div>
+              <code class="sg-type-classname">.task-row--done</code>
+              <div class="sg-type-meta">Completed — 取消線(red-30)<br>check 赤色常時表示<br>文字色 black-100</div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Interactive Demo</p>
+          <div class="sg-demo-canvas">
+            <div class="task-list task-list--editing" id="sg-task-list"></div>
+          </div>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Save Button — Interactive</p>
+          <div class="sg-type-table sg-type-table--interactive">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Case</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="task-save-btn" type="button"><i class="icon icon-check-small"></i><span class="text-assist-w4">保存</span></button>
+              </div>
+              <code class="sg-type-classname">.task-save-btn</code>
+              <div class="sg-type-meta"><strong>아이콘 + 텍스트</strong></div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="task-save-btn" type="button"><span class="text-assist-w4">保存</span><i class="icon icon-check-small"></i></button>
+              </div>
+              <code class="sg-type-classname">.task-save-btn</code>
+              <div class="sg-type-meta"><strong>텍스트 + 아이콘</strong></div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="task-save-btn" type="button"><span class="text-assist-w4">保存</span></button>
+              </div>
+              <code class="sg-type-classname">.task-save-btn</code>
+              <div class="sg-type-meta"><strong>텍스트</strong></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Save Button — States Reference</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>State</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="task-save-btn" type="button"><i class="icon icon-check-small"></i><span class="text-assist-w4">保存</span><i class="icon icon-check-small"></i></button>
+              </div>
+              <code class="sg-type-classname">.task-save-btn</code>
+              <div class="sg-type-meta"><strong>Default</strong></div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="task-save-btn" type="button"><i class="icon icon-check-small"></i><span class="text-assist-w4">保存</span><i class="icon icon-check-small"></i></button>
+              </div>
+              <code class="sg-type-classname">.task-save-btn</code>
+              <div class="sg-type-meta"><strong>Hover</strong><br>Default と同じ</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="task-save-btn task-save-btn--focus" type="button"><i class="icon icon-check-small"></i><span class="text-assist-w4">保存</span><i class="icon icon-check-small"></i></button>
+              </div>
+              <code class="sg-type-classname">.task-save-btn--focus</code>
+              <div class="sg-type-meta"><strong>Focus</strong><br>outline 3px gray-5</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="task-save-btn task-save-btn--pressed" type="button"><i class="icon icon-check-small"></i><span class="text-assist-w4">保存</span><i class="icon icon-check-small"></i></button>
+              </div>
+              <code class="sg-type-classname">.task-save-btn--pressed</code>
+              <div class="sg-type-meta"><strong>Pressed</strong><br>outline 3px gray-5</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <button class="task-save-btn task-save-btn--disabled" type="button"><i class="icon icon-check-small"></i><span class="text-assist-w4">保存</span><i class="icon icon-check-small"></i></button>
+              </div>
+              <code class="sg-type-classname">.task-save-btn--disabled</code>
+              <div class="sg-type-meta"><strong>Disabled</strong><br>color black-30</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Task List Panel (.task-list-panel)</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview sg-type-preview--task-list-panel">
+                <div class="task-list-panel">
+                  <div class="task-list-panel__header">
+                    <span class="task-list-panel__title text-body-sm-w6">今日のタスク</span>
+                    <p class="text-caption-w4 task-list-panel__desc">今日進めることを3件まで整理して、作業終了時に見返せます。</p>
+                  </div>
+                  <div class="task-list">
+                    <div class="task-row task-row--empty">
+                      <div class="task-row__field">
+                        <span class="task-row__num">1.</span>
+                        <input class="task-row__input" type="text" placeholder="入力してください・・・" readonly>
+                      </div>
+                      <button class="task-row__btn" type="button" aria-label="完了"><i class="icon icon--md icon-check-small"></i></button>
+                    </div>
+                    <div class="task-row task-row--empty">
+                      <div class="task-row__field">
+                        <span class="task-row__num">2.</span>
+                        <input class="task-row__input" type="text" placeholder="入力してください・・・" readonly>
+                      </div>
+                      <button class="task-row__btn" type="button" aria-label="完了"><i class="icon icon--md icon-check-small"></i></button>
+                    </div>
+                    <div class="task-row task-row--empty">
+                      <div class="task-row__field">
+                        <span class="task-row__num">3.</span>
+                        <input class="task-row__input" type="text" placeholder="入力してください・・・" readonly>
+                      </div>
+                      <button class="task-row__btn" type="button" aria-label="完了"><i class="icon icon--md icon-check-small"></i></button>
+                    </div>
+                  </div>
+                  <div class="task-list-panel__footer">
+                    <button class="task-save-btn" type="button">
+                      <i class="icon icon-check-small"></i>
+                      <span class="text-assist-w4">保存</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.task-list-modal<br>└ .task-list-panel<br>　├ .task-list-panel__header<br>　│　├ .task-list-panel__title<br>　│　└ .task-list-panel__desc<br>　├ .task-list<br>　│　└ .task-row × 3<br>　└ .task-list-panel__footer<br>　　　└ .task-save-btn</code>
+              <div class="sg-type-meta">postit.png 背景<br>294px · position fixed<br>右上 navbar 直下に表示<br>3行固定 · 保存ボタン右寄せ</div>
+            </div>
+          </div>
+        </div>
+
       </section>
 
       <!-- ========================
@@ -3179,6 +3491,153 @@
           </div>
         </div>
 
+      </section>
+
+      <!-- ========================
+           WORK ROOM LEFT PANEL
+      ========================= -->
+      <section class="sg-section" id="work-room-left-panel" data-section="work-room-left-panel">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Work Room Left Panel</h2>
+          <span class="sg-section-desc">review-item.css · fan-feed 외枠 · 288px × 1016px · align-items: flex-end · 워크룸 새창 전용</span>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Preview</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Info</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview sg-type-preview--work-room-left-panel">
+                <div class="work-room-left-panel">
+                  <div class="fan-feed">
+                    <div class="fan-feed__header">
+                      <span class="text-body-sm-w6">フィード</span>
+                    </div>
+                    <div class="fan-feed__body">
+                      <div class="fan-feed__list">
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">💧</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">シオアナ、寂しかったんだね…クズが帰って来なければ平和なのに。</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">⭐</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">そっか<br>二人とも一目惚れだったんか<br>自覚ないけど<br>最初から読み直してきた笑</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">💬</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">この二人見てたらほっこりする。可愛いカプだわ。ホントお兄ちゃん帰って来なければ楽園なのに。🤢</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">💧</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">さくら✿さんが水をあげました</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">⭐</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">この兄貴と父親最低だな。<br>ってか、兄ちゃんは借金さえ無ければ帰ってこないほうが幸せだ。</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">💧</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">良いわ〜〜〜〜〜( *´艸`)<br>二人の間に吹く爽やかな風を感じるぅ！<br>シオも父兄と絡んでない時はこんなに明るくて自由なんだ。私も嬉しくなるわ。</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">💬</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">はるさんが作品をお気に入りにした</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">💧</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">シオアナ、寂しかったんだね…クズが帰って来なければ平和なのに。</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">💧</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">シオアナ、寂しかったんだね…クズが帰って来なければ平和なのに。</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">⭐</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">そっか<br>二人とも一目惚れだったんか<br>自覚ないけど<br>最初から読み直してきた笑</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">💬</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">この二人見てたらほっこりする。可愛いカプだわ。ホントお兄ちゃん帰って来なければ楽園なのに。🤢</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">💧</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">さくら✿さんが水をあげました</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">⭐</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">この兄貴と父親最低だな。<br>ってか、兄ちゃんは借金さえ無ければ帰ってこないほうが幸せだ。</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">💧</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">良いわ〜〜〜〜〜( *´艸`)<br>二人の間に吹く爽やかな風を感じるぅ！<br>シオも父兄と絡んでない時はこんなに明るくて自由なんだ。私も嬉しくなるわ。</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">💬</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">はるさんが作品をお気に入りにした</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                        <div class="review-item review-item--fan">
+                          <div class="review-item__icon">💧</div>
+                          <div class="review-item__body">
+                            <p class="text-caption-w4 review-item__text">シオアナ、寂しかったんだね…クズが帰って来なければ平和なのに。</p>
+                            <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="fan-feed__fade"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.work-room-left-panel<br>└ .fan-feed</code>
+              <div class="sg-type-meta"><strong>288px × 1016px</strong><br>align-items: flex-end<br>内パネル 696px を底辺配置<br>padding-top: navbar-height<br>overflow: hidden</div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- ========================
@@ -3424,6 +3883,36 @@
           bar.className = 'revenue-card__bar revenue-card__bar--' + lvByRank(val, sortedDesc);
         });
       });
+    })();
+
+    // ── Task List 인터랙티브 데모 ───────────────────────────────
+    (() => {
+      const taskList = document.getElementById('sg-task-list');
+      if (!taskList) return;
+
+      const row = document.createElement('div');
+      row.className = 'task-row task-row--empty';
+
+      const field = document.createElement('div');
+      field.className = 'task-row__field';
+
+      const num = document.createElement('span');
+      num.className = 'task-row__num';
+      num.textContent = '1.';
+
+      const input = document.createElement('input');
+      input.className = 'task-row__input';
+      input.type = 'text';
+      input.placeholder = '入力してください・・・';
+
+      input.addEventListener('input', () => {
+        row.classList.toggle('task-row--empty', !input.value.trim());
+      });
+
+      field.appendChild(num);
+      field.appendChild(input);
+      row.appendChild(field);
+      taskList.appendChild(row);
     })();
 
     // ── Tab Group 공통 초기화 (클릭 선택 전환 + 너비 균등화) ──────

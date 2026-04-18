@@ -185,7 +185,7 @@
 
 .fan-feed__list {
   height: 100%;
-  padding: 20px 0;
+  padding: 12px 0 20px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -205,4 +205,38 @@
   background: linear-gradient(180deg, var(--color-white-100) 0%, rgba(255, 255, 255, 0) 100%);
   pointer-events: none;
   z-index: 1;
+}
+
+/* ==============================================
+   Work Room Left Panel — ワークルーム新規ウィンドウ 左パネル外枠
+   288px × 1016px, align-items:flex-end で
+   696px の fan-feed パネルを底辺に配置
+
+   HTML 구조:
+     <div class="work-room-left-panel">
+       <div class="fan-feed">
+         <div class="fan-feed__header">...</div>
+         <div class="fan-feed__body">
+           <div class="fan-feed__list">
+             <div class="review-item review-item--fan">...</div>
+           </div>
+           <div class="fan-feed__fade"></div>
+         </div>
+       </div>
+     </div>
+   ============================================== */
+
+.work-room-left-panel {
+  width: var(--p20);     /* 288px */
+  background: var(--color-white-100);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding-top: calc(320px + var(--navbar-height));
+}
+
+.work-room-left-panel .fan-feed {
+  flex: 1;
+  min-height: 0;
 }
