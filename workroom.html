@@ -383,7 +383,10 @@
         startBtn.disabled = !Array.from(radios).some(r => r.checked);
       }));
       startBtn.addEventListener('click', () => {
-        window.open('workroom.html?mode=mini', '_blank', 'width=1440,height=1024,resizable=yes');
+        const checked = document.querySelector('input[name="character"]:checked');
+        const labels = document.querySelectorAll('.radio-card');
+        const tabIndex = [...labels].findIndex(l => l.querySelector('input') === checked);
+        window.open(`workroom.html?mode=mini&tab=${tabIndex}`, '_blank', 'width=1440,height=1024,resizable=yes');
       });
     })();
 
@@ -485,15 +488,24 @@
       if (!floatBtn || !wrapper || !rightPanel) return;
 
       // mini 모드: navbar 탭 활성화
-      if (new URLSearchParams(location.search).get('mode') === 'mini') {
+      const params = new URLSearchParams(location.search);
+      if (params.get('mode') === 'mini') {
         document.querySelector('.navbar').classList.add('navbar--work-mode');
 
-        // 탭 너비 균등화 + 클릭 선택 전환
+        // 탭 너비 균등화 + 클릭 선택 전환 + 초기 선택 탭 적용
         document.querySelectorAll('.navbar .tab-group').forEach(group => {
           const tabs = group.querySelectorAll('.tab');
+          const tabIndex = parseInt(params.get('tab') ?? '0', 10);
+
+          // 초기 선택 탭 적용
+          tabs.forEach((t, i) => t.classList.toggle('tab--selected', i === tabIndex));
+
+          // 너비 균등화
           let maxW = 0;
           tabs.forEach(t => maxW = Math.max(maxW, t.getBoundingClientRect().width));
           group.style.setProperty('--tab-min-w', Math.ceil(maxW) + 'px');
+
+          // 클릭 선택 전환
           tabs.forEach(tab => {
             tab.addEventListener('click', () => {
               tabs.forEach(t => t.classList.remove('tab--selected'));
