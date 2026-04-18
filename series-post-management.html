@@ -289,7 +289,7 @@
 
       function appendBotMessage() {
         const wrap = document.createElement('div');
-        wrap.className = 'chat-msg';
+        wrap.className = 'chat-msg chat-msg--new';
         wrap.innerHTML = '<div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div><div class="chat-msg__body"><p class="chat-msg__text"></p></div>';
         chatArea.appendChild(wrap);
         chatArea.scrollTop = chatArea.scrollHeight;

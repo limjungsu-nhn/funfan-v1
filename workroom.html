@@ -45,6 +45,16 @@
   <link rel="stylesheet" href="css/components/task-list.css">
   <link rel="stylesheet" href="css/components/input-wood.css">
 
+  <!-- SVG Filter: 지글지글 스트로크 -->
+  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <filter id="timer-jiggly" x="-8%" y="-8%" width="116%" height="116%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.07 0.06" numOctaves="3" seed="4" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3.5" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+    </defs>
+  </svg>
+
   <style>
     *, *::before, *::after { box-sizing: border-box; }
 
@@ -99,13 +109,134 @@
     .workspace--mini .radio-group-card,
     html.mini-mode .radio-group-card { display: none; }
 
-    /* mini 모드: 배경 이미지 bottom-center (레이아웃 영역 미점유) */
+    /* mini 모드: content padding 제거 (timer가 전체 채움) */
     .workspace--mini .workspace__content,
     html.mini-mode .workspace__content {
+      padding: 0;
+      gap: 0;
+    }
+
+    /* ---------- Timer Layout (mini 모드 전용) ---------- */
+    .workspace__timer {
+      display: none;
+      position: relative;
+      width: 100%;
+      flex: 1;
+      min-height: 0;
+    }
+    .workspace--mini .workspace__timer,
+    html.mini-mode .workspace__timer {
+      display: flex;
+    }
+
+    /* 배경 이미지 — 전체 영역에 절대 배치, bottom center 고정 */
+    .workspace__timer-bg {
+      position: absolute;
+      inset: 0;
       background-image: url('img/bg_workroom.png');
       background-repeat: no-repeat;
       background-position: bottom center;
       background-size: 3008px 540px;
+    }
+
+    /* 타이머 컨텐츠 — 상단 70% 고정, 배경 위에 겹침 */
+    .workspace__timer-body {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 65%;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    /* ---------- Timer Display ---------- */
+    .timer-display {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .timer-display__label {
+      color: var(--color-font-primary-black-100);
+      margin: 0;
+    }
+
+    .timer-display__time {
+      font-family: 'Chango', sans-serif;
+      font-size: 80px;
+      line-height: 1;
+      color: var(--color-white-warm);
+      -webkit-text-stroke: 2px rgba(78, 71, 56, 1);
+      text-shadow: 0px 4px 0px rgba(78, 71, 56, 1);
+      margin: 0;
+      letter-spacing: 0;
+      filter: url(#timer-jiggly);
+      display: flex;
+      align-items: baseline;
+    }
+
+    .timer-digit {
+      display: inline-block;
+      width: 1ch;
+      text-align: center;
+    }
+
+    .timer-sep {
+      display: inline-block;
+      padding: 0 2px;
+    }
+
+    /* ---------- Timer Controls Row ---------- */
+    .timer-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .timer-presets {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .timer-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--color-wood-4);
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+
+    .timer-custom {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .timer-start-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .timer-start-row .btn {
+      transition: opacity 0.22s ease, transform 0.22s ease,
+                  max-width 0.22s ease, padding-left 0.22s ease, padding-right 0.22s ease;
+      overflow: hidden;
+      max-width: 200px;
+    }
+    .timer-start-row .btn.timer-btn--out {
+      opacity: 0;
+      transform: scale(0.8);
+      pointer-events: none;
+      max-width: 0;
+      padding-left: 0;
+      padding-right: 0;
     }
 
     /* mini 모드 FOUC 방지 — navbar */
@@ -192,28 +323,28 @@
         <div class="task-row task-row--empty">
           <div class="task-row__field">
             <span class="task-row__num">1.</span>
-            <input class="task-row__input" type="text" placeholder="入力してください・・・" autocomplete="off">
+            <input class="task-row__input" type="text" placeholder="仕事内容を入力してください。" autocomplete="off">
           </div>
           <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
         </div>
         <div class="task-row task-row--empty">
           <div class="task-row__field">
             <span class="task-row__num">2.</span>
-            <input class="task-row__input" type="text" placeholder="入力してください・・・" autocomplete="off">
+            <input class="task-row__input" type="text" placeholder="仕事内容を入力してください。" autocomplete="off">
           </div>
           <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
         </div>
         <div class="task-row task-row--empty">
           <div class="task-row__field">
             <span class="task-row__num">3.</span>
-            <input class="task-row__input" type="text" placeholder="入力してください・・・" autocomplete="off">
+            <input class="task-row__input" type="text" placeholder="仕事内容を入力してください。" autocomplete="off">
           </div>
           <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
         </div>
       </div>
       <div class="task-list-panel__footer">
         <button class="task-save-btn" type="button" id="task-save-btn" disabled>
-          <i class="icon icon-check-small"></i>
+          <i class="icon icon--md icon-check-small"></i>
           <span class="text-assist-w4">保存</span>
         </button>
       </div>
@@ -406,6 +537,60 @@
     <!-- Main Content -->
     <div class="workspace__main">
       <div class="workspace__content">
+
+        <!-- Timer (mini 모드 전용) -->
+        <div class="workspace__timer">
+
+          <!-- 70% 컨텐츠 영역 -->
+          <div class="workspace__timer-body">
+
+            <!-- 시계 표시 -->
+            <div class="timer-display">
+              <p class="timer-display__time">
+                <span class="timer-digit" id="td-m0">0</span><span class="timer-digit" id="td-m1">0</span><span class="timer-sep">:</span><span class="timer-digit" id="td-s0">0</span><span class="timer-digit" id="td-s1">0</span><span class="timer-sep">.</span><span class="timer-digit" id="td-c0">0</span><span class="timer-digit" id="td-c1">0</span>
+              </p>
+              <p class="timer-display__label text-assist-w4">分単位で設定できるカウントダウンタイマー</p>
+            </div>
+
+            <!-- 프리셋 + 커스텀 입력 -->
+            <div class="timer-controls">
+              <div class="timer-presets">
+                <button class="btn btn-glass btn--sm"><span class="text-assist-w4">5分</span></button>
+                <button class="btn btn-glass btn--sm"><span class="text-assist-w4">10分</span></button>
+                <button class="btn btn-glass btn--sm"><span class="text-assist-w4">30分</span></button>
+                <button class="btn btn-glass btn--sm"><span class="text-assist-w4">60分</span></button>
+              </div>
+
+              <div class="timer-custom">
+                <div class="input-wood">
+                  <input class="input-wood__field" type="text" inputmode="numeric" placeholder="0" maxlength="2" pattern="[0-9]*" id="timer-custom-input">
+                  <span class="input-wood__unit text-assist-w4">分</span>
+                </div>
+                <button class="btn btn-glass btn--sm"><span class="text-assist-w4">適用</span></button>
+              </div>
+            </div>
+
+            <!-- 타이머 버튼 — 상태에 따라 표시 전환 -->
+            <div class="timer-start-row">
+              <!-- idle: 시작 -->
+              <button class="btn btn-filled-wood btn--lg" id="timer-btn-start">
+                <span class="text-assist-w4">スタート</span>
+                <i class="icon icon-play-arrow"></i>
+              </button>
+              <!-- running: 멈춤 -->
+              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-pause"><i class="icon icon-pause"></i></button>
+              <!-- paused: 다시 시작 -->
+              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-resume"><i class="icon icon-play-arrow"></i></button>
+              <!-- running + paused: 취소 -->
+              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-cancel"><i class="icon icon-stop"></i></button>
+            </div>
+
+          </div>
+
+          <!-- 30% 배경 이미지 영역 -->
+          <div class="workspace__timer-bg"></div>
+
+        </div>
 
         <div class="radio-group-card">
           <div class="radio-group-card__header">
@@ -659,7 +844,7 @@
       // はな 답변 버블 생성 → 스트리밍으로 채움
       function appendBotMessage() {
         const wrap = document.createElement('div');
-        wrap.className = 'chat-msg';
+        wrap.className = 'chat-msg chat-msg--new';
         wrap.innerHTML =
           '<div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>' +
           '<div class="chat-msg__body"><p class="chat-msg__text"></p></div>';
@@ -920,6 +1105,143 @@
         localStorage.setItem(PANEL_KEY, isOpen);
         applyState();
       });
+    })();
+
+    // ── Timer Custom Input — 숫자만 허용 ──────────────────────
+    (() => {
+      const input = document.getElementById('timer-custom-input');
+      if (!input) return;
+      input.addEventListener('input', () => {
+        input.value = input.value.replace(/[^0-9]/g, '');
+      });
+      input.addEventListener('focus', () => {
+        input.value = '';
+      });
+    })();
+
+    // ── Pomodoro Timer ────────────────────────────────────────
+    (() => {
+      const btnStart   = document.getElementById('timer-btn-start');
+      const btnPause   = document.getElementById('timer-btn-pause');
+      const btnResume  = document.getElementById('timer-btn-resume');
+      const btnCancel  = document.getElementById('timer-btn-cancel');
+      const presetBtns = document.querySelectorAll('.timer-presets .btn');
+      const customInput = document.getElementById('timer-custom-input');
+      const applyBtn   = document.querySelector('.timer-custom .btn');
+
+      if (!btnStart) return;
+
+      // state: 'idle' | 'running' | 'paused'
+      let state       = 'idle';
+      let remainingMs = 0;
+      let endTime     = null;
+      let rafId       = null;
+
+      const digitEls = {
+        m0: document.getElementById('td-m0'),
+        m1: document.getElementById('td-m1'),
+        s0: document.getElementById('td-s0'),
+        s1: document.getElementById('td-s1'),
+        c0: document.getElementById('td-c0'),
+        c1: document.getElementById('td-c1'),
+      };
+
+      function render() {
+        const ms  = Math.max(0, remainingMs);
+        const min = String(Math.floor(ms / 60000)).padStart(2, '0');
+        const sec = String(Math.floor((ms % 60000) / 1000)).padStart(2, '0');
+        const cs  = String(Math.floor((ms % 1000) / 10)).padStart(2, '0');
+        digitEls.m0.textContent = min[0];
+        digitEls.m1.textContent = min[1];
+        digitEls.s0.textContent = sec[0];
+        digitEls.s1.textContent = sec[1];
+        digitEls.c0.textContent = cs[0];
+        digitEls.c1.textContent = cs[1];
+      }
+
+      const inputWoodEl = customInput.closest('.input-wood');
+
+      function updateButtons() {
+        btnStart.classList.toggle('timer-btn--out',  state !== 'idle');
+        btnPause.classList.toggle('timer-btn--out',  state !== 'running');
+        btnResume.classList.toggle('timer-btn--out', state !== 'paused');
+        btnCancel.classList.toggle('timer-btn--out', state !== 'paused');
+
+        // idle이 아닐 때(running·paused) 프리셋·커스텀 입력 비활성화
+        const locked = state !== 'idle';
+        presetBtns.forEach(btn => btn.disabled = locked);
+        applyBtn.disabled    = locked;
+        customInput.disabled = locked;
+        inputWoodEl.classList.toggle('input-wood--disabled', locked);
+      }
+
+      function setState(s) {
+        state = s;
+        updateButtons();
+      }
+
+      function setMinutes(min) {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+        remainingMs = min * 60 * 1000;
+        setState('idle');
+        render();
+      }
+
+      function tick() {
+        remainingMs = Math.max(0, endTime - Date.now());
+        render();
+        if (remainingMs <= 0) { setState('idle'); return; }
+        rafId = requestAnimationFrame(tick);
+      }
+
+      function start() {
+        // 입력창에 값이 있으면 먼저 적용
+        const inputVal = parseInt(customInput.value);
+        if (!isNaN(inputVal) && inputVal > 0) {
+          remainingMs = inputVal * 60 * 1000;
+          render();
+        }
+        if (remainingMs <= 0) return;
+        endTime = Date.now() + remainingMs;
+        setState('running');
+        rafId = requestAnimationFrame(tick);
+      }
+
+      function pause() {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+        setState('paused');
+      }
+
+      function cancel() {
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = null;
+        remainingMs = 0;
+        setState('idle');
+        render();
+      }
+
+      presetBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const min = parseInt(btn.querySelector('span').textContent);
+          if (!isNaN(min)) setMinutes(min);
+        });
+      });
+
+      applyBtn.addEventListener('click', () => {
+        const min = parseInt(customInput.value);
+        if (!isNaN(min) && min > 0) setMinutes(min);
+      });
+
+      customInput.addEventListener('keydown', e => {
+        if (e.key === 'Enter') btnStart.click();
+      });
+
+      btnStart.addEventListener('click', start);
+      btnPause.addEventListener('click', pause);
+      btnResume.addEventListener('click', start);
+      btnCancel.addEventListener('click', cancel);
     })();
   </script>
 

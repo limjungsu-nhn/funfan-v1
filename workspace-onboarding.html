@@ -413,7 +413,7 @@
       const chatArea = document.querySelector('.right-panel__chat');
       if (!chatArea) return;
       const wrap = document.createElement('div');
-      wrap.className = 'chat-msg';
+      wrap.className = 'chat-msg chat-msg--new';
       wrap.innerHTML =
         '<div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>' +
         '<div class="chat-msg__body"><p class="chat-msg__text"></p></div>';
@@ -486,7 +486,7 @@
       // はな 답변 버블 생성 → 스트리밍으로 채움
       function appendBotMessage() {
         const wrap = document.createElement('div');
-        wrap.className = 'chat-msg';
+        wrap.className = 'chat-msg chat-msg--new';
         wrap.innerHTML =
           '<div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>' +
           '<div class="chat-msg__body"><p class="chat-msg__text"></p></div>';

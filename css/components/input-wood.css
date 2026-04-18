@@ -13,7 +13,7 @@
      :focus-within         Typing   — white-100 배경, wood-3 아웃라인, 값 black-100
      body:not(.using-mouse):has(:focus-visible)
                            Focus    — Typing + 3px gray-5 ring (키보드 전용)
-     .input-wood--disabled Disabled — white-50 배경, gray-5 아웃라인, 전체 black-30
+     .input-wood--disabled Disabled — white-50 배경, wood-5 아웃라인, 전체 black-30
 
    주의: input :focus-visible 는 마우스에도 적용 → using-mouse 패턴 필수
    ============================================ */
@@ -58,6 +58,11 @@
   font-weight: var(--font-weight-w4);
 }
 
+/* 포커스 시 placeholder 숨김 */
+.input-wood__field:focus::placeholder {
+  color: transparent;
+}
+
 /* ---------- Unit Suffix ---------- */
 .input-wood__unit {
   flex-shrink: 0;
@@ -86,7 +91,7 @@ body:not(.using-mouse) .input-wood:has(.input-wood__field:focus-visible):not(.in
 /* ---------- Disabled ---------- */
 .input-wood--disabled {
   background: var(--color-white-50);
-  outline-color: var(--color-gray-5);
+  outline-color: var(--color-wood-5);
   cursor: not-allowed;
 }
 

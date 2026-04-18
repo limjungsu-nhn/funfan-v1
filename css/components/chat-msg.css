@@ -41,8 +41,12 @@
 }
 
 .chat-msg__header .avatar {
-  animation: chat-avatar-in 0.3s ease both;
   transform-origin: center center;
+}
+
+/* 새 메시지 전송 시에만 애니메이션 적용 */
+.chat-msg--new .chat-msg__header .avatar {
+  animation: chat-avatar-in 0.3s ease both;
 }
 
 /* ---------- Body (Text Row) ---------- */
