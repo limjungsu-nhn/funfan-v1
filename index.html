@@ -48,8 +48,11 @@
     }
 
     .index__link {
-      display: block;
-      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
       border-radius: 8px;
       background: var(--color-white-100);
       color: var(--color-black-100);
@@ -65,20 +68,27 @@
       background: var(--color-gray-6);
       border-color: var(--color-gray-4);
     }
+
+    .index__status {
+      flex-shrink: 0;
+      font-size: var(--font-size-caption);
+      line-height: var(--line-height-caption);
+      color: var(--color-font-secondary);
+    }
   </style>
   <script src="js/core/keyboard-focus.js" defer></script>
 </head>
 <body>
 
   <main class="index">
-    <h1 class="index__title">FunFan v1.0</h1>
+    <h1 class="index__title">FunFan v1.02</h1>
     <ul class="index__list">
-      <li><a class="index__link" href="styleguide.html" target="_blank" rel="noopener noreferrer">styleguide.html</a></li>
-      <li><a class="index__link" href="workspace-onboarding.html" target="_blank" rel="noopener noreferrer">workspace-onboarding.html</a></li>
-      <li><a class="index__link" href="workspace.html" target="_blank" rel="noopener noreferrer">workspace.html</a></li>
-      <li><a class="index__link" href="workroom.html" target="_blank" rel="noopener noreferrer">workroom.html</a></li>
-      <li><a class="index__link" href="series-post-management.html" target="_blank" rel="noopener noreferrer">series-post-management.html</a></li>
-      <li><a class="index__link" href="account-setting.html" target="_blank" rel="noopener noreferrer">account-setting.html</a></li>
+      <li><a class="index__link" href="styleguide.html" target="_blank" rel="noopener noreferrer"><span>styleguide.html</span><span class="index__status" aria-label="업데이트">🔄</span></a></li>
+      <li><a class="index__link" href="workspace-onboarding.html" target="_blank" rel="noopener noreferrer"><span>workspace-onboarding.html</span><span class="index__status" aria-label="완료">✅</span></a></li>
+      <li><a class="index__link" href="workspace.html" target="_blank" rel="noopener noreferrer"><span>workspace.html</span><span class="index__status" aria-label="완료">✅</span></a></li>
+      <li><a class="index__link" href="workroom.html" target="_blank" rel="noopener noreferrer"><span>workroom.html</span><span class="index__status" aria-label="완료">✅</span></a></li>
+      <li><a class="index__link" href="series-post-management.html" target="_blank" rel="noopener noreferrer"><span>series-post-management.html</span><span class="index__status" aria-label="진행중">⏳</span></a></li>
+      <li><a class="index__link" href="account-setting.html" target="_blank" rel="noopener noreferrer"><span>account-setting.html</span><span class="index__status" aria-label="진행중">⏳</span></a></li>
     </ul>
   </main>
 
