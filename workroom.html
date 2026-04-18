@@ -6,9 +6,18 @@
   <title>Workroom — FunFan</title>
   <!-- mini 모드 FOUC 방지: CSS 로드 전에 클래스 적용 -->
   <script>
-    if (new URLSearchParams(location.search).get('mode') === 'mini') {
-      document.documentElement.classList.add('mini-mode');
-    }
+    (function () {
+      const params = new URLSearchParams(location.search);
+      if (params.get('mode') === 'mini') {
+        const el = document.documentElement;
+        el.classList.add('mini-mode');
+        // 탭 선택 상태를 렌더링 전에 CSS로 반영
+        const tabIdx = parseInt(params.get('tab') ?? '0', 10);
+        if (tabIdx > 0) el.dataset.miniTab = tabIdx;
+        // 초기화 중 tab transition 억제
+        el.classList.add('mini-mode-init');
+      }
+    })();
   </script>
 
   <!-- Google Fonts -->
@@ -243,6 +252,19 @@
     html.mini-mode .navbar .navbar-tabs { display: flex; }
     html.mini-mode .navbar .navbar-btn--normal { display: none; }
     html.mini-mode .navbar .navbar-btn--work { display: inline-flex; }
+    /* mini 모드: float-btn은 JS로 static 처리되기 전에 이미 숨김 */
+    html.mini-mode .float-btn { display: none; }
+    /* 초기화 중 tab transition 억제 */
+    html.mini-mode-init .tab { transition: none !important; }
+    /* tab=1 선택 상태 CSS 반영 */
+    html[data-mini-tab="1"] .navbar .tab-group .tab:nth-child(1) {
+      background: transparent; box-shadow: none; color: var(--color-black-50);
+    }
+    html[data-mini-tab="1"] .navbar .tab-group .tab:nth-child(2) {
+      background: var(--color-white-100);
+      box-shadow: 0px 1px 2px var(--color-shadow-light);
+      color: var(--color-black-100);
+    }
 
 
     /* ---------- Main Content ---------- */
@@ -295,14 +317,7 @@
           <button class="tab">非公開</button>
         </div>
       </div>
-      <button class="btn btn-ghost navbar-btn--normal">
-        <i class="icon icon-account-circle"></i>
-        <span class="text-assist-w4">マイページ</span>
-      </button>
-      <button class="btn btn-ghost navbar-btn--work" id="task-list-open-btn">
-        <i class="icon icon-check-circle"></i>
-        <span class="text-assist-w4">タスクリスト</span>
-      </button>
+
       <button class="btn btn-ghost navbar-btn--work">
         <i class="icon icon-exit-to-app"></i>
         <span class="text-assist-w4">作業終了</span>
@@ -789,7 +804,7 @@
         const checked = document.querySelector('input[name="character"]:checked');
         const labels = document.querySelectorAll('.radio-card');
         const tabIndex = [...labels].findIndex(l => l.querySelector('input') === checked);
-        window.open(`workroom.html?mode=mini&tab=${tabIndex}`, '_blank', 'width=1440,height=1024,resizable=yes');
+        window.open(`workroom.html?mode=mini&tab=${tabIndex}`, '_blank', 'width=1440,height=1080,resizable=yes');
       });
     })();
 
@@ -834,19 +849,23 @@
         return getSnapshot().some(d => d.text.trim());
       }
 
+      function hasChanges() {
+        const current = getSnapshot();
+        if (!savedSnapshot) return hasContent();
+        return JSON.stringify(current) !== JSON.stringify(savedSnapshot);
+      }
+
       function updateFooterBtn(saved) {
         if (saved) {
           saveBtnIcon.hidden = true;
           saveBtnText.textContent = '編集';
           saveBtn.disabled = false;
         } else {
-          // 편집 모드:
-          //  - 한 번이라도 저장한 적 있으면(재편집) 내용 유무와 무관하게 저장 가능
-          //  - 초기 상태(저장 이력 없음)에서는 내용이 있어야 저장 가능
+          // 편집 모드: 저장된 상태와 현재가 다를 때만 활성화
           saveBtnIcon.hidden = false;
           saveBtnIcon.className = 'icon icon-check-small';
           saveBtnText.textContent = '保存';
-          saveBtn.disabled = savedSnapshot ? false : !hasContent();
+          saveBtn.disabled = !hasChanges();
         }
       }
 
@@ -964,22 +983,12 @@
         document.querySelector('.workspace').classList.add('workspace--mini');
         document.getElementById('ws-right-wrapper').classList.add('right-panel-wrapper--static');
 
-        // 탭 너비 균등화 + 클릭 선택 전환 + 초기 선택 탭 적용
+        // 탭 클릭 선택 전환 + 초기 선택 클래스 동기화
+        const tabIndex = parseInt(params.get('tab') ?? '0', 10);
         document.querySelectorAll('.navbar .tab-group').forEach(group => {
           const tabs = group.querySelectorAll('.tab');
-          const tabIndex = parseInt(params.get('tab') ?? '0', 10);
-
-          // 초기 선택 탭 적용
           tabs.forEach((t, i) => t.classList.toggle('tab--selected', i === tabIndex));
 
-          // 너비 균등화 (측정 중 점프 방지)
-          group.style.visibility = 'hidden';
-          let maxW = 0;
-          tabs.forEach(t => maxW = Math.max(maxW, t.getBoundingClientRect().width));
-          group.style.setProperty('--tab-min-w', Math.ceil(maxW) + 'px');
-          group.style.visibility = '';
-
-          // 클릭 선택 전환
           tabs.forEach(tab => {
             tab.addEventListener('click', () => {
               tabs.forEach(t => t.classList.remove('tab--selected'));
@@ -987,6 +996,11 @@
             });
           });
         });
+
+        // transition 억제 해제 (2프레임 후)
+        requestAnimationFrame(() => requestAnimationFrame(() =>
+          document.documentElement.classList.remove('mini-mode-init')
+        ));
       }
 
       // static 케이스 — 항상 표시, 토글 불가

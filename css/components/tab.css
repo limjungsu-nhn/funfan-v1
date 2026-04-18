@@ -15,7 +15,9 @@
 
 /* ---------- Tab Group (wrapper) ---------- */
 .tab-group {
-  display: inline-flex;
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
   align-items: center;
   gap: 2px;
   background: var(--color-gray-6);
@@ -31,7 +33,6 @@
   gap: 10px;
   padding: 0 var(--space-3);
   min-height: 32px;
-  min-width: var(--tab-min-w, auto);
   border-radius: 100px;
   border: none;
   background: transparent;

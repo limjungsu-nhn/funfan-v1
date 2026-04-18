@@ -77,9 +77,10 @@
   font-weight: var(--font-weight-w4);
 }
 
-/* Hover / Focus / Pressed: placeholder 30% */
-.task-row:hover .task-row__input::placeholder,
-.task-row:focus-within .task-row__input::placeholder,
+/* Hover / Focus / Pressed: placeholder 30%
+   저장 모드에서는 마우스 효과 전체 제거 — .task-list--editing 스코프 필수 */
+.task-list--editing .task-row:hover .task-row__input::placeholder,
+.task-list--editing .task-row:focus-within .task-row__input::placeholder,
 .task-row--hover .task-row__input::placeholder,
 .task-row--focus .task-row__input::placeholder,
 .task-row--pressed .task-row__input::placeholder {
@@ -117,8 +118,18 @@ body:not(.using-mouse) .task-row:has(.task-row__input:focus-visible),
   color: var(--color-font-primary-black-100);
 }
 
-/* 저장 모드 + 내용 있음 + hover: check 표시 */
-.task-list:not(.task-list--editing) .task-row:not(.task-row--empty):hover .task-row__btn,
+/* 저장 모드 빈 행: 커서 기본값으로 고정 */
+.task-list:not(.task-list--editing) .task-row--empty,
+.task-list:not(.task-list--editing) .task-row--empty .task-row__input {
+  cursor: default;
+}
+
+/* 저장 모드 내용 있는 행: hover 시 체크 버튼 표시 */
+.task-list:not(.task-list--editing) .task-row:not(.task-row--empty):hover .task-row__btn {
+  opacity: 1;
+}
+
+/* TypedHover — styleguide reference 표기용 (실제 저장 모드에선 hover 효과 없음) */
 .task-row--typed-hover .task-row__btn {
   opacity: 1;
 }
