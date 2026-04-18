@@ -478,6 +478,21 @@ body {
   align-items: flex-start;
 }
 
+/* task-list-modal은 실제 사용 시 position:fixed 오버레이 — preview 안에서는 static으로 내려 인라인 렌더 */
+.sg-type-preview--task-list-panel .task-list-modal {
+  display: block;
+  position: static;
+  pointer-events: auto;
+}
+.sg-type-preview--task-list-panel .task-list-panel {
+  margin-top: 0;
+}
+
+/* preview 안에서 opacity transition이 CSSOM 캐싱과 맞물려 :not() 재평가를 막음 → transition 제거 */
+.sg-type-preview--task-list-panel .task-row__btn {
+  transition: none;
+}
+
 .sg-demo-item {
   display: flex;
   flex-direction: column;

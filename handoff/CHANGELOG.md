@@ -11,6 +11,9 @@
 ## Unreleased
 
 ### 변경 (컴포넌트)
+- **`right-panel` 채팅 영역 하단 여백 확장** — `.right-panel__chat` padding `8px 0` → `8px 0 var(--space-4) 0`
+  - 마지막 메시지 버블과 입력창(`.chat-input`) 사이 간격 8px → 16px
+  - 스크롤 컨테이너 자체의 bottom padding이므로 스크롤 말단에서도 숨통 확보
 - **`tab-group` 너비 균등화 방식 변경** — JS 측정(`getBoundingClientRect` + `--tab-min-w`) → 순수 CSS Grid (`display: inline-grid; grid-auto-columns: 1fr`)
   - 모든 탭이 가장 긴 콘텐츠 기준으로 자동 균등화
   - JS 측정 시점에 발생하던 깜빡임 완전 해소
@@ -32,6 +35,13 @@
 ### 정리 (코드 품질)
 - `task-list` JS에서 `isSaved` 상태 제거 → `task-list--editing` 클래스를 단일 진실원으로 사용 (`isEditing()` 헬퍼)
 - 동기화 어긋남 위험 제거, 약 15줄 감소
+
+### 변경 (스타일가이드)
+- **Task List Panel preview를 workroom과 1:1 동기화** — placeholder, 버튼 aria/icon, `autocomplete`, 저장 버튼 초기 `disabled`, `.task-list-modal` 래퍼까지 실제 마크업과 일치
+- **Task List Panel 인터랙티브 데모 이식** — workroom의 전체 JS 로직 포팅 (편집/저장 모드 토글, X·check 버튼, 입력 감지, 저장 버튼 활성/비활성). **localStorage 관련(`saveToStorage`/`loadFromStorage`)은 메모리 스냅샷 변수로 대체** — styleguide는 상태 영속화 없이 동작
+- **preview 스코프 CSS 오버라이드** (`css/styleguide.css`)
+  - `.task-list-modal` → `position: static; display: block` (실제 사용 시 fixed 오버레이이지만 preview 셀 안에서는 인라인 렌더)
+  - `.sg-type-preview--task-list-panel .task-row__btn { transition: none }` — **워크라운드**: `.task-list--editing .task-row:not(.task-row--empty) .task-row__btn { opacity: 1 }` 규칙이 `:not()` 재평가 + opacity transition 조합에서 CSSOM cascade 캐싱 이슈로 적용되지 않는 렌더 버그 회피. 실제 workroom에서는 발생하지 않으며, styleguide preview 한정 오버라이드
 
 ---
 

@@ -3697,39 +3697,41 @@
             <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview sg-type-preview--task-list-panel">
-                <div class="task-list-panel">
-                  <div class="task-list-panel__header">
-                    <span class="task-list-panel__title text-body-sm-w6">今日のタスク</span>
-                    <p class="text-caption-w4 task-list-panel__desc">今日進めることを3件まで整理して、作業終了時に見返せます。</p>
-                  </div>
-                  <div class="task-list">
-                    <div class="task-row task-row--empty">
-                      <div class="task-row__field">
-                        <span class="task-row__num">1.</span>
-                        <input class="task-row__input" type="text" placeholder="入力してください・・・" readonly>
-                      </div>
-                      <button class="task-row__btn" type="button" aria-label="完了"><i class="icon icon--md icon-check-small"></i></button>
+                <div class="task-list-modal task-list-modal--open">
+                  <div class="task-list-panel">
+                    <div class="task-list-panel__header">
+                      <span class="task-list-panel__title text-body-sm-w6">今日のタスク</span>
+                      <p class="text-caption-w4 task-list-panel__desc">今日進めることを3件まで整理して、作業終了時に見返せます。</p>
                     </div>
-                    <div class="task-row task-row--empty">
-                      <div class="task-row__field">
-                        <span class="task-row__num">2.</span>
-                        <input class="task-row__input" type="text" placeholder="入力してください・・・" readonly>
+                    <div class="task-list task-list--editing">
+                      <div class="task-row task-row--empty">
+                        <div class="task-row__field">
+                          <span class="task-row__num">1.</span>
+                          <input class="task-row__input" type="text" aria-label="仕事内容" placeholder="仕事内容を入力してください。" autocomplete="off">
+                        </div>
+                        <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
                       </div>
-                      <button class="task-row__btn" type="button" aria-label="完了"><i class="icon icon--md icon-check-small"></i></button>
-                    </div>
-                    <div class="task-row task-row--empty">
-                      <div class="task-row__field">
-                        <span class="task-row__num">3.</span>
-                        <input class="task-row__input" type="text" placeholder="入力してください・・・" readonly>
+                      <div class="task-row task-row--empty">
+                        <div class="task-row__field">
+                          <span class="task-row__num">2.</span>
+                          <input class="task-row__input" type="text" aria-label="仕事内容" placeholder="仕事内容を入力してください。" autocomplete="off">
+                        </div>
+                        <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
                       </div>
-                      <button class="task-row__btn" type="button" aria-label="完了"><i class="icon icon--md icon-check-small"></i></button>
+                      <div class="task-row task-row--empty">
+                        <div class="task-row__field">
+                          <span class="task-row__num">3.</span>
+                          <input class="task-row__input" type="text" aria-label="仕事内容" placeholder="仕事内容を入力してください。" autocomplete="off">
+                        </div>
+                        <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
+                      </div>
                     </div>
-                  </div>
-                  <div class="task-list-panel__footer">
-                    <button class="task-save-btn" type="button">
-                      <i class="icon icon--md icon-check-small"></i>
-                      <span class="text-assist-w4">保存</span>
-                    </button>
+                    <div class="task-list-panel__footer">
+                      <button class="task-save-btn" type="button" disabled>
+                        <i class="icon icon--md icon-check-small"></i>
+                        <span class="text-assist-w4">保存</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -4191,6 +4193,105 @@
       field.appendChild(input);
       row.appendChild(field);
       taskList.appendChild(row);
+    })();
+
+    // ── Task List Panel 인터랙티브 데모 (workroom 이식 · localStorage 제외) ──
+    (() => {
+      const scope = document.querySelector('.sg-type-preview--task-list-panel');
+      if (!scope) return;
+      const taskList = scope.querySelector('.task-list');
+      const saveBtn  = scope.querySelector('.task-save-btn');
+      if (!taskList || !saveBtn) return;
+
+      const saveBtnIcon = saveBtn.querySelector('.icon');
+      const saveBtnText = saveBtn.querySelector('span');
+      let savedSnapshot = null; // localStorage 대체 — 메모리 상 스냅샷
+
+      const isEditing = () => taskList.classList.contains('task-list--editing');
+
+      function getSnapshot() {
+        return [...taskList.querySelectorAll('.task-row')].map(row => ({
+          text: row.querySelector('.task-row__input').value,
+          done: row.classList.contains('task-row--done')
+        }));
+      }
+
+      function hasContent() {
+        return getSnapshot().some(d => d.text.trim());
+      }
+
+      function updateFooterBtn() {
+        if (isEditing()) {
+          saveBtnIcon.hidden = false;
+          saveBtnIcon.className = 'icon icon--md icon-check-small';
+          saveBtnText.textContent = '保存';
+          const savedHasContent = savedSnapshot && savedSnapshot.some(d => (d.text || '').trim());
+          saveBtn.disabled = !hasContent() && !savedHasContent;
+        } else {
+          saveBtnIcon.hidden = true;
+          saveBtnText.textContent = '編集';
+          saveBtn.disabled = false;
+        }
+      }
+
+      function setEditing(enabled) {
+        taskList.classList.toggle('task-list--editing', enabled);
+        taskList.querySelectorAll('.task-row').forEach(row => {
+          row.querySelector('.task-row__input').readOnly = !enabled;
+          const btn = row.querySelector('.task-row__btn');
+          btn.querySelector('.icon').className = enabled
+            ? 'icon icon--md icon-cancel'
+            : 'icon icon--md icon-check-small';
+          btn.setAttribute('aria-label', enabled ? 'クリア' : '完了');
+        });
+        updateFooterBtn();
+      }
+
+      function saveMemory() {
+        savedSnapshot = getSnapshot();
+      }
+
+      taskList.querySelectorAll('.task-row').forEach(row => {
+        const input = row.querySelector('.task-row__input');
+        const btn   = row.querySelector('.task-row__btn');
+
+        input.addEventListener('input', () => {
+          const empty = !input.value.trim();
+          row.classList.toggle('task-row--empty', empty);
+          if (empty) row.classList.remove('task-row--done');
+          updateFooterBtn();
+        });
+
+        btn.addEventListener('click', () => {
+          if (isEditing()) {
+            input.value = '';
+            row.classList.add('task-row--empty');
+            row.classList.remove('task-row--done');
+            updateFooterBtn();
+          } else {
+            row.classList.toggle('task-row--done');
+            saveMemory();
+          }
+        });
+      });
+
+      saveBtn.addEventListener('click', () => {
+        if (isEditing()) {
+          saveMemory();
+          if (hasContent()) setEditing(false);
+          else updateFooterBtn();
+        } else {
+          setEditing(true);
+        }
+      });
+
+      // 브라우저 세션 복원으로 인한 input 잔류값 초기화
+      taskList.querySelectorAll('.task-row').forEach(row => {
+        row.querySelector('.task-row__input').value = '';
+        row.classList.add('task-row--empty');
+        row.classList.remove('task-row--done');
+      });
+      setEditing(true);
     })();
 
     // ── Tab Group 공통 초기화 (클릭 선택 전환 + 너비 균등화) ──────
