@@ -10,7 +10,28 @@
 
 ## Unreleased
 
-_현재 진행 중인 작업은 여기에 추가되어, 안정되면 다음 릴리즈로 이동._
+### 변경 (컴포넌트)
+- **`tab-group` 너비 균등화 방식 변경** — JS 측정(`getBoundingClientRect` + `--tab-min-w`) → 순수 CSS Grid (`display: inline-grid; grid-auto-columns: 1fr`)
+  - 모든 탭이 가장 긴 콘텐츠 기준으로 자동 균등화
+  - JS 측정 시점에 발생하던 깜빡임 완전 해소
+  - 탭 개수에 무관하게 동작 → workspace/styleguide의 모든 `.tab-group`에 일괄 적용
+- **`task-list` 저장 버튼 로직 재정비**
+  - "현재 비어있고 저장된 데이터도 없거나 비어있을 때만" 비활성화
+  - 編集 모드 진입 시 변경 없어도 활성화 (편집 모드 탈출 가능)
+  - 빈 상태 저장 시 편집 모드 유지 → 최초 상태로 회귀(즉시 입력 가능)
+- **`task-list` 저장 모드 hover 정리**
+  - 빈 행: `cursor: default`, hover 효과 없음
+  - 내용 있는 행: hover 시 체크 버튼 표시
+  - 마우스 효과는 `.task-list--editing` 스코프로만 적용
+
+### 변경 (워크룸 미니 모드)
+- **navbar 정리** — マイページ / タスクリスト 버튼 제거 (미니 모드에서는 태스크 패널이 항상 표시되므로 불필요)
+- **새 창 사이즈** — 1440 × 1024 → 1440 × **1080**
+- **FOUC 방지 단순화** — `mini-mode-init` 클래스, `data-mini-tab` 강제 CSS 모두 제거. JS가 `.tab--selected` 클래스만 정확히 적용하면 충분.
+
+### 정리 (코드 품질)
+- `task-list` JS에서 `isSaved` 상태 제거 → `task-list--editing` 클래스를 단일 진실원으로 사용 (`isEditing()` 헬퍼)
+- 동기화 어긋남 위험 제거, 약 15줄 감소
 
 ---
 

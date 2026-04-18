@@ -85,7 +85,8 @@ const buttonVariants = cva("...", {
 
 #### `.task-save-btn` → 커스텀
 - ghost 계열 small button + 아이콘 + 텍스트
-- disabled 상태로 저장 가능 여부 표시
+- disabled 규칙: **현재 입력이 비어있고 + 저장된 데이터도 없거나 비어있을 때만** 비활성화. 그 외엔 항상 활성화 (저장 후 편집 모드 탈출 보장).
+- 편집 ↔ 저장 모드 토글 버튼 겸용 (`保存` ↔ `編集`)
 
 ---
 
@@ -138,6 +139,7 @@ const buttonVariants = cva("...", {
 - states: default / hover / **selected** / pressed / focus(ring)
 - selected: white bg, black-100 text
 - `.tab-group`은 wrapper (gray-6 배경)
+- **너비 균등화**: `.tab-group { display: inline-grid; grid-auto-columns: 1fr; }` — 모든 탭이 가장 긴 콘텐츠 기준으로 자동 균등화 (JS 측정 불필요, 탭 개수 무관)
 
 ---
 
@@ -180,9 +182,13 @@ const buttonVariants = cva("...", {
 ### 태스크/메뉴
 
 #### `.task-list` + `.task-row` → 커스텀
-- 모드: `.task-list--editing` (편집) / `readonly`
-- row states: default(empty) / hover / focus / done
-- `.task-row__btn`: 삭제 버튼 (x)
+- 모드: `.task-list--editing` (편집) / 저장 모드 (`task-list` 클래스만)
+- row states: default(empty) / hover / focus / **done**(취소선 + red 체크)
+- 편집 모드: `.task-row__btn` = 텍스트 클리어(x), input 활성
+- 저장 모드: `.task-row__btn` = 완료 토글(✓), input readonly
+  - 빈 행: hover 효과 없음 + `cursor: default`
+  - 내용 있는 행: hover 시 체크 버튼 표시
+- 모드 토글: `task-list--editing` 클래스가 단일 진실원 (`isEditing()` 헬퍼 권장)
 - `aria-label="仕事内容"` 필수
 
 #### `.menu-item` → shadcn `NavigationMenu` 또는 커스텀

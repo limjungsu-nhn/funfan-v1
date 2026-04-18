@@ -6,18 +6,9 @@
   <title>Workroom — FunFan</title>
   <!-- mini 모드 FOUC 방지: CSS 로드 전에 클래스 적용 -->
   <script>
-    (function () {
-      const params = new URLSearchParams(location.search);
-      if (params.get('mode') === 'mini') {
-        const el = document.documentElement;
-        el.classList.add('mini-mode');
-        // 탭 선택 상태를 렌더링 전에 CSS로 반영
-        const tabIdx = parseInt(params.get('tab') ?? '0', 10);
-        if (tabIdx > 0) el.dataset.miniTab = tabIdx;
-        // 초기화 중 tab transition 억제
-        el.classList.add('mini-mode-init');
-      }
-    })();
+    if (new URLSearchParams(location.search).get('mode') === 'mini') {
+      document.documentElement.classList.add('mini-mode');
+    }
   </script>
 
   <!-- Google Fonts -->
@@ -254,17 +245,6 @@
     html.mini-mode .navbar .navbar-btn--work { display: inline-flex; }
     /* mini 모드: float-btn은 JS로 static 처리되기 전에 이미 숨김 */
     html.mini-mode .float-btn { display: none; }
-    /* 초기화 중 tab transition 억제 */
-    html.mini-mode-init .tab { transition: none !important; }
-    /* tab=1 선택 상태 CSS 반영 */
-    html[data-mini-tab="1"] .navbar .tab-group .tab:nth-child(1) {
-      background: transparent; box-shadow: none; color: var(--color-black-50);
-    }
-    html[data-mini-tab="1"] .navbar .tab-group .tab:nth-child(2) {
-      background: var(--color-white-100);
-      box-shadow: 0px 1px 2px var(--color-shadow-light);
-      color: var(--color-black-100);
-    }
 
 
     /* ---------- Main Content ---------- */
@@ -313,7 +293,7 @@
     <div class="navbar-actions">
       <div class="navbar-tabs">
         <div class="tab-group">
-          <button class="tab tab--selected">公開</button>
+          <button class="tab">公開</button>
           <button class="tab">非公開</button>
         </div>
       </div>
@@ -835,8 +815,10 @@
       const STORAGE_KEY = 'funfan-task-list';
       const saveBtnIcon = saveBtn.querySelector('.icon');
       const saveBtnText = saveBtn.querySelector('span');
-      let isSaved = false;
       let savedSnapshot = null; // 마지막 저장 시점의 데이터
+
+      // 편집 여부는 task-list--editing 클래스가 단일 진실원
+      const isEditing = () => taskList.classList.contains('task-list--editing');
 
       function getSnapshot() {
         return [...taskList.querySelectorAll('.task-row')].map(row => ({
@@ -849,23 +831,18 @@
         return getSnapshot().some(d => d.text.trim());
       }
 
-      function hasChanges() {
-        const current = getSnapshot();
-        if (!savedSnapshot) return hasContent();
-        return JSON.stringify(current) !== JSON.stringify(savedSnapshot);
-      }
-
-      function updateFooterBtn(saved) {
-        if (saved) {
-          saveBtnIcon.hidden = true;
-          saveBtnText.textContent = '編集';
-          saveBtn.disabled = false;
-        } else {
-          // 편집 모드: 저장된 상태와 현재가 다를 때만 활성화
+      function updateFooterBtn() {
+        if (isEditing()) {
           saveBtnIcon.hidden = false;
           saveBtnIcon.className = 'icon icon-check-small';
           saveBtnText.textContent = '保存';
-          saveBtn.disabled = !hasChanges();
+          // 최초 상태(현재도 비어있고 저장된 것도 없거나 비어있음)에서만 비활성화
+          const savedHasContent = savedSnapshot && savedSnapshot.some(d => (d.text || '').trim());
+          saveBtn.disabled = !hasContent() && !savedHasContent;
+        } else {
+          saveBtnIcon.hidden = true;
+          saveBtnText.textContent = '編集';
+          saveBtn.disabled = false;
         }
       }
 
@@ -873,21 +850,18 @@
         taskList.classList.toggle('task-list--editing', enabled);
         taskList.querySelectorAll('.task-row').forEach(row => {
           row.querySelector('.task-row__input').readOnly = !enabled;
-          const btnIcon = row.querySelector('.task-row__btn .icon');
-          if (enabled) {
-            btnIcon.className = 'icon icon--md icon-cancel';
-            row.querySelector('.task-row__btn').setAttribute('aria-label', 'クリア');
-          } else {
-            btnIcon.className = 'icon icon--md icon-check-small';
-            row.querySelector('.task-row__btn').setAttribute('aria-label', '完了');
-          }
+          const btn = row.querySelector('.task-row__btn');
+          btn.querySelector('.icon').className = enabled
+            ? 'icon icon--md icon-cancel'
+            : 'icon icon--md icon-check-small';
+          btn.setAttribute('aria-label', enabled ? 'クリア' : '完了');
         });
+        updateFooterBtn();
       }
 
       function saveToStorage() {
-        const data = getSnapshot();
-        savedSnapshot = data;
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        savedSnapshot = getSnapshot();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(savedSnapshot));
       }
 
       function loadFromStorage() {
@@ -903,13 +877,8 @@
           row.classList.toggle('task-row--done', !!d.done);
         });
         savedSnapshot = data;
-        // 저장된 값에 내용이 있을 때만 저장 모드로 전환
-        const hasContent = data.some(d => (d.text || '').trim());
-        if (hasContent) {
-          isSaved = true;
-          setEditing(false);
-          updateFooterBtn(true);
-        }
+        // 내용이 있으면 저장 모드로 전환
+        if (hasContent()) setEditing(false);
       }
 
       taskList.querySelectorAll('.task-row').forEach(row => {
@@ -920,16 +889,16 @@
           const empty = !input.value.trim();
           row.classList.toggle('task-row--empty', empty);
           if (empty) row.classList.remove('task-row--done');
-          updateFooterBtn(isSaved);
+          updateFooterBtn();
         });
 
         btn.addEventListener('click', () => {
-          if (taskList.classList.contains('task-list--editing')) {
+          if (isEditing()) {
             // 편집 모드: x 버튼 → 텍스트 지우기
             input.value = '';
             row.classList.add('task-row--empty');
             row.classList.remove('task-row--done');
-            updateFooterBtn(isSaved);
+            updateFooterBtn();
           } else {
             // 저장 모드: check 버튼 → 완료 토글
             row.classList.toggle('task-row--done');
@@ -939,23 +908,14 @@
       });
 
       saveBtn.addEventListener('click', () => {
-        if (isSaved) {
+        if (isEditing()) {
+          // 保存 클릭 → 저장. 내용이 있으면 저장 모드, 없으면 편집 모드 유지(최초 상태)
+          saveToStorage();
+          if (hasContent()) setEditing(false);
+          else updateFooterBtn(); // savedSnapshot 갱신 → disabled 재계산
+        } else {
           // 編集 클릭 → 편집 모드 진입
           setEditing(true);
-          isSaved = false;
-          updateFooterBtn(false);
-        } else {
-          // 保存 클릭 → 저장
-          saveToStorage();
-          const hasContent = getSnapshot().some(d => d.text.trim());
-          if (hasContent) {
-            setEditing(false);
-            isSaved = true;
-            updateFooterBtn(true);
-          } else {
-            // 모든 필드가 비어 있으면 편집 모드 유지
-            updateFooterBtn(false);
-          }
         }
       });
 
@@ -996,11 +956,6 @@
             });
           });
         });
-
-        // transition 억제 해제 (2프레임 후)
-        requestAnimationFrame(() => requestAnimationFrame(() =>
-          document.documentElement.classList.remove('mini-mode-init')
-        ));
       }
 
       // static 케이스 — 항상 표시, 토글 불가

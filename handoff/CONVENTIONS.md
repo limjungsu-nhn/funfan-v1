@@ -240,7 +240,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ---
 
-## 9. 금지 사항
+## 9. CSS 우선 — 동기 측정 회피
+
+### 같은 너비 컬럼/탭 → JS 측정 금지, CSS Grid 사용
+```css
+.tab-group {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+}
+```
+- `1fr` + 인트린식 사이징이 모든 컬럼을 가장 큰 콘텐츠 기준으로 균등화
+- 탭 개수 무관, 콘텐츠 길이 무관
+- JS `getBoundingClientRect` + 인라인 `min-width` 패턴은 비동기 측정으로 깜빡임 발생 → 금지
+
+### DOM 클래스를 단일 진실원으로
+- 상태 변수(`let isSaved = false`)와 DOM 클래스(`element.classList.contains('--editing')`)가 같은 정보를 표현하면 동기화 위험
+- 한쪽으로 통일하고 헬퍼 함수로 추상화: `const isEditing = () => el.classList.contains('--editing');`
+
+---
+
+## 10. 금지 사항
 
 - ❌ **인라인 `style="..."`**
 - ❌ **하드코딩된 px/rgba** (토큰화 대체)
@@ -250,7 +270,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 ---
 
-## 10. 허용 예외
+## 11. 허용 예외
 
 - styleguide의 **색상/크기 시각화용** inline style (데모 목적)
 - SVG defs(`<svg class="svg-defs">`) 같은 명확한 utility 클래스
