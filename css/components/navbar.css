@@ -60,3 +60,10 @@
   display: none; /* 기본 숨김 — 필요한 페이지에서 display: flex 로 활성화 */
 }
 
+/* ---------- Work Mode (탭 활성 상태) ---------- */
+.navbar-btn--work { display: none; }
+
+.navbar--work-mode .navbar-tabs { display: flex; }
+.navbar--work-mode .navbar-btn--normal { display: none; }
+.navbar--work-mode .navbar-btn--work { display: inline-flex; }
+

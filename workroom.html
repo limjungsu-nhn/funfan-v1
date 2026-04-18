@@ -113,11 +113,15 @@
           <button class="tab">非公開</button>
         </div>
       </div>
-      <button class="btn btn-ghost">
+      <button class="btn btn-ghost navbar-btn--normal">
         <i class="icon icon-account-circle"></i>
         <span class="text-assist-w4">マイページ</span>
       </button>
-      <button class="btn btn-filled">
+      <button class="btn btn-ghost navbar-btn--work">
+        <i class="icon icon-exit-to-app"></i>
+        <span class="text-assist-w4">作業終了</span>
+      </button>
+      <button class="btn btn-filled navbar-btn--normal">
         <i class="icon icon-laptop-mac"></i>
         <span class="text-assist-w4">ワークスペース</span>
       </button>
@@ -479,6 +483,25 @@
       const wrapper    = document.getElementById('ws-right-wrapper');
       const rightPanel = document.querySelector('.right-panel');
       if (!floatBtn || !wrapper || !rightPanel) return;
+
+      // mini 모드: navbar 탭 활성화
+      if (new URLSearchParams(location.search).get('mode') === 'mini') {
+        document.querySelector('.navbar').classList.add('navbar--work-mode');
+
+        // 탭 너비 균등화 + 클릭 선택 전환
+        document.querySelectorAll('.navbar .tab-group').forEach(group => {
+          const tabs = group.querySelectorAll('.tab');
+          let maxW = 0;
+          tabs.forEach(t => maxW = Math.max(maxW, t.getBoundingClientRect().width));
+          group.style.setProperty('--tab-min-w', Math.ceil(maxW) + 'px');
+          tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+              tabs.forEach(t => t.classList.remove('tab--selected'));
+              tab.classList.add('tab--selected');
+            });
+          });
+        });
+      }
 
       const PANEL_KEY = 'rightPanelOpen';
       let isOpen = localStorage.getItem(PANEL_KEY) !== 'false';
