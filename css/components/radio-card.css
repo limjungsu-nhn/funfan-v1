@@ -22,12 +22,12 @@
 /* ---------- Container ---------- */
 .radio-card {
   width: 448px;
-  padding: 16px 20px;
+  padding: var(--space-4) var(--space-5);
   background: var(--color-gray-6);
   border-radius: 12px;
   display: inline-flex;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-4);
   cursor: pointer;
   overflow: hidden;
   box-sizing: border-box;
@@ -52,11 +52,11 @@
 /* ---------- Focus (keyboard only) ---------- */
 .radio-card--focus {
   background: var(--color-gray-5);
-  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
 }
 body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
   background: var(--color-gray-5);
-  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
 }
 
 /* ---------- Selected ---------- */
@@ -98,7 +98,7 @@ body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
 .radio-card__content {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 /* ---------- Title ---------- */
@@ -153,11 +153,11 @@ body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
   width: var(--p35);
   background: var(--color-white-100);
   border-radius: 24px;
-  padding: 32px 28px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.02), 0px 0px 1px rgba(0, 0, 0, 0.10);
+  padding: var(--space-8) var(--space-7);
+  box-shadow: 0px 4px 8px var(--color-shadow-subtle), 0px 0px 1px var(--color-shadow-mid);
   display: inline-flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-6);
   box-sizing: border-box;
 }
 
@@ -192,7 +192,7 @@ body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
 .radio-group-card__list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 /* radio-card 내부에서 full-width */

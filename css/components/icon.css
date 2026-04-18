@@ -12,6 +12,14 @@
 /* ---------- Base ---------- */
 .icon[hidden] { display: none !important; }
 
+/* 화면엔 보이지 않지만 DOM에 남겨두는 SVG <defs>·필터 컨테이너 */
+.svg-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
 .icon {
   display: inline-block;
   width: 18px;

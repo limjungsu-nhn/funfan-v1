@@ -30,7 +30,7 @@
   width: 244px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   overflow: hidden;
 }
 
@@ -174,11 +174,11 @@ body:not(.using-mouse) .task-row:has(.task-row__input:focus-visible),
   background-image: url('../../img/postit.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
-  padding: 24px 28px 38px 22px;
+  padding: var(--space-6) var(--space-7) 38px 22px;
   margin-top: 60px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: var(--space-6);
   pointer-events: auto;
 }
 
@@ -204,7 +204,7 @@ body:not(.using-mouse) .task-row:has(.task-row__input:focus-visible),
 .task-save-btn {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: var(--space-1);
   border: none;
   background: transparent;
   padding: 0;
@@ -233,7 +233,7 @@ body:not(.using-mouse) .task-save-btn:focus-visible,
 .task-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space-5);
 }
 
 /* ---------- Footer ---------- */

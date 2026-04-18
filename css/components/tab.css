@@ -20,7 +20,7 @@
   gap: 2px;
   background: var(--color-gray-6);
   border-radius: 100px;
-  padding: 4px;
+  padding: var(--space-1);
 }
 
 /* ---------- Base ---------- */
@@ -29,7 +29,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-  padding: 0 12px;
+  padding: 0 var(--space-3);
   min-height: 32px;
   min-width: var(--tab-min-w, auto);
   border-radius: 100px;
@@ -54,7 +54,7 @@
 /* ---------- Selected / Active ---------- */
 .tab--selected {
   background: var(--color-white-100);
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 1px 2px var(--color-shadow-light);
   color: var(--color-black-100);
 }
 
@@ -68,12 +68,12 @@
 .tab--focus {
   background: var(--color-white-100);
   color: var(--color-black-100);
-  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
   outline: none;
 }
 .tab:focus-visible {
   background: var(--color-white-100);
   color: var(--color-black-100);
-  box-shadow: 0px 0px 0px 3px var(--color-gray-5), 0px 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
   outline: none;
 }

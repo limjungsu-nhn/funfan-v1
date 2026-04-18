@@ -118,6 +118,8 @@
 
 
   </style>
+  <script src="js/core/keyboard-focus.js" defer></script>
+  <script src="js/components/chat.js" defer></script>
 </head>
 <body>
 
@@ -546,7 +548,7 @@
       <div class="right-panel__footer">
         <div class="chat-input">
           <div class="chat-input__field">
-            <textarea class="chat-input__textarea" placeholder="はなに話しかけてみましょう..." rows="1"></textarea>
+            <textarea class="chat-input__textarea" aria-label="AIへのメッセージ" placeholder="はなに話しかけてみましょう..." rows="1"></textarea>
           </div>
           <div class="chat-input__actions">
             <button class="icon-btn" type="button" aria-label="添付">
@@ -618,19 +620,6 @@
       return DEFAULT_REPLY;
     }
 
-    function typeText(el, text, chatArea, onDone) {
-      let i = 0;
-      const interval = setInterval(() => {
-        el.textContent += text[i];
-        chatArea.scrollTop = chatArea.scrollHeight;
-        i++;
-        if (i >= text.length) {
-          clearInterval(interval);
-          if (onDone) onDone();
-        }
-      }, 30);
-    }
-
     // ── 바 차트 비율 설정 ────────────────────────────────────
     (() => {
       const values = [1200, 2800, 800, 2600, 2100, 3500];
@@ -640,15 +629,13 @@
       });
     })();
 
-    // ── 채팅 스크롤 초기화 ───────────────────────────────────
-    (() => {
-      const chatArea = document.querySelector('.right-panel__chat');
-      if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
-    })();
-
-    // ── 마우스/키보드 구분 ───────────────────────────────────
-    document.addEventListener('mousedown', () => document.body.classList.add('using-mouse'));
-    document.addEventListener('keydown', (e) => { if (e.key === 'Tab') document.body.classList.remove('using-mouse'); });
+    // ── 채팅 인터랙션 ────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      Chat.setup({
+        root: document.querySelector('.right-panel'),
+        getReply,
+      });
+    });
 
     // ── Left Panel 스크롤 차단 ───────────────────────────────
     document.querySelector('.left-panel').addEventListener('wheel', (e) => {
@@ -659,94 +646,6 @@
     document.querySelector('.right-panel').addEventListener('wheel', (e) => {
       e.stopPropagation();
     }, { passive: true });
-
-    // ── 채팅 인터랙션 ────────────────────────────────────────
-    (() => {
-      const textarea  = document.querySelector('.right-panel .chat-input__textarea');
-      const sendBtn   = document.querySelector('.right-panel .send-btn');
-      const chatArea  = document.querySelector('.right-panel__chat');
-      const suggestions = document.querySelector('.right-panel__suggestions');
-
-      if (!textarea || !sendBtn || !chatArea) return;
-
-      let isWaiting = false;
-
-      // textarea 자동 높이
-      textarea.addEventListener('input', () => {
-        textarea.style.height = '32px';
-        textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
-      });
-
-      // はな 답변 버블 생성 → 스트리밍으로 채움
-      function appendBotMessage() {
-        const wrap = document.createElement('div');
-        wrap.className = 'chat-msg chat-msg--new';
-        wrap.innerHTML =
-          '<div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>' +
-          '<div class="chat-msg__body"><p class="chat-msg__text"></p></div>';
-        chatArea.appendChild(wrap);
-        chatArea.scrollTop = chatArea.scrollHeight;
-        return wrap.querySelector('.chat-msg__text');
-      }
-
-      // 전송
-      async function sendMessage() {
-        if (isWaiting) return;
-        const text = textarea.value.trim();
-        if (!text) return;
-
-        isWaiting = true;
-        sendBtn.disabled = true;
-
-        // 내 메시지 추가
-        const myMsg = document.createElement('div');
-        myMsg.className = 'my-msg';
-        myMsg.innerHTML =
-          '<div class="my-msg__bubble">' +
-            '<p class="my-msg__text">' + text.replace(/</g, '&lt;') + '</p>' +
-            '<svg class="my-msg__tail" width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg">' +
-              '<path d="M0 0H12L15.111 9.33315C15.4129 10.2387 14.4188 11.027 13.6059 10.5267C10.9214 8.87468 7.83106 8 4.67894 8H0V0Z"/>' +
-            '</svg>' +
-          '</div>';
-        chatArea.appendChild(myMsg);
-        chatArea.scrollTop = chatArea.scrollHeight;
-        if (suggestions) suggestions.style.display = 'none';
-
-        textarea.value = '';
-        textarea.style.height = '32px';
-        textarea.focus();
-
-        // はな 답변 버블 (빈 상태) — 약간의 딜레이 후 타이핑
-        setTimeout(() => {
-          const botTextEl = appendBotMessage();
-          const reply = getReply(text);
-          typeText(botTextEl, reply, chatArea, () => {
-            isWaiting = false;
-            sendBtn.disabled = false;
-          });
-        }, 400);
-      }
-
-      sendBtn.addEventListener('click', sendMessage);
-      textarea.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendMessage();
-        }
-      });
-
-      // 칩 클릭 → 즉시 전송
-      document.querySelectorAll('.right-panel__suggestions .msg-bubble').forEach((chip) => {
-        chip.addEventListener('click', () => {
-          textarea.value = chip.querySelector('span')?.textContent || chip.textContent;
-          sendMessage();
-          textarea.blur();
-          if (suggestions) suggestions.style.display = 'none';
-        });
-      });
-
-      // 입력창 입력 후 보내기 클릭 → 버블 숨김 (sendMessage 내부에서 처리)
-    })();
 
     // ── Float Button — 패널 열림/닫힘 토글 ─────────────────────
     (() => {

@@ -48,12 +48,12 @@
   width: 100%;
   padding: 24px 24px 32px;
   background: var(--color-white-100);
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.02), 0px 0px 1px rgba(0, 0, 0, 0.10);
+  box-shadow: 0px 4px 8px var(--color-shadow-subtle), 0px 0px 1px var(--color-shadow-mid);
   border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 32px;
+  gap: var(--space-8);
   box-sizing: border-box;
 }
 
@@ -84,13 +84,13 @@
 .revenue-card__stats {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: var(--space-6);
 }
 
 .revenue-card__stat {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .revenue-card__stat-month {
@@ -113,7 +113,7 @@
   align-self: stretch;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 /* 바 영역 */

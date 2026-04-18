@@ -46,7 +46,7 @@
   <link rel="stylesheet" href="css/components/input-wood.css">
 
   <!-- SVG Filter: 지글지글 스트로크 -->
-  <svg style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+  <svg class="svg-defs" aria-hidden="true">
     <defs>
       <filter id="timer-jiggly" x="-8%" y="-8%" width="116%" height="116%">
         <feTurbulence type="fractalNoise" baseFrequency="0.07 0.06" numOctaves="3" seed="4" result="noise"/>
@@ -275,6 +275,8 @@
 
 
   </style>
+  <script src="js/core/keyboard-focus.js" defer></script>
+  <script src="js/components/chat.js" defer></script>
 </head>
 <body>
 
@@ -297,7 +299,7 @@
         <i class="icon icon-account-circle"></i>
         <span class="text-assist-w4">マイページ</span>
       </button>
-      <button class="btn btn-ghost navbar-btn--work" id="task-list-open-btn" style="display:none">
+      <button class="btn btn-ghost navbar-btn--work" id="task-list-open-btn">
         <i class="icon icon-check-circle"></i>
         <span class="text-assist-w4">タスクリスト</span>
       </button>
@@ -323,21 +325,21 @@
         <div class="task-row task-row--empty">
           <div class="task-row__field">
             <span class="task-row__num">1.</span>
-            <input class="task-row__input" type="text" placeholder="仕事内容を入力してください。" autocomplete="off">
+            <input class="task-row__input" type="text" aria-label="仕事内容" placeholder="仕事内容を入力してください。" autocomplete="off">
           </div>
           <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
         </div>
         <div class="task-row task-row--empty">
           <div class="task-row__field">
             <span class="task-row__num">2.</span>
-            <input class="task-row__input" type="text" placeholder="仕事内容を入力してください。" autocomplete="off">
+            <input class="task-row__input" type="text" aria-label="仕事内容" placeholder="仕事内容を入力してください。" autocomplete="off">
           </div>
           <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
         </div>
         <div class="task-row task-row--empty">
           <div class="task-row__field">
             <span class="task-row__num">3.</span>
-            <input class="task-row__input" type="text" placeholder="仕事内容を入力してください。" autocomplete="off">
+            <input class="task-row__input" type="text" aria-label="仕事内容" placeholder="仕事内容を入力してください。" autocomplete="off">
           </div>
           <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
         </div>
@@ -563,7 +565,7 @@
 
               <div class="timer-custom">
                 <div class="input-wood">
-                  <input class="input-wood__field" type="text" inputmode="numeric" placeholder="0" maxlength="2" pattern="[0-9]*" id="timer-custom-input">
+                  <input class="input-wood__field" type="text" inputmode="numeric" placeholder="0" maxlength="2" pattern="[0-9]*" id="timer-custom-input" aria-label="カスタム時間（分）">
                   <span class="input-wood__unit text-assist-w4">分</span>
                 </div>
                 <button class="btn btn-glass btn--sm"><span class="text-assist-w4">適用</span></button>
@@ -578,11 +580,11 @@
                 <i class="icon icon-play-arrow"></i>
               </button>
               <!-- running: 멈춤 -->
-              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-pause"><i class="icon icon-pause"></i></button>
+              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-pause" type="button" aria-label="一時停止"><i class="icon icon-pause"></i></button>
               <!-- paused: 다시 시작 -->
-              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-resume"><i class="icon icon-play-arrow"></i></button>
+              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-resume" type="button" aria-label="再開"><i class="icon icon-play-arrow"></i></button>
               <!-- running + paused: 취소 -->
-              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-cancel"><i class="icon icon-stop"></i></button>
+              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-cancel" type="button" aria-label="キャンセル"><i class="icon icon-stop"></i></button>
             </div>
 
           </div>
@@ -704,7 +706,7 @@
       <div class="right-panel__footer">
         <div class="chat-input">
           <div class="chat-input__field">
-            <textarea class="chat-input__textarea" placeholder="はなに話しかけてみましょう..." rows="1"></textarea>
+            <textarea class="chat-input__textarea" aria-label="AIへのメッセージ" placeholder="はなに話しかけてみましょう..." rows="1"></textarea>
           </div>
           <div class="chat-input__actions">
             <button class="icon-btn" type="button" aria-label="添付">
@@ -776,25 +778,6 @@
       return DEFAULT_REPLY;
     }
 
-    function typeText(el, text, chatArea, onDone) {
-      let i = 0;
-      const interval = setInterval(() => {
-        el.textContent += text[i];
-        chatArea.scrollTop = chatArea.scrollHeight;
-        i++;
-        if (i >= text.length) {
-          clearInterval(interval);
-          if (onDone) onDone();
-        }
-      }, 30);
-    }
-
-    // ── 채팅 스크롤 초기화 ───────────────────────────────────
-    (() => {
-      const chatArea = document.querySelector('.right-panel__chat');
-      if (chatArea) chatArea.scrollTop = chatArea.scrollHeight;
-    })();
-
     // ── 라디오 선택 → 버튼 활성화 ──────────────────────────────
     (() => {
       const startBtn = document.getElementById('start-btn');
@@ -810,10 +793,6 @@
       });
     })();
 
-    // ── 마우스/키보드 구분 ───────────────────────────────────
-    document.addEventListener('mousedown', () => document.body.classList.add('using-mouse'));
-    document.addEventListener('keydown', (e) => { if (e.key === 'Tab') document.body.classList.remove('using-mouse'); });
-
     // ── Left Panel 스크롤 차단 ───────────────────────────────
     document.querySelector('.left-panel').addEventListener('wheel', (e) => {
       e.preventDefault();
@@ -825,80 +804,12 @@
     }, { passive: true });
 
     // ── 채팅 인터랙션 ────────────────────────────────────────
-    (() => {
-      const textarea  = document.querySelector('.right-panel .chat-input__textarea');
-      const sendBtn   = document.querySelector('.right-panel .send-btn');
-      const chatArea  = document.querySelector('.right-panel__chat');
-      const suggestions = document.querySelector('.right-panel__suggestions');
-
-      if (!textarea || !sendBtn || !chatArea) return;
-
-      let isWaiting = false;
-
-      // textarea 자동 높이
-      textarea.addEventListener('input', () => {
-        textarea.style.height = '32px';
-        textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+    document.addEventListener('DOMContentLoaded', () => {
+      Chat.setup({
+        root: document.querySelector('.right-panel'),
+        getReply,
       });
-
-      // はな 답변 버블 생성 → 스트리밍으로 채움
-      function appendBotMessage() {
-        const wrap = document.createElement('div');
-        wrap.className = 'chat-msg chat-msg--new';
-        wrap.innerHTML =
-          '<div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>' +
-          '<div class="chat-msg__body"><p class="chat-msg__text"></p></div>';
-        chatArea.appendChild(wrap);
-        chatArea.scrollTop = chatArea.scrollHeight;
-        return wrap.querySelector('.chat-msg__text');
-      }
-
-      // 전송
-      async function sendMessage() {
-        if (isWaiting) return;
-        const text = textarea.value.trim();
-        if (!text) return;
-
-        isWaiting = true;
-        sendBtn.disabled = true;
-
-        // 내 메시지 추가
-        const myMsg = document.createElement('div');
-        myMsg.className = 'my-msg';
-        myMsg.innerHTML =
-          '<div class="my-msg__bubble">' +
-            '<p class="my-msg__text">' + text.replace(/</g, '&lt;') + '</p>' +
-            '<svg class="my-msg__tail" width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg">' +
-              '<path d="M0 0H12L15.111 9.33315C15.4129 10.2387 14.4188 11.027 13.6059 10.5267C10.9214 8.87468 7.83106 8 4.67894 8H0V0Z"/>' +
-            '</svg>' +
-          '</div>';
-        chatArea.appendChild(myMsg);
-        chatArea.scrollTop = chatArea.scrollHeight;
-        if (suggestions) suggestions.style.display = 'none';
-
-        textarea.value = '';
-        textarea.style.height = '32px';
-        textarea.focus();
-
-        // はな 답변 버블 (빈 상태) — 약간의 딜레이 후 타이핑
-        setTimeout(() => {
-          const botTextEl = appendBotMessage();
-          const reply = getReply(text);
-          typeText(botTextEl, reply, chatArea, () => {
-            isWaiting = false;
-            sendBtn.disabled = false;
-          });
-        }, 400);
-      }
-
-      sendBtn.addEventListener('click', sendMessage);
-      textarea.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' && !e.shiftKey) {
-          e.preventDefault();
-          sendMessage();
-        }
-      });
-    })();
+    });
 
     // ── Task List ──────────────────────────────────────
     (() => {
