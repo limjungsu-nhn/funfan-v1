@@ -449,6 +449,16 @@ body {
 .sg-type-preview .navbar-tabs {
   display: flex;
 }
+
+/* Fan Feed 데모 프리뷰 높이 */
+.sg-type-preview--fan-feed {
+  padding: 0;
+  height: 360px;
+}
+.sg-type-preview--fan-feed .fan-feed {
+  height: 100%;
+}
+
 .sg-demo-item {
   display: flex;
   flex-direction: column;

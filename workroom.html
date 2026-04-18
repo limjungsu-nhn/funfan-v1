@@ -75,6 +75,10 @@
       flex-direction: column;
     }
 
+    .workspace--mini .workspace__main {
+      background: var(--color-wood-6);
+    }
+
     .workspace__content {
       flex: 1;
       min-height: 0;
@@ -486,6 +490,7 @@
       const params = new URLSearchParams(location.search);
       if (params.get('mode') === 'mini') {
         document.querySelector('.navbar').classList.add('navbar--work-mode');
+        document.querySelector('.workspace').classList.add('workspace--mini');
 
         // 탭 너비 균등화 + 클릭 선택 전환 + 초기 선택 탭 적용
         document.querySelectorAll('.navbar .tab-group').forEach(group => {

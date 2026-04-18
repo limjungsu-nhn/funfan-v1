@@ -61,6 +61,7 @@
   margin: 0;
   color: var(--color-font-primary-black-100);
   align-self: stretch;
+  overflow-wrap: break-word;
 }
 
 /* ---------- Meta (이름 · 시간) ---------- */
@@ -89,4 +90,119 @@
   align-items: flex-start;
   gap: 6px;
   padding-top: 8px;
+}
+
+/* ==============================================
+   Fan Reaction variant — 이모지 아이콘 + 댓글 텍스트
+   이모지 종류: 💧 水やり / ⭐ 応援 / 💬 コメント
+
+   HTML 구조:
+     <div class="review-item review-item--fan">
+       <div class="review-item__icon">💧</div>
+       <div class="review-item__body">
+         <p class="text-caption-w4 review-item__text">コメント本文...</p>
+         <span class="text-overline-w4 review-item__meta-time">pumpkin91 · 8分前</span>
+       </div>
+     </div>
+   ============================================== */
+
+.review-item--fan {
+  align-self: stretch; /* 부모 너비에 자동 맞춤 */
+  padding: 14px 24px 14px 20px;
+  background: var(--color-white-100);
+  gap: 12px;
+}
+
+.review-item--fan:last-child {
+  padding-bottom: 14px; /* 기본 last-child override 무효화 */
+}
+
+.review-item__icon {
+  width: 32px;
+  min-width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  background: var(--color-gray-6);
+  border-radius: 100px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.review-item--fan .review-item__body {
+  gap: 8px;
+}
+
+.review-item--fan .review-item__meta-time {
+  color: var(--color-font-primary-black-50);
+}
+
+/* ==============================================
+   Fan Feed — フィード パネルコンテナ
+   スクロール可能なファンリアクションリスト
+
+   HTML 구조:
+     <div class="fan-feed">
+       <div class="fan-feed__header">
+         <span class="text-body-sm-w6">フィード</span>
+       </div>
+       <div class="fan-feed__body">
+         <div class="fan-feed__list">
+           <div class="review-item review-item--fan">...</div>
+           ...
+         </div>
+         <div class="fan-feed__fade"></div>
+       </div>
+     </div>
+
+   높이는 부모 컨텍스트에서 결정.
+   스크롤바는 숨김 (scrollbar-width: none).
+   ============================================== */
+
+.fan-feed {
+  width: var(--p20); /* 288px */
+  background: var(--color-white-100);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.fan-feed__header {
+  align-self: stretch;
+  padding: 4px 22px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.fan-feed__body {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+}
+
+.fan-feed__list {
+  height: 100%;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: none; /* Firefox */
+}
+
+.fan-feed__list::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.fan-feed__fade {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: linear-gradient(180deg, var(--color-white-100) 0%, rgba(255, 255, 255, 0) 100%);
+  pointer-events: none;
+  z-index: 1;
 }
