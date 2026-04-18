@@ -1597,8 +1597,7 @@
                         <button class="tab">非公開</button>
                       </div>
                     </div>
-                    <button class="btn btn-ghost"><i class="icon icon-account-circle"></i><span class="text-assist-w4">マイページ</span></button>
-                    <button class="btn btn-filled"><i class="icon icon-laptop-mac"></i><span class="text-assist-w4">ワークスペース</span></button>
+                    <button class="btn btn-ghost"><i class="icon icon-exit-to-app"></i><span class="text-assist-w4">作業終了</span></button>
                   </div>
                 </header>
               </div>
@@ -3228,16 +3227,14 @@
       });
     })();
 
-    // ── Tab Demo ─────────────────────────────────────────────────
-    (() => {
-      const demo = document.querySelector('.sg-tab-demo');
-      if (!demo) return;
-      const tabs = demo.querySelectorAll('.tab');
+    // ── Tab Group 공통 초기화 (클릭 선택 전환 + 너비 균등화) ──────
+    document.querySelectorAll('.tab-group').forEach(group => {
+      const tabs = group.querySelectorAll('.tab');
 
       // 가장 넓은 탭 기준으로 너비 균등화
       let maxW = 0;
       tabs.forEach(t => maxW = Math.max(maxW, t.getBoundingClientRect().width));
-      demo.style.setProperty('--tab-min-w', Math.ceil(maxW) + 'px');
+      group.style.setProperty('--tab-min-w', Math.ceil(maxW) + 'px');
 
       tabs.forEach(tab => {
         tab.addEventListener('click', () => {
@@ -3245,7 +3242,7 @@
           tab.classList.add('tab--selected');
         });
       });
-    })();
+    });
   </script>
 
 </body>
