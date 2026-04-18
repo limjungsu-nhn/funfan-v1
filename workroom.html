@@ -93,6 +93,15 @@
     .workspace--mini .radio-group-card,
     html.mini-mode .radio-group-card { display: none; }
 
+    /* mini 모드: 배경 이미지 bottom-center (레이아웃 영역 미점유) */
+    .workspace--mini .workspace__content,
+    html.mini-mode .workspace__content {
+      background-image: url('img/bg_workroom.png');
+      background-repeat: no-repeat;
+      background-position: bottom center;
+      background-size: 3008px 540px;
+    }
+
     /* mini 모드 FOUC 방지 — navbar */
     html.mini-mode .navbar .navbar-tabs { display: flex; }
     html.mini-mode .navbar .navbar-btn--normal { display: none; }
