@@ -830,16 +830,8 @@
         }));
       }
 
-      function hasChanges() {
-        const current = getSnapshot();
-        if (!savedSnapshot) {
-          // 저장된 적 없음 → 내용 있으면 변경으로 간주
-          return current.some(d => d.text.trim());
-        }
-        return current.some((d, i) => {
-          const s = savedSnapshot[i] || { text: '', done: false };
-          return d.text !== s.text || d.done !== s.done;
-        });
+      function hasContent() {
+        return getSnapshot().some(d => d.text.trim());
       }
 
       function updateFooterBtn(saved) {
@@ -848,10 +840,13 @@
           saveBtnText.textContent = '編集';
           saveBtn.disabled = false;
         } else {
+          // 편집 모드:
+          //  - 한 번이라도 저장한 적 있으면(재편집) 내용 유무와 무관하게 저장 가능
+          //  - 초기 상태(저장 이력 없음)에서는 내용이 있어야 저장 가능
           saveBtnIcon.hidden = false;
           saveBtnIcon.className = 'icon icon-check-small';
           saveBtnText.textContent = '保存';
-          saveBtn.disabled = !hasChanges();
+          saveBtn.disabled = savedSnapshot ? false : !hasContent();
         }
       }
 

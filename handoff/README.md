@@ -4,12 +4,20 @@
 
 ## 파일 안내
 
+### 디자인 → 개발 매핑
 | 파일 | 용도 | 대상 |
 |---|---|---|
 | [`design-tokens.json`](./design-tokens.json) | 모든 디자인 토큰 (color/spacing/typography/shadow/radius) | 참고용 원본 |
 | [`tailwind-preset.ts`](./tailwind-preset.ts) | Tailwind `theme.extend` 프리셋 | `tailwind.config.ts`에 직접 import |
 | [`COMPONENTS.md`](./COMPONENTS.md) | 26개 컴포넌트 → shadcn 매핑 + variant/size/state | cva 정의 작성 시 |
 | [`ICONS.md`](./ICONS.md) | 31개 아이콘 → lucide-react 매핑 | 아이콘 치환 시 |
+
+### 개발 문서
+| 파일 | 용도 |
+|---|---|
+| [`GETTING_STARTED.md`](./GETTING_STARTED.md) | 로컬 실행 + Tailwind 연결 + 구현 우선순위 |
+| [`ARCHITECTURE.md`](./ARCHITECTURE.md) | 프로젝트 구조, 로딩 순서, 확장 포인트 |
+| [`CONVENTIONS.md`](./CONVENTIONS.md) | BEM·토큰·HTML·JS 네이밍과 패턴 |
 
 ## 시작하기 (개발자)
 
