@@ -1,0 +1,5 @@
+# Cloudflare Wrangler (로컬 캐시/빌드 산출물)
+.wrangler/
+
+# macOS
+.DS_Store
