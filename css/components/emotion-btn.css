@@ -1,0 +1,43 @@
+/* ============================================
+   Emotion Display — 感情表現 카운트 표시 (표시 전용)
+   Figma: Frame2087333170
+
+   HTML 구조 (비-인터랙티브 · span 등 inline 요소로 사용):
+     <span class="emotion-btn">
+       <svg class="emotion-btn__icon" width="16" height="16" viewBox="0 0 16 16">
+         <path d="..." fill="currentColor"/>
+       </svg>
+       <span class="emotion-btn__count">0</span>
+     </span>
+
+   Notes:
+     - 표시 전용: 클릭/호버/포커스/selected 상태 없음
+     - 클래스명은 레거시 호환을 위해 유지 (스펙 변경: 2026-04)
+   ============================================ */
+
+/* ---------- Container ---------- */
+.emotion-btn {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-family-base);
+}
+
+/* ---------- Icon ---------- */
+.emotion-btn__icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-black-50);
+  flex-shrink: 0;
+  display: inline-block;
+}
+
+/* ---------- Count ---------- */
+.emotion-btn__count {
+  color: var(--color-font-primary-black-100);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+  font-variant-numeric: tabular-nums;
+}

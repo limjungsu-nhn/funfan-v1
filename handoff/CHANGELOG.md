@@ -10,6 +10,49 @@
 
 ## Unreleased
 
+### 추가 (컴포넌트)
+- **`episode-card`** — `.episode-header` + `.episode-item` 리스트를 묶는 composite 카드 (1000×auto, white bg, radius 24). 에피소드 목록 UI 단위
+  - 내부에 `.episode-header`를 `width: 100%`로 확장 override (기본 1000 고정 폭)
+  - `js/components/episode-card.js` — 정렬 토글 (`古い順 ↔ 新しい順` + 리스트 순서 역순 재배치)
+- **`review-item--episode`** — `.review-item` 에피소드 variant (에피소드 카드 내부 리뷰)
+  - 상단: avatar xs + user-name(subtext-w6) · 좋아요(♥ + count)
+  - 중단: `.review-score`(5 stars × 16) + 작성일(overline-w4)
+  - 하단: 리뷰 텍스트(assist-w4), 섹션 사이 gap `--space-2`
+- **`review-score`** — 별점 표시 (5 stars × 16×16). `--filled` 모디파이어로 채움 색상 제어 (`--color-star` 또는 `--color-gray-4`)
+
+### 추가 (토큰)
+- **`--space-20: 80px`** — 페이지 하단 여백 등에서 재사용
+- **`--episode-card-width: 1000px`** — episode-card / episode-header / garden-card 공용 컨테이너 폭
+- **`--color-star: #FFB800`** — review-score 별점 채움 색
+
+### 추가 (페이지)
+- **`series-home.html`** — 시리즈 홈 (진행중). garden-card + episode-card 배치, 하단 여백 `var(--space-20)`
+- **index.html** — series-home.html 링크 추가 (상태 ⏳ 진행중)
+
+### 추가 (아이콘)
+- **`.icon-swap-vert`** — 정렬 토글 아이콘 (Material `swap_vert`, 세로 양방향 화살표). episode-header 정렬 버튼에 사용
+- 인라인 SVG viewBox 통일: `0 0 18 18` → `0 0 24 24` (Material 원본 스펙 복원)
+
+### 변경 (아이콘 사용 패턴)
+- **review-item--episode 좋아요 아이콘** 인라인 `<svg>` → `<i class="icon icon-favorite icon--sm">` 클래스 패턴으로 치환
+  - 기존: `fill="currentColor"` path 직접 지정 (색상 변경 시 `fill` 속성 수정 필요)
+  - 변경: `.icon` 공통 mask-image 시스템 사용 (parent의 `color`로 `background-color: currentColor` 상속)
+  - `.review-item__like-icon` 클래스 삭제 (icon 시스템으로 이관)
+
+### 변경 (컴포넌트)
+- **`emotion-btn__count`** — 폰트 굵기 400 → **600** (카운트 강조)
+- **`reaction-bar`** — 배경 `var(--color-white-100)` → `var(--color-white-50)` (garden 배경 투과)
+- **`garden__item`** — 바람에 살랑이는 sway 애니메이션 추가
+  - `transform-origin: bottom center`, `garden-sway` keyframes (2.6~3.4s, rotate ±1.8deg)
+  - `nth-child(2n/3n/5n)` 셀렉터로 개별 지연·주기 분산 (자연스러운 흔들림)
+  - `prefers-reduced-motion: reduce` 시 애니메이션 off
+
+### 정리 (코드 품질)
+- **focus ring 하드코딩 제거** — `chat-input`, `menu-item`, `episode-header`, `episode-item`에서 `3px` → `var(--ring-width)`
+- **gap 하드코딩 제거** — `emotion-btn`(4), `reaction-bar`(4/20/4), `garden`(12), `garden-card`(40), `episode-header`(12/4), `episode-item`(4), `episode-card`(32/16) 모두 `--space-N` 토큰으로 치환
+- **episode-card 폭 토큰화** — `1000px` 직접 지정 → `var(--episode-card-width)` (episode-header / episode-card)
+- **episode-header 스탠드얼론 주석 정정** — 정렬 토글 동작은 `.episode-card` 컨텍스트 전용임을 명시
+
 ### 변경 (컴포넌트)
 - **`right-panel` 채팅 영역 하단 여백 확장** — `.right-panel__chat` padding `8px 0` → `8px 0 var(--space-4) 0`
   - 마지막 메시지 버블과 입력창(`.chat-input`) 사이 간격 8px → 16px
@@ -35,6 +78,14 @@
 ### 정리 (코드 품질)
 - `task-list` JS에서 `isSaved` 상태 제거 → `task-list--editing` 클래스를 단일 진실원으로 사용 (`isEditing()` 헬퍼)
 - 동기화 어긋남 위험 제거, 약 15줄 감소
+
+### 추가 (빌드 스크립트)
+- **`scripts/build-icons.js`** — `icons/*.svg` → `css/components/icon.css` 의 `.icon-*` 클래스 자동 생성/갱신
+  - 실행: `node scripts/build-icons.js` (또는 `--check` 로 diff 미리보기)
+  - SVG fill 색상을 `black` 으로 정규화 → `.icon` 의 `background-color: currentColor` 가 최종 색상 제어
+  - alias 규칙(`.icon-a, .icon-b {...}`) 및 orphan 클래스(SVG 파일 없는 기존 규칙) 보존
+  - `handoff/ICONS.md` 에 없는 신규 클래스가 있으면 수동 작업 안내 출력
+  - 의존성 없음 (Node.js 내장 `fs`/`path` 만 사용)
 
 ### 변경 (스타일가이드)
 - **Task List Panel preview를 workroom과 1:1 동기화** — placeholder, 버튼 aria/icon, `autocomplete`, 저장 버튼 초기 `disabled`, `.task-list-modal` 래퍼까지 실제 마크업과 일치

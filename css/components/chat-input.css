@@ -100,7 +100,7 @@
 body:not(.using-mouse) .chat-input:has(textarea:focus-visible),
 .chat-input--focus {
   outline-color: var(--color-black-100);
-  box-shadow: 0 0 0 3px var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+  box-shadow: 0 0 0 var(--ring-width) var(--color-gray-5), 0 1px 2px var(--color-shadow-light);
 }
 
 /* ---------- Active (마우스 클릭 — ring 없음) ---------- */

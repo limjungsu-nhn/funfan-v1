@@ -44,6 +44,7 @@
 | Ghost | `.btn-ghost` | transparent | gray-6 bg | scale(.97) | 3px gray-5 |
 | Filled Nature | `.btn-filled-nature` | nature-3 | nature-2 | nature-2 + scale(.97) | 3px gray-5 |
 | Filled Wood | `.btn-filled-wood` | wood-3 | wood-2 | wood-2 + scale(.97) | 3px gray-5 |
+| Filled Sky | `.btn-filled-sky` | sky-3 | sky-2 | sky-2 + scale(.97) | 3px gray-5 |
 | Glass | `.btn-glass` | white-50 | white-100 | white-100 + scale(.97) | 3px gray-5 |
 
 **Size**:
@@ -60,7 +61,7 @@
 ```ts
 const buttonVariants = cva("...", {
   variants: {
-    variant: { line, ghost, 'filled-nature', 'filled-wood', glass },
+    variant: { line, ghost, 'filled-nature', 'filled-wood', 'filled-sky', glass },
     size: { sm, md, lg }
   },
   defaultVariants: { variant: 'line', size: 'md' }
@@ -159,6 +160,90 @@ const buttonVariants = cva("...", {
 #### `.review-item` + `.fan-feed` → 커스텀 리스트
 - 아바타 + 댓글 + 이모지 반응 + 메타
 - fan-feed는 하단 fade mask 포함
+
+#### `.review-item--episode` → 커스텀 (에피소드 카드 내부 리뷰 아이템)
+- 상단행: avatar xs + user-name(subtext-w6) · 우측 좋아요 버튼 (♥ + count assist-w4)
+- 중단행: `.review-score`(5 stars × 16) + 작성일(overline-w4) — gap `--space-2`(8px)
+- 하단: 리뷰 텍스트(assist-w4)
+- 섹션 사이 gap `--space-2` (8px), `align-self: stretch`로 부모 폭에 맞춤
+- 좋아요 버튼 `:focus-visible` 키보드 포커스링 포함
+
+#### `.review-score` → 커스텀 (별점 — 5 stars × 16×16)
+- 항상 5개 별 렌더, `--filled` 붙은 별만 `--color-star` 채우기 (없으면 `--color-gray-4`)
+- 별 1개 16×16, 별 간 gap `--space-1` (4px)
+- `<svg>` 직접 사용 · `role="img"` + `aria-label`로 점수 접근성 제공
+- review-item--episode 내부 외에도 독립 재사용 가능
+
+#### `.series-card` → shadcn `Card` (variant=series)
+- 포스터(우측 208×296) + 콘텐츠(좌측: meta · title · author → 56px gap → desc · badges) 가로 배치
+- 설명문 80자 초과 시 자동 말줄임 + 인라인 「もっと見る」 버튼 노출 (`js/components/series-card.js`, `data-full` 속성에 원문 보존)
+- 「もっと見る」 클릭 → 전체 텍스트 펼침 + 버튼 라벨 「折りたたむ」 전환, 클릭 시 원상 복귀
+- 텍스트 확장 시 카드 높이 자동 성장 (`min-height: 296px`), top/bottom 블록 사이 gap 56px 고정 유지
+- 버튼 focus ring 3px gray-5 (키보드 전용)
+
+#### `.garden-sign` → 커스텀 (garden 아이템)
+- 96×108px 나무 표지판. `img/img_signs.png` 배경 위에 유저 이름 3개 오버레이
+- 각 이름은 72px 1줄 말줄임(`white-space: nowrap; overflow: hidden; text-overflow: ellipsis`)
+- 폰트: 11px / 600 / 16px line-height / `var(--color-white-100)`
+- `.garden` 컴포넌트의 Row 1 첫 번째 아이템으로 사용
+
+#### `.reaction-bar` → 커스텀 (garden 짝 컴포넌트)
+- 928×auto 흰색 바. garden 하단에 배치되어 반응 카운트 + 물주기 CTA 제공
+- 좌측 354px: emotion-btn × 5 (gap 20) + 참여자 텍스트 (13px assist)
+- 우측 CTA 234×52: `btn btn-filled-sky` 재활용 + 커스텀 shadow `0 1px 2px rgba(0,0,0,0.05)`
+- 컨테이너 padding `16px 16px 16px 24px`, border-radius 14px
+- 참여자 텍스트 색: `--color-font-secondary` (#6E6E73)
+
+#### `.emotion-btn` → 커스텀 (표시 전용)
+- 감정 카운트 표시 (icon + count, inline-flex, gap 4px) — **비-인터랙티브**, `<span>` 등 inline 요소로 사용
+- 아이콘 16×16 · 색 `--color-black-50` · 카운트 14px / w4 / lh 22px / `--color-font-primary-black-100`
+- 클릭·호버·포커스·selected 상태 없음 (스펙 변경: 2026-04)
+- 클래스명은 레거시 호환으로 유지 (`.emotion-btn`, `.emotion-btn__icon`, `.emotion-btn__count`)
+
+#### `.garden` → 커스텀
+- 834×241px 가든 씬. `img/bg_garden.png` 배경 위에 꽃+표지판 레이아웃
+- 내용은 컨테이너 **최상단부터** 배치 (`padding: 0 45px`, top padding 없음)
+- Row 1: `.garden-sign`(96px) + `.garden__item` × 6 (96px), gap 12px → 총 744px (좌우 45px 패딩 내 꽉 채움)
+- Row 2: `.garden__item` × 6, gap 12px → 636px, `align-items: center`으로 자동 센터 정렬
+- `.garden__item--empty`: `visibility: hidden`으로 빈 슬롯 레이아웃 유지
+- 꽃 이미지: `img/img_flower_0N_before.png` / `img/img_flower_0N_after.png` (01~04)
+
+#### `.garden-card` → 커스텀 Card (garden + reaction-bar 조합)
+- 1000×auto wood 카드. `.garden` + `.reaction-bar`를 하나의 컨테이너로 묶는 합성 컴포넌트
+- 배경 `--color-wood-6` (#F5EFE3), border-radius 24px, shadow `0 4px 8px rgba(0,0,0,0.02), 0 0 1px rgba(0,0,0,0.10)`
+- padding `48px 36px 36px 36px`, flex-column gap 40px, 자식 중앙정렬 (`align-items: center`)
+- 자식 폭은 각자 유지 (garden 834 / reaction-bar 928) — 카드는 시각적 프레임만 제공
+- Figma: Frame2087333123
+
+#### `.episode-header` → 커스텀 (에피소드 리스트 헤더)
+- 1000×auto 흰색 헤더 (garden-card 폭과 일치). 좌측 타이틀 + 전체 수, 우측 정렬 토글
+- 좌측 `__title-group` (gap 12): `__title` (20/600/28) + `__meta` (14/400/22 · `--color-font-primary-black-50`)
+- 우측 `__sort` 버튼 (gap 4): `__sort-icon` (swap_vert, 18×18) + `__sort-label` (13/400/20)
+- `space-between` 레이아웃, 배경 `--color-white-100`
+- 정렬 토글 동작은 `.episode-card` 컨텍스트 안에서만 구현됨 (`js/components/episode-card.js`) — standalone 헤더는 라벨만 표시
+- 추가 타이포: `--font-size-body-xl: 20px` / `--line-height-body-xl: 28px` + `.text-body-xl-w4/w6`
+- Figma: Frame2087333211
+
+#### `.episode-item` → 커스텀 (에피소드 리스트 아이템, `<a>` 링크)
+- 에피소드 카드 내부 리스트 아이템. 928×auto (garden-card 내부 폭 기준)
+- 썸네일 `__thumb`: 120×80 · border-radius 8px · overflow hidden · `object-fit: cover`
+- 본문 `__body`: `flex: 1` · column · gap 4 · align-items flex-start
+- 타이틀 `__title`: `.text-subtext-w6` (14/600/22) · `--color-font-primary-black-100`
+- 날짜 `__date`: `.text-overline-w4` (11/400/16) · `--color-font-primary-black-50`
+- 컨테이너 gap: `--space-5` (20px), 배경 `--color-white-100`
+- `<a>` 태그 사용 + 키보드 포커스링 (`focus-visible` 시 `box-shadow ring`)
+- TODO: 클릭 시 해당 에피소드 상세로 이동
+- Figma: Frame2087333324
+
+#### `.episode-card` → 커스텀 (에피소드 헤더 + 리스트 조합 카드)
+- 기존 `.episode-header` + `.episode-item` 재활용한 composite 카드. 1000×auto
+- white bg · radius 24 · shadow (0 4 8 rgba(0,0,0,0.02), 0 0 1 rgba(0,0,0,0.10))
+- padding 40/36 → 내부 콘텐츠 폭 928 (`.episode-item` 폭과 일치)
+- 레이아웃: flex-column · gap 32 (헤더↔리스트)
+- `__list`: `<ul>` flex-column · gap 16 · list-style none
+- 카드 내부 `.episode-header`는 `width: 100%`로 확장 override (기본 1000 고정)
+- **정렬 토글** (`js/components/episode-card.js`): `.episode-header__sort` 클릭 시 라벨 `古い順 ↔ 新しい順` + `.episode-card__list` 자식 순서 역순 재배치
+- Figma: Frame2087333121
 
 ---
 

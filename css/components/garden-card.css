@@ -1,0 +1,29 @@
+/* ============================================
+   Garden Card Component — garden + reaction-bar 조합
+   Figma: Frame2087333123 (1000×auto)
+
+   HTML 구조:
+     <div class="garden-card">
+       <div class="garden">...</div>
+       <div class="reaction-bar">...</div>
+     </div>
+
+   Notes:
+     - 이미 등록된 .garden (834×241) + .reaction-bar (928×auto) 재활용
+     - 컨테이너는 wood-6 배경 + 큰 radius로 둘을 묶어 카드화
+     - 내부 요소 중앙 정렬(align-items: center) — 자식 실제 폭은 각자 유지
+   ============================================ */
+
+.garden-card {
+  width: 1000px;
+  padding: 48px 36px 36px 36px;
+  background: var(--color-wood-6);
+  border-radius: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02), 0 0 1px rgba(0, 0, 0, 0.10);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--space-10);
+  box-sizing: border-box;
+}

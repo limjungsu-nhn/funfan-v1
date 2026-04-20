@@ -83,6 +83,17 @@ const preset: Partial<Config> = {
           5: '#DACAAB',
           6: '#F5EFE3',
         },
+        // Brand: Sky
+        sky: {
+          1: '#0A3A6B',
+          2: '#1A64B0',
+          3: '#5BADFF',
+          4: '#8EC8FF',
+          5: '#BDE0FF',
+          6: '#E4F3FF',
+        },
+        // Star
+        star: '#FFB800',
       },
 
       /* ---------- Spacing (component level, absolute px) ----------
@@ -97,9 +108,12 @@ const preset: Partial<Config> = {
         'space-6':  '24px',
         'space-7':  '28px',
         'space-8':  '32px',
+        'space-9':  '36px',
         'space-10': '40px',
         'space-12': '48px',
+        'space-14': '56px',
         'space-16': '64px',
+        'space-20': '80px',
 
         /* Layout percent (page level, 1440 기준) */
         'p1':   '14.4px',
@@ -169,6 +183,7 @@ const preset: Partial<Config> = {
         'body-sm':   ['15px', { lineHeight: '24px' }],
         'body-md':   ['16px', { lineHeight: '26px' }],
         'body-lg':   ['18px', { lineHeight: '28px' }],
+        'body-xl':   ['20px', { lineHeight: '28px' }],
         'h3':        ['22px', { lineHeight: '32px' }],
         'h2':        ['28px', { lineHeight: '38px' }],
         'h1':        ['36px', { lineHeight: '48px' }],

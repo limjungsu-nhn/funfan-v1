@@ -1,0 +1,121 @@
+/* ============================================
+   Garden Component — ガーデン
+   Figma: Frame2087333396 (834×241px)
+
+   HTML 구조:
+     <div class="garden">
+       <img class="garden__bg" src="img/bg_garden.png" alt="">
+       <div class="garden__content">
+         <div class="garden__row">
+           <!-- Row 1: garden-sign + 6 flowers (총 744px, padding 맞춤) -->
+           <div class="garden-sign">...</div>
+           <img class="garden__item" src="img/img_flower_01_before.png" alt="">
+           ...
+         </div>
+         <div class="garden__row">
+           <!-- Row 2: 6 flowers (636px, auto-centered, 하단 클립) -->
+           <img class="garden__item" src="img/img_flower_01_after.png" alt="">
+           ...
+         </div>
+       </div>
+     </div>
+
+   Notes:
+     - Row 1: garden-sign(96) + 6×flower(96) + gap(12) × 6 = 744px = content width
+     - Row 2: 6×flower(96) + gap(12) × 5 = 636px → align-items:center으로 자동 센터
+     - Row 2는 컨테이너 하단에서 53px 클립됨 (꽃이 아래서 올라오는 효과)
+     - .garden__item--empty: 빈 슬롯 (visibility:hidden으로 레이아웃 유지)
+   ============================================ */
+
+/* ---------- Container ---------- */
+.garden {
+  width: 834px;
+  height: 241px;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* ---------- Background Image ---------- */
+.garden__bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 834px;
+  height: 241px;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---------- Content Layer ---------- */
+.garden__content {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0 45px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---------- Row ---------- */
+.garden__row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.garden__row + .garden__row {
+  margin-top: -5px;
+}
+
+/* ---------- Item (Flower) ---------- */
+.garden__item {
+  width: 96px;
+  height: 108px;
+  flex-shrink: 0;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  transform-origin: bottom center;
+  animation: garden-sway 2.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* 꽃마다 미세하게 다른 리듬 — 바람이 훑고 지나가는 느낌 */
+.garden__item:nth-child(2n) {
+  animation-duration: 3s;
+  animation-delay: -0.7s;
+}
+.garden__item:nth-child(3n) {
+  animation-duration: 3.4s;
+  animation-delay: -1.5s;
+}
+.garden__item:nth-child(5n) {
+  animation-duration: 2.8s;
+  animation-delay: -0.4s;
+}
+
+@keyframes garden-sway {
+  0%, 100% { transform: rotate(-1.8deg); }
+  50%      { transform: rotate(1.8deg); }
+}
+
+/* ---------- Empty Slot ---------- */
+.garden__item--empty {
+  visibility: hidden;
+  animation: none;
+}
+
+/* ---------- Reduced Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .garden__item {
+    animation: none;
+  }
+}

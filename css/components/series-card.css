@@ -1,0 +1,185 @@
+/* ============================================
+   Series Card Component — シリーズ紹介カード
+   Figma: Frame 2087333119 (1000px)
+
+   HTML 구조:
+     <article class="series-card">
+       <div class="series-card__body">
+         <div class="series-card__content">
+           <div class="series-card__top">
+             <p class="text-subtext-w4 series-card__meta">ファンタジー<span class="series-card__meta-sep">｜</span>連載中</p>
+             <h2 class="text-h1-w6 series-card__title">作品タイトル</h2>
+             <div class="series-card__author">
+               <i class="avatar avatar-01 avatar--xs"></i>
+               <span class="text-subtext-w4 series-card__author-name">作者名</span>
+             </div>
+           </div>
+           <div class="series-card__bottom">
+             <div class="series-card__desc">
+               <p class="text-subtext-w4 series-card__desc-text">説明文...</p>
+               <button class="series-card__more" type="button">もっと見る</button>
+             </div>
+             <div class="series-card__badges">
+               <span class="badge"><span class="text-caption-w4">横読み</span></span>
+               <span class="badge"><span class="text-caption-w4">✦ AI活用作品</span></span>
+             </div>
+           </div>
+         </div>
+         <img class="series-card__poster" src="img/img_series01.png" alt="...">
+       </div>
+     </article>
+
+   JS 의존:
+     js/components/series-card.js — 2줄 초과 감지 시 .is-truncated 부여
+   ============================================ */
+
+/* ---------- Container ---------- */
+.series-card {
+  width: 100%;
+  max-width: var(--p70); /* 1008px ≈ Figma 1000px */
+  padding: var(--space-10) var(--p2_5); /* 40px 36px */
+  background: var(--color-white-100);
+  box-shadow:
+    0px 4px 8px var(--color-shadow-subtle),
+    0px 0px 1px var(--color-shadow-mid);
+  border-radius: 24px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---------- Body (포스터 + 콘텐츠 가로 배치) ---------- */
+.series-card__body {
+  align-self: stretch;
+  min-height: 296px; /* 포스터 높이 기준 */
+  display: flex;
+  align-items: stretch;
+  gap: var(--space-12); /* 48px */
+}
+
+/* ---------- Poster ---------- */
+.series-card__poster {
+  width: 208px;
+  height: 296px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+  align-self: flex-start; /* 카드 높이가 늘어나도 포스터는 상단 고정 */
+}
+
+/* ---------- Content (top/bottom 고정 gap) ---------- */
+.series-card__content {
+  flex: 1;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-14); /* 56px — top/bottom 블록 사이 여백. 컨텐츠 상태와 무관하게 유지 */
+}
+
+/* ---------- Top (메타 + 제목 + 작가) ---------- */
+.series-card__top {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5); /* 20px */
+}
+
+.series-card__meta {
+  margin: 0;
+  color: var(--color-font-secondary);
+}
+
+.series-card__meta-sep {
+  margin: 0 6px;
+  color: var(--color-black-30);
+}
+
+.series-card__title {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.series-card__author {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.series-card__author-name {
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Bottom (설명 + 뱃지) ---------- */
+.series-card__bottom {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--p2_5); /* 36px */
+}
+
+/* ---------- Description (2줄 클램프 + 「もっと見る」 버튼) ---------- */
+.series-card__desc {
+  align-self: stretch;
+  position: relative;
+  font-size: var(--font-size-subtext);
+  line-height: var(--line-height-subtext);
+}
+
+.series-card__desc-text {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.series-card__more {
+  display: none;
+  margin: 0 0 0 4px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  color: var(--color-font-primary-black-50);
+  cursor: pointer;
+  border-radius: 4px;
+  vertical-align: baseline;
+}
+
+.series-card__desc.is-truncated .series-card__more,
+.series-card__desc.is-expanded .series-card__more {
+  display: inline;
+}
+
+.series-card__desc.is-expanded .series-card__desc-text {
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+}
+
+.series-card__more:hover {
+  color: var(--color-font-primary-black-100);
+}
+
+.series-card__more:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--ring-width) var(--color-gray-5);
+}
+
+.series-card__badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}

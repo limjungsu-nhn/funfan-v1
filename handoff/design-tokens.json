@@ -64,6 +64,15 @@
       "5": "#DACAAB",
       "6": "#F5EFE3"
     },
+    "sky": {
+      "1": "#0A3A6B",
+      "2": "#1A64B0",
+      "3": "#5BADFF",
+      "4": "#8EC8FF",
+      "5": "#BDE0FF",
+      "6": "#E4F3FF"
+    },
+    "star": "#FFB800",
     "shadow": {
       "subtle": "rgba(0, 0, 0, 0.02)",
       "light":  "rgba(0, 0, 0, 0.05)",
@@ -81,9 +90,12 @@
     "6":  "24px",
     "7":  "28px",
     "8":  "32px",
+    "9":  "36px",
     "10": "40px",
     "12": "48px",
-    "16": "64px"
+    "14": "56px",
+    "16": "64px",
+    "20": "80px"
   },
 
   "layoutPercent": {
@@ -144,6 +156,7 @@
       "body-sm":  { "fontSize": "15px", "lineHeight": "24px" },
       "body-md":  { "fontSize": "16px", "lineHeight": "26px" },
       "body-lg":  { "fontSize": "18px", "lineHeight": "28px" },
+      "body-xl":  { "fontSize": "20px", "lineHeight": "28px" },
       "h3":       { "fontSize": "22px", "lineHeight": "32px" },
       "h2":       { "fontSize": "28px", "lineHeight": "38px" },
       "h1":       { "fontSize": "36px", "lineHeight": "48px" },

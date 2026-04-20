@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>シリーズホーム — FunFan</title>
+
+  <!-- Design Tokens -->
+  <link rel="stylesheet" href="css/tokens/typography.css">
+  <link rel="stylesheet" href="css/tokens/layout.css">
+  <link rel="stylesheet" href="css/tokens/color.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/logo.css">
+  <link rel="stylesheet" href="css/components/icon.css">
+  <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/avatar.css">
+  <link rel="stylesheet" href="css/components/badge.css">
+  <link rel="stylesheet" href="css/components/series-card.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/garden-sign.css">
+  <link rel="stylesheet" href="css/components/garden.css">
+  <link rel="stylesheet" href="css/components/emotion-btn.css">
+  <link rel="stylesheet" href="css/components/reaction-bar.css">
+  <link rel="stylesheet" href="css/components/garden-card.css">
+  <link rel="stylesheet" href="css/components/episode-header.css">
+  <link rel="stylesheet" href="css/components/episode-item.css">
+  <link rel="stylesheet" href="css/components/episode-card.css">
+  <link rel="stylesheet" href="css/components/review-item.css">
+  <link rel="stylesheet" href="css/components/review-score.css">
+  <script src="js/components/series-card.js" defer></script>
+  <script src="js/components/episode-card.js" defer></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-width: var(--base);
+      height: 100%;
+      overscroll-behavior: none;
+      background: var(--color-gray-6);
+      font-family: var(--font-family-base);
+    }
+
+    .navbar { min-width: var(--base); }
+
+    /* ---------- Main Content ---------- */
+    .series-home {
+      padding-top: var(--navbar-height);
+      min-height: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .series-home__inner {
+      width: 100%;
+      max-width: var(--p70);
+      padding-top: var(--space-9);
+      padding-bottom: var(--space-20);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-5);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar — 로고만 -->
+  <header class="navbar">
+    <div class="navbar-logo">
+      <i class="logo logo-funfan"></i>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="series-home">
+    <div class="series-home__inner">
+
+      <!-- Series Card -->
+      <article class="series-card">
+        <div class="series-card__body">
+          <div class="series-card__content">
+            <div class="series-card__top">
+              <p class="text-subtext-w4 series-card__meta">ファンタジー<span class="series-card__meta-sep">｜</span>連載中</p>
+              <h2 class="text-h1-w6 series-card__title">今週のかなでさん</h2>
+              <div class="series-card__author">
+                <i class="avatar avatar-01 avatar--xs"></i>
+                <span class="text-subtext-w4 series-card__author-name">海野ハル</span>
+              </div>
+            </div>
+            <div class="series-card__bottom">
+              <div class="series-card__desc">
+                <p class="text-subtext-w4 series-card__desc-text">月明かりだけが灯る静かな工房で、毎晩ひとり絵を描き続ける少女・かなで。ある夜、完成したばかりのキャンバスから見知らぬ青年が現れる。絵の世界に迷い込んだ彼との不思議な出会いが、かなでの閉ざされた日常と心の色を少しずつ塗り替えていく。ふたりの距離が縮まるにつれ、絵の世界と現実の境界が曖昧になっていく。これは絵筆と言葉が紡ぐ、ひとつの静かな奇跡の物語。</p>
+                <button class="series-card__more" type="button">もっと見る</button>
+              </div>
+              <div class="series-card__badges">
+                <span class="badge"><span class="text-caption-w4">横読み</span></span>
+                <span class="badge"><span class="text-caption-w4">✦ AI活用作品</span></span>
+              </div>
+            </div>
+          </div>
+          <img class="series-card__poster" src="img/img_series01.png" alt="シリーズポスター">
+        </div>
+      </article>
+
+      <!-- Garden + Reaction Bar Card -->
+      <div class="garden-card">
+        <div class="garden">
+          <img class="garden__bg" src="img/bg_garden.png" alt="">
+          <div class="garden__content">
+            <div class="garden__row">
+              <div class="garden-sign">
+                <img class="garden-sign__bg" src="img/img_signs.png" alt="">
+                <div class="garden-sign__names">
+                  <p class="garden-sign__name">海野ハル</p>
+                  <p class="garden-sign__name">さくら✿</p>
+                  <p class="garden-sign__name">長い名前のユーザー</p>
+                </div>
+              </div>
+              <img class="garden__item" src="img/img_flower_01_before.png" alt="">
+              <img class="garden__item" src="img/img_flower_02_before.png" alt="">
+              <img class="garden__item" src="img/img_flower_03_before.png" alt="">
+              <img class="garden__item" src="img/img_flower_04_before.png" alt="">
+              <img class="garden__item" src="img/img_flower_01_after.png" alt="">
+              <img class="garden__item" src="img/img_flower_02_after.png" alt="">
+            </div>
+            <div class="garden__row">
+              <img class="garden__item" src="img/img_flower_03_after.png" alt="">
+              <img class="garden__item" src="img/img_flower_04_after.png" alt="">
+              <img class="garden__item" src="img/img_flower_01_before.png" alt="">
+              <img class="garden__item" src="img/img_flower_02_before.png" alt="">
+              <span class="garden__item garden__item--empty" aria-hidden="true"></span>
+              <span class="garden__item garden__item--empty" aria-hidden="true"></span>
+            </div>
+          </div>
+        </div>
+        <div class="reaction-bar">
+          <div class="reaction-bar__left">
+            <div class="reaction-bar__emotions">
+              <span class="emotion-btn">
+                <svg class="emotion-btn__icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 14.6666C6.3375 14.6666 4.92188 14.1049 3.75313 12.9816C2.58438 11.8583 2 10.4908 2 8.87904C2 8.10981 2.15312 7.37416 2.45938 6.67208C2.76563 5.97 3.2 5.35035 3.7625 4.81311L6.95 1.7545C7.1 1.62019 7.26563 1.5164 7.44688 1.44314C7.62813 1.36988 7.8125 1.33325 8 1.33325C8.1875 1.33325 8.37188 1.36988 8.55313 1.44314C8.73438 1.5164 8.9 1.62019 9.05 1.7545L12.2375 4.81311C12.8 5.35035 13.2344 5.97 13.5406 6.67208C13.8469 7.37416 14 8.10981 14 8.87904C14 10.4908 13.4156 11.8583 12.2469 12.9816C11.0781 14.1049 9.6625 14.6666 8 14.6666Z"/>
+                </svg>
+                <span class="emotion-btn__count">42</span>
+              </span>
+              <span class="emotion-btn">
+                <svg class="emotion-btn__icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M10.0585 11.0249C10.6752 10.5971 11.1224 10.0333 11.4002 9.33325H4.60016C4.87794 10.0333 5.32516 10.5971 5.94183 11.0249C6.5585 11.4527 7.24461 11.6666 8.00016 11.6666C8.75572 11.6666 9.44183 11.4527 10.0585 11.0249ZM5.20016 7.33325L5.9335 6.63325L6.6335 7.33325L7.3335 6.63325L5.9335 5.19992L4.50016 6.63325L5.20016 7.33325ZM9.36683 7.33325L10.0668 6.63325L10.8002 7.33325L11.5002 6.63325L10.0668 5.19992L8.66683 6.63325L9.36683 7.33325ZM5.40016 14.1416C4.58905 13.7916 3.8835 13.3166 3.2835 12.7166C2.6835 12.1166 2.2085 11.411 1.8585 10.5999C1.5085 9.78881 1.3335 8.92214 1.3335 7.99992C1.3335 7.0777 1.5085 6.21103 1.8585 5.39992C2.2085 4.58881 2.6835 3.88325 3.2835 3.28325C3.8835 2.68325 4.58905 2.20825 5.40016 1.85825C6.21127 1.50825 7.07794 1.33325 8.00016 1.33325C8.92238 1.33325 9.78905 1.50825 10.6002 1.85825C11.4113 2.20825 12.1168 2.68325 12.7168 3.28325C13.3168 3.88325 13.7918 4.58881 14.1418 5.39992C14.4918 6.21103 14.6668 7.0777 14.6668 7.99992C14.6668 8.92214 14.4918 9.78881 14.1418 10.5999C13.7918 11.411 13.3168 12.1166 12.7168 12.7166C12.1168 13.3166 11.4113 13.7916 10.6002 14.1416C9.78905 14.4916 8.92238 14.6666 8.00016 14.6666C7.07794 14.6666 6.21127 14.4916 5.40016 14.1416Z"/>
+                </svg>
+                <span class="emotion-btn__count">18</span>
+              </span>
+              <span class="emotion-btn">
+                <svg class="emotion-btn__icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4.16683 10.6666H5.16683V10.4999C5.16683 9.71103 5.44183 9.04158 5.99183 8.49158C6.54183 7.94159 7.21127 7.66658 8.00016 7.66658C8.78905 7.66658 9.4585 7.94159 10.0085 8.49158C10.5585 9.04158 10.8335 9.71103 10.8335 10.4999V10.6666H11.8335V10.4999C11.8335 9.43325 11.4613 8.5277 10.7168 7.78325C9.97238 7.03881 9.06683 6.66658 8.00016 6.66658C6.9335 6.66658 6.02794 7.03881 5.2835 7.78325C4.53905 8.5277 4.16683 9.43325 4.16683 10.4999V10.6666ZM4.7335 6.16658C5.18905 6.09992 5.66961 5.92214 6.17516 5.63325C6.68072 5.34436 7.0835 5.01659 7.3835 4.64992L6.61683 4.01659C6.39461 4.28325 6.08627 4.5277 5.69183 4.74992C5.29738 4.97214 4.9335 5.11103 4.60016 5.16659L4.7335 6.16658ZM11.2668 6.16658L11.4002 5.16659C11.0668 5.11103 10.7029 4.97214 10.3085 4.74992C9.91405 4.5277 9.60572 4.28325 9.3835 4.01659L8.61683 4.64992C8.91683 5.01659 9.31961 5.34436 9.82516 5.63325C10.3307 5.92214 10.8113 6.09992 11.2668 6.16658ZM5.40016 14.1416C4.58905 13.7916 3.8835 13.3166 3.2835 12.7166C2.6835 12.1166 2.2085 11.411 1.8585 10.5999C1.5085 9.78881 1.3335 8.92214 1.3335 7.99992C1.3335 7.0777 1.5085 6.21103 1.8585 5.39992C2.2085 4.58881 2.6835 3.88325 3.2835 3.28325C3.8835 2.68325 4.58905 2.20825 5.40016 1.85825C6.21127 1.50825 7.07794 1.33325 8.00016 1.33325C8.92238 1.33325 9.78905 1.50825 10.6002 1.85825C11.4113 2.20825 12.1168 2.68325 12.7168 3.28325C13.3168 3.88325 13.7918 4.58881 14.1418 5.39992C14.4918 6.21103 14.6668 7.0777 14.6668 7.99992C14.6668 8.92214 14.4918 9.78881 14.1418 10.5999C13.7918 11.411 13.3168 12.1166 12.7168 12.7166C12.1168 13.3166 11.4113 13.7916 10.6002 14.1416C9.78905 14.4916 8.92238 14.6666 8.00016 14.6666C7.07794 14.4916 6.21127 14.4916 5.40016 14.1416Z"/>
+                </svg>
+                <span class="emotion-btn__count">9</span>
+              </span>
+              <span class="emotion-btn">
+                <svg class="emotion-btn__icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M15.7452 7.58594C16.0849 7.81106 16.0849 8.18878 15.7452 8.4139L9.56717 12.5084C9.04581 12.854 8.18494 12.5961 8.18494 12.0944L8.18494 3.9054C8.18494 3.40371 9.04581 3.14588 9.56717 3.49142L15.7452 7.58594Z"/>
+                  <path d="M7.5603 7.58594C7.89998 7.81106 7.89998 8.18878 7.5603 8.4139L1.38223 12.5084C0.860864 12.854 0 12.5961 0 12.0944L0 3.9054C0 3.40371 0.860866 3.14588 1.38223 3.49142L7.5603 7.58594Z"/>
+                </svg>
+                <span class="emotion-btn__count">7</span>
+              </span>
+              <span class="emotion-btn">
+                <svg class="emotion-btn__icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8.00016 13.9999L7.0335 13.1333C5.91127 12.1222 4.9835 11.2499 4.25016 10.5166C3.51683 9.78327 2.9335 9.12494 2.50016 8.5416C2.06683 7.95827 1.76405 7.42216 1.59183 6.93327C1.41961 6.44438 1.3335 5.94438 1.3335 5.43327C1.3335 4.38882 1.6835 3.5166 2.3835 2.8166C3.0835 2.1166 3.95572 1.7666 5.00016 1.7666C5.57794 1.7666 6.12794 1.88882 6.65016 2.13327C7.17238 2.37771 7.62238 2.72216 8.00016 3.1666C8.37794 2.72216 8.82794 2.37771 9.35016 2.13327C9.87238 1.88882 10.4224 1.7666 11.0002 1.7666C12.0446 1.7666 12.9168 2.1166 13.6168 2.8166C14.3168 3.5166 14.6668 4.38882 14.6668 5.43327C14.6668 5.94438 14.5807 6.44438 14.4085 6.93327C14.2363 7.42216 13.9335 7.95827 13.5002 8.5416C13.0668 9.12494 12.4835 9.78327 11.7502 10.5166C11.0168 11.2499 10.0891 12.1222 8.96683 13.1333L8.00016 13.9999Z"/>
+                </svg>
+                <span class="emotion-btn__count">8</span>
+              </span>
+            </div>
+            <div class="reaction-bar__status">
+              <span class="text-assist-w6 reaction-bar__names">さくら✿、まんが太郎、haru </span>
+              <span class="text-assist-w4 reaction-bar__meta">他2名が水やりしています</span>
+            </div>
+          </div>
+          <button class="btn btn-filled-sky reaction-bar__cta" type="button">
+            <span class="text-subtext-w6">水をあげて応援する</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Episode Card — 헤더 + 리스트 -->
+      <section class="episode-card">
+        <div class="episode-header">
+          <div class="episode-header__title-group">
+            <p class="episode-header__title text-body-xl-w6">エピソード</p>
+            <p class="episode-header__meta text-subtext-w4">全109話</p>
+          </div>
+          <button class="episode-header__sort" type="button" aria-label="並び替え">
+            <svg class="episode-header__sort-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 13V5.825L5.425 8.4L4 7L9 2L14 7L12.575 8.4L10 5.825V13H8ZM15 22L10 17L11.425 15.6L14 18.175V11H16V18.175L18.575 15.6L20 17L15 22Z"/>
+            </svg>
+            <span class="episode-header__sort-label text-assist-w4">古い順</span>
+          </button>
+        </div>
+        <ul class="episode-card__list">
+          <li>
+            <a class="episode-item" href="#">
+              <div class="episode-item__thumb"><img src="img/img_episode01.png" alt=""></div>
+              <div class="episode-item__body">
+                <span class="episode-item__title text-subtext-w6">第1話「月明かりの工房」</span>
+                <span class="episode-item__date text-overline-w4">2026/3/10</span>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a class="episode-item" href="#">
+              <div class="episode-item__thumb"><img src="img/img_episode01.png" alt=""></div>
+              <div class="episode-item__body">
+                <span class="episode-item__title text-subtext-w6">第2話「はじめての依頼」</span>
+                <span class="episode-item__date text-overline-w4">2026/3/17</span>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a class="episode-item" href="#">
+              <div class="episode-item__thumb"><img src="img/img_episode01.png" alt=""></div>
+              <div class="episode-item__body">
+                <span class="episode-item__title text-subtext-w6">第3話「雨の日の訪問者」</span>
+                <span class="episode-item__date text-overline-w4">2026/3/24</span>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a class="episode-item" href="#">
+              <div class="episode-item__thumb"><img src="img/img_episode01.png" alt=""></div>
+              <div class="episode-item__body">
+                <span class="episode-item__title text-subtext-w6">第4話「キャンバスの向こう側」</span>
+                <span class="episode-item__date text-overline-w4">2026/3/31</span>
+              </div>
+            </a>
+          </li>
+          <li>
+            <a class="episode-item" href="#">
+              <div class="episode-item__thumb"><img src="img/img_episode01.png" alt=""></div>
+              <div class="episode-item__body">
+                <span class="episode-item__title text-subtext-w6">第5話「色を失くした夜」</span>
+                <span class="episode-item__date text-overline-w4">2026/4/7</span>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+
+</body>
+</html>

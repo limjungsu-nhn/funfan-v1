@@ -1,0 +1,35 @@
+/* ============================================
+   Review Score — 별점 (5개 고정, 16×16 per star)
+
+   HTML 구조:
+     <div class="review-score" role="img" aria-label="5점 만점에 4점">
+       <svg class="review-score__star review-score__star--filled" ...>★</svg>
+       <svg class="review-score__star review-score__star--filled" ...>★</svg>
+       <svg class="review-score__star review-score__star--filled" ...>★</svg>
+       <svg class="review-score__star review-score__star--filled" ...>★</svg>
+       <svg class="review-score__star" ...>★</svg>
+     </div>
+
+   Notes:
+     - 항상 5개 별을 렌더. --filled 붙은 별만 채워짐
+     - 별 1개 크기 16×16, gap 4px (--space-1)
+     - 독립 재사용 가능 (리뷰 아이템 내부 외에도 사용)
+   ============================================ */
+
+.review-score {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.review-score__star {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  display: inline-block;
+  color: var(--color-gray-4);
+}
+
+.review-score__star--filled {
+  color: var(--color-star);
+}

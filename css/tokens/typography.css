@@ -15,6 +15,7 @@
   --font-size-body-sm:     15px;
   --font-size-body-md:     16px;
   --font-size-body-lg:     18px;
+  --font-size-body-xl:     20px;
   --font-size-h3:          22px;
   --font-size-h2:          28px;
   --font-size-h1:          36px;
@@ -31,6 +32,7 @@
   --line-height-body-sm:   24px;
   --line-height-body-md:   26px;
   --line-height-body-lg:   28px;
+  --line-height-body-xl:   28px;
   --line-height-h3:        32px;
   --line-height-h2:        38px;
   --line-height-h1:        48px;
@@ -94,6 +96,10 @@ body {
 /* Body 18 */
 .text-body-lg-w4  { font-size: var(--font-size-body-lg);   line-height: var(--line-height-body-lg);   font-weight: var(--font-weight-w4); }
 .text-body-lg-w6  { font-size: var(--font-size-body-lg);   line-height: var(--line-height-body-lg);   font-weight: var(--font-weight-w6); }
+
+/* Body 20 */
+.text-body-xl-w4  { font-size: var(--font-size-body-xl);   line-height: var(--line-height-body-xl);   font-weight: var(--font-weight-w4); }
+.text-body-xl-w6  { font-size: var(--font-size-body-xl);   line-height: var(--line-height-body-xl);   font-weight: var(--font-weight-w6); }
 
 /* H3 */
 .text-h3-w4       { font-size: var(--font-size-h3);        line-height: var(--line-height-h3);        font-weight: var(--font-weight-w4); }

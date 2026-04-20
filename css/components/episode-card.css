@@ -1,0 +1,57 @@
+/* ============================================
+   Episode Card — 에피소드 헤더 + 리스트 조합 카드
+   Figma: Frame2087333121
+
+   HTML 구조:
+     <section class="episode-card">
+       <div class="episode-header">...</div>
+       <ul class="episode-card__list">
+         <li><a class="episode-item" href="#">...</a></li>
+         <li><a class="episode-item" href="#">...</a></li>
+         ...
+       </ul>
+     </section>
+
+   Notes:
+     - 기존 .episode-header + .episode-item 재활용 · 카드 껍데기만 추가
+     - 1000×auto · white bg · radius 24 · shadow
+     - padding 40/36 → 내부 콘텐츠 폭 928px (= .episode-item 폭)
+     - 카드 내부 .episode-header 는 width:100% 로 확장 (기본은 1000 고정)
+   ============================================ */
+
+/* ---------- Container ---------- */
+.episode-card {
+  width: var(--episode-card-width);
+  background: var(--color-white-100);
+  border-radius: 24px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02), 0 0 1px rgba(0, 0, 0, 0.10);
+  padding: 40px 36px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: var(--space-8);
+}
+
+/* ---------- Header override (스트레치) ---------- */
+.episode-card > .episode-header {
+  width: 100%;
+}
+
+/* ---------- List ---------- */
+.episode-card__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.episode-card__list > li {
+  width: 100%;
+  display: flex;
+}

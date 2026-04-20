@@ -1,0 +1,82 @@
+/* ============================================
+   Reaction Bar Component — 감정 반응 + 물주기 CTA
+   Figma: Frame2087333335 (928×auto)
+
+   HTML 구조:
+     <div class="reaction-bar">
+       <div class="reaction-bar__left">
+         <div class="reaction-bar__emotions">
+           <button class="emotion-btn">...</button>  <!-- x5 -->
+         </div>
+         <div class="reaction-bar__status">
+           <span class="text-assist-w6 reaction-bar__names">さくら✿、まんが太郎、haru </span>
+           <span class="text-assist-w4 reaction-bar__meta">他2名が水やりしています</span>
+         </div>
+       </div>
+       <button class="btn btn-filled-sky reaction-bar__cta" type="button">
+         <span class="text-subtext-w6">水をあげて応援する</span>
+       </button>
+     </div>
+
+   Notes:
+     - garden 컴포넌트와 함께 사용 (하단 배치 가정)
+     - 5개 emotion-btn(.emotion-btn)으로 반응 카운팅, CTA로 물주기
+     - 왼쪽 354px / 오른쪽 CTA 234×52 — space-between
+   ============================================ */
+
+/* ---------- Container ---------- */
+.reaction-bar {
+  width: 928px;
+  padding: 16px 16px 16px 24px;
+  background: var(--color-white-50);
+  border-radius: 14px;
+  display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+/* ---------- Left Column (반응 + 상태) ---------- */
+.reaction-bar__left {
+  width: 354px;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: var(--space-1);
+}
+
+/* ---------- Emotions Row (감정 버튼 5개) ---------- */
+.reaction-bar__emotions {
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+/* ---------- Status Row (물주기 참여자 표시) ---------- */
+.reaction-bar__status {
+  align-self: stretch;
+  padding-left: 2px;
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.reaction-bar__names {
+  color: var(--color-font-secondary);
+}
+
+.reaction-bar__meta {
+  flex: 1 1 0;
+  color: var(--color-font-secondary);
+}
+
+/* ---------- CTA Button (水をあげて応援する) ---------- */
+.reaction-bar__cta {
+  width: 234px;
+  height: 52px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}

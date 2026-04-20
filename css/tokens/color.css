@@ -59,6 +59,17 @@
   --color-wood-5: #DACAAB;
   --color-wood-6: #F5EFE3;
 
+  /* ---------- Sky ---------- */
+  --color-sky-1: #0A3A6B;
+  --color-sky-2: #1A64B0;
+  --color-sky-3: #5BADFF;
+  --color-sky-4: #8EC8FF;
+  --color-sky-5: #BDE0FF;
+  --color-sky-6: #E4F3FF;
+
+  /* ---------- Star ---------- */
+  --color-star: #FFB800;
+
   /* ---------- Shadow ---------- */
   --color-shadow-subtle: rgba(0, 0, 0, 0.02);
   --color-shadow-light:  rgba(0, 0, 0, 0.05);

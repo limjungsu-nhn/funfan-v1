@@ -1,0 +1,70 @@
+/* ============================================
+   Garden Sign Component — ガーデン看板
+   Figma: Component4 (96×108px)
+
+   HTML 구조:
+     <div class="garden-sign">
+       <img class="garden-sign__bg" src="img/img_signs.png" alt="">
+       <div class="garden-sign__names">
+         <p class="garden-sign__name">ユーザー名</p>
+         <p class="garden-sign__name">ユーザー名</p>
+         <p class="garden-sign__name">ユーザー名</p>
+       </div>
+     </div>
+
+   Notes:
+     - 유저 3명의 이름이 들어감
+     - 이름이 길면 말줄임(…) 처리
+     - garden 컴포넌트의 아이템으로 사용
+   ============================================ */
+
+/* ---------- Container ---------- */
+.garden-sign {
+  width: 96px;
+  height: 108px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* ---------- Background Image ---------- */
+.garden-sign__bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 96px;   /* naturalWidth(192) ÷ 2 — 2x retina asset */
+  height: 108px; /* naturalHeight(216) ÷ 2 */
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---------- Names Frame ---------- */
+.garden-sign__names {
+  position: absolute;
+  left: 0;
+  top: 26px;
+  width: 100%;
+  height: 48px;
+  padding: 0 16px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0;
+}
+
+/* ---------- Name (1줄 말줄임) ---------- */
+.garden-sign__name {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  color: var(--color-white-100);
+  font-family: var(--font-family-base);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

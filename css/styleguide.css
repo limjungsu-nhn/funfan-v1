@@ -454,6 +454,24 @@ body {
   display: flex;
 }
 
+/* Garden Card preview 가로 스크롤 허용 (garden-card 1000px · 컴포넌트 축소 금지) */
+.sg-type-preview--garden-card {
+  overflow-x: auto;
+  padding: 16px;
+}
+
+/* Episode Item preview: 928px 본 컴포넌트 · 셀이 좁으면 가로 스크롤 */
+.sg-type-preview--episode-item {
+  overflow-x: auto;
+  padding: 16px;
+}
+
+/* Episode Card preview: 1000px 본 컴포넌트 · 셀이 좁으면 가로 스크롤 */
+.sg-type-preview--episode-card {
+  overflow-x: auto;
+  padding: 16px;
+}
+
 /* Fan Feed 데모 프리뷰 높이 */
 .sg-type-preview--fan-feed {
   padding: 0;
@@ -542,6 +560,20 @@ body {
 
 /* ---------- Avatar 프리뷰 사이즈 ---------- */
 .sg-icon-preview--lg { width: 56px; height: 56px; }
+
+/* ---------- Image Assets 프리뷰 ---------- */
+.sg-img-thumb {
+  display: block;
+  width: 96px;
+  height: 108px;
+  object-fit: contain;
+  border-radius: 6px;
+}
+.sg-img-pair {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
 
 /* ---------- Row 정렬 ---------- */
 .sg-row-top { align-items: flex-start; }

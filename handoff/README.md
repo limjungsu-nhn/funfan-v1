@@ -9,8 +9,8 @@
 |---|---|---|
 | [`design-tokens.json`](./design-tokens.json) | 모든 디자인 토큰 (color/spacing/typography/shadow/radius) | 참고용 원본 |
 | [`tailwind-preset.ts`](./tailwind-preset.ts) | Tailwind `theme.extend` 프리셋 | `tailwind.config.ts`에 직접 import |
-| [`COMPONENTS.md`](./COMPONENTS.md) | 26개 컴포넌트 → shadcn 매핑 + variant/size/state | cva 정의 작성 시 |
-| [`ICONS.md`](./ICONS.md) | 31개 아이콘 → lucide-react 매핑 | 아이콘 치환 시 |
+| [`COMPONENTS.md`](./COMPONENTS.md) | 36개 컴포넌트 → shadcn 매핑 + variant/size/state | cva 정의 작성 시 |
+| [`ICONS.md`](./ICONS.md) | 36개 아이콘 → lucide-react 매핑 | 아이콘 치환 시 |
 
 ### 개발 문서
 | 파일 | 용도 |
@@ -60,7 +60,7 @@ export default {
 
 - **토큰 추가/변경**: 디자인팀이 `design-tokens.json`·`tailwind-preset.ts` 동기화 후 공유
 - **새 컴포넌트**: `COMPONENTS.md`에 추가 후 공유
-- **아이콘 추가**: `ICONS.md`에 매핑 추가 후 공유
+- **아이콘 추가**: `icons/` 에 SVG 추가 → `node scripts/build-icons.js` 실행 → `ICONS.md`에 매핑 추가 후 공유
 
 ## 문의
 

@@ -1,0 +1,79 @@
+/* ============================================
+   Episode Item — 에피소드 리스트 아이템 (썸네일 + 타이틀 + 날짜)
+   Figma: Frame2087333324
+
+   HTML 구조:
+     <a class="episode-item" href="#">
+       <div class="episode-item__thumb">
+         <img src="..." alt="">
+       </div>
+       <div class="episode-item__body">
+         <span class="episode-item__title text-subtext-w6">第1話「月明かりの工房」</span>
+         <span class="episode-item__date text-overline-w4">2026/3/10</span>
+       </div>
+     </a>
+
+   Notes:
+     - 에피소드 리스트 내부 아이템. 928×auto, 썸네일 120×80, 본문 flex 1
+     - 설계 기준 928px (garden-card 내부 폭). Figma Frame2087333324 스펙 그대로
+     - TODO: 클릭 시 해당 에피소드 페이지로 이동
+   ============================================ */
+
+/* ---------- Container ---------- */
+.episode-item {
+  width: 928px;
+  background: var(--color-white-100);
+  display: inline-flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--space-5);
+  box-sizing: border-box;
+  text-decoration: none;
+  color: inherit;
+  font-family: var(--font-family-base);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Thumbnail (left) ---------- */
+.episode-item__thumb {
+  width: 120px;
+  height: 80px;
+  border-radius: 8px;
+  overflow: hidden;
+  flex-shrink: 0;
+  position: relative;
+  background: var(--color-gray-6);
+}
+
+.episode-item__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ---------- Body (right) ---------- */
+.episode-item__body {
+  flex: 1 1 0;
+  min-width: 0;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: var(--space-1);
+}
+
+.episode-item__title {
+  color: var(--color-font-primary-black-100);
+}
+
+.episode-item__date {
+  color: var(--color-font-primary-black-50);
+}
+
+/* ---------- Focus (keyboard only) ---------- */
+.episode-item:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--ring-width) var(--color-gray-5);
+  border-radius: 8px;
+}
