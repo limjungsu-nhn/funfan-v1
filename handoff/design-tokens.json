@@ -5,6 +5,7 @@
     "minWidth": "1440px",
     "navbarHeight": "64px",
     "ringWidth": "3px",
+    "radiusSm": "10px",
     "fontFamily": "\"Hiragino Sans\", \"ヒラギノ角ゴ ProN\", \"Hiragino Kaku Gothic ProN\", sans-serif"
   },
 

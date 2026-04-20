@@ -210,6 +210,11 @@ const preset: Partial<Config> = {
         '3': '3px',
       },
 
+      /* ---------- Border Radius ---------- */
+      borderRadius: {
+        sm: '10px',
+      },
+
       /* ---------- Transitions ---------- */
       transitionDuration: {
         press: '80ms',
