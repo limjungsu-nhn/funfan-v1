@@ -874,7 +874,7 @@
           const input = row.querySelector('.task-row__input');
           input.value = d.text || '';
           row.classList.toggle('task-row--empty', !input.value.trim());
-          row.classList.toggle('task-row--done', !!d.done);
+          row.classList.toggle('task-row--done', !!d.done && !!input.value.trim());
         });
         savedSnapshot = data;
         // 내용이 있으면 저장 모드로 전환

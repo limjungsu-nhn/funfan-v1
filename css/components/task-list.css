@@ -124,6 +124,16 @@ body:not(.using-mouse) .task-row:has(.task-row__input:focus-visible),
   cursor: default;
 }
 
+/* 빈 행: 버튼 완전 비활성화 + done 시각 효과 제거 (편집/저장 모드 공통) */
+.task-row--empty .task-row__btn {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.task-row--empty .task-row__field::after {
+  display: none;
+}
+
 /* 저장 모드 내용 있는 행: hover 시 체크 버튼 표시 */
 .task-list:not(.task-list--editing) .task-row:not(.task-row--empty):hover .task-row__btn {
   opacity: 1;
