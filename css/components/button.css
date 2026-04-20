@@ -43,7 +43,7 @@
 
 /* ---------- Size Variants ---------- */
 /* 기본(md): min-height 40px, padding 0 16px */
-.btn--sm { min-height: 36px; padding: 0 var(--space-3); border-radius: var(--radius-sm); }
+.btn--sm { min-height: 36px; padding: 0 var(--space-3); border-radius: var(--radius-sm); font-size: var(--font-size-caption); }
 .btn--lg { min-height: 48px; }
 
 /* ---------- Line ---------- */
