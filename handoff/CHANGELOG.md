@@ -8,7 +8,7 @@
 
 ---
 
-## Unreleased
+## v1.03 (2026-04-20)
 
 ### 추가 (컴포넌트)
 - **`episode-card`** — `.episode-header` + `.episode-item` 리스트를 묶는 composite 카드 (1000×auto, white bg, radius 24). 에피소드 목록 UI 단위
