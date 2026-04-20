@@ -34,9 +34,9 @@
   position: relative;
   background: var(--color-wood-6);
   border-radius: 16px;
-  display: inline-flex;
+  display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   gap: 10px;
 }
 
@@ -49,6 +49,8 @@
   font-weight: var(--font-weight-w4);
   color: var(--color-font-primary-black-100);
   word-wrap: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;
 }
 
 /* ---------- Tail (말풍선 꼬리) ---------- */
