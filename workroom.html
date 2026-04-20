@@ -222,13 +222,14 @@
     .timer-start-row {
       display: flex;
       align-items: center;
-      gap: 8px;
     }
     .timer-start-row .btn {
       transition: opacity 0.22s ease, transform 0.22s ease,
-                  max-width 0.22s ease, padding-left 0.22s ease, padding-right 0.22s ease;
+                  max-width 0.22s ease, padding-left 0.22s ease, padding-right 0.22s ease,
+                  margin-left 0.22s ease, margin-right 0.22s ease;
       overflow: hidden;
       max-width: 200px;
+      margin-inline: 4px;
     }
     .timer-start-row .btn.timer-btn--out {
       opacity: 0;
@@ -237,6 +238,7 @@
       max-width: 0;
       padding-left: 0;
       padding-right: 0;
+      margin-inline: 0;
     }
 
     /* mini 모드 FOUC 방지 — navbar */
