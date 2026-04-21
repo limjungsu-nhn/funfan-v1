@@ -43,6 +43,8 @@
 | Line | `.btn-line` | white | gray-2 outline | scale(.97) | 3px gray-5 |
 | Ghost | `.btn-ghost` | transparent | gray-6 bg | scale(.97) | 3px gray-5 |
 | Filled Nature | `.btn-filled-nature` | nature-3 | nature-2 | nature-2 + scale(.97) | 3px gray-5 |
+| Filled Black | `.btn-filled-black` | black-100 | black-100 | black-100 + scale(.97) | 3px gray-5 |
+| Filled Red | `.btn-filled-red` | red-100 | red-100 | red-100 + scale(.97) | 3px gray-5 |
 | Filled Wood | `.btn-filled-wood` | wood-3 | wood-2 | wood-2 + scale(.97) | 3px gray-5 |
 | Filled Sky | `.btn-filled-sky` | sky-3 | sky-2 | sky-2 + scale(.97) | 3px gray-5 |
 | Glass | `.btn-glass` | white-50 | white-100 | white-100 + scale(.97) | 3px gray-5 |
@@ -61,7 +63,7 @@
 ```ts
 const buttonVariants = cva("...", {
   variants: {
-    variant: { line, ghost, 'filled-nature', 'filled-wood', 'filled-sky', glass },
+    variant: { line, ghost, 'filled-nature', 'filled-black', 'filled-red', 'filled-wood', 'filled-sky', glass },
     size: { sm, md, lg }
   },
   defaultVariants: { variant: 'line', size: 'md' }

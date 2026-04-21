@@ -12,6 +12,8 @@
      .btn-line                Line   — 테두리형
      .btn-ghost               Ghost  — 라인 없는 버튼
      .btn-filled-nature       Filled — 면 컬러 버튼 (nature)
+     .btn-filled-black        Filled — 면 컬러 버튼 (black)
+     .btn-filled-red          Filled — 면 컬러 버튼 (red)
      .btn-filled-wood         Filled — 면 컬러 버튼 (wood)
      .btn-filled-sky          Filled — 면 컬러 버튼 (sky)
      .btn-glass               Glass  — 반투명 white 버튼
@@ -202,6 +204,118 @@
 }
 
 /* ============================================
+   Filled Black — black 컬러 버튼 (모든 활성 상태 black-100 동일)
+
+   States:
+     .btn-filled-black               Default  — black-100 배경, white 텍스트/아이콘
+     .btn-filled-black--hover         Hover    — black-100 (동일)
+     .btn-filled-black--focus         Focus    — black-100 + 3px ring (Reference용)
+     .btn-filled-black--pressed       Pressed  — black-100 + scale(0.97)
+     .btn-filled-black--disabled      Disabled — Gray-5 배경, white 아이콘
+   ============================================ */
+
+/* ---------- Default ---------- */
+.btn-filled-black {
+  background: var(--color-black-100);
+  box-shadow: 0px 1px 2px var(--color-shadow-light);
+  color: var(--color-white-100);
+}
+.btn-filled-black .icon {
+  color: var(--color-white-100);
+}
+
+/* ---------- Hover ---------- */
+.btn-filled-black--hover,
+.btn-filled-black:hover:not(.btn-filled-black--disabled) {
+  background: var(--color-black-100);
+}
+
+/* ---------- Focus ---------- */
+.btn-filled-black--focus {
+  background: var(--color-black-100);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+.btn-filled-black:focus-visible:not(.btn-filled-black--disabled) {
+  outline: none;
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+
+/* ---------- Pressed ---------- */
+.btn-filled-black--pressed,
+.btn-filled-black:active:not(.btn-filled-black--disabled) {
+  background: var(--color-black-100);
+  transform: scale(0.97);
+}
+
+/* ---------- Disabled ---------- */
+.btn-filled-black--disabled,
+.btn-filled-black:disabled {
+  background: var(--color-gray-5);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.btn-filled-black--disabled .icon,
+.btn-filled-black:disabled .icon {
+  color: var(--color-white-100);
+}
+
+/* ============================================
+   Filled Red — red 컬러 버튼 (모든 활성 상태 red-100 동일)
+
+   States:
+     .btn-filled-red               Default  — red-100 배경, white 텍스트/아이콘
+     .btn-filled-red--hover         Hover    — red-100 (동일)
+     .btn-filled-red--focus         Focus    — red-100 + 3px ring (Reference용)
+     .btn-filled-red--pressed       Pressed  — red-100 + scale(0.97)
+     .btn-filled-red--disabled      Disabled — Gray-5 배경, white 아이콘
+   ============================================ */
+
+/* ---------- Default ---------- */
+.btn-filled-red {
+  background: var(--color-red-100);
+  box-shadow: 0px 1px 2px var(--color-shadow-light);
+  color: var(--color-white-100);
+}
+.btn-filled-red .icon {
+  color: var(--color-white-100);
+}
+
+/* ---------- Hover ---------- */
+.btn-filled-red--hover,
+.btn-filled-red:hover:not(.btn-filled-red--disabled) {
+  background: var(--color-red-100);
+}
+
+/* ---------- Focus ---------- */
+.btn-filled-red--focus {
+  background: var(--color-red-100);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+.btn-filled-red:focus-visible:not(.btn-filled-red--disabled) {
+  outline: none;
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+
+/* ---------- Pressed ---------- */
+.btn-filled-red--pressed,
+.btn-filled-red:active:not(.btn-filled-red--disabled) {
+  background: var(--color-red-100);
+  transform: scale(0.97);
+}
+
+/* ---------- Disabled ---------- */
+.btn-filled-red--disabled,
+.btn-filled-red:disabled {
+  background: var(--color-gray-5);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.btn-filled-red--disabled .icon,
+.btn-filled-red:disabled .icon {
+  color: var(--color-white-100);
+}
+
+/* ============================================
    Filled Wood — wood 컬러 버튼 (구조 동일, 토큰만 wood)
 
    States:
@@ -373,6 +487,8 @@
 .btn--sm.btn-line:active:not(.btn-line--disabled),
 .btn--sm.btn-ghost:active:not(.btn-ghost--disabled),
 .btn--sm.btn-filled-nature:active:not(.btn-filled-nature--disabled),
+.btn--sm.btn-filled-black:active:not(.btn-filled-black--disabled),
+.btn--sm.btn-filled-red:active:not(.btn-filled-red--disabled),
 .btn--sm.btn-filled-wood:active:not(.btn-filled-wood--disabled),
 .btn--sm.btn-filled-sky:active:not(.btn-filled-sky--disabled),
 .btn--sm.btn-glass:active:not(.btn-glass--disabled) {
