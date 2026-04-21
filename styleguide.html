@@ -53,6 +53,7 @@
   <link rel="stylesheet" href="css/components/form-textarea.css">
   <link rel="stylesheet" href="css/components/form-field.css">
   <link rel="stylesheet" href="css/components/avatar-upload.css">
+  <link rel="stylesheet" href="css/components/accordion-row.css">
 
   <!-- Styleguide -->
   <link rel="stylesheet" href="css/styleguide.css">
@@ -119,6 +120,7 @@
         <a href="#review-item-episode">Review Item (Episode)</a>
         <a href="#review-item">Review Item</a>
         <a href="#fan-feed">Fan Feed</a>
+        <a href="#accordion-row">Accordion Row</a>
         <a href="#task-list">Task List</a>
         <a href="#left-panel">Left Panel</a>
         <a href="#work-room-left-panel">Work Room Left Panel</a>
@@ -4130,6 +4132,90 @@
       </section>
 
       <!-- ========================
+           ACCORDION ROW
+      ========================= -->
+      <section class="sg-section" id="accordion-row" data-section="accordion-row">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Accordion Row</h2>
+          <span class="sg-section-desc">accordion-row.css · 섹션 토글 또는 단일 링크 · 3 variants · width 504px (--p35)</span>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">States</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+
+            <!-- Collapsed (default) -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview sg-type-preview--accordion-row">
+                <div class="accordion-row">
+                  <div class="accordion-row__header">
+                    <div class="accordion-row__body">
+                      <span class="text-subtext-w6 accordion-row__title">ユーザー情報</span>
+                      <span class="text-overline-w4 accordion-row__desc">ニックネーム、ユーザーID、プロフィール画像、自己紹介、SNSリンク</span>
+                    </div>
+                    <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.accordion-row</code>
+              <div class="sg-type-meta"><strong>접혀있을 때 (default)</strong><br>제목 14px + 설명 11px<br>chevron 흐림 (black 30%)</div>
+            </div>
+
+            <!-- Active (expanded) -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview sg-type-preview--accordion-row">
+                <div class="accordion-row accordion-row--active">
+                  <div class="accordion-row__header">
+                    <div class="accordion-row__body">
+                      <span class="text-subtext-w6 accordion-row__title">ユーザー情報</span>
+                      <span class="text-overline-w4 accordion-row__desc">ニックネーム、ユーザーID、プロフィール画像、自己紹介、SNSリンク</span>
+                    </div>
+                    <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.accordion-row--active</code>
+              <div class="sg-type-meta"><strong>펼쳐져 있을 때</strong><br>제목 16px로 확대<br>설명 숨김 · chevron 180° 회전</div>
+            </div>
+
+            <!-- Single Link -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview sg-type-preview--accordion-row">
+                <a class="accordion-row accordion-row--link" href="#">
+                  <div class="accordion-row__body">
+                    <span class="text-subtext-w6 accordion-row__title">ユーザー情報</span>
+                    <span class="text-overline-w4 accordion-row__desc">ニックネーム、ユーザーID、プロフィール画像、自己紹介、SNSリンク</span>
+                  </div>
+                  <i class="icon icon-exit-to-app accordion-row__chevron"></i>
+                </a>
+              </div>
+              <code class="sg-type-classname">.accordion-row--link</code>
+              <div class="sg-type-meta"><strong>단일 링크</strong><br>접고펼치는 기능 없음<br>chevron <code>.icon-exit-to-app</code> (black 100%)</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Interactive Demo -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Interactive Demo</p>
+          <div class="sg-demo-canvas">
+            <div class="accordion-row" id="sg-accordion-demo">
+              <button class="accordion-row__header" type="button" aria-expanded="false">
+                <div class="accordion-row__body">
+                  <span class="text-subtext-w6 accordion-row__title">ユーザー情報</span>
+                  <span class="text-overline-w4 accordion-row__desc">ニックネーム、ユーザーID、プロフィール画像、自己紹介、SNSリンク</span>
+                </div>
+                <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================
            TASK LIST
       ========================= -->
       <section class="sg-section" id="task-list" data-section="task-list">
@@ -5001,6 +5087,17 @@
     }, { rootMargin: '-20% 0px -70% 0px' });
 
     sections.forEach(s => observer.observe(s));
+
+    // Accordion Row — interactive toggle (클릭 시 펼침/접힘만)
+    (function () {
+      const row = document.getElementById('sg-accordion-demo');
+      if (!row) return;
+      const header = row.querySelector('.accordion-row__header');
+      header.addEventListener('click', () => {
+        const active = row.classList.toggle('accordion-row--active');
+        header.setAttribute('aria-expanded', active ? 'true' : 'false');
+      });
+    })();
 
     // Interactive checkbox toggle
     function setupCheckboxToggle(btnId, labelId, stateId) {

@@ -153,6 +153,20 @@ const buttonVariants = cva("...", {
 - 이미지 등록 시 `.avatar-upload__image` (object-fit: cover)
 - TODO: 파일 선택 / 프리뷰 갱신 / 삭제 동작은 React 쪽에서 구현
 
+#### `.accordion-row` → shadcn `Accordion` + `AccordionItem`
+- 섹션 토글 / 단일 링크 리스트 행. 기본 폭 504px (`--p35`), min-height 80px, padding 20px 24px
+- HTML 구조: `.accordion-row` > `.accordion-row__header` (button) > `.accordion-row__body` (title + desc) + `.accordion-row__chevron`
+- 3 variants:
+  - **기본 (접혀있을 때)**: 제목 14px/w6 + 설명 11px/w4 + chevron (`.icon-keyboard-arrow-down`) black-30
+  - **확장 (펼쳐져 있을 때)**: `.accordion-row--active` — 제목 14→16px 부드럽게 확대, 설명 숨김, chevron 색상만 black-100 (rotation 없음)
+  - **단일 링크**: `.accordion-row--link` — 토글 기능 없음, chevron `.icon-exit-to-app` · black-100. `<a>` 태그로 사용
+- `min-width: var(--p35)` (504px) — 그 이하로 축소 금지
+- title font-size transition으로 접힘↔펼침이 자연스럽게 연결됨
+- hover / focus 시각 효과 없음 (클릭 시 active 토글만)
+- 확장 콘텐츠: `.accordion-row__content` (default hidden, `.accordion-row--active` 시 표시)
+- chevron: `.icon-keyboard-arrow-down` (기본/active) · `.icon-exit-to-app` (single link)
+- TODO: React에서는 shadcn `Accordion` (Radix) 사용 — `AccordionTrigger`(header) / `AccordionContent`(content). 단일 링크 variant는 별도 `<Link>` 컴포넌트로 분리
+
 ---
 
 ### 레이아웃 계열

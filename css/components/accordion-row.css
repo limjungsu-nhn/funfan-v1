@@ -1,0 +1,139 @@
+/* ============================================
+   Accordion Row — 섹션 토글 / 단일 링크 리스트 행
+
+   3 variants:
+     기본 (접혀있을 때)           .accordion-row
+     확장됨 (펼쳐져 있을 때)       .accordion-row.accordion-row--active
+     단일 링크 (접고펼 기능 없음)   .accordion-row--link
+
+   HTML 구조 (toggle 가능):
+     <div class="accordion-row">
+       <button class="accordion-row__header" type="button" aria-expanded="false">
+         <div class="accordion-row__body">
+           <span class="text-subtext-w6 accordion-row__title">ユーザー情報</span>
+           <span class="text-overline-w4 accordion-row__desc">ニックネーム、ユーザーID、…</span>
+         </div>
+         <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+       </button>
+       <div class="accordion-row__content">…확장 시 컨텐츠…</div>
+     </div>
+
+   HTML 구조 (단일 링크 — 토글 없음):
+     <a class="accordion-row accordion-row--link" href="…">
+       <div class="accordion-row__body">
+         <span class="text-subtext-w6 accordion-row__title">ユーザー情報</span>
+         <span class="text-overline-w4 accordion-row__desc">ニックネーム、ユーザーID、…</span>
+       </div>
+       <i class="icon icon-exit-to-app accordion-row__chevron"></i>
+     </a>
+
+   Notes:
+     - min-width 504px (--p35) — 그 이하로 축소 금지
+     - 기본 chevron 흐림(black 30%), 확장/링크 variant에서 선명(black 100%) — rotation 없음
+     - 확장 시 title 14px → 16px smooth transition, desc 숨김
+     - 단일 링크 variant의 chevron은 `.icon-exit-to-app` 사용
+     - hover / focus 시각 효과 없음
+   ============================================ */
+
+/* ---------- Base (접혀있을 때 / default) ---------- */
+.accordion-row {
+  width: 100%;
+  min-width: var(--p35); /* 504px — 그 이하로 축소 금지 */
+  background: var(--color-white-100);
+  display: block;
+  box-sizing: border-box;
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ---------- Header (클릭 영역) ---------- */
+.accordion-row__header {
+  width: 100%;
+  min-height: 80px;
+  padding: var(--space-4) var(--space-5) var(--space-4) var(--space-6);
+  background: transparent;
+  border: none;
+  outline: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+  font-family: var(--font-family-base);
+  color: inherit;
+  text-align: left;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* link variant: header 자체가 <a> 또는 컨테이너 → 내부 래퍼 없음 */
+.accordion-row--link {
+  min-height: 80px;
+  padding: var(--space-4) var(--space-5) var(--space-4) var(--space-6);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  cursor: pointer;
+}
+
+/* ---------- Body (텍스트 그룹) ---------- */
+.accordion-row__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+}
+
+.accordion-row__title {
+  color: var(--color-font-primary-black-100);
+  transition: font-size 0.25s ease, line-height 0.25s ease;
+}
+
+.accordion-row__desc {
+  color: var(--color-font-primary-black-50);
+  overflow: hidden;
+  max-height: 48px; /* line-height-overline × 3 — 최대 3줄까지 여유 */
+  opacity: 1;
+  transition: max-height 0.25s ease, opacity 0.2s ease, margin-top 0.25s ease;
+}
+
+/* ---------- Chevron ---------- */
+.accordion-row__chevron {
+  flex-shrink: 0;
+  color: var(--color-font-primary-black-30); /* default: 30% */
+  transition: color 0.2s ease;
+}
+
+/* 단일 링크: chevron 선명 */
+.accordion-row--link .accordion-row__chevron {
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Active / Expanded (펼쳐져 있을 때) ---------- */
+.accordion-row.accordion-row--active .accordion-row__title {
+  font-size: var(--font-size-body-md);     /* 16px, 14 → 16 smooth transition */
+  line-height: var(--line-height-body-md); /* 26px */
+}
+
+.accordion-row.accordion-row--active .accordion-row__desc {
+  max-height: 0;
+  opacity: 0;
+  margin-top: calc(-1 * var(--space-1)); /* body gap(4px) 상쇄 → title이 자연스럽게 중앙으로 미끄러짐 */
+}
+
+.accordion-row.accordion-row--active .accordion-row__chevron {
+  color: var(--color-font-primary-black-100); /* opacity 100% only — no rotation */
+}
+
+.accordion-row.accordion-row--active .accordion-row__content {
+  display: block;
+}
+
+/* ---------- Content (확장 시 표시) ---------- */
+.accordion-row__content {
+  display: none;
+  padding: 0 var(--space-5) var(--space-4) var(--space-6);
+}

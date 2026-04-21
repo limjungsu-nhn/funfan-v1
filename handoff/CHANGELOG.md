@@ -15,6 +15,11 @@
 - **`form-textarea`** — 다중행 입력 필드 (min-height 96px, form-input과 동일 컬러/상태 시스템)
 - **`form-field`** — label + input/textarea/avatar-upload + hint/caution 래퍼 (Figma 5 variant)
 - **`avatar-upload`** — 80×80 원형 아바타 프리뷰 + 업로드 버튼 (white placeholder 배경 · gray-5 outline)
+- **`accordion-row`** — 섹션 토글 / 단일 링크 행 (min-width `--p35` 504px · min-height 80px)
+  - 3 variants: 기본(접힘) / `.accordion-row--active`(펼침, 제목 14→16px 부드럽게 확대 + 설명 숨김, chevron은 색상만 black-100으로 변경) / `.accordion-row--link`(토글 없는 단일 링크, chevron `.icon-exit-to-app`)
+  - chevron: 기본/active는 `.icon-keyboard-arrow-down`, single link는 `.icon-exit-to-app`
+  - title font-size transition으로 접힘↔펼침 자연스러운 연결
+  - hover/focus 시각 효과 없음
 
 ### 추가 (아이콘)
 - **`.icon-folder-open`** (Material `folder_open` · `FolderOpen`) — avatar-upload 업로드 버튼

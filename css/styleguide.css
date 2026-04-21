@@ -566,6 +566,28 @@ body {
   transition: none;
 }
 
+/* Accordion Row 프리뷰 — 504px 고정 폭 유지 */
+.sg-type-preview--accordion-row {
+  padding: 0;
+  align-items: stretch;
+}
+.sg-type-preview--accordion-row .accordion-row {
+  width: var(--p35); /* 504px */
+}
+
+/* accordion-row 섹션의 row 하단 구분선 제거 */
+#accordion-row .sg-type-row {
+  border-bottom: none;
+}
+#accordion-row .sg-type-row:hover {
+  background: transparent;
+}
+
+/* Interactive demo 폭 504px 고정 */
+#sg-accordion-demo {
+  width: var(--p35);
+}
+
 .sg-demo-item {
   display: flex;
   flex-direction: column;
