@@ -168,7 +168,7 @@
   min-height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: opacity 0.4s cubic-bezier(.4,0,.1,1);
+  transition: opacity 0.25s cubic-bezier(.4,0,.1,1);
 }
 
 .accordion-row.accordion-row--active .accordion-row__content {
@@ -178,7 +178,8 @@
 
 .accordion-row.accordion-row--active .accordion-row__content > * {
   opacity: 1;
-  transition: opacity 0.4s cubic-bezier(.4,0,.1,1) 0.2s; /* grid 펼침 후 서서히 선명 */
+  /* grid 확장과 동시에 fade — 슬라이드 느낌을 opacity가 가려 '바로 나타남'으로 지각됨 */
+  transition: opacity 0.25s cubic-bezier(.4,0,.1,1);
 }
 
 /* ---------- Empty State ---------- */
