@@ -54,6 +54,16 @@
   flex-shrink: 0;
 }
 
+/* ---------- Stack (multiple inputs grouped) ----------
+   SNS 링크 같이 동일한 타입의 입력을 여러 개 묶을 때 사용
+   form-input / form-textarea 들을 세로로 쌓음 */
+.form-field__stack {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 /* ---------- Hint (sub text) ---------- */
 .form-field__hint {
   margin: 0;

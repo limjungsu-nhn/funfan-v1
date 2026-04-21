@@ -215,7 +215,7 @@ html.mini-mode .float-btn { display: none; }
 .workspace__content {
   flex: 1;
   min-height: 0;
-  padding: var(--p5) var(--p2_5) 0;
+  padding: var(--p5) 0 0;
   display: flex;
   flex-direction: column;
   align-items: center;

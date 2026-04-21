@@ -148,10 +148,11 @@ const buttonVariants = cva("...", {
 
 #### `.avatar-upload` → 커스텀 (shadcn `Avatar` + `Button` + `Input[type=file]` 조합)
 - 80×80 원형 프리뷰(`__preview` · gray-5 outline · white 플레이스홀더 배경) + body(업로드 버튼 + hint)
-- gap 20px, 가로 정렬
+- gap 20px, 가로 정렬, padding-top 10px
 - 업로드 버튼: `.btn.btn-line.btn--sm` + `.icon.icon-folder-open` + 텍스트
 - 이미지 등록 시 `.avatar-upload__image` (object-fit: cover)
-- TODO: 파일 선택 / 프리뷰 갱신 / 삭제 동작은 React 쪽에서 구현
+- **동작 (`js/components/avatar-upload.js`)**: 각 `.avatar-upload`에 hidden `<input type="file" accept="image/jpeg,image/png,image/webp">`를 자동 주입 → 버튼 클릭 시 OS 파일 선택 다이얼로그 오픈 → 선택 후 FileReader로 `__preview` 이미지 갱신
+- TODO: 업로드 후 서버 저장 / 삭제 동작은 React 쪽에서 구현
 
 #### `.accordion-row` → shadcn `Accordion` + `AccordionItem`
 - 섹션 토글 / 단일 링크 리스트 행. 기본 폭 504px (`--p35`), min-height 80px, padding 20px 24px
@@ -165,6 +166,8 @@ const buttonVariants = cva("...", {
 - hover / focus 시각 효과 없음 (클릭 시 active 토글만)
 - 확장 콘텐츠: `.accordion-row__content` (default hidden, `.accordion-row--active` 시 표시)
 - chevron: `.icon-keyboard-arrow-down` (기본/active) · `.icon-exit-to-app` (single link)
+- **`.accordion-row--card` modifier**: 16px border-radius + soft shadow(`0 4px 8px rgba(0,0,0,.02), 0 0 1px rgba(0,0,0,.1)`) — 세팅 페이지 등 카드로 나열할 때. 기본/active/link variant 전부와 병용 가능
+- **Caution 아이콘**: `.accordion-row__title` 내부에 `<i class="icon icon-error-filled">` 추가 → title 텍스트는 black-100 유지, 아이콘만 red-100. title은 `display: inline-flex; gap: 8px`로 텍스트 + 아이콘을 정렬. 기본/active/link 모두 동일 패턴
 - TODO: React에서는 shadcn `Accordion` (Radix) 사용 — `AccordionTrigger`(header) / `AccordionContent`(content). 단일 링크 variant는 별도 `<Link>` 컴포넌트로 분리
 
 ---

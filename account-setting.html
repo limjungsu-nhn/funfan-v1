@@ -29,11 +29,17 @@
   <link rel="stylesheet" href="css/components/right-panel.css">
   <link rel="stylesheet" href="css/components/float-btn.css">
   <link rel="stylesheet" href="css/components/accordion-row.css">
+  <link rel="stylesheet" href="css/components/form-field.css">
+  <link rel="stylesheet" href="css/components/form-input.css">
+  <link rel="stylesheet" href="css/components/form-textarea.css">
+  <link rel="stylesheet" href="css/components/avatar-upload.css">
 
   <!-- 페이지 전용 App Shell (v1.03까지 이 HTML <style> 블록에 있던 내용) -->
   <link rel="stylesheet" href="css/pages/account-setting.css">
   <script src="js/core/keyboard-focus.js" defer></script>
   <script src="js/components/chat.js" defer></script>
+  <script src="js/components/accordion-row.js" defer></script>
+  <script src="js/components/avatar-upload.js" defer></script>
 </head>
 <body>
 
@@ -101,6 +107,270 @@
     <!-- Main Content -->
     <div class="workspace__main">
       <div class="workspace__content">
+
+        <div class="settings-page">
+
+          <!-- Heading -->
+          <div class="settings-page__heading">
+            <h1 class="settings-page__title text-h2-w6">アカウント/設定</h1>
+            <p class="settings-page__subtitle text-caption-w4">アカウントの情報確認および各種設定の変更が可能です。</p>
+          </div>
+
+          <!-- Settings List -->
+          <div class="settings-page__list">
+
+            <!-- 1. ユーザー情報 -->
+            <div class="accordion-row accordion-row--card" data-accordion>
+              <button class="accordion-row__header" type="button" aria-expanded="false">
+                <div class="accordion-row__body">
+                  <span class="text-subtext-w6 accordion-row__title">ユーザー情報</span>
+                  <span class="text-overline-w4 accordion-row__desc">ニックネーム、ユーザーID、自己紹介、SNSリンク</span>
+                </div>
+                <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+              </button>
+              <div class="accordion-row__content">
+                <form class="settings-form" onsubmit="event.preventDefault()">
+
+                  <div class="form-field">
+                    <div class="form-field__label">
+                      <span class="form-field__title">プロフィール画像</span>
+                    </div>
+                    <div class="avatar-upload">
+                      <div class="avatar-upload__preview settings-form__avatar-overlay">
+                        <img class="avatar-upload__image" src="img/img_avatar01.png" alt="">
+                      </div>
+                      <div class="avatar-upload__body">
+                        <button class="btn btn-line btn--sm" type="button">
+                          <i class="icon icon-folder-open"></i>
+                          <span class="text-assist-w4">画像をアップロード</span>
+                        </button>
+                        <p class="form-field__hint">JPG / PNG / WEBP、5MB以下</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <div class="form-field__label">
+                      <span class="form-field__title">ニックネーム</span>
+                      <span class="form-field__required" aria-hidden="true"></span>
+                    </div>
+                    <div class="form-input">
+                      <input class="form-input__field" type="text" value="つちだ" placeholder="ニックネーム">
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <div class="form-field__label">
+                      <span class="form-field__title">ユーザーID</span>
+                      <span class="form-field__required" aria-hidden="true"></span>
+                    </div>
+                    <div class="form-input">
+                      <input class="form-input__field" type="text" value="tsuchida_works" placeholder="ユーザーID">
+                    </div>
+                    <p class="form-field__hint">英数字・ハイフン・アンダースコアのみ。変更は30日に1回まで</p>
+                  </div>
+
+                  <div class="form-field">
+                    <div class="form-field__label">
+                      <span class="form-field__title">自己紹介</span>
+                    </div>
+                    <div class="form-textarea">
+                      <textarea class="form-textarea__field" placeholder="自己紹介を入力してください" rows="4">異世界と日常のあいだを描いています。</textarea>
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <div class="form-field__label">
+                      <span class="form-field__title">SNSリンク</span>
+                    </div>
+                    <div class="form-field__stack">
+                      <div class="form-input">
+                        <input class="form-input__field" type="text" value="X / @tsuchida" placeholder="サービス名 / URL">
+                      </div>
+                      <div class="form-input">
+                        <input class="form-input__field" type="text" value="pixiv / https://pixiv.net/users/1234" placeholder="サービス名 / URL">
+                      </div>
+                    </div>
+                    <p class="form-field__hint">最大10件まで追加可能</p>
+                  </div>
+
+                  <div class="settings-form__actions">
+                    <button class="btn btn-line btn--sm" type="button"><span class="text-assist-w4">キャンセル</span></button>
+                    <button class="btn btn-filled-black btn--sm" type="submit" disabled><span class="text-assist-w4">保存</span></button>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+
+            <!-- 2. 投稿ガイドライン (collapsed) -->
+            <div class="accordion-row accordion-row--card" data-accordion>
+              <button class="accordion-row__header" type="button" aria-expanded="false">
+                <div class="accordion-row__body">
+                  <span class="text-subtext-w6 accordion-row__title">投稿ガイドライン</span>
+                  <span class="text-overline-w4 accordion-row__desc">投稿ルールと AI 活用ポリシーを確認する</span>
+                </div>
+                <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+              </button>
+              <div class="accordion-row__content">
+                <div class="accordion-row__empty-wrap">
+                  <p class="accordion-row__empty text-caption-w4">Empty</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. ヘルプ (collapsed) -->
+            <div class="accordion-row accordion-row--card" data-accordion>
+              <button class="accordion-row__header" type="button" aria-expanded="false">
+                <div class="accordion-row__body">
+                  <span class="text-subtext-w6 accordion-row__title">ヘルプ</span>
+                  <span class="text-overline-w4 accordion-row__desc">よくある質問や使い方ガイド</span>
+                </div>
+                <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+              </button>
+              <div class="accordion-row__content">
+                <div class="accordion-row__empty-wrap">
+                  <p class="accordion-row__empty text-caption-w4">Empty</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. お問い合わせ (collapsed) -->
+            <div class="accordion-row accordion-row--card" data-accordion>
+              <button class="accordion-row__header" type="button" aria-expanded="false">
+                <div class="accordion-row__body">
+                  <span class="text-subtext-w6 accordion-row__title">お問い合わせ</span>
+                  <span class="text-overline-w4 accordion-row__desc">不具合報告や運営への連絡</span>
+                </div>
+                <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+              </button>
+              <div class="accordion-row__content">
+                <div class="accordion-row__empty-wrap">
+                  <p class="accordion-row__empty text-caption-w4">Empty</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. パスワード変更 -->
+            <div class="accordion-row accordion-row--card" data-accordion>
+              <button class="accordion-row__header" type="button" aria-expanded="false">
+                <div class="accordion-row__body">
+                  <span class="text-subtext-w6 accordion-row__title">パスワード変更</span>
+                  <span class="text-overline-w4 accordion-row__desc">現在のパスワードを入力して新しいパスワードに変更</span>
+                </div>
+                <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+              </button>
+              <div class="accordion-row__content">
+                <form class="settings-form" onsubmit="event.preventDefault()">
+
+                  <div class="form-field">
+                    <div class="form-field__label">
+                      <span class="form-field__title">現在のパスワード</span>
+                      <span class="form-field__required" aria-hidden="true"></span>
+                    </div>
+                    <div class="form-input">
+                      <input class="form-input__field" type="password">
+                    </div>
+                  </div>
+
+                  <div class="form-field">
+                    <div class="form-field__label">
+                      <span class="form-field__title">新しいパスワード</span>
+                      <span class="form-field__required" aria-hidden="true"></span>
+                    </div>
+                    <div class="form-input">
+                      <input class="form-input__field" type="password">
+                    </div>
+                    <p class="form-field__hint">8文字以上。現在のパスワードと同じものは使えません</p>
+                  </div>
+
+                  <div class="form-field">
+                    <div class="form-field__label">
+                      <span class="form-field__title">確認用パスワード</span>
+                      <span class="form-field__required" aria-hidden="true"></span>
+                    </div>
+                    <div class="form-input">
+                      <input class="form-input__field" type="password">
+                    </div>
+                    <p class="form-field__hint">新しいパスワードをもう一度入力してください</p>
+                  </div>
+
+                  <div class="settings-form__actions">
+                    <button class="btn btn-line btn--sm" type="button"><span class="text-assist-w4">キャンセル</span></button>
+                    <button class="btn btn-filled-black btn--sm" type="submit" disabled><span class="text-assist-w4">変更</span></button>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+
+            <!-- 6. メールアドレス変更 (empty) -->
+            <div class="accordion-row accordion-row--card" data-accordion>
+              <button class="accordion-row__header" type="button" aria-expanded="false">
+                <div class="accordion-row__body">
+                  <span class="text-subtext-w6 accordion-row__title">メールアドレス変更</span>
+                  <span class="text-overline-w4 accordion-row__desc">登録メールアドレスを変更する</span>
+                </div>
+                <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+              </button>
+              <div class="accordion-row__content">
+                <div class="accordion-row__empty-wrap">
+                  <p class="accordion-row__empty text-caption-w4">Empty</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- 7. アカウント削除申請 (warning) -->
+            <div class="accordion-row accordion-row--card" data-accordion>
+              <button class="accordion-row__header" type="button" aria-expanded="false">
+                <div class="accordion-row__body">
+                  <span class="text-subtext-w6 accordion-row__title">
+                    アカウント削除申請
+                    <i class="icon icon-error-filled"></i>
+                  </span>
+                  <span class="text-overline-w4 accordion-row__desc">アカウントを削除する（復元不可）</span>
+                </div>
+                <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+              </button>
+              <div class="accordion-row__content">
+                <form class="settings-form" onsubmit="event.preventDefault()">
+
+                  <div class="settings-warning-block">
+                    <span class="settings-warning-title text-subtext-w6">注意事項</span>
+                    <p class="settings-warning-text text-caption-w4">この操作は取り消せません。<br>申請後はログアウトし、実際の削除は運営が定める猶予期間後に処理されます。必要なデータは事前に確認してください。</p>
+                  </div>
+
+                  <div class="form-field">
+                    <div class="form-field__label">
+                      <span class="form-field__title">確認のためパスワードを入力</span>
+                      <span class="form-field__required" aria-hidden="true"></span>
+                    </div>
+                    <div class="form-input">
+                      <input class="form-input__field" type="password">
+                    </div>
+                  </div>
+
+                  <div class="settings-form__actions">
+                    <button class="btn btn-line btn--sm" type="button"><span class="text-assist-w4">キャンセル</span></button>
+                    <button class="btn btn-filled-red btn--sm" type="submit" disabled><span class="text-assist-w4">削除</span></button>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+
+            <!-- 8. ログアウト (single link) -->
+            <a class="accordion-row accordion-row--card accordion-row--link" href="#">
+              <div class="accordion-row__body">
+                <span class="text-subtext-w6 accordion-row__title">ログアウト</span>
+                <span class="text-overline-w4 accordion-row__desc">現在のセッションを終了してログイン画面へ戻る</span>
+              </div>
+              <i class="icon icon-exit-to-app accordion-row__chevron"></i>
+            </a>
+
+          </div>
+
+        </div>
 
       </div>
     </div>
@@ -211,6 +481,43 @@
 
     document.querySelector('.left-panel').addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
     document.querySelector('.right-panel').addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });
+
+    // accordion-row 토글은 js/components/accordion-row.js가 [data-accordion] 자동 바인딩
+
+    // ── settings-form: 값 변경 시에만 submit 활성화 ─────────
+    document.querySelectorAll('.settings-form').forEach((form) => {
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const cancelBtn = form.querySelector('.settings-form__actions .btn-line');
+      if (!submitBtn) return;
+      const fields = form.querySelectorAll('input, textarea');
+      const initial = new Map();
+      fields.forEach((f) => initial.set(f, f.value));
+
+      const isDirty = () => {
+        for (const f of fields) {
+          if (f.value !== initial.get(f)) return true;
+        }
+        return false;
+      };
+      const sync = () => { submitBtn.disabled = !isDirty(); };
+
+      fields.forEach((f) => {
+        f.addEventListener('input', sync);
+        f.addEventListener('change', sync);
+      });
+      if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+          fields.forEach((f) => { f.value = initial.get(f); });
+          sync();
+          const row = form.closest('[data-accordion]');
+          if (row && row.classList.contains('accordion-row--active')) {
+            row.classList.remove('accordion-row--active');
+            const header = row.querySelector('.accordion-row__header');
+            if (header) header.setAttribute('aria-expanded', 'false');
+          }
+        });
+      }
+    });
 
     // ── 채팅 인터랙션 ────────────────────────────────────────
     document.addEventListener('DOMContentLoaded', () => {

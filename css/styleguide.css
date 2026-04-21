@@ -588,6 +588,11 @@ body {
   width: var(--p35);
 }
 
+.sg-accordion-demo__text {
+  margin: 0;
+  color: var(--color-font-primary-black-50);
+}
+
 .sg-demo-item {
   display: flex;
   flex-direction: column;

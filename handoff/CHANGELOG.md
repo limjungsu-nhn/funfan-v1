@@ -20,6 +20,7 @@
   - chevron: 기본/active는 `.icon-keyboard-arrow-down`, single link는 `.icon-exit-to-app`
   - title font-size transition으로 접힘↔펼침 자연스러운 연결
   - hover/focus 시각 효과 없음
+  - `.accordion-row--card` modifier (16px radius + soft shadow) — 세팅 페이지 등 카드 나열용, 기본/active/link 전부와 병용 가능
 
 ### 추가 (아이콘)
 - **`.icon-folder-open`** (Material `folder_open` · `FolderOpen`) — avatar-upload 업로드 버튼
@@ -52,6 +53,16 @@
 
 ### 변경 (COMPONENTS.md)
 - form-field variant 목록: Figma 7종 → 5종으로 정리 (narrow width는 `.input-wood`로 대체)
+
+### 추가 (토큰)
+- **`--p12_5: 180px`** — 12.5% of 1440. account-setting 페이지 하단 여백 등에서 사용
+
+### 추가 (페이지)
+- **`account-setting.html` 중앙 영역 구현** — 720px (`--p50`) 컨텐츠 컬럼 · 72px (`--p5`) 상/좌/우 · 180px (`--p12_5`) 하단 여백 · gradient 배경 (white-50 → gray-6)
+  - 헤딩 (H2/w6 + caption/w4 subtitle) + 8개 accordion-row 카드
+  - 섹션: ユーザー情報(active) · 投稿ガイドライン · ヘルプ · お問い合わせ · パスワード変更(active) · メールアドレス変更 · アカウント削除申請(active, red) · ログアウト(link)
+  - 재사용 컴포넌트: `accordion-row` + `accordion-row--card` + `form-field` + `form-input` + `form-textarea` + `avatar-upload` + `btn`
+  - 페이지 전용 레이아웃: `.settings-page` / `.settings-page__heading` / `.settings-page__list` / `.settings-form` / `.settings-form__actions` (css/pages/account-setting.css)
 
 ---
 

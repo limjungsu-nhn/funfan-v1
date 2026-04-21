@@ -37,7 +37,7 @@ html, body {
 .workspace__main {
   flex: 1;
   min-width: 0;
-  overflow: auto;
+  overflow: hidden;
   padding-top: var(--navbar-height);
   background: var(--color-white-50);
   display: flex;
@@ -47,11 +47,101 @@ html, body {
 .workspace__content {
   flex: 1;
   min-height: 0;
-  padding: var(--p2_5);
+  padding: var(--p5) 0 var(--p15);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  overflow: hidden;
+  align-items: center;
+  gap: var(--space-7);
+  overflow: auto;
+  scrollbar-width: none; /* Firefox */
   border-left: 1px var(--color-gray-5) solid;
   border-right: 1px var(--color-gray-5) solid;
+}
+
+.workspace__content::-webkit-scrollbar {
+  display: none; /* Chrome / Safari */
+}
+
+/* ---------- Settings Page Layout ---------- */
+.settings-page {
+  width: var(--p50); /* 720px */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+}
+
+.settings-page__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.settings-page__title {
+  margin: 0;
+}
+
+.settings-page__subtitle {
+  margin: 0;
+  color: var(--color-font-primary-black-50);
+}
+
+.settings-page__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ---------- Settings Form Blocks ---------- */
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.settings-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.settings-form__actions .btn--sm {
+  min-width: 84px;
+}
+
+/* 프로필 이미지: avatar-upload 재사용, wood-6 multiply 오버레이 표현 */
+.settings-form__avatar-overlay {
+  position: relative;
+}
+.settings-form__avatar-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-wood-6);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  border-radius: 100px;
+}
+
+/* 삭제 경고 헤더 — title 옆 red error 아이콘 */
+.settings-warning-title {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-red-100);
+}
+.settings-warning-title .icon {
+  color: var(--color-red-100);
+}
+
+/* 注意事項 블록 — 빨간 타이틀 + 회색 본문 수직 스택 */
+.settings-warning-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-warning-text {
+  margin: 0;
+  color: var(--color-font-primary-black-50);
 }

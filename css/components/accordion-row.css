@@ -6,8 +6,11 @@
      확장됨 (펼쳐져 있을 때)       .accordion-row.accordion-row--active
      단일 링크 (접고펼 기능 없음)   .accordion-row--link
 
+   Modifier:
+     .accordion-row--card        카드 스타일(16px radius + soft shadow)
+
    HTML 구조 (toggle 가능):
-     <div class="accordion-row">
+     <div class="accordion-row" data-accordion>
        <button class="accordion-row__header" type="button" aria-expanded="false">
          <div class="accordion-row__body">
            <span class="text-subtext-w6 accordion-row__title">ユーザー情報</span>
@@ -15,30 +18,30 @@
          </div>
          <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
        </button>
-       <div class="accordion-row__content">…확장 시 컨텐츠…</div>
+       <div class="accordion-row__content">
+         <!-- 직계 자식(form 등) 1개 — grid-row가 이 자식의 자연 높이를 0fr↔1fr로 애니메이션 -->
+       </div>
      </div>
 
-   HTML 구조 (단일 링크 — 토글 없음):
-     <a class="accordion-row accordion-row--link" href="…">
-       <div class="accordion-row__body">
-         <span class="text-subtext-w6 accordion-row__title">ユーザー情報</span>
-         <span class="text-overline-w4 accordion-row__desc">ニックネーム、ユーザーID、…</span>
-       </div>
-       <i class="icon icon-exit-to-app accordion-row__chevron"></i>
-     </a>
+   애니메이션 원리 (순수 CSS, JS 측정 불필요):
+     - .accordion-row__content = display: grid; grid-template-rows: 0fr ↔ 1fr
+     - 직계 자식 = min-height: 0; overflow: hidden — grid row 수축 허용
+     - 하단 여백은 **컨테이너가 아니라 내부(직계 자식의 padding-bottom)** 에 부여
+       → 컨테이너 padding이 active 토글 순간 즉시 적용되어 끝에 튀는 현상 제거
+     - body grid(title/desc): grid-template-rows 1fr→0fr + row-gap → desc 자연 수축
+     - title line-height 26px 고정 → font-size 14↔16px 전환에도 라인박스 흔들림 없음
+     - duration 0.6s cubic-bezier(.4,0,.1,1) (right-panel과 동일)
 
    Notes:
      - min-width 504px (--p35) — 그 이하로 축소 금지
-     - 기본 chevron 흐림(black 30%), 확장/링크 variant에서 선명(black 100%) — rotation 없음
-     - 확장 시 title 14px → 16px smooth transition, desc 숨김
      - 단일 링크 variant의 chevron은 `.icon-exit-to-app` 사용
      - hover / focus 시각 효과 없음
    ============================================ */
 
-/* ---------- Base (접혀있을 때 / default) ---------- */
+/* ---------- Base ---------- */
 .accordion-row {
   width: 100%;
-  min-width: var(--p35); /* 504px — 그 이하로 축소 금지 */
+  min-width: var(--p35); /* 504px */
   background: var(--color-white-100);
   display: block;
   box-sizing: border-box;
@@ -46,7 +49,7 @@
   text-decoration: none;
 }
 
-/* ---------- Header (클릭 영역) ---------- */
+/* ---------- Header ---------- */
 .accordion-row__header {
   width: 100%;
   min-height: 80px;
@@ -66,7 +69,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* link variant: header 자체가 <a> 또는 컨테이너 → 내부 래퍼 없음 */
+/* link variant */
 .accordion-row--link {
   min-height: 80px;
   padding: var(--space-4) var(--space-5) var(--space-4) var(--space-6);
@@ -77,63 +80,117 @@
   cursor: pointer;
 }
 
-/* ---------- Body (텍스트 그룹) ---------- */
+/* ---------- Body (title + desc) ---------- */
+/* grid 2-row — desc row 1fr↔0fr 로 수축시켜 body 높이 변화
+   → header의 align-items: center 에 의해 title이 자연스럽게 vcenter로 이동
+   desc는 opacity로 먼저 사라진 뒤 row가 수축 → 시각적 '움직임' 없음 */
 .accordion-row__body {
   flex: 1;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-1);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  row-gap: var(--space-1);
+  justify-items: start;
+  transition:
+    grid-template-rows 0.35s cubic-bezier(.4,0,.1,1),
+    row-gap 0.35s cubic-bezier(.4,0,.1,1);
 }
 
 .accordion-row__title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px; /* title 텍스트와 caution 아이콘 사이 */
   color: var(--color-font-primary-black-100);
-  transition: font-size 0.25s ease, line-height 0.25s ease;
+  line-height: var(--line-height-body-md); /* 26px 고정 — 라인박스 흔들림 제거 */
+  transition: font-size 0.35s cubic-bezier(.4,0,.1,1);
+}
+
+/* title 내부 아이콘 (caution) — 빨강 */
+.accordion-row__title .icon {
+  color: var(--color-red-100);
+  flex-shrink: 0;
 }
 
 .accordion-row__desc {
   color: var(--color-font-primary-black-50);
+  min-height: 0;
   overflow: hidden;
-  max-height: 48px; /* line-height-overline × 3 — 최대 3줄까지 여유 */
   opacity: 1;
-  transition: max-height 0.25s ease, opacity 0.2s ease, margin-top 0.25s ease;
+  /* 기본(active 해제 → 노출): grid 펼침이 끝난 뒤 페이드 인 */
+  transition: opacity 0.2s cubic-bezier(.4,0,.1,1) 0.2s;
 }
 
 /* ---------- Chevron ---------- */
 .accordion-row__chevron {
   flex-shrink: 0;
-  color: var(--color-font-primary-black-30); /* default: 30% */
-  transition: color 0.2s ease;
+  color: var(--color-font-primary-black-30);
+  transition: color 0.4s cubic-bezier(.4,0,.1,1);
 }
 
-/* 단일 링크: chevron 선명 */
 .accordion-row--link .accordion-row__chevron {
   color: var(--color-font-primary-black-100);
 }
 
-/* ---------- Active / Expanded (펼쳐져 있을 때) ---------- */
+/* ---------- Active (header 내부 전환) ---------- */
+.accordion-row.accordion-row--active .accordion-row__body {
+  grid-template-rows: auto 0fr;
+  row-gap: 0;
+}
+
 .accordion-row.accordion-row--active .accordion-row__title {
-  font-size: var(--font-size-body-md);     /* 16px, 14 → 16 smooth transition */
-  line-height: var(--line-height-body-md); /* 26px */
+  font-size: var(--font-size-body-md); /* 14 → 16px */
 }
 
 .accordion-row.accordion-row--active .accordion-row__desc {
-  max-height: 0;
   opacity: 0;
-  margin-top: calc(-1 * var(--space-1)); /* body gap(4px) 상쇄 → title이 자연스럽게 중앙으로 미끄러짐 */
+  /* active(숨김): 먼저 빠르게 페이드 아웃 → grid row 수축은 보이지 않는 상태에서 진행 */
+  transition: opacity 0.15s cubic-bezier(.4,0,.1,1);
 }
 
 .accordion-row.accordion-row--active .accordion-row__chevron {
-  color: var(--color-font-primary-black-100); /* opacity 100% only — no rotation */
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Content (grid-rows trick) ----------
+   컨테이너: grid-template-rows 0fr ↔ 1fr + padding-bottom 0 ↔ 16px 동시 전환
+   padding-bottom을 transition 으로 함께 애니메이션 → 스냅 없이 부드럽게 열림
+   직계 자식: min-height: 0 + overflow: hidden → 수축 허용 */
+.accordion-row__content {
+  display: grid;
+  grid-template-rows: 0fr;
+  padding: 0 var(--space-6);
+  transition:
+    grid-template-rows 0.35s cubic-bezier(.4,0,.1,1),
+    padding-bottom 0.35s cubic-bezier(.4,0,.1,1);
+}
+
+.accordion-row__content > * {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(.4,0,.1,1);
 }
 
 .accordion-row.accordion-row--active .accordion-row__content {
-  display: block;
+  grid-template-rows: 1fr;
+  padding-bottom: var(--space-8);
 }
 
-/* ---------- Content (확장 시 표시) ---------- */
-.accordion-row__content {
-  display: none;
-  padding: 0 var(--space-5) var(--space-4) var(--space-6);
+.accordion-row.accordion-row--active .accordion-row__content > * {
+  opacity: 1;
+  transition: opacity 0.4s cubic-bezier(.4,0,.1,1) 0.2s; /* grid 펼침 후 서서히 선명 */
+}
+
+/* ---------- Empty State ---------- */
+.accordion-row__empty {
+  margin: 80px 0;
+  text-align: center;
+  color: var(--color-font-primary-black-30);
+}
+
+/* ---------- Card Modifier ---------- */
+.accordion-row--card {
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02), 0 0 1px rgba(0, 0, 0, 0.10);
+  overflow: hidden;
 }
