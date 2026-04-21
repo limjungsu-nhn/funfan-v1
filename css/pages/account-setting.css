@@ -1,47 +1,12 @@
 /* ============================================
-   account-setting.html 전용 레이아웃 (App Shell)
-   유래: v1.03까지 account-setting.html <style> 블록에 있던 내용 (v1.04에서 분리)
+   account-setting.html 전용 레이아웃
+   공통 App Shell은 app-shell.css 참조 — 여기는 main overflow override + content + settings만 담당
    이식 단위: React <WorkspaceLayout> variant — left-panel + main shell만 사용
    ============================================ */
 
-*, *::before, *::after { box-sizing: border-box; }
-
-html, body {
-  margin: 0;
-  padding: 0;
-  min-width: var(--base);
-  height: 100%;
-  overscroll-behavior: none;
-  background: var(--color-gray-6);
-  font-family: var(--font-family-base);
-}
-
-.navbar { min-width: var(--base); }
-
-/* ---------- App Shell ---------- */
-.workspace {
-  display: flex;
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-.workspace .left-panel {
-  padding-top: var(--navbar-height);
-  flex-shrink: 0;
-  position: relative;
-  z-index: 10;
-}
-
-/* ---------- Main Content ---------- */
+/* main content 영역: 내부 스크롤 대신 숨김 처리 (.workspace__content가 직접 스크롤) */
 .workspace__main {
-  flex: 1;
-  min-width: 0;
   overflow: hidden;
-  padding-top: var(--navbar-height);
-  background: var(--color-white-50);
-  display: flex;
-  flex-direction: column;
 }
 
 .workspace__content {
@@ -89,20 +54,20 @@ html, body {
 .settings-page__list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-1_5);
 }
 
 /* ---------- Settings Form Blocks ---------- */
 .settings-form {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: var(--space-5_5);
 }
 
 .settings-form__actions {
   display: flex;
   justify-content: flex-end;
-  gap: 6px;
+  gap: var(--space-1_5);
 }
 
 .settings-form__actions .btn--sm {
@@ -120,7 +85,7 @@ html, body {
   background: var(--color-wood-6);
   mix-blend-mode: multiply;
   pointer-events: none;
-  border-radius: 100px;
+  border-radius: var(--radius-full);
 }
 
 /* 삭제 경고 헤더 — title 옆 red error 아이콘 */
@@ -138,7 +103,7 @@ html, body {
 .settings-warning-block {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-1_5);
 }
 
 .settings-warning-text {

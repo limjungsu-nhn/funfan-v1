@@ -26,7 +26,7 @@
 | 컴포넌트 | shadcn 베이스 | 비고 |
 |---|---|---|
 | Typography | (없음) | `text-{scale}-{weight}` utility 직접 사용. scale 14종 × weight 2종 = 28개 |
-| Icon | `lucide-react` | `ICONS.md` 참조. 현재 37개 사용 |
+| Icon | `lucide-react` | `ICONS.md` 참조. 현재 40개 사용 |
 | Avatar | `Avatar` | 5 사이즈: xs(20) / sm(32) / md(40) / lg(56) / xl(80) · 10+ variant (avatar-01~) |
 | Logo | (이미지 only) | `.logo-funfan` 단일 variant |
 | Badge | `Badge` | variant: 기본(white 배경 + wood outline) |
@@ -125,7 +125,9 @@ const buttonVariants = cva("...", {
 - placeholder: black-50 / focus 시 transparent
 
 #### `.form-textarea` → shadcn `Textarea`
-- `.form-input`과 동일 컬러 토큰, 차이점: `min-height: 96px`, `padding: var(--space-2) var(--space-3)`, `align-items: flex-start`
+- `.form-input`과 동일 컬러 토큰, 차이점: `min-height: 108px` (5줄 고정 = line-height 18px × 5 + padding 상하 16px + 2px 안전 마진), `align-items: flex-start`
+- **패딩은 textarea 자체에 부여** (`.form-textarea__field { padding: var(--space-2) var(--space-3); scroll-padding-block-end: var(--space-2); box-sizing: border-box; }`). 컨테이너 패딩은 0 — 내부 스크롤 시 줄 중간이 경계에서 잘려 보이는 현상 방지. `scroll-padding-block-end` 8px 은 타이핑 auto-scroll 시 커서가 content-box 하단에 붙지 않도록 여유 확보 (Chrome/Firefox 지원, Safari 일부 무시)
+- **스크롤바 숨김**: `scrollbar-width: none` + `::-webkit-scrollbar { display: none }` — 스크롤 기능은 유지, 시각적 막대만 제거
 - `.form-textarea__field { resize: none; align-self: stretch; }`
 - States: default / hover(black-100) / focus-within(black-100) / focus(+3px gray-5 ring · 키보드 전용) / **error**(red-100) / disabled
 - **Disabled 배경 white 유지**, placeholder/text black-30

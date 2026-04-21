@@ -15,26 +15,35 @@
      컴포넌트 내부 간격(padding, gap, margin)용 절대값 토큰
      --p{n} (페이지 레벨 1440 퍼센트) 와 구분해서 사용
   ---------------------------------------- */
-  --space-1:  4px;
-  --space-2:  8px;
-  --space-3:  12px;
-  --space-4:  16px;
-  --space-5:  20px;
-  --space-6:  24px;
-  --space-7:  28px;
-  --space-8:  32px;
-  --space-9:  36px;
-  --space-10: 40px;
-  --space-12: 48px;
-  --space-14: 56px;
-  --space-16: 64px;
-  --space-20: 80px;
+  --space-1:    4px;
+  --space-1_5:  6px;
+  --space-2:    8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-5_5: 22px;
+  --space-6:   24px;
+  --space-7:   28px;
+  --space-8:   32px;
+  --space-9:   36px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-14:  56px;
+  --space-16:  64px;
+  --space-20:  80px;
 
   /* ---------- Ring Width ---------- */
   --ring-width: 3px;
 
   /* ---------- Border Radius ---------- */
-  --radius-sm: 10px;
+  --radius-sm:   10px;
+  --radius-full: 100px;  /* 원형 클립핑 (avatar, pill 등) */
+
+  /* ---------- Easing ----------
+     모든 공통 전환(accordion, right-panel, onboarding 랜딩 등)이 참조하는 표준 커브.
+     개별 duration/delay는 각 컴포넌트에서 지정, 곡선만 여기서 통일.
+  ---------------------------------------- */
+  --ease-standard: cubic-bezier(.4, 0, .1, 1);
 
   /* ---------- Component Widths ----------
      특정 컴포넌트 고정 폭 (1440 % 스케일 외 고정값)

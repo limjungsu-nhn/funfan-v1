@@ -1,0 +1,55 @@
+/* ============================================
+   App Shell — 공통 레이아웃 보일러플레이트
+   대상: workspace / workroom / series-post-management / account-setting
+        (& workspace-onboarding — workspace 상속)
+   목적: 네 페이지가 각자 동일하게 갖고 있던 box-sizing/body/navbar/workspace/left-panel/
+         workspace__main 규칙을 한곳에 모아 중복 제거.
+   이식 단위: React <AppShellLayout>
+
+   페이지별 개별 영역은 각 페이지 CSS에 유지:
+     - .workspace__content
+     - .workspace__stat-row / .workspace__timer 등
+     - .workspace__main 오버라이드 (account-setting: overflow hidden 등)
+   ============================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-width: var(--base);
+  height: 100%;
+  overscroll-behavior: none; /* 페이지 레벨 스크롤 차단 — overflow:hidden 없이 box-shadow 클리핑 방지 */
+  background: var(--color-gray-6);
+  font-family: var(--font-family-base);
+}
+
+/* navbar — 최소 너비 (fixed 요소는 body min-width 미적용) */
+.navbar { min-width: var(--base); }
+
+/* ---------- App Shell ---------- */
+.workspace {
+  display: flex;
+  height: 100%;
+  position: relative;
+  overflow: hidden; /* 패널 translateX 슬라이드 클리핑 */
+}
+
+/* left-panel: 화면 최상단부터 시작, 내부 콘텐츠만 navbar 아래로 밀어냄 */
+.workspace .left-panel {
+  padding-top: var(--navbar-height);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10; /* navbar(100) 아래, 일반 콘텐츠 위 */
+}
+
+/* ---------- Main Content ---------- */
+.workspace__main {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  padding-top: var(--navbar-height);
+  background: var(--color-white-50);
+  display: flex;
+  flex-direction: column;
+}

@@ -9,7 +9,7 @@
 /* 좌측 패널 · 중앙 영역 — 평상시 복귀 트랜지션 */
 .left-panel,
 .workspace__content {
-  transition: opacity 0.6s cubic-bezier(.4,0,.1,1);
+  transition: opacity 0.6s var(--ease-standard);
 }
 
 /* 랜딩 상태 — 반투명 + 인터랙션 차단 */

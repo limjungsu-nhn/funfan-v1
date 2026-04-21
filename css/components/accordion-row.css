@@ -30,7 +30,7 @@
        → 컨테이너 padding이 active 토글 순간 즉시 적용되어 끝에 튀는 현상 제거
      - body grid(title/desc): grid-template-rows 1fr→0fr + row-gap → desc 자연 수축
      - title line-height 26px 고정 → font-size 14↔16px 전환에도 라인박스 흔들림 없음
-     - duration 0.6s cubic-bezier(.4,0,.1,1) (right-panel과 동일)
+     - duration 0.6s var(--ease-standard) (right-panel과 동일)
 
    Notes:
      - min-width 504px (--p35) — 그 이하로 축소 금지
@@ -92,8 +92,8 @@
   row-gap: var(--space-1);
   justify-items: start;
   transition:
-    grid-template-rows 0.35s cubic-bezier(.4,0,.1,1),
-    row-gap 0.35s cubic-bezier(.4,0,.1,1);
+    grid-template-rows 0.6s var(--ease-standard),
+    row-gap 0.6s var(--ease-standard);
 }
 
 .accordion-row__title {
@@ -102,7 +102,7 @@
   gap: 10px; /* title 텍스트와 caution 아이콘 사이 */
   color: var(--color-font-primary-black-100);
   line-height: var(--line-height-body-md); /* 26px 고정 — 라인박스 흔들림 제거 */
-  transition: font-size 0.35s cubic-bezier(.4,0,.1,1);
+  transition: font-size 0.6s var(--ease-standard);
 }
 
 /* title 내부 아이콘 (caution) — 빨강 */
@@ -116,15 +116,15 @@
   min-height: 0;
   overflow: hidden;
   opacity: 1;
-  /* 기본(active 해제 → 노출): grid 펼침이 끝난 뒤 페이드 인 */
-  transition: opacity 0.2s cubic-bezier(.4,0,.1,1) 0.2s;
+  /* 기본(active 해제 → 노출): grid 펼침(0.6s)이 끝난 뒤 페이드 인 */
+  transition: opacity 0.3s var(--ease-standard) 0.35s;
 }
 
 /* ---------- Chevron ---------- */
 .accordion-row__chevron {
   flex-shrink: 0;
   color: var(--color-font-primary-black-30);
-  transition: color 0.4s cubic-bezier(.4,0,.1,1);
+  transition: color 0.6s var(--ease-standard);
 }
 
 .accordion-row--link .accordion-row__chevron {
@@ -144,7 +144,7 @@
 .accordion-row.accordion-row--active .accordion-row__desc {
   opacity: 0;
   /* active(숨김): 먼저 빠르게 페이드 아웃 → grid row 수축은 보이지 않는 상태에서 진행 */
-  transition: opacity 0.15s cubic-bezier(.4,0,.1,1);
+  transition: opacity 0.25s var(--ease-standard);
 }
 
 .accordion-row.accordion-row--active .accordion-row__chevron {
@@ -160,15 +160,16 @@
   grid-template-rows: 0fr;
   padding: 0 var(--space-6);
   transition:
-    grid-template-rows 0.35s cubic-bezier(.4,0,.1,1),
-    padding-bottom 0.35s cubic-bezier(.4,0,.1,1);
+    grid-template-rows 0.6s var(--ease-standard),
+    padding-bottom 0.6s var(--ease-standard);
 }
 
 .accordion-row__content > * {
   min-height: 0;
   overflow: hidden;
   opacity: 0;
-  transition: opacity 0.25s cubic-bezier(.4,0,.1,1);
+  /* 닫힐 때: 즉시 fade out (grid 수축보다 먼저 사라짐) */
+  transition: opacity 0.3s var(--ease-standard);
 }
 
 .accordion-row.accordion-row--active .accordion-row__content {
@@ -178,8 +179,8 @@
 
 .accordion-row.accordion-row--active .accordion-row__content > * {
   opacity: 1;
-  /* grid 확장과 동시에 fade — 슬라이드 느낌을 opacity가 가려 '바로 나타남'으로 지각됨 */
-  transition: opacity 0.25s cubic-bezier(.4,0,.1,1);
+  /* 열 때: grid 확장(0.6s)의 33% 지점(0.2s)부터 fade in 시작 */
+  transition: opacity 0.3s var(--ease-standard) 0.2s;
 }
 
 /* ---------- Empty State ---------- */

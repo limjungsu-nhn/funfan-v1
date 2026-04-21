@@ -3,7 +3,7 @@
 
    HTML 구조:
      <div class="form-textarea">
-       <textarea class="form-textarea__field" placeholder="TextArea" rows="4"></textarea>
+       <textarea class="form-textarea__field" placeholder="TextArea" rows="5"></textarea>
      </div>
 
    States (Figma 8상태 → CSS 4 modifier로 압축):
@@ -20,11 +20,15 @@
 /* ---------- Container ---------- */
 .form-textarea {
   width: 100%;
-  min-height: 96px;
-  padding: var(--space-2) var(--space-3);
+  /* 5줄 고정: line-height 18px × 5 + padding 상하 8px × 2 = 106px
+     + 2px 안전 마진 (Hiragino Sans 등 일본어 글리프가 line-box를 미세하게 넘는 경우 대비) */
+  min-height: 108px;
+  /* padding 0 — 내부 텍스트 패딩은 .form-textarea__field 가 직접 담당
+     (컨테이너 padding으로 하면 스크롤 중 줄 중간이 컨테이너 안쪽 경계에서 잘려 보임) */
+  padding: 0;
   display: inline-flex;
   align-items: flex-start;
-  gap: 6px;
+  gap: var(--space-1_5);
   background: var(--color-white-100);
   border-radius: var(--radius-sm);
   outline: 1px solid var(--color-gray-5);
@@ -45,12 +49,25 @@
   outline: none;
   resize: none;
   background: transparent;
-  padding: 0;
+  /* padding을 textarea 자체에 부여 → 스크롤되는 content는 padding 안쪽(content-box)에만 렌더
+     → 위아래 8px은 항상 텍스트 없는 안전 영역으로 보임
+     scroll-padding-block-end: 브라우저 auto-scroll 시 커서 아래로 8px 여유를 확보해
+     마지막 줄이 content-box 하단에 붙지 않도록 함 (Chrome/Firefox 지원, Safari 일부 무시) */
+  padding: var(--space-2) var(--space-3);
+  scroll-padding-block-end: var(--space-2);
+  box-sizing: border-box;
   font-family: var(--font-family-base);
   font-size: var(--font-size-caption);
   line-height: var(--line-height-caption);
   font-weight: var(--font-weight-w4);
   color: var(--color-font-primary-black-100);
+  /* 스크롤바 숨김 (스크롤 기능은 유지) */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge legacy */
+}
+
+.form-textarea__field::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
 }
 
 .form-textarea__field::placeholder {

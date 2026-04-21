@@ -24,14 +24,15 @@ _FunFan_v1.0/
 │   │   ├── layout.css
 │   │   └── typography.css
 │   ├── components/              ← BEM 기반 컴포넌트 CSS
-│   │   ├── button.css           (40개 컴포넌트)
+│   │   ├── button.css           (41개 컴포넌트)
 │   │   ├── chat-msg.css
 │   │   ├── ...
 │   ├── pages/                   ← 페이지별 App Shell 레이아웃
+│   │   ├── app-shell.css        (4개 페이지 공용 boilerplate)
 │   │   ├── index.css
 │   │   ├── workspace.css        (stat-row / revenue / water-card 포함)
 │   │   ├── workspace-onboarding.css  (workspace.css + 랜딩 인터랙션)
-│   │   ├── workroom.css         (shell + 타이머)
+│   │   ├── workroom.css         (타이머 + mini mode)
 │   │   ├── series-home.css
 │   │   ├── series-post-management.css
 │   │   └── account-setting.css
