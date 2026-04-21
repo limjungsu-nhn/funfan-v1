@@ -14,6 +14,7 @@ _FunFan_v1.0/
 ├── workroom.html                ← 워크룸(타이머 + 태스크 + AI)
 ├── workspace-onboarding.html    ← 온보딩(랜딩 → 확장 → AI 대화)
 ├── account-setting.html         ← 설정 페이지 + AI 채팅
+├── series-home.html             ← 시리즈 홈(에피소드/정원 리스트)
 ├── series-post-management.html  ← 시리즈 관리 + AI 채팅
 ├── styleguide.html              ← 모든 컴포넌트 쇼케이스(⭐ 살아있는 레퍼런스)
 │
@@ -23,9 +24,17 @@ _FunFan_v1.0/
 │   │   ├── layout.css
 │   │   └── typography.css
 │   ├── components/              ← BEM 기반 컴포넌트 CSS
-│   │   ├── button.css           (26개 컴포넌트)
+│   │   ├── button.css           (40개 컴포넌트)
 │   │   ├── chat-msg.css
 │   │   ├── ...
+│   ├── pages/                   ← 페이지별 App Shell 레이아웃
+│   │   ├── index.css
+│   │   ├── workspace.css        (stat-row / revenue / water-card 포함)
+│   │   ├── workspace-onboarding.css  (workspace.css + 랜딩 인터랙션)
+│   │   ├── workroom.css         (shell + 타이머)
+│   │   ├── series-home.css
+│   │   ├── series-post-management.css
+│   │   └── account-setting.css
 │   └── styleguide.css           ← styleguide.html 전용 유틸
 │
 ├── js/
@@ -84,7 +93,11 @@ _FunFan_v1.0/
   <link rel="stylesheet" href="css/components/chat-msg.css">
   <!-- ... 필요한 것만 -->
 
-  <!-- 3. 스크립트 (defer) -->
+  <!-- 3. 페이지 전용 레이아웃 (App Shell) — 컴포넌트 이후 -->
+  <link rel="stylesheet" href="css/pages/workspace.css">
+  <!-- index/workspace/workroom/series-home 등 페이지별 1개 -->
+
+  <!-- 4. 스크립트 (defer) -->
   <script src="js/core/keyboard-focus.js" defer></script>
   <script src="js/components/chat.js" defer></script>
   <!-- 페이지별 추가 스크립트 -->
@@ -104,6 +117,29 @@ _FunFan_v1.0/
 **중요**:
 - `Chat.setup()` 호출은 반드시 `DOMContentLoaded` 안에서 — chat.js가 `defer`로 나중에 로드되기 때문
 - 인라인 `<script>`는 순서대로 실행되므로 **토큰 → 컴포넌트 → 스크립트** 순서 준수
+
+---
+
+## CSS 파일 전략 (components/ vs pages/)
+
+v1.04부터 CSS 파일은 **두 계층**으로 구분.
+
+### `css/components/*.css` — 재사용 컴포넌트
+- **성격**: 여러 페이지에서 쓸 수 있는 독립 UI 단위
+- **예**: `button.css`, `chat-msg.css`, `stat-card.css`, `form-input.css`
+- **React 이식**: 독립 컴포넌트 (`<Button>`, `<StatCard>`)
+- **등록**: `COMPONENTS.md`에 shadcn 매핑 · `handoff/README.md` 카운트에 포함
+
+### `css/pages/*.css` — 페이지 고유 App Shell
+- **성격**: 특정 페이지 하나에서만 쓰는 레이아웃/전역 규칙 (html/body 리셋, .workspace 그리드, 페이지 전용 modifier 등)
+- **예**: `workspace.css` (left-panel + main + stat-row), `workroom.css` (shell + timer)
+- **React 이식**: 페이지 레이아웃 컴포넌트 (`<WorkspaceLayout>`, `<WorkroomLayout>`) 또는 Next.js `layout.tsx`
+- **등록**: `COMPONENTS.md` 대상 아님 (페이지 구조는 shadcn 컴포넌트가 아님)
+
+### 왜 분리했나
+- v1.03까지는 페이지 HTML 내부 `<style>` 블록에 있었으나, CLAUDE.md Rule #1 (인라인/임시 CSS 금지)과 충돌
+- HTML에는 마크업만, 스타일은 항상 외부 CSS로 — 유지보수 일관성 확보
+- 자세한 마이그레이션 맵: [`MIGRATION.md`](./MIGRATION.md)
 
 ---
 

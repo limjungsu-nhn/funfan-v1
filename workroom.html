@@ -55,230 +55,8 @@
     </defs>
   </svg>
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-width: var(--base);
-      height: 100%;
-      overscroll-behavior: none; /* 페이지 레벨 스크롤 차단 — overflow:hidden 없이 box-shadow 클리핑 방지 */
-      background: var(--color-gray-6);
-      font-family: var(--font-family-base);
-    }
-
-    /* navbar — 최소 너비 (fixed 요소는 body min-width 미적용) */
-    .navbar { min-width: var(--base); }
-
-    /* ---------- App Shell ---------- */
-    .workspace {
-      display: flex;
-      height: 100%;
-      position: relative;
-      overflow: hidden; /* 패널 translateX 슬라이드 클리핑 */
-    }
-
-    /* left-panel: 화면 최상단부터 시작, 내부 콘텐츠만 navbar 아래로 밀어냄 */
-    .workspace .left-panel {
-      padding-top: var(--navbar-height);
-      flex-shrink: 0;
-      position: relative;
-      z-index: 10; /* navbar(100) 아래, 일반 콘텐츠 위 */
-    }
-
-    /* work-room-left-panel: mini 모드 전용 왼쪽 패널 */
-    .workspace .work-room-left-panel {
-      display: none;
-    }
-    .workspace--mini .work-room-left-panel,
-    html.mini-mode .workspace .work-room-left-panel {
-      display: flex;
-      height: 100%;
-    }
-    /* mini 모드: left-panel 숨김 */
-    .workspace--mini .left-panel,
-    html.mini-mode .workspace .left-panel {
-      display: none;
-    }
-
-    /* mini 모드에서만 task 패널 표시 */
-    html:not(.mini-mode) .task-list-modal--open { display: none; }
-
-    /* mini 모드: 가운데 라디오 카드 숨김 */
-    .workspace--mini .radio-group-card,
-    html.mini-mode .radio-group-card { display: none; }
-
-    /* mini 모드: content padding 제거 (timer가 전체 채움) */
-    .workspace--mini .workspace__content,
-    html.mini-mode .workspace__content {
-      padding: 0;
-      gap: 0;
-    }
-
-    /* ---------- Timer Layout (mini 모드 전용) ---------- */
-    .workspace__timer {
-      display: none;
-      position: relative;
-      width: 100%;
-      flex: 1;
-      min-height: 0;
-    }
-    .workspace--mini .workspace__timer,
-    html.mini-mode .workspace__timer {
-      display: flex;
-    }
-
-    /* 배경 이미지 — 전체 영역에 절대 배치, bottom center 고정 */
-    .workspace__timer-bg {
-      position: absolute;
-      inset: 0;
-      background-image: url('img/bg_workroom.png');
-      background-repeat: no-repeat;
-      background-position: bottom center;
-      background-size: 3008px 540px;
-    }
-
-    /* 타이머 컨텐츠 — 상단 70% 고정, 배경 위에 겹침 */
-    .workspace__timer-body {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 65%;
-      z-index: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 32px;
-    }
-
-    /* ---------- Timer Display ---------- */
-    .timer-display {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .timer-display__label {
-      color: var(--color-font-primary-black-100);
-      margin: 0;
-    }
-
-    .timer-display__time {
-      font-family: 'Chango', sans-serif;
-      font-size: 80px;
-      line-height: 1;
-      color: var(--color-white-warm);
-      -webkit-text-stroke: 2px rgba(78, 71, 56, 1);
-      text-shadow: 0px 4px 0px rgba(78, 71, 56, 1);
-      margin: 0;
-      letter-spacing: 0;
-      filter: url(#timer-jiggly);
-      display: flex;
-      align-items: baseline;
-    }
-
-    .timer-digit {
-      display: inline-block;
-      width: 1ch;
-      text-align: center;
-    }
-
-    .timer-sep {
-      display: inline-block;
-      padding: 0 2px;
-    }
-
-    /* ---------- Timer Controls Row ---------- */
-    .timer-controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .timer-presets {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .timer-divider {
-      width: 1px;
-      height: 20px;
-      background: var(--color-wood-4);
-      opacity: 0.5;
-      flex-shrink: 0;
-    }
-
-    .timer-custom {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    .timer-start-row {
-      display: flex;
-      align-items: center;
-    }
-    .timer-start-row .btn {
-      transition: opacity 0.22s ease, transform 0.22s ease,
-                  max-width 0.22s ease, padding-left 0.22s ease, padding-right 0.22s ease,
-                  margin-left 0.22s ease, margin-right 0.22s ease;
-      overflow: hidden;
-      max-width: 200px;
-      margin-inline: 4px;
-    }
-    .timer-start-row .btn.timer-btn--out {
-      opacity: 0;
-      transform: scale(0.8);
-      pointer-events: none;
-      max-width: 0;
-      padding-left: 0;
-      padding-right: 0;
-      margin-inline: 0;
-    }
-
-    /* mini 모드 FOUC 방지 — navbar */
-    html.mini-mode .navbar .navbar-tabs { display: flex; }
-    html.mini-mode .navbar .navbar-btn--normal { display: none; }
-    html.mini-mode .navbar .navbar-btn--work { display: inline-flex; }
-    /* mini 모드: float-btn은 JS로 static 처리되기 전에 이미 숨김 */
-    html.mini-mode .float-btn { display: none; }
-
-
-    /* ---------- Main Content ---------- */
-    .workspace__main {
-      flex: 1;
-      min-width: 0;
-      overflow: auto;
-      padding-top: var(--navbar-height);
-      background: var(--color-white-50);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .workspace--mini .workspace__main {
-      background: var(--color-wood-6);
-    }
-
-    .workspace__content {
-      flex: 1;
-      min-height: 0;
-      padding: var(--p5) var(--p2_5) 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-      overflow: hidden;
-      border-left: 1px var(--color-gray-5) solid;
-      border-right: 1px var(--color-gray-5) solid;
-    }
-
-
-  </style>
+  <!-- 페이지 전용 App Shell (v1.03까지 이 HTML <style> 블록에 있던 내용) -->
+  <link rel="stylesheet" href="css/pages/workroom.css">
   <script src="js/core/keyboard-focus.js" defer></script>
   <script src="js/components/chat.js" defer></script>
 </head>
@@ -324,21 +102,21 @@
             <span class="task-row__num">1.</span>
             <input class="task-row__input" type="text" aria-label="仕事内容" placeholder="仕事内容を入力してください。" autocomplete="off">
           </div>
-          <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
+          <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel-filled"></i></button>
         </div>
         <div class="task-row task-row--empty">
           <div class="task-row__field">
             <span class="task-row__num">2.</span>
             <input class="task-row__input" type="text" aria-label="仕事内容" placeholder="仕事内容を入力してください。" autocomplete="off">
           </div>
-          <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
+          <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel-filled"></i></button>
         </div>
         <div class="task-row task-row--empty">
           <div class="task-row__field">
             <span class="task-row__num">3.</span>
             <input class="task-row__input" type="text" aria-label="仕事内容" placeholder="仕事内容を入力してください。" autocomplete="off">
           </div>
-          <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel"></i></button>
+          <button class="task-row__btn" type="button" aria-label="クリア"><i class="icon icon--md icon-cancel-filled"></i></button>
         </div>
       </div>
       <div class="task-list-panel__footer">
@@ -574,14 +352,14 @@
               <!-- idle: 시작 -->
               <button class="btn btn-filled-wood btn--lg" id="timer-btn-start">
                 <span class="text-assist-w4">スタート</span>
-                <i class="icon icon-play-arrow"></i>
+                <i class="icon icon-play-arrow-filled"></i>
               </button>
               <!-- running: 멈춤 -->
-              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-pause" type="button" aria-label="一時停止"><i class="icon icon-pause"></i></button>
+              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-pause" type="button" aria-label="一時停止"><i class="icon icon-pause-filled"></i></button>
               <!-- paused: 다시 시작 -->
-              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-resume" type="button" aria-label="再開"><i class="icon icon-play-arrow"></i></button>
+              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-resume" type="button" aria-label="再開"><i class="icon icon-play-arrow-filled"></i></button>
               <!-- running + paused: 취소 -->
-              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-cancel" type="button" aria-label="キャンセル"><i class="icon icon-stop"></i></button>
+              <button class="btn btn-glass btn--lg timer-btn--out" id="timer-btn-cancel" type="button" aria-label="キャンセル"><i class="icon icon-stop-filled"></i></button>
             </div>
 
           </div>
@@ -854,7 +632,7 @@
           row.querySelector('.task-row__input').readOnly = !enabled;
           const btn = row.querySelector('.task-row__btn');
           btn.querySelector('.icon').className = enabled
-            ? 'icon icon--md icon-cancel'
+            ? 'icon icon--md icon-cancel-filled'
             : 'icon icon--md icon-check-small';
           btn.setAttribute('aria-label', enabled ? 'クリア' : '完了');
         });

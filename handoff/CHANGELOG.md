@@ -8,6 +8,48 @@
 
 ---
 
+## v1.04 (2026-04-21)
+
+### 추가 (컴포넌트 · Form 계열)
+- **`form-input`** — 기본 텍스트 입력 필드 (white 배경, gray-5 outline, 9상태 → 4 modifier 압축: default / hover / focus / error / disabled)
+- **`form-textarea`** — 다중행 입력 필드 (min-height 96px, form-input과 동일 컬러/상태 시스템)
+- **`form-field`** — label + input/textarea/avatar-upload + hint/caution 래퍼 (Figma 5 variant)
+- **`avatar-upload`** — 80×80 원형 아바타 프리뷰 + 업로드 버튼 (white placeholder 배경 · gray-5 outline)
+
+### 추가 (아이콘)
+- **`.icon-folder-open`** (Material `folder_open` · `FolderOpen`) — avatar-upload 업로드 버튼
+- **신규 아이콘 5종 등록** — `.icon-error-filled`, `.icon-fast-forward-filled`, `.icon-favorite-filled`, `.icon-keyboard-arrow-down`, `.icon-sentiment-sad-filled`
+- **outline ↔ filled 네이밍 컨벤션 확립** — 기본(base)=outline, filled variant=`-filled` 접미사
+  - `.icon-favorite` (outline) / `.icon-favorite-filled` (solid heart) — 이전엔 base가 filled였음 → **review-item 등 기존 사용처는 `-filled`로 교체 필요**
+  - `.icon-sentiment-sad` (outline) / `.icon-sentiment-sad-filled` (filled face)
+  - `.icon-error` (outline) / `.icon-error-filled` (filled circle)
+  - `.icon-fast-forward` (outline 4중 삼각) / `.icon-fast-forward-filled` (filled 2중 라운드 — 이전 `.icon-fast-forward`를 filled로 재분류)
+- **filled-only 아이콘 `-filled` 접미사 명시화** — pair가 없어도 filled 명시:
+  - `.icon-cancel` → `.icon-cancel-filled`
+  - `.icon-pause` → `.icon-pause-filled`
+  - `.icon-play-arrow` → `.icon-play-arrow-filled`
+  - `.icon-stop` → `.icon-stop-filled`
+  - `.icon-humidity-high` → `.icon-humidity-high-filled`
+  - `.icon-sentiment-very-satisfied` → `.icon-sentiment-very-satisfied-filled`
+  - **workroom / styleguide 사용처 전량 교체 완료**
+- **SVG 소스 파일 추가**: 기존 inline-only였던 cancel / error / exit_to_app / horizontal_align_right / humidity_low / pause / play_arrow / sentiment_excited / stop / unfold_more / chevron_left이 이제 `icons/*.svg` 기반
+- **파일명 컨벤션 통일**: `icons/folder-open.svg` (dash) → `icons/folder_open.svg` (underscore). 클래스명 `.icon-folder-open`은 동일. 전 파일 underscore 표기 통일
+
+### 변경 (아이콘 사용 패턴)
+- **review-item--episode 좋아요 아이콘**: `.icon-favorite` → `.icon-favorite-filled` (outline/filled 컨벤션 변경에 따른 교체)
+
+### 리팩터 (아키텍처)
+- **페이지별 `<style>` 블록 외부화** → `css/pages/*.css` 7개 파일
+  - `index.css` / `workspace.css` / `workspace-onboarding.css` / `workroom.css` / `series-home.html` / `series-post-management.css` / `account-setting.css`
+  - 모든 HTML 페이지 `<style>` 블록 **0개** · 인라인 `style="..."` **0개**
+- 하드코딩 `gap: Npx` / `border-radius: 8px` / `height: 20px` 등 12곳 → `var(--space-N)` / `var(--radius-sm)` 토큰화
+- `styleguide.html` 인라인 flex-column → `.sg-demo-stack` 데모 클래스 (styleguide.css)
+
+### 변경 (COMPONENTS.md)
+- form-field variant 목록: Figma 7종 → 5종으로 정리 (narrow width는 `.input-wood`로 대체)
+
+---
+
 ## v1.03 (2026-04-20)
 
 ### 추가 (컴포넌트)

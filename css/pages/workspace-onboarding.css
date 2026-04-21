@@ -1,0 +1,21 @@
+/* ============================================
+   workspace-onboarding.html 전용 추가 레이아웃
+   유래: v1.03까지 workspace-onboarding.html <style> 블록에 있던 내용 (v1.04에서 분리)
+   구조: workspace.css 를 먼저 로드하고 이 파일이 랜딩 인터랙션만 override
+   이식 단위: React <WorkspaceLayout> + `landing` state modifier
+   ============================================ */
+
+/* ---------- Landing Interaction ---------- */
+/* 좌측 패널 · 중앙 영역 — 평상시 복귀 트랜지션 */
+.left-panel,
+.workspace__content {
+  transition: opacity 0.6s cubic-bezier(.4,0,.1,1);
+}
+
+/* 랜딩 상태 — 반투명 + 인터랙션 차단 */
+.workspace--landing .left-panel,
+.workspace--landing .workspace__content {
+  opacity: 0.5;
+  pointer-events: none;
+  user-select: none;
+}

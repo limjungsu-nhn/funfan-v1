@@ -1,0 +1,84 @@
+/* ============================================
+   workspace.html 전용 레이아웃 (App Shell)
+   유래: v1.03까지 workspace.html <style> 블록에 있던 내용 (v1.04에서 분리)
+   이식 단위: React <WorkspaceLayout> — left-panel + main + stat-row + revenue + water-card 배치
+   ============================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-width: var(--base);
+  height: 100%;
+  overscroll-behavior: none; /* 페이지 레벨 스크롤 차단 — overflow:hidden 없이 box-shadow 클리핑 방지 */
+  background: var(--color-gray-6);
+  font-family: var(--font-family-base);
+}
+
+/* navbar — 최소 너비 (fixed 요소는 body min-width 미적용) */
+.navbar { min-width: var(--base); }
+
+/* ---------- App Shell ---------- */
+.workspace {
+  display: flex;
+  height: 100%;
+  position: relative;
+  overflow: hidden; /* 패널 translateX 슬라이드 클리핑 */
+}
+
+/* left-panel: 화면 최상단부터 시작, 내부 콘텐츠만 navbar 아래로 밀어냄 */
+.workspace .left-panel {
+  padding-top: var(--navbar-height);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 10; /* navbar(100) 아래, 일반 콘텐츠 위 */
+}
+
+
+/* ---------- Main Content ---------- */
+.workspace__main {
+  flex: 1;
+  min-width: 0;
+  overflow: auto;
+  padding-top: var(--navbar-height);
+  background: var(--color-white-50);
+  display: flex;
+  flex-direction: column;
+}
+
+.workspace__content {
+  flex: 1;
+  min-height: 0;
+  padding: var(--p2_5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  overflow: hidden;
+  border-left: 1px var(--color-gray-5) solid;
+  border-right: 1px var(--color-gray-5) solid;
+}
+
+/* Stat Cards Row */
+.workspace__stat-row {
+  display: flex;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.workspace__stat-row .stat-card {
+  flex: 1;
+  min-width: 0;
+  width: auto;
+}
+
+/* Revenue Card — 크기 고정 */
+.workspace__content .revenue-card {
+  flex-shrink: 0;
+}
+
+/* Water Card — 남은 공간 채움 */
+.workspace__content .water-card {
+  flex: 1;
+  min-height: 0;
+}

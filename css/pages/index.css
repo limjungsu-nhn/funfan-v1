@@ -1,0 +1,70 @@
+/* ============================================
+   index.html 전용 레이아웃
+   유래: v1.03까지 index.html <style> 블록에 있던 내용 (v1.04에서 분리)
+   이식 단위: 단순 진입점 페이지 — React 이식 불필요 (개발 편의용)
+   ============================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: var(--color-gray-6);
+  font-family: var(--font-family-base);
+}
+
+.index {
+  max-width: var(--p40);
+  margin: 0 auto;
+  padding: var(--p5) var(--p3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.index__title {
+  margin: 0;
+  font-size: var(--font-size-h2);
+  line-height: var(--line-height-h2);
+  font-weight: var(--font-weight-w6);
+  color: var(--color-black-100);
+}
+
+.index__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.index__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  background: var(--color-white-100);
+  color: var(--color-black-100);
+  text-decoration: none;
+  font-size: var(--font-size-body-md);
+  line-height: var(--line-height-body-md);
+  font-weight: var(--font-weight-w4);
+  border: 1px solid var(--color-gray-5);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.index__link:hover {
+  background: var(--color-gray-6);
+  border-color: var(--color-gray-4);
+}
+
+.index__status {
+  flex-shrink: 0;
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  color: var(--color-font-secondary);
+}

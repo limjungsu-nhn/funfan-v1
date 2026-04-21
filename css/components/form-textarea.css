@@ -1,0 +1,101 @@
+/* ============================================
+   Form Textarea — 다중행 입력 필드
+
+   HTML 구조:
+     <div class="form-textarea">
+       <textarea class="form-textarea__field" placeholder="TextArea" rows="4"></textarea>
+     </div>
+
+   States (Figma 8상태 → CSS 4 modifier로 압축):
+     (기본)                   Default   — white 배경, gray-5 outline, placeholder black-50
+     :hover                   Hover     — outline black-100
+     :focus-within            Active    — outline black-100 (= pressed/selected/typing 공통)
+     body:not(.using-mouse):has(:focus-visible)
+                              Focus     — Active + 3px gray-5 ring (키보드 전용)
+     (값 있고 blur)           Completed — Default + 값이 black-100 (별도 클래스 불필요)
+     .form-textarea--error    Caution   — outline red-100 (input과 통일 · Figma 원본엔 textarea Caution 없으나 일관성 위해 제공)
+     .form-textarea--disabled Disabled  — white 배경 유지, gray-5 outline, 값/placeholder black-30
+   ============================================ */
+
+/* ---------- Container ---------- */
+.form-textarea {
+  width: 100%;
+  min-height: 96px;
+  padding: var(--space-2) var(--space-3);
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 6px;
+  background: var(--color-white-100);
+  border-radius: var(--radius-sm);
+  outline: 1px solid var(--color-gray-5);
+  outline-offset: -1px;
+  box-shadow: 0px 1px 2px var(--color-shadow-light);
+  box-sizing: border-box;
+  overflow: hidden;
+  cursor: text;
+  transition: outline-color 0.1s;
+}
+
+/* ---------- Field ---------- */
+.form-textarea__field {
+  flex: 1;
+  align-self: stretch;
+  min-width: 0;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
+  padding: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  font-weight: var(--font-weight-w4);
+  color: var(--color-font-primary-black-100);
+}
+
+.form-textarea__field::placeholder {
+  color: var(--color-font-primary-black-50);
+  font-weight: var(--font-weight-w4);
+}
+
+.form-textarea__field:focus::placeholder {
+  color: transparent;
+}
+
+/* ---------- Hover ---------- */
+.form-textarea--hover,
+.form-textarea:hover:not(.form-textarea--disabled):not(.form-textarea--error) {
+  outline-color: var(--color-black-100);
+}
+
+/* ---------- Active (focus-within, 마우스/키보드 공통) ---------- */
+.form-textarea:focus-within:not(.form-textarea--disabled):not(.form-textarea--error) {
+  outline-color: var(--color-black-100);
+}
+
+/* ---------- Focus Ring (키보드 전용) ---------- */
+body:not(.using-mouse) .form-textarea:has(.form-textarea__field:focus-visible):not(.form-textarea--disabled):not(.form-textarea--error),
+.form-textarea--focus {
+  outline-color: var(--color-black-100);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+
+/* ---------- Error / Caution ---------- */
+.form-textarea--error {
+  outline-color: var(--color-red-100);
+}
+
+/* ---------- Disabled ---------- */
+.form-textarea--disabled {
+  outline-color: var(--color-gray-5);
+  cursor: not-allowed;
+}
+
+.form-textarea--disabled .form-textarea__field {
+  color: var(--color-font-primary-black-30);
+  pointer-events: none;
+}
+
+.form-textarea--disabled .form-textarea__field::placeholder {
+  color: var(--color-font-primary-black-30);
+}

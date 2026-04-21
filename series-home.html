@@ -31,40 +31,8 @@
   <script src="js/components/series-card.js" defer></script>
   <script src="js/components/episode-card.js" defer></script>
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-width: var(--base);
-      height: 100%;
-      overscroll-behavior: none;
-      background: var(--color-gray-6);
-      font-family: var(--font-family-base);
-    }
-
-    .navbar { min-width: var(--base); }
-
-    /* ---------- Main Content ---------- */
-    .series-home {
-      padding-top: var(--navbar-height);
-      min-height: 100%;
-      display: flex;
-      justify-content: center;
-    }
-
-    .series-home__inner {
-      width: 100%;
-      max-width: var(--p70);
-      padding-top: var(--space-9);
-      padding-bottom: var(--space-20);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--space-5);
-    }
-  </style>
+  <!-- 페이지 전용 App Shell (v1.03까지 이 HTML <style> 블록에 있던 내용) -->
+  <link rel="stylesheet" href="css/pages/series-home.css">
 </head>
 <body>
 

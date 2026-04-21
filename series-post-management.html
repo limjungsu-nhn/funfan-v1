@@ -29,60 +29,8 @@
   <link rel="stylesheet" href="css/components/right-panel.css">
   <link rel="stylesheet" href="css/components/float-btn.css">
 
-  <style>
-    *, *::before, *::after { box-sizing: border-box; }
-
-    html, body {
-      margin: 0;
-      padding: 0;
-      min-width: var(--base);
-      height: 100%;
-      overscroll-behavior: none;
-      background: var(--color-gray-6);
-      font-family: var(--font-family-base);
-    }
-
-    .navbar { min-width: var(--base); }
-
-    /* ---------- App Shell ---------- */
-    .workspace {
-      display: flex;
-      height: 100%;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .workspace .left-panel {
-      padding-top: var(--navbar-height);
-      flex-shrink: 0;
-      position: relative;
-      z-index: 10;
-    }
-
-    /* ---------- Main Content ---------- */
-    .workspace__main {
-      flex: 1;
-      min-width: 0;
-      overflow: auto;
-      padding-top: var(--navbar-height);
-      background: var(--color-white-50);
-      display: flex;
-      flex-direction: column;
-    }
-
-    .workspace__content {
-      flex: 1;
-      min-height: 0;
-      padding: var(--p2_5);
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      overflow: hidden;
-      border-left: 1px var(--color-gray-5) solid;
-      border-right: 1px var(--color-gray-5) solid;
-    }
-
-  </style>
+  <!-- 페이지 전용 App Shell (v1.03까지 이 HTML <style> 블록에 있던 내용) -->
+  <link rel="stylesheet" href="css/pages/series-post-management.css">
   <script src="js/core/keyboard-focus.js" defer></script>
   <script src="js/components/chat.js" defer></script>
 </head>

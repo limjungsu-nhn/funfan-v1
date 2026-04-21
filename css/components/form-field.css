@@ -1,0 +1,77 @@
+/* ============================================
+   Form Field — 라벨/힌트/주의 문구를 포함한 필드 래퍼
+
+   HTML 구조:
+     <div class="form-field">
+       <div class="form-field__label">
+         <span class="form-field__title text-caption-w6">Title</span>
+         <span class="form-field__required" aria-hidden="true"></span>  ← 선택 (필수 입력 표시)
+       </div>
+
+       <!-- body: form-input / form-textarea / avatar-upload 등 -->
+       <div class="form-input">
+         <input class="form-input__field" type="text" placeholder="Text">
+       </div>
+
+       <p class="form-field__hint">Sub Text</p>                     ← 선택
+       <p class="form-field__caution">Caution Text</p>              ← 선택 (에러 상태)
+     </div>
+
+   사용처: 프로필 등록, 시리즈 생성, 세팅 폼 등
+   ============================================ */
+
+/* ---------- Container ---------- */
+.form-field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  box-sizing: border-box;
+}
+
+/* ---------- Label (Title + Required) ---------- */
+.form-field__label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-field__title {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  font-weight: var(--font-weight-w6);
+  color: var(--color-font-primary-black-100);
+}
+
+/* 필수 입력 표시 — 빨간색 원형 점 */
+.form-field__required {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-red-100);
+  flex-shrink: 0;
+}
+
+/* ---------- Hint (sub text) ---------- */
+.form-field__hint {
+  margin: 0;
+  align-self: stretch;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  font-weight: var(--font-weight-w4);
+  color: var(--color-font-primary-black-50);
+}
+
+/* ---------- Caution (error text) ---------- */
+.form-field__caution {
+  margin: 0;
+  align-self: stretch;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  font-weight: var(--font-weight-w4);
+  color: var(--color-red-100);
+}

@@ -136,7 +136,7 @@ scale 14종 × weight 2종 = 28개 유틸리티.
 ### icon-only 버튼
 ```html
 <button class="btn btn-glass btn--lg" type="button" aria-label="일시정지">
-  <i class="icon icon-pause"></i>
+  <i class="icon icon-pause-filled"></i>
 </button>
 ```
 - `type="button"` (form submit 방지)
@@ -263,8 +263,9 @@ document.addEventListener('DOMContentLoaded', () => {
 ## 10. 금지 사항
 
 - ❌ **인라인 `style="..."`**
+- ❌ **HTML 내부 `<style>` 블록** — 페이지 전용 App Shell은 `css/pages/<page>.css`로 분리
 - ❌ **하드코딩된 px/rgba** (토큰화 대체)
-- ❌ **페이지 전용 임시 CSS 클래스** 신규 생성
+- ❌ **페이지 전용 임시 CSS 클래스** 신규 생성 (App Shell 레이아웃은 `css/pages/` 사용 OK)
 - ❌ **마우스 클릭 시 focus ring**
 - ❌ **1440px 미만 반응형 축소**
 

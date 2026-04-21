@@ -1,0 +1,38 @@
+/* ============================================
+   series-home.html 전용 레이아웃
+   유래: v1.03까지 series-home.html <style> 블록에 있던 내용 (v1.04에서 분리)
+   이식 단위: React <SeriesHomeLayout> — 중앙 정렬 컨테이너 + episode/garden 리스트
+   ============================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-width: var(--base);
+  height: 100%;
+  overscroll-behavior: none;
+  background: var(--color-gray-6);
+  font-family: var(--font-family-base);
+}
+
+.navbar { min-width: var(--base); }
+
+/* ---------- Main Content ---------- */
+.series-home {
+  padding-top: var(--navbar-height);
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.series-home__inner {
+  width: 100%;
+  max-width: var(--p70);
+  padding-top: var(--space-9);
+  padding-bottom: var(--space-20);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+}

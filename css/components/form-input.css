@@ -1,0 +1,101 @@
+/* ============================================
+   Form Input — 기본(회색) 텍스트 입력 필드
+
+   HTML 구조:
+     <div class="form-input">
+       <input class="form-input__field" type="text" placeholder="Text">
+     </div>
+
+   States (Figma 9상태 → CSS 4 modifier로 압축):
+     (기본)                Default   — white 배경, gray-5 outline, placeholder black-50
+     :hover                Hover     — outline black-100
+     :focus-within         Active    — outline black-100 (= pressed/selected/typing 공통)
+     body:not(.using-mouse):has(:focus-visible)
+                           Focus     — Active + 3px gray-5 ring (키보드 전용)
+     (값 있고 blur)        Completed — Default + 값이 black-100 (별도 클래스 불필요)
+     .form-input--error    Caution   — outline red-100
+     .form-input--disabled Disabled  — white 배경 유지, gray-5 outline, 값/placeholder black-30
+
+   주의: input :focus-visible 는 마우스에도 적용 → using-mouse 패턴 필수
+   ============================================ */
+
+/* ---------- Container ---------- */
+.form-input {
+  width: 100%;
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-white-100);
+  border-radius: var(--radius-sm);
+  outline: 1px solid var(--color-gray-5);
+  outline-offset: -1px;
+  box-shadow: 0px 1px 2px var(--color-shadow-light);
+  box-sizing: border-box;
+  overflow: hidden;
+  cursor: text;
+  transition: outline-color 0.1s;
+}
+
+/* ---------- Field ---------- */
+.form-input__field {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  font-weight: var(--font-weight-w4);
+  color: var(--color-font-primary-black-100);
+}
+
+.form-input__field::placeholder {
+  color: var(--color-font-primary-black-50);
+  font-weight: var(--font-weight-w4);
+}
+
+.form-input__field:focus::placeholder {
+  color: transparent;
+}
+
+/* ---------- Hover ---------- */
+.form-input--hover,
+.form-input:hover:not(.form-input--disabled):not(.form-input--error) {
+  outline-color: var(--color-black-100);
+}
+
+/* ---------- Active (focus-within, 마우스/키보드 공통) ---------- */
+.form-input:focus-within:not(.form-input--disabled):not(.form-input--error) {
+  outline-color: var(--color-black-100);
+}
+
+/* ---------- Focus Ring (키보드 전용) ---------- */
+body:not(.using-mouse) .form-input:has(.form-input__field:focus-visible):not(.form-input--disabled):not(.form-input--error),
+.form-input--focus {
+  outline-color: var(--color-black-100);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+
+/* ---------- Error / Caution ---------- */
+.form-input--error {
+  outline-color: var(--color-red-100);
+}
+
+/* ---------- Disabled ---------- */
+.form-input--disabled {
+  outline-color: var(--color-gray-5);
+  cursor: not-allowed;
+}
+
+.form-input--disabled .form-input__field {
+  color: var(--color-font-primary-black-30);
+  pointer-events: none;
+}
+
+.form-input--disabled .form-input__field::placeholder {
+  color: var(--color-font-primary-black-30);
+}

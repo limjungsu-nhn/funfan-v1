@@ -26,7 +26,7 @@
 | 컴포넌트 | shadcn 베이스 | 비고 |
 |---|---|---|
 | Typography | (없음) | `text-{scale}-{weight}` utility 직접 사용. scale 14종 × weight 2종 = 28개 |
-| Icon | `lucide-react` | `ICONS.md` 참조. 현재 31개 사용 |
+| Icon | `lucide-react` | `ICONS.md` 참조. 현재 37개 사용 |
 | Avatar | `Avatar` | 5 사이즈: xs(20) / sm(32) / md(40) / lg(56) / xl(80) · 10+ variant (avatar-01~) |
 | Logo | (이미지 only) | `.logo-funfan` 단일 variant |
 | Badge | `Badge` | variant: 기본(white 배경 + wood outline) |
@@ -115,6 +115,43 @@ const buttonVariants = cva("...", {
 - wood-5 outline, white-50 배경
 - states: default / hover(wood-3) / focus-within(wood-3) / disabled(wood-5)
 - focus ring 키보드 전용 (`body:not(.using-mouse)` 패턴)
+
+#### `.form-input` → shadcn `Input` (variant=default)
+- white 배경, gray-5 outline, min-height 36px, radius `--radius-sm`(10px), shadow `0 1px 2px rgba(0,0,0,.05)`
+- States (Figma 9상태 → CSS 4 modifier): default / hover(black-100) / focus-within(black-100) / focus(+3px gray-5 ring · 키보드 전용) / **error**(red-100) / disabled
+- **Disabled는 배경 white 유지** (gray-6 아님) · placeholder/text 모두 black-30
+- Completed(값 입력 후 blur)는 `default + 값` → 별도 클래스 불필요
+- focus ring은 `body:not(.using-mouse)` 패턴 — input `:focus-visible`이 마우스에도 적용되는 브라우저 버그 회피
+- placeholder: black-50 / focus 시 transparent
+
+#### `.form-textarea` → shadcn `Textarea`
+- `.form-input`과 동일 컬러 토큰, 차이점: `min-height: 96px`, `padding: var(--space-2) var(--space-3)`, `align-items: flex-start`
+- `.form-textarea__field { resize: none; align-self: stretch; }`
+- States: default / hover(black-100) / focus-within(black-100) / focus(+3px gray-5 ring · 키보드 전용) / **error**(red-100) / disabled
+- **Disabled 배경 white 유지**, placeholder/text black-30
+- Figma 원본에 textarea Caution 상태는 없으나 input과 통일 위해 `--error` modifier 제공
+
+#### `.form-field` → shadcn `FormField` 래퍼 (`react-hook-form` 조합)
+- 구조: `__label` (title + optional `__required` red dot 6×6) → body(input/textarea/avatar-upload) → `__hint` / `__caution`
+- `.form-field__title`: `--font-size-caption` w6 / black-100
+- `.form-field__hint`: caption w4 / black-50
+- `.form-field__caution`: caption w4 / red-100 (에러 상태)
+- gap 6px, column flex, `width: 100%` (부모 컨테이너 폭 따름 · Figma 기준 300px)
+- **Figma 레이아웃 variant 5종**:
+  1. `.form-textarea` only (하단 문구 없음)
+  2. `.form-textarea` + hint
+  3. `.form-textarea--error` + caution
+  4. `.form-input`(stretch) + hint
+  5. `.form-input--error` + caution
+- 짧은 숫자 입력(narrow width)이 필요한 경우는 `.input-wood` (타이머 전용 variant)로 대체 — form-field 내 narrow modifier는 제공하지 않음
+- `__required` red dot은 Figma 레퍼런스엔 없으나 필수 입력 UX를 위해 프로젝트 확장으로 유지
+
+#### `.avatar-upload` → 커스텀 (shadcn `Avatar` + `Button` + `Input[type=file]` 조합)
+- 80×80 원형 프리뷰(`__preview` · gray-5 outline · white 플레이스홀더 배경) + body(업로드 버튼 + hint)
+- gap 20px, 가로 정렬
+- 업로드 버튼: `.btn.btn-line.btn--sm` + `.icon.icon-folder-open` + 텍스트
+- 이미지 등록 시 `.avatar-upload__image` (object-fit: cover)
+- TODO: 파일 선택 / 프리뷰 갱신 / 삭제 동작은 React 쪽에서 구현
 
 ---
 
