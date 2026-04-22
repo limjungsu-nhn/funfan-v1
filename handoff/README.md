@@ -2,6 +2,32 @@
 
 이 폴더는 shadcn/ui + Tailwind 기반 개발팀에게 전달하는 **디자인 시스템 스펙**입니다.
 
+---
+
+## 📌 v1.05 요약 (2026-04-22) — 먼저 이것만 보세요
+
+**기존 구현에 깨지는 변경 없음.** 토큰 치환은 전부 동일값 매핑 — 시각 변화 0.
+
+| 분류 | 내용 | 개발 영향 |
+|---|---|---|
+| **신규 페이지** | 파트너 온보딩 5단계(`creative-partner-onboarding-01~05`) · `reader-account-setting` · `mypage`(쉘만) | 라우트·페이지 컴포넌트 신규 작업 |
+| **신규 컴포넌트** | `character-card` (300×300 · 3 variants · selected state) · `section-label` | cva 정의 추가 |
+| **컴포넌트 확장** | `accordion-row` trailing variants 3종(avatar/badge/icon-only) + link variant · `badge--nature` | 기존 cva에 variant 축 추가 |
+| **토큰 확장** ⚠ | spacing: `--space-2_5`(10px)·`--space-3_5`(14px) 추가 / radius: 2개 → **8개 시맨틱** (`xs/2xs/sm/btn/md/lg/xl/full`) | `tailwind-preset.ts` 재import만 하면 끝 |
+| **하드코딩 치환** | ~30개 컴포넌트 CSS의 px를 신규 토큰으로 일괄 치환 | **영향 없음** (값 동일) |
+| **문서 정리** | 스타일가이드 Forms 섹션 분해 · 빈 placeholder 제거 · CHANGELOG 갱신 | 계약 문서 스펙은 동일 |
+
+**하위 호환**
+- `--radius-sm` (10px) · `--radius-full` (100px) — 기존 2개 토큰 값 유지
+- 기존 컴포넌트 클래스명·BEM 구조 변경 없음
+
+**확인할 곳**
+1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05 항목의 **⚠ 개발 싱크 필요** 표시
+2. [`tailwind-preset.ts`](./tailwind-preset.ts) — 토큰 확장 반영됨, 프로젝트에 재import
+3. [`COMPONENTS.md`](./COMPONENTS.md) `character-card` 항목 — 신규 컴포넌트 cva 작성 시
+
+---
+
 ## 파일 안내
 
 ### 디자인 → 개발 매핑
