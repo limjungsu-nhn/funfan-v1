@@ -10,6 +10,21 @@
 
 ## v1.05 (2026-04-22)
 
+### 추가 (페이지)
+- **`mypage.html`** — 마이페이지 쉘만 생성 (navbar + `.reader-account` 래퍼). 본문은 TODO
+- **`reader-account-setting.html`** — 상태 ⏳ → ✅ (index.html 엔트리 이모지 변경)
+
+### 변경 (스타일가이드 구조)
+- **Forms 섹션 → Components 개별 섹션 6개로 분리**: 기존 `<section id="forms">` Patterns 묶음을 해체하고 `#form-input` / `#form-textarea` / `#input-wood` / `#chat-input` / `#form-field` / `#avatar-upload` 독립 섹션으로 재배치 — nav 트리도 Components 그룹 끝에 6개 링크로 이동
+- **Patterns > Navigation placeholder 제거** — 미구현 placeholder 섹션 삭제. 현재 Patterns에는 Modals만 남음
+- **Spacing Scale / Border Radius 테이블 확장** — 신규 토큰(--space-2_5/3_5, --radius-xs/2xs/btn/md/lg/xl) 전부 등록
+
+### 변경 (하드코딩 정리)
+- `chat-msg.css` — `padding-left: 22px` → `var(--space-5_5)`
+- `panel-header.css` — `padding: 14px ...` → `var(--space-3_5)`
+- `review-item.css` (`--fan`) — `padding: 14px ... 14px ...` → `var(--space-3_5)`
+- `reaction-bar.css` `border-radius: 14px` / `task-list.css` `gap: 9px` — 스케일 밖 고정값으로 주석 명시 (의도적 유지)
+
 ### 변경 (토큰) ⚠ 개발 싱크 필요
 - **Spacing Scale 확장**: `--space-2_5: 10px`, `--space-3_5: 14px` 추가 — 기존에 하드코딩되던 10px/14px gap·padding을 토큰화
 - **Border Radius 스케일 전면 개편**: 기존 `--radius-sm: 10px` / `--radius-full: 100px` 2개 → **8개 시맨틱 토큰**으로 확장

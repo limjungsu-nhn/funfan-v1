@@ -19,7 +19,7 @@
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md) | 프로젝트 구조, 로딩 순서, 확장 포인트 |
 | [`CONVENTIONS.md`](./CONVENTIONS.md) | BEM·토큰·HTML·JS 네이밍과 패턴 |
 | [`CHANGELOG.md`](./CHANGELOG.md) | 변경 이력 (디자인 동기화 시점 파악) |
-| [`MIGRATION.md`](./MIGRATION.md) | **v1.03 → v1.04 브리지 (1·2차 핸드오프 수신 개발자 필독)** |
+| [`MIGRATION.md`](./MIGRATION.md) | v1.03 → v1.04 브리지 (이전 핸드오프 수신자용 · 신규 개발자는 스킵 가능) |
 
 ## 시작하기 (개발자)
 
@@ -62,6 +62,14 @@ export default {
 - **토큰 추가/변경**: 디자인팀이 `design-tokens.json`·`tailwind-preset.ts` 동기화 후 공유
 - **새 컴포넌트**: `COMPONENTS.md`에 추가 후 공유
 - **아이콘 추가**: `icons/` 에 SVG 추가 → `node scripts/build-icons.js` 실행 → `ICONS.md`에 매핑 추가 후 공유
+
+## 개발자 읽는 순서 (권장)
+
+1. `GETTING_STARTED.md` — 로컬 실행 + Tailwind preset 연결
+2. `styleguide.html` — 브라우저로 열어 실제 컴포넌트 상태 확인
+3. `ARCHITECTURE.md` + `CONVENTIONS.md` — 구조·네이밍·금지사항
+4. `COMPONENTS.md` + `ICONS.md` — cva / lucide 매핑 작성
+5. `CHANGELOG.md` — 이후 동기화 받을 때마다 최신 항목 확인
 
 ## 문의
 

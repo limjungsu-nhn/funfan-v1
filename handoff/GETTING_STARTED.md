@@ -20,15 +20,19 @@ python3 -m http.server 8788
 ```
 
 브라우저:
-- http://localhost:8788/index.html — 페이지 인덱스
+- http://localhost:8788/index.html — **페이지 인덱스**(모든 페이지 링크 + 구현 상태 ✅/⏳)
 - http://localhost:8788/styleguide.html — **컴포넌트 쇼케이스(가장 중요)**
 - http://localhost:8788/workspace.html — 작업실 대시보드
 - http://localhost:8788/workroom.html — 워크룸 (normal)
 - http://localhost:8788/workroom.html?mode=mini&tab=0 — 워크룸 (mini/공개)
 - http://localhost:8788/workroom.html?mode=mini&tab=1 — 워크룸 (mini/비공개)
-- http://localhost:8788/workspace-onboarding.html — 온보딩
-- http://localhost:8788/account-setting.html — 설정
+- http://localhost:8788/workspace-onboarding.html — 워크스페이스 온보딩
+- http://localhost:8788/creative-partner-onboarding-01.html ~ `05.html` — 파트너 온보딩 5단계
+- http://localhost:8788/series-home.html — 시리즈 홈
 - http://localhost:8788/series-post-management.html — 시리즈 관리
+- http://localhost:8788/account-setting.html — 크리에이터 설정
+- http://localhost:8788/reader-account-setting.html — 리더 설정
+- http://localhost:8788/mypage.html — 마이페이지 (쉘만, 본문 TODO)
 
 > 포트 8788은 `.claude/launch.json` 기준. 다른 포트로 띄워도 무방.
 
