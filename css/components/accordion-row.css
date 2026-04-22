@@ -131,6 +131,11 @@
   color: var(--color-font-primary-black-100);
 }
 
+/* Hover 시 chevron 진하게 — active/link가 아닌 기본 상태에만 적용 */
+.accordion-row:not(.accordion-row--active):not(.accordion-row--link) .accordion-row__header:hover .accordion-row__chevron {
+  color: var(--color-font-primary-black-100);
+}
+
 /* ---------- Active (header 내부 전환) ---------- */
 .accordion-row.accordion-row--active .accordion-row__body {
   grid-template-rows: auto 0fr;
