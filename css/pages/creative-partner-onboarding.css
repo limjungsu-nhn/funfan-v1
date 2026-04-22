@@ -1,0 +1,60 @@
+/* ============================================
+   creative-partner-onboarding 전용 레이아웃
+   body 배경은 app-shell.css의 --color-gray-6 상속
+   ============================================ */
+
+.creative-partner-onboarding {
+  padding-top: var(--navbar-height);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ============================================
+   Step 5 — Partner 추천 선택 화면
+   구성: Title → Character Card ×3 → Actions
+   ============================================ */
+.creative-partner-onboarding__step5 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--p5);
+  margin-bottom: calc(var(--navbar-height) * 2);
+}
+
+.creative-partner-onboarding__title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.creative-partner-onboarding__title h1,
+.creative-partner-onboarding__title p {
+  margin: 0;
+}
+
+.creative-partner-onboarding__title h1 {
+  color: var(--color-font-primary-black-100);
+}
+
+.creative-partner-onboarding__title p {
+  color: var(--color-font-primary-black-50);
+}
+
+.creative-partner-onboarding__cards {
+  display: flex;
+  gap: var(--space-6);
+}
+
+.creative-partner-onboarding__actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+/* 단일 설계치: step5 actions 버튼 고정폭 136px (토큰 범위 밖) */
+.creative-partner-onboarding__actions .btn {
+  width: 136px;
+}

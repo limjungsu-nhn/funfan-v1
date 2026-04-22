@@ -644,17 +644,15 @@ body {
 .sg-icon-preview--lg { width: 56px; height: 56px; }
 
 /* ---------- Image Assets 프리뷰 ---------- */
+/* 에셋 PNG는 2x 레티나 — HTML width/height 속성에 디자인 사이즈(PNG/2) 지정 */
 .sg-img-thumb {
   display: block;
-  width: 96px;
-  height: 108px;
-  object-fit: contain;
-  border-radius: 6px;
 }
 .sg-img-pair {
   display: flex;
   gap: 16px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 /* ---------- Row 정렬 ---------- */

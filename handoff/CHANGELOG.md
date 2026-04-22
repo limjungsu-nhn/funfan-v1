@@ -8,6 +8,29 @@
 
 ---
 
+## v1.05 (2026-04-22)
+
+### 추가 (컴포넌트)
+- **`character-card`** — 파트너 선택 화면용 조합 카드 (300×300 고정)
+  - **Variant (포스트잇 색)**: `.character-card--blue` / `.character-card--yellow` / `.character-card--pink` — `bg_postit_*.png` 배경
+  - 구성: `__inner`(padding 36/22/44, flex-column gap 16) → `__header`(gap 12) → `__name-row`(이름 22/600 + 역할 12/600 muted, baseline gap 6) → `__portrait`(132×124) → `__description`(caption-w6, 중앙정렬, black-50)
+  - **옵션 추천 버블** `__bubble` (76×76 absolute · `top: 68px` / `left: 18px` · `img_bubble_recommend.png`)
+  - 그림자는 PNG 자체에 포함 — CSS filter 없음 (중복 그림자 방지)
+  - **선택 상태**: `role="radio"` + `aria-checked` + `.is-selected` 토글 — 시각 스펙 미확정 (현재 `[role="radio"]`에 `cursor: pointer` + `:focus-visible` ring만)
+
+### 추가 (페이지)
+- **`creative-partner-onboarding-05.html` 본문 구현** — 추천 파트너 선택 화면
+  - 섹션 구성: Title(h1 36/600 + subtext muted) → `.character-card` ×3 (Pink+はな 추천 버블 · Yellow+フク · Blue+トントン) → Actions(戻る · 決定する)
+  - **Radio 그룹**: `role="radiogroup"` 래퍼, 카드 단일 선택 시 `決定する` 버튼 `disabled` 해제 (인라인 스크립트)
+  - 역할·설명문: Hana 漫画鑑定士 / Fuku 作品磨き師 / Tonton こころほぐし師 (React 스펙 기반)
+  - 레이아웃: `.creative-partner-onboarding` 세로 중앙 정렬 (`min-height: 100vh` + `align-items: center`), `__step5` gap `--p5`(72px), 하단 마진 `calc(var(--navbar-height) * 2)`
+  - 버튼: `.btn-line` + `.btn-filled-black` 각 136px 고정폭 (actions 전용)
+
+### 변경 (페이지)
+- **`creative-partner-onboarding.css`** — step 5 레이아웃 추가 (`__step5` / `__title` / `__cards` / `__actions`). 기존 `min-height: 100%` → `100vh`, `align-items: center` 추가로 본문 수직 중앙 정렬 전환
+
+---
+
 ## v1.04 (2026-04-21)
 
 ### 추가 (컴포넌트 · Form 계열)

@@ -1,0 +1,92 @@
+/* ============================================
+   Character Card
+   - 파트너 선택 화면용 카드 (300×300)
+   - 구성: 포스트잇 배경(3색) + 이름/역할 + 캐릭터 초상 + 설명
+   - 옵션: 좌상단 추천 버블(.character-card__bubble)
+   ============================================ */
+
+.character-card {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 300px 300px;
+  flex-shrink: 0;
+}
+
+/* role="radio" 지정 시 클릭 가능 — 선택 상태 스타일은 추후 정의 예정 */
+.character-card[role="radio"] {
+  cursor: pointer;
+}
+
+.character-card[role="radio"]:focus-visible {
+  outline: none;
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5);
+  border-radius: 12px;
+}
+
+/* Postit 배경 variant */
+.character-card--blue   { background-image: url("../../img/bg_postit_blue.png"); }
+.character-card--yellow { background-image: url("../../img/bg_postit_yellow.png"); }
+.character-card--pink   { background-image: url("../../img/bg_postit_pink.png"); }
+
+/* 내부 컨텐츠 래퍼 */
+.character-card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 36px 22px 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* 헤더: 이름/역할 + 초상 */
+.character-card__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 이름(22px/w6) + 역할(12px/w6 muted) */
+.character-card__name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.character-card__name {
+  color: var(--color-font-primary-black-100);
+}
+
+.character-card__role {
+  color: var(--color-font-primary-black-50);
+}
+
+/* 캐릭터 초상 132×124 — 그림자는 PNG에 포함됨 */
+.character-card__portrait {
+  width: 132px;
+  height: 124px;
+  display: block;
+}
+
+/* 설명 텍스트 — 중앙 정렬 */
+.character-card__description {
+  margin: 0;
+  text-align: center;
+  color: var(--color-font-primary-black-50);
+}
+
+/* 추천 버블 — 좌상단 absolute */
+.character-card__bubble {
+  position: absolute;
+  top: 68px;
+  left: 18px;
+  width: 76px;
+  height: 76px;
+  display: block;
+  pointer-events: none;
+}

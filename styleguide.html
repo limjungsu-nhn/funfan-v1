@@ -56,6 +56,7 @@
   <link rel="stylesheet" href="css/components/form-field.css">
   <link rel="stylesheet" href="css/components/avatar-upload.css">
   <link rel="stylesheet" href="css/components/accordion-row.css">
+  <link rel="stylesheet" href="css/components/character-card.css">
 
   <!-- Styleguide -->
   <link rel="stylesheet" href="css/styleguide.css">
@@ -70,7 +71,7 @@
     <span class="sg-header-logo">FunFan</span>
     <span class="sg-header-sep"></span>
     <span class="sg-header-subtitle">Design System</span>
-    <span class="sg-header-badge">v1.04</span>
+    <span class="sg-header-badge">v1.05</span>
   </header>
 
   <div class="sg-layout">
@@ -102,6 +103,7 @@
         <a href="#chat-msg">Chat Message</a>
         <a href="#my-msg">My Message</a>
         <a href="#radio-card">Radio Card</a>
+        <a href="#character-card">Character Card</a>
         <a href="#icon-btn">Icon Button</a>
         <a href="#float-btn">Float Button</a>
         <a href="#send-btn">Send Button</a>
@@ -674,6 +676,29 @@
                 <span class="sg-color-name">Gray 6</span>
                 <code class="sg-color-var">--color-gray-6</code>
                 <span class="sg-color-hex">#F2F2F7</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Semantic — Background -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Semantic — Background</p>
+          <div class="sg-color-grid">
+            <div class="sg-color-card">
+              <div class="sg-color-swatch" style="background:var(--color-bg-base)"></div>
+              <div class="sg-color-info">
+                <span class="sg-color-name">BG Base</span>
+                <code class="sg-color-var">--color-bg-base</code>
+                <span class="sg-color-hex">#FFFFFF · 순수 흰색</span>
+              </div>
+            </div>
+            <div class="sg-color-card">
+              <div class="sg-color-swatch" style="background:var(--color-bg-soft)"></div>
+              <div class="sg-color-info">
+                <span class="sg-color-name">BG Soft</span>
+                <code class="sg-color-var">--color-bg-soft</code>
+                <span class="sg-color-hex">#F8F8FB · gray-6 + 50% 흰색 합성</span>
               </div>
             </div>
           </div>
@@ -1535,10 +1560,85 @@
             <div class="sg-type-thead"><span>Preview</span><span>Path</span><span>Notes</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
-                <img src="img/bg_garden.png" alt="garden background" class="sg-img-thumb">
+                <img src="img/bg_garden.png" alt="garden background" class="sg-img-thumb" width="834" height="241">
               </div>
               <code class="sg-type-classname">img/bg_garden.png</code>
-              <div class="sg-type-meta"><strong>Garden</strong><br>garden 컴포넌트 배경</div>
+              <div class="sg-type-meta"><strong>Garden</strong><br>834 × 241<br>garden 컴포넌트 배경</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <img src="img/bg_workroom.png" alt="workroom background" class="sg-img-thumb" width="1504" height="270">
+              </div>
+              <code class="sg-type-classname">img/bg_workroom.png</code>
+              <div class="sg-type-meta"><strong>Workroom</strong><br>3008 × 540<br>workroom 페이지 하단 배경</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <img src="img/bg_postit_blue.png" alt="blue postit background" class="sg-img-thumb" width="300" height="300">
+              </div>
+              <code class="sg-type-classname">img/bg_postit_blue.png</code>
+              <div class="sg-type-meta"><strong>Postit — Blue</strong><br>300 × 300<br>creative-partner-onboarding-05 배경</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <img src="img/bg_postit_yellow.png" alt="yellow postit background" class="sg-img-thumb" width="300" height="300">
+              </div>
+              <code class="sg-type-classname">img/bg_postit_yellow.png</code>
+              <div class="sg-type-meta"><strong>Postit — Yellow</strong><br>300 × 300<br>creative-partner-onboarding-05 배경</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <img src="img/bg_postit_pink.png" alt="pink postit background" class="sg-img-thumb" width="300" height="300">
+              </div>
+              <code class="sg-type-classname">img/bg_postit_pink.png</code>
+              <div class="sg-type-meta"><strong>Postit — Pink</strong><br>300 × 300<br>creative-partner-onboarding-05 배경</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Characters (Default / Selected) -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Characters (Default / Selected)</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Path</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview sg-img-pair">
+                <img src="img/img_character_fuku_default.png" alt="fuku default" class="sg-img-thumb" width="132" height="124">
+                <img src="img/img_character_fuku_selected.png" alt="fuku selected" class="sg-img-thumb" width="132" height="124">
+              </div>
+              <code class="sg-type-classname">img_character_fuku_*.png</code>
+              <div class="sg-type-meta"><strong>Fuku</strong><br>132 × 124<br>default / selected</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview sg-img-pair">
+                <img src="img/img_character_hana_default.png" alt="hana default" class="sg-img-thumb" width="132" height="124">
+                <img src="img/img_character_hana_selected.png" alt="hana selected" class="sg-img-thumb" width="132" height="124">
+              </div>
+              <code class="sg-type-classname">img_character_hana_*.png</code>
+              <div class="sg-type-meta"><strong>Hana</strong><br>132 × 124<br>default / selected</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview sg-img-pair">
+                <img src="img/img_character_tonton_default.png" alt="tonton default" class="sg-img-thumb" width="132" height="124">
+                <img src="img/img_character_tonton_selected.png" alt="tonton selected" class="sg-img-thumb" width="132" height="124">
+              </div>
+              <code class="sg-type-classname">img_character_tonton_*.png</code>
+              <div class="sg-type-meta"><strong>Tonton</strong><br>132 × 124<br>default / selected</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bubbles -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Bubbles</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Path</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <img src="img/img_bubble_recommend.png" alt="recommend bubble" class="sg-img-thumb" width="76" height="76">
+              </div>
+              <code class="sg-type-classname">img/img_bubble_recommend.png</code>
+              <div class="sg-type-meta"><strong>Recommend</strong><br>76 × 76<br>「あなたにおすすめ」 캐릭터 추천 버블</div>
             </div>
           </div>
         </div>
@@ -1550,7 +1650,7 @@
             <div class="sg-type-thead"><span>Preview</span><span>Path</span><span>Notes</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
-                <img src="img/img_series01.png" alt="series 01 poster" class="sg-img-thumb">
+                <img src="img/img_series01.png" alt="series 01 poster" class="sg-img-thumb" width="224" height="318">
               </div>
               <code class="sg-type-classname">img/img_series01.png</code>
               <div class="sg-type-meta"><strong>Series 01</strong><br>series-card 포스터</div>
@@ -1565,32 +1665,32 @@
             <div class="sg-type-thead"><span>Preview</span><span>Path</span><span>Notes</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview sg-img-pair">
-                <img src="img/img_flower_01_before.png" alt="flower 01 before" class="sg-img-thumb">
-                <img src="img/img_flower_01_after.png" alt="flower 01 after" class="sg-img-thumb">
+                <img src="img/img_flower_01_before.png" alt="flower 01 before" class="sg-img-thumb" width="96" height="108">
+                <img src="img/img_flower_01_after.png" alt="flower 01 after" class="sg-img-thumb" width="96" height="108">
               </div>
               <code class="sg-type-classname">img_flower_01_*.png</code>
               <div class="sg-type-meta"><strong>Flower 01</strong><br>before / after</div>
             </div>
             <div class="sg-type-row">
               <div class="sg-type-preview sg-img-pair">
-                <img src="img/img_flower_02_before.png" alt="flower 02 before" class="sg-img-thumb">
-                <img src="img/img_flower_02_after.png" alt="flower 02 after" class="sg-img-thumb">
+                <img src="img/img_flower_02_before.png" alt="flower 02 before" class="sg-img-thumb" width="96" height="108">
+                <img src="img/img_flower_02_after.png" alt="flower 02 after" class="sg-img-thumb" width="96" height="108">
               </div>
               <code class="sg-type-classname">img_flower_02_*.png</code>
               <div class="sg-type-meta"><strong>Flower 02</strong><br>before / after</div>
             </div>
             <div class="sg-type-row">
               <div class="sg-type-preview sg-img-pair">
-                <img src="img/img_flower_03_before.png" alt="flower 03 before" class="sg-img-thumb">
-                <img src="img/img_flower_03_after.png" alt="flower 03 after" class="sg-img-thumb">
+                <img src="img/img_flower_03_before.png" alt="flower 03 before" class="sg-img-thumb" width="96" height="108">
+                <img src="img/img_flower_03_after.png" alt="flower 03 after" class="sg-img-thumb" width="96" height="108">
               </div>
               <code class="sg-type-classname">img_flower_03_*.png</code>
               <div class="sg-type-meta"><strong>Flower 03</strong><br>before / after</div>
             </div>
             <div class="sg-type-row">
               <div class="sg-type-preview sg-img-pair">
-                <img src="img/img_flower_04_before.png" alt="flower 04 before" class="sg-img-thumb">
-                <img src="img/img_flower_04_after.png" alt="flower 04 after" class="sg-img-thumb">
+                <img src="img/img_flower_04_before.png" alt="flower 04 before" class="sg-img-thumb" width="96" height="108">
+                <img src="img/img_flower_04_after.png" alt="flower 04 after" class="sg-img-thumb" width="96" height="108">
               </div>
               <code class="sg-type-classname">img_flower_04_*.png</code>
               <div class="sg-type-meta"><strong>Flower 04</strong><br>before / after</div>
@@ -1605,7 +1705,7 @@
             <div class="sg-type-thead"><span>Preview</span><span>Path</span><span>Notes</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
-                <img src="img/img_signs.png" alt="signs" class="sg-img-thumb">
+                <img src="img/img_signs.png" alt="signs" class="sg-img-thumb" width="96" height="108">
               </div>
               <code class="sg-type-classname">img/img_signs.png</code>
               <div class="sg-type-meta"><strong>Signs</strong><br>garden 컴포넌트 에셋</div>
@@ -1620,7 +1720,7 @@
             <div class="sg-type-thead"><span>Preview</span><span>Path</span><span>Notes</span></div>
             <div class="sg-type-row">
               <div class="sg-type-preview">
-                <img src="img/img_episode01.png" alt="episode 01 thumbnail" class="sg-img-thumb">
+                <img src="img/img_episode01.png" alt="episode 01 thumbnail" class="sg-img-thumb" width="120" height="80">
               </div>
               <code class="sg-type-classname">img/img_episode01.png</code>
               <div class="sg-type-meta"><strong>Episode 01</strong><br>episode-item 썸네일 (120×80 표시)</div>
@@ -2294,6 +2394,17 @@
               </div>
               <code class="sg-type-classname">.navbar-tabs</code>
               <div class="sg-type-meta"><strong>With Tabs</strong><br><small>기본 display:none · 필요 페이지에서 display:flex 활성화</small></div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview sg-preview-overflow">
+                <header class="navbar navbar--transparent">
+                  <div class="navbar-logo">
+                    <i class="logo logo-funfan"></i>
+                  </div>
+                </header>
+              </div>
+              <code class="sg-type-classname">.navbar--transparent</code>
+              <div class="sg-type-meta"><strong>Transparent</strong><br><small>로고만 · 배경/그림자/버튼 없음<br>레이아웃 점유는 동일 (fixed · 64px · min-width base)</small></div>
             </div>
           </div>
         </div>
@@ -3051,6 +3162,112 @@
         </div>
 
 
+      </section>
+
+      <!-- ========================
+           CHARACTER CARD
+      ========================= -->
+      <section class="sg-section" id="character-card" data-section="character-card">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Character Card</h2>
+          <span class="sg-section-desc">character-card.css · 파트너 선택 화면 · 300×300 · bg_postit_* + img_character_* + img_bubble_recommend 조합</span>
+        </div>
+
+        <!-- Variants (Postit 색 × 캐릭터) -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Variants</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="character-card character-card--pink">
+                  <div class="character-card__inner">
+                    <div class="character-card__header">
+                      <div class="character-card__name-row">
+                        <span class="text-h3-w6 character-card__name">はな</span>
+                        <span class="text-caption-w6 character-card__role">漫画鑑定士</span>
+                      </div>
+                      <img src="img/img_character_hana_default.png" alt="はな" class="character-card__portrait" width="132" height="124">
+                    </div>
+                    <p class="text-caption-w6 character-card__description">質問で引き出すタイプ。<br>気づいていない強みを一緒に掘り当てます。</p>
+                  </div>
+                  <img src="img/img_bubble_recommend.png" alt="あなたにおすすめ" class="character-card__bubble" width="76" height="76">
+                </div>
+              </div>
+              <code class="sg-type-classname">.character-card.character-card--pink</code>
+              <div class="sg-type-meta"><strong>Pink + Hana</strong><br>추천 버블 포함<br>(기본 예시)</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="character-card character-card--blue">
+                  <div class="character-card__inner">
+                    <div class="character-card__header">
+                      <div class="character-card__name-row">
+                        <span class="text-h3-w6 character-card__name">フク</span>
+                        <span class="text-caption-w6 character-card__role">漫画鑑定士</span>
+                      </div>
+                      <img src="img/img_character_fuku_default.png" alt="フク" class="character-card__portrait" width="132" height="124">
+                    </div>
+                    <p class="text-caption-w6 character-card__description">論理で切り分けるタイプ。<br>強みと課題を構造化して整理します。</p>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.character-card.character-card--blue</code>
+              <div class="sg-type-meta"><strong>Blue + Fuku</strong><br>버블 없음</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="character-card character-card--yellow">
+                  <div class="character-card__inner">
+                    <div class="character-card__header">
+                      <div class="character-card__name-row">
+                        <span class="text-h3-w6 character-card__name">トントン</span>
+                        <span class="text-caption-w6 character-card__role">漫画鑑定士</span>
+                      </div>
+                      <img src="img/img_character_tonton_default.png" alt="トントン" class="character-card__portrait" width="132" height="124">
+                    </div>
+                    <p class="text-caption-w6 character-card__description">実行に落とすタイプ。<br>すぐ動ける形にして背中を押します。</p>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.character-card.character-card--yellow</code>
+              <div class="sg-type-meta"><strong>Yellow + Tonton</strong><br>버블 없음</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Selected state (캐릭터 선택 후 교체 이미지) -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Selected State</p>
+          <p class="sg-section-desc" style="margin-bottom:var(--space-3)">캐릭터 선택 후에는 <code>img_character_*_selected.png</code>로 교체. 배경/레이아웃 변화 없음.</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="character-card character-card--pink">
+                  <div class="character-card__inner">
+                    <div class="character-card__header">
+                      <div class="character-card__name-row">
+                        <span class="text-h3-w6 character-card__name">はな</span>
+                        <span class="text-caption-w6 character-card__role">漫画鑑定士</span>
+                      </div>
+                      <img src="img/img_character_hana_selected.png" alt="はな (selected)" class="character-card__portrait" width="132" height="124">
+                    </div>
+                    <p class="text-caption-w6 character-card__description">質問で引き出すタイプ。<br>気づいていない強みを一緒に掘り当てます。</p>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">img_character_hana_selected.png</code>
+              <div class="sg-type-meta"><strong>Selected</strong><br>초상 이미지 교체</div>
+            </div>
+
+          </div>
+        </div>
       </section>
 
       <!-- ========================

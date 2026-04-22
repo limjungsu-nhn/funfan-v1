@@ -94,6 +94,11 @@ const preset: Partial<Config> = {
         },
         // Star
         star: '#FFB800',
+        // Semantic — Background
+        bg: {
+          base: '#FFFFFF', // 순수 흰색 페이지 배경
+          soft: '#F8F8FB', // gray-6 + 50% 흰색 합성 단색
+        },
       },
 
       /* ---------- Spacing (component level, absolute px) ----------

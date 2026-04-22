@@ -181,6 +181,7 @@ const buttonVariants = cva("...", {
 - 높이 64px (`--navbar-height`)
 - 좌: 로고 / 우: 버튼 그룹
 - Work Mode 변형: 탭 + 작업종료 버튼 (`.navbar--work-mode`)
+- Transparent 변형: 로고만 · 배경/그림자/버튼 없음 (`.navbar--transparent`) — 레이아웃 점유 동일
 
 #### `.left-panel` → 커스텀
 - width 288px (`--p20`)
@@ -292,6 +293,20 @@ const buttonVariants = cva("...", {
 - `<a>` 태그 사용 + 키보드 포커스링 (`focus-visible` 시 `box-shadow ring`)
 - TODO: 클릭 시 해당 에피소드 상세로 이동
 - Figma: Frame2087333324
+
+#### `.character-card` → shadcn `Card` composition (선택 카드)
+- 파트너 선택 화면 전용 조합 카드. 300×300 고정
+- 배경은 `bg_postit_*.png`(3색) — `background-size: 300px 300px`, `background-repeat: no-repeat`
+- **Variant (포스트잇 색)**: `.character-card--blue` / `.character-card--yellow` / `.character-card--pink`
+- 캐릭터 초상: `.character-card__portrait` (132×124, `img_character_{fuku|hana|tonton}_{default|selected}.png`) — 그림자는 PNG 자체에 포함 (CSS filter 없음)
+- 헤더: `__header` → `__name-row` (이름 `text-h3-w6` 22/600 + 역할 `text-caption-w6` 12/600 muted, gap 6) → 초상
+- 설명: `__description` — `text-caption-w6` 중앙정렬, `--color-font-primary-black-50`
+- 내부 padding `36px 22px 44px`, flex-column gap 16, `align-items: center`
+- **옵션 추천 버블**: `.character-card__bubble` — 76×76 absolute (`top: 68px`, `left: 18px`), `img_bubble_recommend.png` (「あなたにおすすめ」)
+- 선택 상태: `role="radio"` + `aria-checked` + `.is-selected` 토글로 관리 — 시각 스펙은 **미확정**. 현재는 마크업·ARIA만 연결되고 `[role="radio"]`에 `cursor: pointer` + `:focus-visible` ring만 부여
+- Radio 그룹 사용 예: `creative-partner-onboarding-05.html` (`role="radiogroup"` 래퍼 + 카드 선택 시 `決定する` 버튼 `disabled` 해제)
+- Figma: Frame2087333501
+- TODO: Selected 시각 스펙 확정 (초상 `*_selected.png` swap 또는 추가 데코레이션)
 
 #### `.episode-card` → 커스텀 (에피소드 헤더 + 리스트 조합 카드)
 - 기존 `.episode-header` + `.episode-item` 재활용한 composite 카드. 1000×auto

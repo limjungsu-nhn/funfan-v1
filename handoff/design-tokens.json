@@ -78,6 +78,11 @@
       "subtle": "rgba(0, 0, 0, 0.02)",
       "light":  "rgba(0, 0, 0, 0.05)",
       "mid":    "rgba(0, 0, 0, 0.10)"
+    },
+    "bg": {
+      "$description": "Semantic background tokens — 페이지/컨테이너 기본 배경용.",
+      "base": "#FFFFFF",
+      "soft": "#F8F8FB"
     }
   },
 

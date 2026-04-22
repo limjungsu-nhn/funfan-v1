@@ -67,3 +67,10 @@
 .navbar--work-mode .navbar-btn--normal { display: none; }
 .navbar--work-mode .navbar-btn--work { display: inline-flex; }
 
+/* ---------- Transparent (로고만 노출) ---------- */
+.navbar--transparent {
+  background: transparent;
+  box-shadow: none;
+  border-bottom: none;
+}
+
