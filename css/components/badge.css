@@ -5,6 +5,10 @@
      <span class="badge">
        <span class="text-overline-w4">Badge</span>
      </span>
+
+   Variants:
+     .badge           — 기본 (white bg + gray outline + shadow, overline 텍스트)
+     .badge--nature   — nature-6 bg + nature-2 텍스트, outline/shadow 없음 (caption-w4 권장)
    ============================================ */
 
 /* ---------- Base ---------- */
@@ -21,4 +25,15 @@
   align-items: center;
   gap: 10px;
   box-sizing: border-box;
+}
+
+/* ---------- Variant: Nature ----------
+   nature-6 배경 + nature-2 텍스트. outline/shadow 없음.
+   높이가 기본 28 → 30으로 다름 (inner text line-height 18 + 상하 여백 6px). */
+.badge--nature {
+  min-height: 30px;
+  background: var(--color-nature-6);
+  color: var(--color-nature-2);
+  box-shadow: none;
+  outline: none;
 }

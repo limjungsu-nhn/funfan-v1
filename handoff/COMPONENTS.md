@@ -29,7 +29,7 @@
 | Icon | `lucide-react` | `ICONS.md` 참조. 현재 40개 사용 |
 | Avatar | `Avatar` | 5 사이즈: xs(20) / sm(32) / md(40) / lg(56) / xl(80) · 10+ variant (avatar-01~) |
 | Logo | (이미지 only) | `.logo-funfan` 단일 variant |
-| Badge | `Badge` | variant: 기본(white 배경 + wood outline) |
+| Badge | `Badge` | 2 variants: 기본(white 배경 + gray-5 outline + shadow) / `.badge--nature`(nature-6 배경 + nature-2 텍스트, outline/shadow 없음, min-height 30) |
 
 ---
 
