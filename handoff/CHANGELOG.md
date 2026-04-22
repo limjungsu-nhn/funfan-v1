@@ -29,7 +29,7 @@
 
 ### 추가 (페이지)
 - **`creative-partner-onboarding-05.html` 본문 구현** — 추천 파트너 선택 화면
-  - 섹션 구성: Title(h1 + subtext muted) → `.character-card` ×3 (Pink+はな 추천 버블 · Yellow+フク · Blue+トントン) → Actions(戻る · 決定する)
+  - 섹션 구성: Title(h1 + subtext muted) → `.character-card` ×3 (Pink+はな 추천 버블 · Yellow+ふく · Blue+トントン) → Actions(戻る · 決定する)
   - **Radio 그룹**: `role="radiogroup"` 래퍼, 카드 단일 선택 시 `決定する` 버튼 `disabled` 해제 + `.is-selected` 토글 + 초상 스왑 (인라인 스크립트)
   - 역할·설명문: Hana 漫画鑑定士 / Fuku 作品磨き師 / Tonton こころほぐし師 (React 스펙 기반)
   - 레이아웃: `.creative-partner-onboarding` 세로 중앙 정렬 (`min-height: 100vh` + `align-items: center`), `__step5` gap `--p5`(72px), 하단 마진 `calc(var(--navbar-height) * 2)`
