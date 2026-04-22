@@ -39,8 +39,9 @@
 
 /* Overlay 레이어 — hover/selected 공통 pseudo-element
    Figma Overlay(#000) 효과를 CSS만으로 재현. 포스트잇 PNG의 투명 영역까지 오버레이가
-   찍히지 않도록 mask-image로 알파 영역에 한정 + mix-blend-mode: overlay로 포스트잇 픽셀에만 블렌드. */
-.character-card[role="radio"]::before {
+   찍히지 않도록 mask-image로 알파 영역에 한정 + mix-blend-mode: overlay로 포스트잇 픽셀에만 블렌드.
+   role 비의존으로 정의 — 정적 .is-selected 카드(스타일가이드 프리뷰 등)에서도 동일하게 적용 */
+.character-card::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -60,7 +61,7 @@
   z-index: 0;
 }
 
-/* Hover / Selected — 동일하게 40% 톤다운 (selected 상태에선 hover 변화 없이 유지) */
+/* Hover는 인터랙티브(role="radio") 카드 한정, Selected는 모든 카드에 적용 */
 .character-card[role="radio"]:hover::before,
 .character-card.is-selected::before {
   opacity: 0.4;
