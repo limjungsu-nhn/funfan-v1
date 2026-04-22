@@ -459,8 +459,8 @@ body {
   border-radius: 10px;
   padding: 40px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   gap: 40px;
   flex-wrap: wrap;
   min-height: 120px;
