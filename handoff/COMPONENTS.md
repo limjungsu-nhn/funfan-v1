@@ -305,7 +305,7 @@ const buttonVariants = cva("...", {
 - **옵션 추천 버블**: `.character-card__bubble` — 76×76 absolute (`top: 68px`, `left: 18px`), `img_bubble_recommend.png` (「あなたにおすすめ」)
 - **Hover / Selected 상태**: `role="radio"` 카드에 `:hover` 또는 `.is-selected` 적용 시 포스트잇 픽셀 위에 40% 톤다운 오버레이 표시
   1. 오버레이 구현 → `::before` pseudo-element에 `#000` + `mix-blend-mode: overlay` + `mask-image: var(--character-card-bg)` (포스트잇 알파 영역에만 블렌드, PNG 투명부는 오염 없음). `opacity: 0 → 0.4` 전환 (0.15s `--ease-standard`)
-  2. 초상 → `img_character_{fuku|hana|tonton}_selected.png` (JS로 `src` 스왑 — `data-portrait-default` / `data-portrait-selected` 속성 활용)
+  2. 초상 → `img_character_{fuku|hana|tonton}_selected.png` (JS로 `src` 스왑 — `data-portrait-default` / `data-portrait-selected` 속성 활용). **`_selected.png`은 페이지 로드 시 프리로드 필요** (최초 클릭 시 네트워크 지연 방지 — `new Image()` 또는 `<link rel="preload" as="image">`)
   3. 체크 뱃지 → `.character-card__check` (52×58 @2x, 우상단 absolute · `top: 80px` / `right: 38px` · `img_check_selected.png`) — 기본 `display: none`, `.is-selected` 시 표시
 - Focus ring: `:focus-visible` 시 `box-shadow` ring(`--ring-width` / `--color-gray-5`) + `border-radius: var(--radius-sm)`
 - Radio 그룹 사용 예: `creative-partner-onboarding-05.html` (`role="radiogroup"` 래퍼 + 카드 선택 시 `決定する` 버튼 `disabled` 해제)
