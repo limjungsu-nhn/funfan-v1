@@ -2,20 +2,22 @@
    Character Card
    - 파트너 선택 화면용 카드 (300×300)
    - 구성: 포스트잇 배경(3색) + 이름/역할 + 캐릭터 초상 + 설명
-   - 옵션: 좌상단 추천 버블(.character-card__bubble)
+   - 옵션: 좌상단 추천 버블(.character-card__bubble) · 우상단 선택 체크(.character-card__check)
+   - 상태: hover / .is-selected → 포스트잇 픽셀 40% 톤다운 오버레이
    ============================================ */
 
 .character-card {
+  --character-card-size: 300px;
   position: relative;
-  width: 300px;
-  height: 300px;
+  width: var(--character-card-size);
+  height: var(--character-card-size);
   background-repeat: no-repeat;
   background-position: center;
-  background-size: 300px 300px;
+  background-size: var(--character-card-size) var(--character-card-size);
   flex-shrink: 0;
 }
 
-/* role="radio" 지정 시 클릭 가능 — 선택 상태 스타일은 추후 정의 예정 */
+/* role="radio" 지정 시 클릭 가능 (파트너 선택 화면 등 인터랙티브 용도) */
 .character-card[role="radio"] {
   cursor: pointer;
 }
@@ -23,24 +25,65 @@
 .character-card[role="radio"]:focus-visible {
   outline: none;
   box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5);
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
 }
 
-/* Postit 배경 variant */
-.character-card--blue   { background-image: url("../../img/bg_postit_blue.png"); }
-.character-card--yellow { background-image: url("../../img/bg_postit_yellow.png"); }
-.character-card--pink   { background-image: url("../../img/bg_postit_pink.png"); }
+/* Postit 배경 variant — 변이 색상은 CSS 변수로 담고, 본 배경은 공통 규칙에서 로드 */
+.character-card--blue   { --character-card-bg: url("../../img/bg_postit_blue.png"); }
+.character-card--yellow { --character-card-bg: url("../../img/bg_postit_yellow.png"); }
+.character-card--pink   { --character-card-bg: url("../../img/bg_postit_pink.png"); }
+
+.character-card[class*="character-card--"] {
+  background-image: var(--character-card-bg);
+}
+
+/* Overlay 레이어 — hover/selected 공통 pseudo-element
+   Figma Overlay(#000) 효과를 CSS만으로 재현. 포스트잇 PNG의 투명 영역까지 오버레이가
+   찍히지 않도록 mask-image로 알파 영역에 한정 + mix-blend-mode: overlay로 포스트잇 픽셀에만 블렌드. */
+.character-card[role="radio"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #000;
+  mix-blend-mode: overlay;
+  -webkit-mask-image: var(--character-card-bg);
+          mask-image: var(--character-card-bg);
+  -webkit-mask-size: var(--character-card-size) var(--character-card-size);
+          mask-size: var(--character-card-size) var(--character-card-size);
+  -webkit-mask-repeat: no-repeat;
+          mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+          mask-position: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s var(--ease-standard);
+  z-index: 0;
+}
+
+/* Hover / Selected — 동일하게 40% 톤다운 (selected 상태에선 hover 변화 없이 유지) */
+.character-card[role="radio"]:hover::before,
+.character-card.is-selected::before {
+  opacity: 0.4;
+}
+
+/* 오버레이가 내부 콘텐츠/버블/체크 위에 덮이지 않도록 콘텐츠 레이어를 위로 올림
+   (__inner는 relative, __bubble/__check는 absolute 유지 — position은 기존 규칙 그대로) */
+.character-card__inner,
+.character-card__bubble,
+.character-card__check {
+  z-index: 1;
+}
 
 /* 내부 컨텐츠 래퍼 */
 .character-card__inner {
   position: relative;
   width: 100%;
   height: 100%;
-  padding: 36px 22px 44px;
+  padding: var(--space-9) var(--space-5_5) 44px; /* 44px: 포스트잇 하단 여백 — 토큰 범위 밖 */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  gap: var(--space-4);
 }
 
 /* 헤더: 이름/역할 + 초상 */
@@ -48,14 +91,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 /* 이름(22px/w6) + 역할(12px/w6 muted) */
 .character-card__name-row {
   display: flex;
   align-items: baseline;
-  gap: 6px;
+  gap: var(--space-1_5);
 }
 
 .character-card__name {
@@ -89,4 +132,19 @@
   height: 76px;
   display: block;
   pointer-events: none;
+}
+
+/* Selected 체크 마크 — 우상단 absolute, .is-selected 시에만 표시 */
+.character-card__check {
+  position: absolute;
+  top: 80px;
+  right: 38px;
+  width: 52px;
+  height: 58px;
+  display: none;
+  pointer-events: none;
+}
+
+.character-card.is-selected .character-card__check {
+  display: block;
 }

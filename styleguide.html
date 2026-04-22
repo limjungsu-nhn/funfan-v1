@@ -1593,6 +1593,7 @@
               <code class="sg-type-classname">img/bg_postit_pink.png</code>
               <div class="sg-type-meta"><strong>Postit — Pink</strong><br>300 × 300<br>creative-partner-onboarding-05 배경</div>
             </div>
+
           </div>
         </div>
 
@@ -1639,6 +1640,13 @@
               </div>
               <code class="sg-type-classname">img/img_bubble_recommend.png</code>
               <div class="sg-type-meta"><strong>Recommend</strong><br>76 × 76<br>「あなたにおすすめ」 캐릭터 추천 버블</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <img src="img/img_check_selected.png" alt="selected check" class="sg-img-thumb" width="52" height="58">
+              </div>
+              <code class="sg-type-classname">img/img_check_selected.png</code>
+              <div class="sg-type-meta"><strong>Selected Check</strong><br>52 × 58 (@2x)<br>.character-card.is-selected 우상단 뱃지</div>
             </div>
           </div>
         </div>
@@ -3240,16 +3248,16 @@
           </div>
         </div>
 
-        <!-- Selected state (캐릭터 선택 후 교체 이미지) -->
+        <!-- Selected state — .is-selected 적용 시 배경·초상·체크 뱃지 3종 동시 교체 -->
         <div class="sg-subsection">
           <p class="sg-subsection-title">Selected State</p>
-          <p class="sg-section-desc" style="margin-bottom:var(--space-3)">캐릭터 선택 후에는 <code>img_character_*_selected.png</code>로 교체. 배경/레이아웃 변화 없음.</p>
+          <p class="sg-section-desc" style="margin-bottom:var(--space-3)"><code>.is-selected</code> 적용 시 ① 배경 <code>bg_postit_{color}_selected.png</code> 스왑, ② 초상 <code>img_character_{name}_selected.png</code> 스왑, ③ 우상단 <code>.character-card__check</code> 표시.</p>
           <div class="sg-type-table">
             <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
 
             <div class="sg-type-row">
               <div class="sg-type-preview">
-                <div class="character-card character-card--pink">
+                <div class="character-card character-card--pink is-selected">
                   <div class="character-card__inner">
                     <div class="character-card__header">
                       <div class="character-card__name-row">
@@ -3260,12 +3268,39 @@
                     </div>
                     <p class="text-caption-w6 character-card__description">質問で引き出すタイプ。<br>気づいていない強みを一緒に掘り当てます。</p>
                   </div>
+                  <img src="img/img_check_selected.png" alt="" aria-hidden="true" class="character-card__check" width="52" height="58">
                 </div>
               </div>
-              <code class="sg-type-classname">img_character_hana_selected.png</code>
-              <div class="sg-type-meta"><strong>Selected</strong><br>초상 이미지 교체</div>
+              <code class="sg-type-classname">.character-card.character-card--pink.is-selected</code>
+              <div class="sg-type-meta"><strong>Selected</strong><br>배경·초상 스왑<br>+ 체크 뱃지</div>
             </div>
 
+          </div>
+        </div>
+
+        <!-- Interactive Demo — 카드 클릭 시 .is-selected 토글 · 초상 스왑 -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Interactive Demo</p>
+          <p class="sg-section-desc" style="margin-bottom:var(--space-3)">카드를 클릭하면 <code>.is-selected</code> 가 토글되고 초상 이미지가 <code>_selected</code> 로 스왑됩니다.</p>
+          <div class="sg-demo-canvas">
+            <div id="sg-character-card-demo">
+              <div class="character-card character-card--pink" role="radio" tabindex="0" aria-checked="false"
+                   data-portrait-default="img/img_character_hana_default.png"
+                   data-portrait-selected="img/img_character_hana_selected.png">
+                <div class="character-card__inner">
+                  <div class="character-card__header">
+                    <div class="character-card__name-row">
+                      <span class="text-h3-w6 character-card__name">はな</span>
+                      <span class="text-caption-w6 character-card__role">漫画鑑定士</span>
+                    </div>
+                    <img src="img/img_character_hana_default.png" alt="はな" class="character-card__portrait" width="132" height="124">
+                  </div>
+                  <p class="text-caption-w6 character-card__description">質問で引き出すタイプ。<br>気づいていない強みを一緒に掘り当てます。</p>
+                </div>
+                <img src="img/img_bubble_recommend.png" alt="あなたにおすすめ" class="character-card__bubble" width="76" height="76">
+                <img src="img/img_check_selected.png" alt="" aria-hidden="true" class="character-card__check" width="52" height="58">
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -5748,6 +5783,31 @@
     })();
 
     // ── Tab Group 공통 초기화 (클릭 선택 전환 + 너비 균등화) ──────
+    // Character Card demo — 클릭 시 .is-selected 토글 + 초상 스왑
+    (() => {
+      const root = document.getElementById('sg-character-card-demo');
+      if (!root) return;
+      const card = root.querySelector('.character-card');
+      if (!card) return;
+
+      const toggle = () => {
+        const next = !card.classList.contains('is-selected');
+        card.classList.toggle('is-selected', next);
+        card.setAttribute('aria-checked', String(next));
+        const portrait = card.querySelector('.character-card__portrait');
+        const src = next ? card.dataset.portraitSelected : card.dataset.portraitDefault;
+        if (portrait && src) portrait.src = src;
+      };
+
+      card.addEventListener('click', toggle);
+      card.addEventListener('keydown', (e) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          toggle();
+        }
+      });
+    })();
+
     document.querySelectorAll('.tab-group').forEach(group => {
       const tabs = group.querySelectorAll('.tab');
 

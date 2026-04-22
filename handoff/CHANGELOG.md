@@ -11,23 +11,37 @@
 ## v1.05 (2026-04-22)
 
 ### 추가 (컴포넌트)
-- **`character-card`** — 파트너 선택 화면용 조합 카드 (300×300 고정)
-  - **Variant (포스트잇 색)**: `.character-card--blue` / `.character-card--yellow` / `.character-card--pink` — `bg_postit_*.png` 배경
-  - 구성: `__inner`(padding 36/22/44, flex-column gap 16) → `__header`(gap 12) → `__name-row`(이름 22/600 + 역할 12/600 muted, baseline gap 6) → `__portrait`(132×124) → `__description`(caption-w6, 중앙정렬, black-50)
+- **`character-card`** — 파트너 선택 화면용 조합 카드 (300×300 고정, `--character-card-size` 변수로 내부 참조)
+  - **Variant (포스트잇 색)**: `.character-card--blue` / `.character-card--yellow` / `.character-card--pink` — `bg_postit_*.png` 배경. 각 variant는 `--character-card-bg` 변수로 원본 URL만 보관
+  - 구성: `__inner`(padding `--space-9 --space-5_5 44px`, flex-column gap `--space-4`) → `__header`(gap `--space-3`) → `__name-row`(이름 `text-h3-w6` + 역할 `text-caption-w6` muted, baseline gap `--space-1_5`) → `__portrait`(132×124) → `__description`(caption-w6, 중앙정렬, black-50)
   - **옵션 추천 버블** `__bubble` (76×76 absolute · `top: 68px` / `left: 18px` · `img_bubble_recommend.png`)
+  - **Hover / Selected 오버레이**: `role="radio"` 카드에 `:hover` 또는 `.is-selected` 적용 시 `::before` pseudo-element로 `#000` + `mix-blend-mode: overlay` + `mask-image: var(--character-card-bg)` 조합을 opacity `0 → 0.4`로 전환 (0.15s `--ease-standard`). 포스트잇 알파 영역에만 톤다운 — PNG 투명부는 오염 없음
+  - **선택 체크 뱃지**: `.character-card__check` (52×58 @2x · 우상단 absolute · `top: 80px` / `right: 38px` · `img_check_selected.png`) — 기본 `display: none`, `.is-selected` 시 표시
+  - **초상 스왑**: JS로 `src`를 `img_character_{name}_default.png` ↔ `_selected.png` 교체 (`data-portrait-default` / `data-portrait-selected` 속성)
+  - Focus ring: `:focus-visible` 시 `--ring-width` / `--color-gray-5` ring + `border-radius: var(--radius-sm)`
   - 그림자는 PNG 자체에 포함 — CSS filter 없음 (중복 그림자 방지)
-  - **선택 상태**: `role="radio"` + `aria-checked` + `.is-selected` 토글 — 시각 스펙 미확정 (현재 `[role="radio"]`에 `cursor: pointer` + `:focus-visible` ring만)
+
+### 추가 (이미지 에셋)
+- `img/bg_postit_blue.png` / `bg_postit_yellow.png` / `bg_postit_pink.png` — 포스트잇 배경 (300×300)
+- `img/img_character_{hana|fuku|tonton}_{default|selected}.png` — 캐릭터 초상 6종
+- `img/img_bubble_recommend.png` — 추천 버블 (76×76)
+- `img/img_check_selected.png` — 선택 체크 뱃지 (104×116 원본, 52×58 @2x 표시)
 
 ### 추가 (페이지)
 - **`creative-partner-onboarding-05.html` 본문 구현** — 추천 파트너 선택 화면
-  - 섹션 구성: Title(h1 36/600 + subtext muted) → `.character-card` ×3 (Pink+はな 추천 버블 · Yellow+フク · Blue+トントン) → Actions(戻る · 決定する)
-  - **Radio 그룹**: `role="radiogroup"` 래퍼, 카드 단일 선택 시 `決定する` 버튼 `disabled` 해제 (인라인 스크립트)
+  - 섹션 구성: Title(h1 + subtext muted) → `.character-card` ×3 (Pink+はな 추천 버블 · Yellow+フク · Blue+トントン) → Actions(戻る · 決定する)
+  - **Radio 그룹**: `role="radiogroup"` 래퍼, 카드 단일 선택 시 `決定する` 버튼 `disabled` 해제 + `.is-selected` 토글 + 초상 스왑 (인라인 스크립트)
   - 역할·설명문: Hana 漫画鑑定士 / Fuku 作品磨き師 / Tonton こころほぐし師 (React 스펙 기반)
   - 레이아웃: `.creative-partner-onboarding` 세로 중앙 정렬 (`min-height: 100vh` + `align-items: center`), `__step5` gap `--p5`(72px), 하단 마진 `calc(var(--navbar-height) * 2)`
   - 버튼: `.btn-line` + `.btn-filled-black` 각 136px 고정폭 (actions 전용)
 
 ### 변경 (페이지)
 - **`creative-partner-onboarding.css`** — step 5 레이아웃 추가 (`__step5` / `__title` / `__cards` / `__actions`). 기존 `min-height: 100%` → `100vh`, `align-items: center` 추가로 본문 수직 중앙 정렬 전환
+
+### 변경 (스타일가이드)
+- Character Card 섹션 신설 (`#character-card` · 좌측 nav 링크 포함)
+  - Variants 3종 (Pink+Hana 추천 버블 / Blue+Fuku / Yellow+Tonton) · Selected State 1종 · **Interactive Demo**(단일 카드 토글) 블록
+- Foundation → Images 에 `img_bubble_recommend.png` (76×76) · `img_check_selected.png` (52×58 @2x) 등록
 
 ---
 

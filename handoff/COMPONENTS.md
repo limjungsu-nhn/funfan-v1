@@ -299,14 +299,17 @@ const buttonVariants = cva("...", {
 - 배경은 `bg_postit_*.png`(3색) — `background-size: 300px 300px`, `background-repeat: no-repeat`
 - **Variant (포스트잇 색)**: `.character-card--blue` / `.character-card--yellow` / `.character-card--pink`
 - 캐릭터 초상: `.character-card__portrait` (132×124, `img_character_{fuku|hana|tonton}_{default|selected}.png`) — 그림자는 PNG 자체에 포함 (CSS filter 없음)
-- 헤더: `__header` → `__name-row` (이름 `text-h3-w6` 22/600 + 역할 `text-caption-w6` 12/600 muted, gap 6) → 초상
+- 헤더: `__header` → `__name-row` (이름 `text-h3-w6` 22/600 + 역할 `text-caption-w6` 12/600 muted, gap `--space-1_5`) → 초상 (gap `--space-3`)
 - 설명: `__description` — `text-caption-w6` 중앙정렬, `--color-font-primary-black-50`
-- 내부 padding `36px 22px 44px`, flex-column gap 16, `align-items: center`
+- 내부 padding `--space-9 --space-5_5 44px`(상/좌우/하), flex-column gap `--space-4`, `align-items: center`
 - **옵션 추천 버블**: `.character-card__bubble` — 76×76 absolute (`top: 68px`, `left: 18px`), `img_bubble_recommend.png` (「あなたにおすすめ」)
-- 선택 상태: `role="radio"` + `aria-checked` + `.is-selected` 토글로 관리 — 시각 스펙은 **미확정**. 현재는 마크업·ARIA만 연결되고 `[role="radio"]`에 `cursor: pointer` + `:focus-visible` ring만 부여
+- **Hover / Selected 상태**: `role="radio"` 카드에 `:hover` 또는 `.is-selected` 적용 시 포스트잇 픽셀 위에 40% 톤다운 오버레이 표시
+  1. 오버레이 구현 → `::before` pseudo-element에 `#000` + `mix-blend-mode: overlay` + `mask-image: var(--character-card-bg)` (포스트잇 알파 영역에만 블렌드, PNG 투명부는 오염 없음). `opacity: 0 → 0.4` 전환 (0.15s `--ease-standard`)
+  2. 초상 → `img_character_{fuku|hana|tonton}_selected.png` (JS로 `src` 스왑 — `data-portrait-default` / `data-portrait-selected` 속성 활용)
+  3. 체크 뱃지 → `.character-card__check` (52×58 @2x, 우상단 absolute · `top: 80px` / `right: 38px` · `img_check_selected.png`) — 기본 `display: none`, `.is-selected` 시 표시
+- Focus ring: `:focus-visible` 시 `box-shadow` ring(`--ring-width` / `--color-gray-5`) + `border-radius: var(--radius-sm)`
 - Radio 그룹 사용 예: `creative-partner-onboarding-05.html` (`role="radiogroup"` 래퍼 + 카드 선택 시 `決定する` 버튼 `disabled` 해제)
 - Figma: Frame2087333501
-- TODO: Selected 시각 스펙 확정 (초상 `*_selected.png` swap 또는 추가 데코레이션)
 
 #### `.episode-card` → 커스텀 (에피소드 헤더 + 리스트 조합 카드)
 - 기존 `.episode-header` + `.episode-item` 재활용한 composite 카드. 1000×auto
