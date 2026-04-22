@@ -10,45 +10,59 @@
 
 ## v1.05.1 (2026-04-22, v1.05 후속)
 
-v1.05 오후 배송 이후, 리더 계정 설정 페이지 완성분 추가 배송.
+v1.05 오후 배송(`37fa0ec` 시점) 이후 반영된 변경 일괄 정리.
+**시각 변화 0 · 기존 구현 깨지는 변경 없음** — 신규 페이지/컴포넌트 추가분과 토큰 확장이 중심.
 
 ### 추가 (페이지)
 - **`reader-account-setting.html`** — 리더 계정 설정 본문 완성
-  - 구성: navbar + `.reader-account` 래퍼 → 설정 아코디언 섹션들(프로필·알림·계정 등) + 저장/취소 액션
+  - 구성: navbar + `.reader-account` 래퍼 → 7개 accordion 섹션(프로필·알림·계정 등) + 저장/취소 액션
   - 사용 컴포넌트: `accordion-row` · `section-label` · `form-field` · `form-input` · `avatar-upload` · `button`
   - `index.html` 엔트리 ✅ 표시
+- **`mypage.html`** — 마이페이지 쉘만 생성 (navbar + `.reader-account` 래퍼). **본문은 다음 배치 예정** (이번 배치에서는 작업 대상 아님)
 
-### 영향
-- **신규 컴포넌트 없음** — 기존 컴포넌트만 조합
-- **토큰 변경 없음** — v1.05 토큰 그대로
-- **개발 액션**: 해당 페이지 라우트·레이아웃 컴포넌트 추가 (기존 cva 재사용)
+### 추가 (컴포넌트)
+- **`section-label`** — 리스트/카드 그룹 상단 헤딩 컴포넌트로 추출. 재사용 가능한 유틸
+- **`badge--nature`** — badge에 nature 컬러 variant 추가
 
----
+### 추가 (JS)
+- **`js/components/form-input.js`** — 컨테이너 padding 영역 클릭 시 내부 input/textarea로 포커스 위임 · 클릭 지점이 field 밖이면 caret을 값 끝으로 이동
 
-## v1.05 (2026-04-22)
-
-### 추가 (페이지)
-- **`mypage.html`** — 마이페이지 쉘만 생성 (navbar + `.reader-account` 래퍼). 본문은 TODO
-- **`reader-account-setting.html`** — 상태 ⏳ → ✅ (index.html 엔트리 이모지 변경)
-
-### 변경 (스타일가이드 구조)
-- **Forms 섹션 → Components 개별 섹션 6개로 분리**: 기존 `<section id="forms">` Patterns 묶음을 해체하고 `#form-input` / `#form-textarea` / `#input-wood` / `#chat-input` / `#form-field` / `#avatar-upload` 독립 섹션으로 재배치 — nav 트리도 Components 그룹 끝에 6개 링크로 이동
-- **Patterns > Navigation placeholder 제거** — 미구현 placeholder 섹션 삭제. 현재 Patterns에는 Modals만 남음
-- **Spacing Scale / Border Radius 테이블 확장** — 신규 토큰(--space-2_5/3_5, --radius-xs/2xs/btn/md/lg/xl) 전부 등록
-
-### 변경 (하드코딩 정리)
-- `chat-msg.css` — `padding-left: 22px` → `var(--space-5_5)`
-- `panel-header.css` — `padding: 14px ...` → `var(--space-3_5)`
-- `review-item.css` (`--fan`) — `padding: 14px ... 14px ...` → `var(--space-3_5)`
-- `reaction-bar.css` `border-radius: 14px` / `task-list.css` `gap: 9px` — 스케일 밖 고정값으로 주석 명시 (의도적 유지)
+### 변경 (컴포넌트)
+- **`accordion-row`** — trailing 영역 variants 3종 추가(avatar / badge / icon-only) · `--link` variant 데모 추가 · chevron hover 시 색상 세분화(기본 상태에서만 darken) · title line-height 26 고정 + body row-gap 2px 로 컨테이너 높이 안정화
+- **`avatar-upload`** — gap 20px 유지 + 컨테이너 padding 제거 · `form-field`가 `avatar-upload` 포함 시 `:has()`로 16px 간격 보정
+- 하드코딩 정리: shadow `rgba` → `--color-shadow-*` 토큰 · `#000` → `--color-black-100` · 하드코딩된 font-size/line-height/weight → typography 토큰
 
 ### 변경 (토큰) ⚠ 개발 싱크 필요
 - **Spacing Scale 확장**: `--space-2_5: 10px`, `--space-3_5: 14px` 추가 — 기존에 하드코딩되던 10px/14px gap·padding을 토큰화
 - **Border Radius 스케일 전면 개편**: 기존 `--radius-sm: 10px` / `--radius-full: 100px` 2개 → **8개 시맨틱 토큰**으로 확장
   - `--radius-xs: 4px` / `--radius-2xs: 8px` / `--radius-sm: 10px` / `--radius-btn: 12px` / `--radius-md: 16px` / `--radius-lg: 20px` / `--radius-xl: 24px` / `--radius-full: 100px`
-- **20+ 컴포넌트의 하드코딩 px 치환 완료** — `gap: 6px` → `var(--space-1_5)`, `border-radius: 16px` → `var(--radius-md)` 등 일괄
+- **~30개 컴포넌트 CSS의 하드코딩 px 치환 완료** — `gap: 6px` → `var(--space-1_5)`, `border-radius: 16px` → `var(--radius-md)` 등 일괄
+- 추가 치환: `chat-msg.css` 22px → `var(--space-5_5)` · `panel-header.css` / `review-item--fan` 14px → `var(--space-3_5)`
+- 스케일 밖 고정값은 주석으로 의도 명시: `reaction-bar.css` 14px radius / `task-list.css` 9px gap
 - **파일 동기화**: `handoff/design-tokens.json`, `handoff/tailwind-preset.ts` 양쪽 모두 업데이트 (tailwind-preset.ts의 중복 borderRadius 블록 제거)
-- **영향**: 시각적 변화 없음 — 모든 토큰 값이 기존 하드코딩 값과 동일하게 매핑됨
+- **영향**: 시각 변화 없음 — 모든 토큰 값이 기존 하드코딩 값과 동일하게 매핑됨
+
+### 변경 (스타일가이드)
+- **Forms 섹션 → Components 개별 섹션 6개로 분리**: 기존 `<section id="forms">` Patterns 묶음을 해체하고 `#form-input` / `#form-textarea` / `#input-wood` / `#chat-input` / `#form-field` / `#avatar-upload` 독립 섹션으로 재배치 — nav 트리도 Components 그룹 끝에 6개 링크로 이동
+- **Patterns > Navigation placeholder 제거** — 미구현 placeholder 섹션 삭제. 현재 Patterns에는 Modals만 남음
+- **Spacing Scale / Border Radius 테이블 확장** — 신규 토큰 전부 등록
+
+### 변경 (핸드오프 문서)
+- `README.md` — v1.05.1 요약 박스 상단 배치 · "개발자 읽는 순서" 섹션 추가 · MIGRATION.md 문구를 "신규 수신자는 스킵 가능"으로 강등
+- `GETTING_STARTED.md` — 페이지 리스트 현행화 (creative-partner-onboarding 01~05 · reader-account-setting · mypage · series-home 추가)
+- `COMPONENTS.md` — form-input placeholder 동작 노트 갱신 (focus 시에도 유지 — `.input-wood` 전용 hide)
+
+### 개발 액션 요약
+1. `tailwind-preset.ts` 재import (토큰 확장 반영)
+2. `reader-account-setting` 페이지 라우트·레이아웃 컴포넌트 추가 (기존 cva 재사용)
+3. `section-label` cva 정의 추가
+4. `badge` cva에 `nature` variant 축 추가
+5. `accordion-row` cva에 trailing(avatar/badge/icon-only) 및 `--link` variant 축 추가
+6. `form-input` 래퍼 클릭 시 내부 input 포커스 위임 동작 구현 (React에서는 `onMouseDown` 핸들러로 재현)
+
+---
+
+## v1.05 (2026-04-22, 오후 배송 스냅샷 = commit `37fa0ec`)
 
 ### 추가 (컴포넌트)
 - **`character-card`** — 파트너 선택 화면용 조합 카드 (300×300 고정, `--character-card-size` 변수로 내부 참조)
