@@ -170,6 +170,11 @@ const buttonVariants = cva("...", {
 - chevron: `.icon-keyboard-arrow-down` (기본/active) · `.icon-exit-to-app` (single link)
 - **`.accordion-row--card` modifier**: 16px border-radius + soft shadow(`0 4px 8px rgba(0,0,0,.02), 0 0 1px rgba(0,0,0,.1)`) — 세팅 페이지 등 카드로 나열할 때. 기본/active/link variant 전부와 병용 가능
 - **Caution 아이콘**: `.accordion-row__title` 내부에 `<i class="icon icon-error-filled">` 추가 → title 텍스트는 black-100 유지, 아이콘만 red-100. title은 `display: inline-flex; gap: 8px`로 텍스트 + 아이콘을 정렬. 기본/active/link 모두 동일 패턴
+- **Trailing 요소 (옵션)**: `.accordion-row__header` 안 `body`와 `chevron` 사이에 아래 요소를 삽입 가능. 세 조합 지원:
+  1. **아바타 + 아이콘**: `<img class="accordion-row__avatar">` (44×44 원형, `border-radius: 50%`, `object-fit: cover`, fallback bg `--color-wood-6`) + chevron
+  2. **배지 + 아이콘**: `<span class="badge badge--nature">...</span>` + chevron
+  3. **아이콘 only**: chevron 단독 (기본)
+  header flex의 `gap: var(--space-3)` (12px)로 trailing 요소들이 자연스럽게 띄워짐
 - TODO: React에서는 shadcn `Accordion` (Radix) 사용 — `AccordionTrigger`(header) / `AccordionContent`(content). 단일 링크 variant는 별도 `<Link>` 컴포넌트로 분리
 
 ---

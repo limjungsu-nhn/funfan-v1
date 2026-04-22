@@ -4524,6 +4524,59 @@
               <div class="sg-type-meta"><strong>카드 modifier</strong><br>16px radius + soft shadow<br>기본·active·link 어디에도 병용 가능</div>
             </div>
 
+            <!-- Trailing: Avatar + Chevron -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview sg-type-preview--accordion-row">
+                <div class="accordion-row">
+                  <div class="accordion-row__header">
+                    <div class="accordion-row__body">
+                      <span class="text-subtext-w6 accordion-row__title">ユーザー情報</span>
+                      <span class="text-overline-w4 accordion-row__desc">ニックネーム、ユーザーID、プロフィール画像、自己紹介、SNSリンク</span>
+                    </div>
+                    <img class="accordion-row__avatar" src="img/img_avatar01.png" alt="" aria-hidden="true">
+                    <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.accordion-row__avatar + .accordion-row__chevron</code>
+              <div class="sg-type-meta"><strong>Trailing · Avatar + Icon</strong><br>44×44 원형 이미지<br>chevron 앞에 배치 (flex gap 12)</div>
+            </div>
+
+            <!-- Trailing: Badge + Chevron -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview sg-type-preview--accordion-row">
+                <div class="accordion-row">
+                  <div class="accordion-row__header">
+                    <div class="accordion-row__body">
+                      <span class="text-subtext-w6 accordion-row__title">ユーザー情報</span>
+                      <span class="text-overline-w4 accordion-row__desc">ニックネーム、ユーザーID、プロフィール画像、自己紹介、SNSリンク</span>
+                    </div>
+                    <span class="badge badge--nature"><span class="text-caption-w4">Badge</span></span>
+                    <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.badge.badge--nature + .accordion-row__chevron</code>
+              <div class="sg-type-meta"><strong>Trailing · Badge + Icon</strong><br>nature 뱃지 + chevron<br>header flex 내부 직접 삽입</div>
+            </div>
+
+            <!-- Trailing: Icon only (default — 명시적 재표기) -->
+            <div class="sg-type-row">
+              <div class="sg-type-preview sg-type-preview--accordion-row">
+                <div class="accordion-row">
+                  <div class="accordion-row__header">
+                    <div class="accordion-row__body">
+                      <span class="text-subtext-w6 accordion-row__title">ユーザー情報</span>
+                      <span class="text-overline-w4 accordion-row__desc">ニックネーム、ユーザーID、プロフィール画像、自己紹介、SNSリンク</span>
+                    </div>
+                    <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.accordion-row__chevron</code>
+              <div class="sg-type-meta"><strong>Trailing · Icon only</strong><br>chevron 단독 (기본 구성)</div>
+            </div>
+
             <!-- Caution Icon — Default state -->
             <div class="sg-type-row">
               <div class="sg-type-preview sg-type-preview--accordion-row">
@@ -4589,7 +4642,34 @@
         <div class="sg-subsection">
           <p class="sg-subsection-title">Interactive Demo</p>
           <div class="sg-demo-canvas">
-            <div class="accordion-row" id="sg-accordion-demo" data-accordion>
+            <div class="sg-demo-stack">
+            <div class="accordion-row" id="sg-accordion-demo-avatar" data-accordion>
+              <button class="accordion-row__header" type="button" aria-expanded="false">
+                <div class="accordion-row__body">
+                  <span class="text-subtext-w6 accordion-row__title">プロフィール</span>
+                  <span class="text-overline-w4 accordion-row__desc">アバター画像、表示名、自己紹介を設定できます</span>
+                </div>
+                <img class="accordion-row__avatar" src="img/img_avatar01.png" alt="">
+                <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+              </button>
+              <div class="accordion-row__content">
+                <p class="sg-accordion-demo__text text-caption-w4">Trailing: Avatar(44×44) + Chevron — body와 chevron 사이에 삽입됩니다.</p>
+              </div>
+            </div>
+            <div class="accordion-row" id="sg-accordion-demo-badge" data-accordion>
+              <button class="accordion-row__header" type="button" aria-expanded="false">
+                <div class="accordion-row__body">
+                  <span class="text-subtext-w6 accordion-row__title">サブスクリプション</span>
+                  <span class="text-overline-w4 accordion-row__desc">現在のプラン、次回請求日、請求先情報</span>
+                </div>
+                <span class="badge badge--nature"><span class="text-caption-w4">Premium</span></span>
+                <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
+              </button>
+              <div class="accordion-row__content">
+                <p class="sg-accordion-demo__text text-caption-w4">Trailing: Badge(.badge--nature) + Chevron — flex gap(--space-3)으로 자연스럽게 배치됩니다.</p>
+              </div>
+            </div>
+            <div class="accordion-row" id="sg-accordion-demo-default" data-accordion>
               <button class="accordion-row__header" type="button" aria-expanded="false">
                 <div class="accordion-row__body">
                   <span class="text-subtext-w6 accordion-row__title">ユーザー情報</span>
@@ -4598,8 +4678,9 @@
                 <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
               </button>
               <div class="accordion-row__content">
-                <p class="sg-accordion-demo__text text-caption-w4">확장 영역 — 폼이나 설명 텍스트 등이 여기에 들어갑니다. 펼침/접힘은 CSS grid-rows(0fr↔1fr) 트릭으로 JS 측정 없이 자연스럽게 전환됩니다.</p>
+                <p class="sg-accordion-demo__text text-caption-w4">Trailing: Chevron only — 기본 구성. 펼침/접힘은 CSS grid-rows(0fr↔1fr) 트릭으로 JS 측정 없이 자연스럽게 전환됩니다.</p>
               </div>
+            </div>
             </div>
           </div>
         </div>

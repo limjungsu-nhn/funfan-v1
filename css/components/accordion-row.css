@@ -16,6 +16,10 @@
            <span class="text-subtext-w6 accordion-row__title">ユーザー情報</span>
            <span class="text-overline-w4 accordion-row__desc">ニックネーム、ユーザーID、…</span>
          </div>
+         <!-- 옵션: trailing 요소 — body와 chevron 사이에 삽입 가능 -->
+         <!-- (1) 아바타 + 아이콘: <img class="accordion-row__avatar"> + chevron -->
+         <!-- (2) 배지 + 아이콘:   <span class="badge badge--nature">...</span> + chevron -->
+         <!-- (3) 아이콘 only:    chevron                                              -->
          <i class="icon icon-keyboard-arrow-down accordion-row__chevron"></i>
        </button>
        <div class="accordion-row__content">
@@ -118,6 +122,24 @@
   opacity: 1;
   /* 기본(active 해제 → 노출): grid 펼침(0.6s)이 끝난 뒤 페이드 인 */
   transition: opacity 0.3s var(--ease-standard) 0.35s;
+}
+
+/* ---------- Trailing: Avatar (옵션) ----------
+   body와 chevron 사이에 삽입. 44×44 원형. 그림자 등 데코는 img 자체에 포함되는 것을 전제. */
+.accordion-row__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  object-fit: cover;
+  background: var(--color-wood-6);
+}
+
+/* ---------- Trailing: Badge (옵션) ----------
+   header 안에 .badge / .badge--nature 을 직접 배치.
+   flex 컨테이너의 gap(--space-3)으로 chevron과 자연스럽게 띄워짐. */
+.accordion-row__header > .badge {
+  flex-shrink: 0;
 }
 
 /* ---------- Chevron ---------- */
