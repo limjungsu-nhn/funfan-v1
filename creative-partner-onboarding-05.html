@@ -125,6 +125,11 @@
         submitBtn.disabled = false;
       };
 
+      submitBtn.addEventListener('click', () => {
+        if (submitBtn.disabled) return;
+        window.location.href = 'workspace-onboarding.html';
+      });
+
       cards.forEach((card) => {
         card.addEventListener('click', () => select(card));
         card.addEventListener('keydown', (e) => {
