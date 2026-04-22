@@ -34,6 +34,7 @@
        → 컨테이너 padding이 active 토글 순간 즉시 적용되어 끝에 튀는 현상 제거
      - body grid(title/desc): grid-template-rows 1fr→0fr + row-gap → desc 자연 수축
      - title line-height 26px 고정 → font-size 14↔16px 전환에도 라인박스 흔들림 없음
+     - body row-gap 2px (line-height 26 상태에서 title 아래 여분 2px 보정 → 시각 간격 4px)
      - duration 0.6s var(--ease-standard) (right-panel과 동일)
 
    Notes:
@@ -93,7 +94,7 @@
   min-width: 0;
   display: grid;
   grid-template-rows: auto 1fr;
-  row-gap: var(--space-1);
+  row-gap: 2px; /* line-height 26 고정 상태에서 title 아래 여분 2px을 상쇄 — 시각 간격은 4px */
   justify-items: start;
   transition:
     grid-template-rows 0.6s var(--ease-standard),
@@ -105,7 +106,7 @@
   align-items: center;
   gap: 10px; /* title 텍스트와 caution 아이콘 사이 */
   color: var(--color-font-primary-black-100);
-  line-height: var(--line-height-body-md); /* 26px 고정 — 라인박스 흔들림 제거 */
+  line-height: var(--line-height-body-md); /* 26px 고정 — 14↔16 전환 중 라인박스 흔들림 제거 */
   transition: font-size 0.6s var(--ease-standard);
 }
 
@@ -220,6 +221,6 @@
 /* ---------- Card Modifier ---------- */
 .accordion-row--card {
   border-radius: 16px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.02), 0 0 1px rgba(0, 0, 0, 0.10);
+  box-shadow: 0 4px 8px var(--color-shadow-subtle), 0 0 1px var(--color-shadow-mid);
   overflow: hidden;
 }

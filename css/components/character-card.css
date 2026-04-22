@@ -45,7 +45,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background-color: #000;
+  background-color: var(--color-black-100);
   mix-blend-mode: overlay;
   -webkit-mask-image: var(--character-card-bg);
           mask-image: var(--character-card-bg);

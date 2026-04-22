@@ -17,15 +17,14 @@
 
    주요 스펙:
      - 아바타: 80x80, 원형(radius 100px), gray-5 아웃라인, white 플레이스홀더 배경
-     - 레이아웃: avatar + body 가로 정렬, gap 20px
+     - 레이아웃: avatar + body 가로 정렬, gap 20px (--space-5)
    ============================================ */
 
 /* ---------- Container ---------- */
 .avatar-upload {
   display: inline-flex;
   align-items: center;
-  gap: 20px;
-  padding-top: 10px;
+  gap: var(--space-5);
 }
 
 /* ---------- Avatar Preview ---------- */

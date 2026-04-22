@@ -123,6 +123,7 @@ const buttonVariants = cva("...", {
 - Completed(값 입력 후 blur)는 `default + 값` → 별도 클래스 불필요
 - focus ring은 `body:not(.using-mouse)` 패턴 — input `:focus-visible`이 마우스에도 적용되는 브라우저 버그 회피
 - placeholder: black-50 / focus 시 transparent
+- **동작 (`js/components/form-input.js`)**: 컨테이너 클릭 시 내부 input/textarea로 포커스 위임 — padding 영역을 클릭해도 입력 상태로 전환 (React: shadcn `Input` 사용 시 `<label>`로 감싸거나 `onClick`에 `ref.current.focus()` 처리)
 
 #### `.form-textarea` → shadcn `Textarea`
 - `.form-input`과 동일 컬러 토큰, 차이점: `min-height: 108px` (5줄 고정 = line-height 18px × 5 + padding 상하 16px + 2px 안전 마진), `align-items: flex-start`
@@ -139,6 +140,7 @@ const buttonVariants = cva("...", {
 - `.form-field__hint`: caption w4 / black-50
 - `.form-field__caution`: caption w4 / red-100 (에러 상태)
 - gap 6px, column flex, `width: 100%` (부모 컨테이너 폭 따름 · Figma 기준 300px)
+- body가 `.avatar-upload`일 때만 `:has()`로 gap을 16px(`--space-4`)로 확대 — 아바타 블록은 라벨과 간격이 더 필요
 - **Figma 레이아웃 variant 5종**:
   1. `.form-textarea` only (하단 문구 없음)
   2. `.form-textarea` + hint
@@ -150,7 +152,7 @@ const buttonVariants = cva("...", {
 
 #### `.avatar-upload` → 커스텀 (shadcn `Avatar` + `Button` + `Input[type=file]` 조합)
 - 80×80 원형 프리뷰(`__preview` · gray-5 outline · white 플레이스홀더 배경) + body(업로드 버튼 + hint)
-- gap 20px, 가로 정렬, padding-top 10px
+- gap 20px (--space-5), 가로 정렬 (container padding 없음)
 - 업로드 버튼: `.btn.btn-line.btn--sm` + `.icon.icon-folder-open` + 텍스트
 - 이미지 등록 시 `.avatar-upload__image` (object-fit: cover)
 - **동작 (`js/components/avatar-upload.js`)**: 각 `.avatar-upload`에 hidden `<input type="file" accept="image/jpeg,image/png,image/webp">`를 자동 주입 → 버튼 클릭 시 OS 파일 선택 다이얼로그 오픈 → 선택 후 FileReader로 `__preview` 이미지 갱신
@@ -176,6 +178,13 @@ const buttonVariants = cva("...", {
   3. **아이콘 only**: chevron 단독 (기본)
   header flex의 `gap: var(--space-3)` (12px)로 trailing 요소들이 자연스럽게 띄워짐
 - TODO: React에서는 shadcn `Accordion` (Radix) 사용 — `AccordionTrigger`(header) / `AccordionContent`(content). 단일 링크 variant는 별도 `<Link>` 컴포넌트로 분리
+
+#### `.section-label` → 커스텀 `<SectionLabel>` (typography utility)
+- 리스트/카드 그룹 상단 섹션 헤딩 (예: reader-account-setting 의 「プロフィール」/「ログイン情報」/「アカウント操作」)
+- HTML 구조: `<div class="section-label">プロフィール</div>` — children 직접 텍스트 1줄
+- Spec: 12/18 w600, black-100, padding `24px 8px 6px` (상/좌우/하)
+- flex 컬럼 컨테이너 안에서 `align-self: stretch`로 전체 폭 차지 (컴포넌트 자체는 `display: block`)
+- 컨테이너에 font-size/line-height를 **직접** 지정해 body 16px 상속에 의한 line-box 팽창(26px)을 차단 — React 이식 시에도 외부 `<span class="text-caption-w6">` 래핑 대신 컴포넌트 자체가 타이포를 소유하도록 유지
 
 ---
 

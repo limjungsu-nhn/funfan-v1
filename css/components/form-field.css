@@ -30,6 +30,12 @@
   box-sizing: border-box;
 }
 
+/* avatar-upload를 body로 쓸 때만 label↔body 간격 확대
+   (기존 padding-top: 10px 대체 — avatar-upload 내부 패딩 없이 깔끔히 분리) */
+.form-field:has(> .avatar-upload) {
+  gap: var(--space-4);
+}
+
 /* ---------- Label (Title + Required) ---------- */
 .form-field__label {
   display: inline-flex;

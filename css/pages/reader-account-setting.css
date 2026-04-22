@@ -1,0 +1,104 @@
+/* ============================================
+   reader-account-setting.html 전용 레이아웃
+   독자(Reader)용 계정 설정 — 좌/우 패널 없이 중앙 single 컬럼.
+   이식 단위: React <ReaderAccountPage> — navbar만 공유, app-shell 미사용.
+
+   구성:
+     .reader-account              외곽 컨테이너 (bg soft, L/R border)
+       .reader-account__inner     1008px 내부 스택 (header + sections)
+         .reader-account__header  3열 (back btn / 타이틀 / spacer)
+         .reader-account__sections  섹션 라벨 + accordion-row--card 리스트
+
+   1440 기준 토큰:
+     - padding:   --p5(72px) / bottom --p12_5(180px)
+     - width:     --p70(1008px)
+     - gap:       --space-7(28px) 섹션간, --space-1_5(6px) 카드간
+   ============================================ */
+
+/* ---------- Base reset (app-shell 미사용 페이지 전용) ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-width: var(--base);
+  background: var(--color-bg-soft);
+  font-family: var(--font-family-base);
+  overscroll-behavior: none;
+}
+
+.navbar { min-width: var(--base); }
+
+/* ---------- Outer Container ---------- */
+.reader-account {
+  min-height: calc(100vh - var(--navbar-height));
+  margin-top: var(--navbar-height);
+  background: var(--color-bg-soft);
+  border-left: 1px solid var(--color-gray-5);
+  border-right: 1px solid var(--color-gray-5);
+  padding: var(--p5) 0 var(--p12_5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-7);
+  box-sizing: border-box;
+}
+
+/* ---------- Inner (1008px stack) ---------- */
+.reader-account__inner {
+  width: var(--p70);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+}
+
+/* ---------- Header (3-column) ---------- */
+.reader-account__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.reader-account__header-left,
+.reader-account__header-right {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+}
+
+.reader-account__header-left {
+  justify-content: flex-start;
+}
+
+.reader-account__header-right {
+  justify-content: flex-end;
+}
+
+.reader-account__header-center {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.reader-account__title {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+}
+
+.reader-account__email {
+  margin: 0;
+  color: var(--color-font-primary-black-50);
+}
+
+/* ---------- Sections ---------- */
+.reader-account__sections {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1_5);
+}
+
+/* 섹션 라벨 스타일은 css/components/section-label.css 로 분리 — .section-label 사용 */

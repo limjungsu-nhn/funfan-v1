@@ -36,8 +36,8 @@
 /* ---------- Count ---------- */
 .emotion-btn__count {
   color: var(--color-font-primary-black-100);
-  font-size: 14px;
-  font-weight: 600;
-  line-height: 22px;
+  font-size: var(--font-size-subtext);
+  font-weight: var(--font-weight-w6);
+  line-height: var(--line-height-subtext);
   font-variant-numeric: tabular-nums;
 }

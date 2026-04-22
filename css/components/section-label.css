@@ -1,0 +1,24 @@
+/* ============================================
+   Section Label — 리스트/카드 그룹 상단 섹션 라벨
+
+   HTML 구조:
+     <div class="section-label">プロフィール</div>
+
+   Spec:
+     - font: 12/18 w600 (text-caption 사이즈 + w600)
+     - color: black-100
+     - padding: 24px 8px 6px (상/좌우/하)
+     - block — flex 컬럼 컨테이너 안에서 align-self: stretch 로 width 100% 확보
+
+   사용 예: reader-account-setting 에서 accordion-row--card 그룹 상단 헤딩.
+   이식 단위: React <SectionLabel />
+   ============================================ */
+
+.section-label {
+  padding: var(--space-6) var(--space-2) var(--space-1_5);
+  color: var(--color-font-primary-black-100);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  font-weight: var(--font-weight-w6);
+}
