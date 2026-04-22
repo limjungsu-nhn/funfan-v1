@@ -41,7 +41,7 @@
   padding-left: 2px;
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 9px; /* space-2(8)와 space-2_5(10) 사이 미세값 — Figma 고정 */
   position: relative;
 }
 
@@ -207,7 +207,7 @@ body:not(.using-mouse) .task-row:has(.task-row__input:focus-visible),
 .task-list-panel__header {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: var(--space-2_5);
 }
 
 .task-list-panel__title {

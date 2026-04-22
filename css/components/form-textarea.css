@@ -75,9 +75,8 @@
   font-weight: var(--font-weight-w4);
 }
 
-.form-textarea__field:focus::placeholder {
-  color: transparent;
-}
+/* form-textarea는 focus 시에도 placeholder 유지 (값 입력 중에만 자연스럽게 가려짐)
+   placeholder를 focus 시 숨기는 동작은 .input-wood 전용 */
 
 /* ---------- Hover ---------- */
 .form-textarea--hover,

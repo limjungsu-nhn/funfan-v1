@@ -18,7 +18,9 @@
   --space-1:    4px;
   --space-1_5:  6px;
   --space-2:    8px;
+  --space-2_5: 10px;
   --space-3:   12px;
+  --space-3_5: 14px;
   --space-4:   16px;
   --space-5:   20px;
   --space-5_5: 22px;
@@ -36,8 +38,14 @@
   --ring-width: 3px;
 
   /* ---------- Border Radius ---------- */
-  --radius-sm:   10px;
-  --radius-full: 100px;  /* 원형 클립핑 (avatar, pill 등) */
+  --radius-xs:    4px;   /* 내부 썸네일·revenue bar */
+  --radius-2xs:   8px;   /* episode-item, float-btn, review-item thumbnail */
+  --radius-sm:   10px;   /* form-input, input-wood */
+  --radius-btn:  12px;   /* button, radio-card base — 버튼/카드 공통 */
+  --radius-md:   16px;   /* chat-input, msg-bubble, my-msg, accordion-row */
+  --radius-lg:   20px;   /* water-card, revenue-card, stat-card */
+  --radius-xl:   24px;   /* series-card, episode-card, garden-card, radio-card card-variant */
+  --radius-full: 100px;  /* 원형 클립핑 (avatar, pill, icon-btn, send-btn, tab, badge 등) */
 
   /* ---------- Easing ----------
      모든 공통 전환(accordion, right-panel, onboarding 랜딩 등)이 참조하는 표준 커브.

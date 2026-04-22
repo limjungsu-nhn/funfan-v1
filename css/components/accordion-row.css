@@ -104,7 +104,7 @@
 .accordion-row__title {
   display: inline-flex;
   align-items: center;
-  gap: 10px; /* title 텍스트와 caution 아이콘 사이 */
+  gap: var(--space-2_5); /* title 텍스트와 caution 아이콘 사이 */
   color: var(--color-font-primary-black-100);
   line-height: var(--line-height-body-md); /* 26px 고정 — 14↔16 전환 중 라인박스 흔들림 제거 */
   transition: font-size 0.6s var(--ease-standard);
@@ -213,14 +213,14 @@
 
 /* ---------- Empty State ---------- */
 .accordion-row__empty {
-  margin: 80px 0;
+  margin: var(--space-20) 0;
   text-align: center;
   color: var(--color-font-primary-black-30);
 }
 
 /* ---------- Card Modifier ---------- */
 .accordion-row--card {
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   box-shadow: 0 4px 8px var(--color-shadow-subtle), 0 0 1px var(--color-shadow-mid);
   overflow: hidden;
 }

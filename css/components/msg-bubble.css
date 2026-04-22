@@ -18,14 +18,14 @@
   min-height: 36px;
   padding: 0 var(--space-4);
   background: var(--color-gray-6);
-  border-radius: 16px;
+  border-radius: var(--radius-md);
   border: none;
   outline: 1px solid transparent;
   outline-offset: -1px;
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2_5);
   box-sizing: border-box;
   cursor: pointer;
   font-family: var(--font-family-base);

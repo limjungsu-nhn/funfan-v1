@@ -31,7 +31,7 @@
 .avatar-upload__preview {
   width: 80px;
   height: 80px;
-  border-radius: 100px;
+  border-radius: var(--radius-full);
   overflow: hidden;
   outline: 1px solid var(--color-gray-5);
   outline-offset: -1px;
@@ -56,5 +56,5 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 6px;
+  gap: var(--space-1_5);
 }

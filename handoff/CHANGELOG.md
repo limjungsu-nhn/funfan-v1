@@ -10,6 +10,14 @@
 
 ## v1.05 (2026-04-22)
 
+### 변경 (토큰) ⚠ 개발 싱크 필요
+- **Spacing Scale 확장**: `--space-2_5: 10px`, `--space-3_5: 14px` 추가 — 기존에 하드코딩되던 10px/14px gap·padding을 토큰화
+- **Border Radius 스케일 전면 개편**: 기존 `--radius-sm: 10px` / `--radius-full: 100px` 2개 → **8개 시맨틱 토큰**으로 확장
+  - `--radius-xs: 4px` / `--radius-2xs: 8px` / `--radius-sm: 10px` / `--radius-btn: 12px` / `--radius-md: 16px` / `--radius-lg: 20px` / `--radius-xl: 24px` / `--radius-full: 100px`
+- **20+ 컴포넌트의 하드코딩 px 치환 완료** — `gap: 6px` → `var(--space-1_5)`, `border-radius: 16px` → `var(--radius-md)` 등 일괄
+- **파일 동기화**: `handoff/design-tokens.json`, `handoff/tailwind-preset.ts` 양쪽 모두 업데이트 (tailwind-preset.ts의 중복 borderRadius 블록 제거)
+- **영향**: 시각적 변화 없음 — 모든 토큰 값이 기존 하드코딩 값과 동일하게 매핑됨
+
 ### 추가 (컴포넌트)
 - **`character-card`** — 파트너 선택 화면용 조합 카드 (300×300 고정, `--character-card-size` 변수로 내부 참조)
   - **Variant (포스트잇 색)**: `.character-card--blue` / `.character-card--yellow` / `.character-card--pink` — `bg_postit_*.png` 배경. 각 variant는 `--character-card-bg` 변수로 원본 URL만 보관

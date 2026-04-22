@@ -29,7 +29,7 @@
   width: 928px;
   padding: var(--space-4) var(--space-4) var(--space-4) var(--space-6);
   background: var(--color-white-50);
-  border-radius: 14px;
+  border-radius: 14px; /* Figma 고정값 — radius 스케일(4/8/10/12/16/20/24)에 속하지 않는 단일값 */
   display: inline-flex;
   justify-content: space-between;
   align-items: center;

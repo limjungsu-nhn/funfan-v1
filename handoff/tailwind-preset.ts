@@ -105,20 +105,24 @@ const preset: Partial<Config> = {
          Usage: className="p-space-4 gap-space-2"
       ---------------------------------------------------------- */
       spacing: {
-        'space-1':  '4px',
-        'space-2':  '8px',
-        'space-3':  '12px',
-        'space-4':  '16px',
-        'space-5':  '20px',
-        'space-6':  '24px',
-        'space-7':  '28px',
-        'space-8':  '32px',
-        'space-9':  '36px',
-        'space-10': '40px',
-        'space-12': '48px',
-        'space-14': '56px',
-        'space-16': '64px',
-        'space-20': '80px',
+        'space-1':   '4px',
+        'space-1_5': '6px',
+        'space-2':   '8px',
+        'space-2_5': '10px',
+        'space-3':   '12px',
+        'space-3_5': '14px',
+        'space-4':   '16px',
+        'space-5':   '20px',
+        'space-5_5': '22px',
+        'space-6':   '24px',
+        'space-7':   '28px',
+        'space-8':   '32px',
+        'space-9':   '36px',
+        'space-10':  '40px',
+        'space-12':  '48px',
+        'space-14':  '56px',
+        'space-16':  '64px',
+        'space-20':  '80px',
 
         /* Layout percent (page level, 1440 기준) */
         'p1':   '14.4px',
@@ -159,15 +163,18 @@ const preset: Partial<Config> = {
         'base': '1440px', // 모든 페이지 최소 가로
       },
 
-      /* ---------- Border Radius ---------- */
+      /* ---------- Border Radius ----------
+         css/tokens/layout.css 미러. 용도별 시맨틱 네이밍.
+      ---------------------------------------- */
       borderRadius: {
-        'sm':   '4px',
-        'md':   '8px',
-        'lg':   '12px',
-        'xl':   '16px',
-        '2xl':  '20px',
-        '3xl':  '24px',
-        'full': '100px',
+        'xs':   '4px',   // revenue bar, 내부 썸네일
+        '2xs':  '8px',   // episode-item, float-btn, review-item 썸네일
+        'sm':   '10px',  // form-input, input-wood
+        'btn':  '12px',  // button, radio-card (base)
+        'md':   '16px',  // chat-input, msg-bubble, my-msg, accordion-row
+        'lg':   '20px',  // water-card, revenue-card, stat-card
+        'xl':   '24px',  // series-card, episode-card, garden-card, radio-group-card
+        'full': '100px', // 원형·pill (avatar, icon-btn, send-btn, tab, badge)
       },
 
       /* ---------- Typography ---------- */
@@ -214,11 +221,6 @@ const preset: Partial<Config> = {
       /* ---------- Ring Width ---------- */
       ringWidth: {
         '3': '3px',
-      },
-
-      /* ---------- Border Radius ---------- */
-      borderRadius: {
-        sm: '10px',
       },
 
       /* ---------- Transitions ---------- */

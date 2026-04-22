@@ -22,7 +22,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 100px;
+  border-radius: var(--radius-full);
   border: none;
   background: var(--color-gray-4);
   cursor: pointer;

@@ -122,7 +122,7 @@ const buttonVariants = cva("...", {
 - **Disabled는 배경 white 유지** (gray-6 아님) · placeholder/text 모두 black-30
 - Completed(값 입력 후 blur)는 `default + 값` → 별도 클래스 불필요
 - focus ring은 `body:not(.using-mouse)` 패턴 — input `:focus-visible`이 마우스에도 적용되는 브라우저 버그 회피
-- placeholder: black-50 / focus 시 transparent
+- placeholder: black-50 / focus 시에도 유지 (값 입력 중에만 자연스럽게 가려짐) — focus 시 숨김은 `.input-wood` 전용
 - **동작 (`js/components/form-input.js`)**: 컨테이너 클릭 시 내부 input/textarea로 포커스 위임 — padding 영역을 클릭해도 입력 상태로 전환 (React: shadcn `Input` 사용 시 `<label>`로 감싸거나 `onClick`에 `ref.current.focus()` 처리)
 
 #### `.form-textarea` → shadcn `Textarea`

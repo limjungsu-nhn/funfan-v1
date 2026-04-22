@@ -5,7 +5,6 @@
     "minWidth": "1440px",
     "navbarHeight": "64px",
     "ringWidth": "3px",
-    "radiusSm": "10px",
     "fontFamily": "\"Hiragino Sans\", \"ヒラギノ角ゴ ProN\", \"Hiragino Kaku Gothic ProN\", sans-serif"
   },
 
@@ -88,20 +87,24 @@
 
   "spacing": {
     "$description": "컴포넌트 내부 간격(padding, gap, margin)용 절대값 스케일. --p{n}와 구분해서 사용.",
-    "1":  "4px",
-    "2":  "8px",
-    "3":  "12px",
-    "4":  "16px",
-    "5":  "20px",
-    "6":  "24px",
-    "7":  "28px",
-    "8":  "32px",
-    "9":  "36px",
-    "10": "40px",
-    "12": "48px",
-    "14": "56px",
-    "16": "64px",
-    "20": "80px"
+    "1":   "4px",
+    "1_5": "6px",
+    "2":   "8px",
+    "2_5": "10px",
+    "3":   "12px",
+    "3_5": "14px",
+    "4":   "16px",
+    "5":   "20px",
+    "5_5": "22px",
+    "6":   "24px",
+    "7":   "28px",
+    "8":   "32px",
+    "9":   "36px",
+    "10":  "40px",
+    "12":  "48px",
+    "14":  "56px",
+    "16":  "64px",
+    "20":  "80px"
   },
 
   "layoutPercent": {
@@ -139,12 +142,14 @@
   },
 
   "borderRadius": {
-    "sm":   "4px",
-    "md":   "8px",
-    "lg":   "12px",
-    "xl":   "16px",
-    "2xl":  "20px",
-    "3xl":  "24px",
+    "$description": "css/tokens/layout.css 미러. 컴포넌트 용도별 시맨틱 네이밍.",
+    "xs":   "4px",
+    "2xs":  "8px",
+    "sm":   "10px",
+    "btn":  "12px",
+    "md":   "16px",
+    "lg":   "20px",
+    "xl":   "24px",
     "full": "100px"
   },
 

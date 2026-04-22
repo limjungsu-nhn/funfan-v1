@@ -29,10 +29,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: var(--space-1_5);
   min-height: 40px;
   padding: 0 var(--space-4);
-  border-radius: 12px;
+  border-radius: var(--radius-btn);
   border: none;
   cursor: pointer;
   white-space: nowrap;

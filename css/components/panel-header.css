@@ -30,7 +30,7 @@
 
 .panel-header {
   width: var(--p20);
-  padding: 14px var(--space-5);
+  padding: var(--space-3_5) var(--space-5);
   background: var(--color-white-100);
   border-bottom: 1px solid var(--color-gray-6);
   display: flex;

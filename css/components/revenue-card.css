@@ -46,10 +46,10 @@
 /* ---------- Container ---------- */
 .revenue-card {
   width: 100%;
-  padding: 24px 24px 32px;
+  padding: var(--space-6) var(--space-6) var(--space-8);
   background: var(--color-white-100);
   box-shadow: 0px 4px 8px var(--color-shadow-subtle), 0px 0px 1px var(--color-shadow-mid);
-  border-radius: 20px;
+  border-radius: var(--radius-lg);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -139,7 +139,7 @@
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2_5);
 }
 
 /* ---------- Bar 등장 애니메이션 ---------- */
@@ -151,7 +151,7 @@
 /* ---------- Bar ---------- */
 .revenue-card__bar {
   width: 50%;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
   /* 높이: JS가 --bar-ratio(0~1)를 설정 → 최대값 대비 비율로 렌더 */
   height: calc(var(--bar-ratio, 0) * 100%);
   min-height: 2px; /* 극소값도 최소 2px 표시 */

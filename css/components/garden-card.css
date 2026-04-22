@@ -16,9 +16,9 @@
 
 .garden-card {
   width: 1000px;
-  padding: 48px 36px 36px 36px;
+  padding: var(--space-12) var(--space-9) var(--space-9) var(--space-9);
   background: var(--color-wood-6);
-  border-radius: 24px;
+  border-radius: var(--radius-xl);
   box-shadow: 0 4px 8px var(--color-shadow-subtle), 0 0 1px var(--color-shadow-mid);
   display: flex;
   flex-direction: column;

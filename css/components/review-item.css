@@ -29,7 +29,7 @@
   display: flex;
   align-items: flex-start;
   gap: var(--space-5);
-  padding: 12px 0;
+  padding: var(--space-3) 0;
 }
 
 /* 마지막 아이템 하단 패딩 제거 */
@@ -41,7 +41,7 @@
 .review-item__thumb {
   width: 65px;
   height: 48px;
-  border-radius: 8px;
+  border-radius: var(--radius-2xs);
   object-fit: cover;
   flex-shrink: 0;
   background-color: var(--color-gray-5); /* 이미지 없을 때 플레이스홀더 */
@@ -68,7 +68,7 @@
 .review-item__meta {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-1_5);
 }
 
 .review-item__meta-name {
@@ -88,8 +88,8 @@
   display: inline-flex;
   flex-wrap: wrap;
   align-items: flex-start;
-  gap: 6px;
-  padding-top: 8px;
+  gap: var(--space-1_5);
+  padding-top: var(--space-2);
 }
 
 /* ==============================================
@@ -108,13 +108,13 @@
 
 .review-item--fan {
   align-self: stretch; /* 부모 너비에 자동 맞춤 */
-  padding: 14px var(--space-6) 14px var(--space-5);
+  padding: var(--space-3_5) var(--space-6) var(--space-3_5) var(--space-5);
   background: var(--color-white-100);
   gap: var(--space-3);
 }
 
 .review-item--fan:last-child {
-  padding-bottom: 14px; /* 기본 last-child override 무효화 */
+  padding-bottom: var(--space-3_5); /* 기본 last-child override 무효화 */
 }
 
 .review-item__icon {
@@ -123,7 +123,7 @@
   height: 32px;
   flex-shrink: 0;
   background: var(--color-gray-6);
-  border-radius: 100px;
+  border-radius: var(--radius-full);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -170,10 +170,10 @@
 
 .fan-feed__header {
   align-self: stretch;
-  padding: var(--space-1) 22px;
+  padding: var(--space-1) var(--space-5_5);
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-2_5);
   flex-shrink: 0;
 }
 
@@ -185,7 +185,7 @@
 
 .fan-feed__list {
   height: 100%;
-  padding: 12px 0 20px;
+  padding: var(--space-3) 0 var(--space-5);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -322,7 +322,7 @@
 .review-item__like:focus-visible {
   outline: none;
   box-shadow: 0 0 0 var(--ring-width) var(--color-gray-5);
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
 }
 
 /* --- Score row: stars + date --- */

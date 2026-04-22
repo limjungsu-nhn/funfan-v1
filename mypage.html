@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>マイページ — FunFan</title>
+
+  <!-- Design Tokens -->
+  <link rel="stylesheet" href="css/tokens/typography.css">
+  <link rel="stylesheet" href="css/tokens/layout.css">
+  <link rel="stylesheet" href="css/tokens/color.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/logo.css">
+  <link rel="stylesheet" href="css/components/icon.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/tab.css">
+  <link rel="stylesheet" href="css/components/badge.css">
+  <link rel="stylesheet" href="css/components/accordion-row.css">
+  <link rel="stylesheet" href="css/components/section-label.css">
+  <link rel="stylesheet" href="css/components/form-field.css">
+  <link rel="stylesheet" href="css/components/form-input.css">
+  <link rel="stylesheet" href="css/components/avatar-upload.css">
+
+  <!-- Page -->
+  <link rel="stylesheet" href="css/pages/account-setting.css">
+  <link rel="stylesheet" href="css/pages/reader-account-setting.css">
+
+  <script src="js/core/keyboard-focus.js" defer></script>
+  <script src="js/components/accordion-row.js" defer></script>
+  <script src="js/components/avatar-upload.js" defer></script>
+  <script src="js/components/form-input.js" defer></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar-logo">
+      <i class="logo logo-funfan"></i>
+    </div>
+    <div class="navbar-actions">
+      <div class="navbar-tabs">
+        <div class="tab-group">
+          <button class="tab tab--selected">公開</button>
+          <button class="tab">非公開</button>
+        </div>
+      </div>
+      <button class="btn btn-ghost">
+        <i class="icon icon-account-circle"></i>
+        <span class="text-assist-w4">マイページ</span>
+      </button>
+      <button class="btn btn-filled-nature">
+        <i class="icon icon-laptop-mac"></i>
+        <span class="text-assist-w4">ワークスペース</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="reader-account">
+    <div class="reader-account__inner">
+      <!-- TODO: マイページ コンテンツ -->
+    </div>
+  </main>
+
+</body>
+</html>

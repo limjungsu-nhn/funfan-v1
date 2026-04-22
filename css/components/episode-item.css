@@ -38,7 +38,7 @@
 .episode-item__thumb {
   width: 120px;
   height: 80px;
-  border-radius: 8px;
+  border-radius: var(--radius-2xs);
   overflow: hidden;
   flex-shrink: 0;
   position: relative;
@@ -75,5 +75,5 @@
 .episode-item:focus-visible {
   outline: none;
   box-shadow: 0 0 0 var(--ring-width) var(--color-gray-5);
-  border-radius: 8px;
+  border-radius: var(--radius-2xs);
 }

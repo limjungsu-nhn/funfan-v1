@@ -21,7 +21,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 100px;
+  border-radius: var(--radius-full);
   border: none;
   background: var(--color-white-100);
   cursor: pointer;
