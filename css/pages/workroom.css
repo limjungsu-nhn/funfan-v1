@@ -87,6 +87,8 @@ html.mini-mode .workspace__timer {
 
 .timer-display__time {
   font-family: 'Chango', sans-serif;
+  /* Timer 전용 커스텀 디스플레이 — Figma 고정값 (토큰 스케일 밖):
+     font-size 80px (Chango 타이머 숫자), stroke/shadow rgba(78,71,56) (wood 톤 커스텀) */
   font-size: 80px;
   line-height: 1;
   color: var(--color-white-warm);

@@ -59,7 +59,7 @@ body {
   font-size: var(--font-size-body-md);
   line-height: var(--line-height-body-md);
   font-weight: var(--font-weight-w4);
-  min-width: 1440px;
+  min-width: var(--base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

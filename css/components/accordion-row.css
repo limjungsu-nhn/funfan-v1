@@ -220,7 +220,31 @@
 
 /* ---------- Card Modifier ---------- */
 .accordion-row--card {
+  position: relative;  /* hover 시 z-index 끌어올리기 위한 stacking context 기준 */
+  z-index: 0;
   border-radius: var(--radius-md);
   box-shadow: 0 4px 8px var(--color-shadow-subtle), 0 0 1px var(--color-shadow-mid);
   overflow: hidden;
+  transition: background 0.2s var(--ease-standard), box-shadow 0.2s var(--ease-standard);
+}
+
+/* ---------- Hover ---------- */
+/* (1) card 공통 — link / 접고펼 불문: shadow lift + z-index 상승 + chevron 진해짐
+        hover 시 인접 카드 위로 — 그림자가 다음 카드에 가려지지 않게. */
+.accordion-row--card:hover {
+  z-index: 1;
+  box-shadow: 0 6px 12px var(--color-shadow-soft), 0 0 1px var(--color-shadow-mid);
+}
+
+.accordion-row--card:hover .accordion-row__chevron {
+  color: var(--color-font-primary-black-100);
+}
+
+/* (2) 비-card link — 배경 tint + chevron 진해짐 */
+.accordion-row--link:not(.accordion-row--card):hover {
+  background: var(--color-gray-6);
+}
+
+.accordion-row--link:not(.accordion-row--card):hover .accordion-row__chevron {
+  color: var(--color-font-primary-black-100);
 }

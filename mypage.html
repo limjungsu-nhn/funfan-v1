@@ -24,8 +24,7 @@
   <link rel="stylesheet" href="css/components/avatar-upload.css">
 
   <!-- Page -->
-  <link rel="stylesheet" href="css/pages/account-setting.css">
-  <link rel="stylesheet" href="css/pages/reader-account-setting.css">
+  <link rel="stylesheet" href="css/pages/mypage.css">
 
   <script src="js/core/keyboard-focus.js" defer></script>
   <script src="js/components/accordion-row.js" defer></script>
@@ -46,21 +45,50 @@
           <button class="tab">非公開</button>
         </div>
       </div>
-      <button class="btn btn-ghost">
+      <a class="btn btn-ghost" href="mypage.html">
         <i class="icon icon-account-circle"></i>
         <span class="text-assist-w4">マイページ</span>
-      </button>
-      <button class="btn btn-filled-nature">
+      </a>
+      <a class="btn btn-filled-nature" href="workspace.html">
         <i class="icon icon-laptop-mac"></i>
         <span class="text-assist-w4">ワークスペース</span>
-      </button>
+      </a>
     </div>
   </header>
 
   <!-- Main -->
-  <main class="reader-account">
-    <div class="reader-account__inner">
-      <!-- TODO: マイページ コンテンツ -->
+  <main class="mypage">
+    <div class="mypage__inner">
+
+      <!-- Header -->
+      <div class="mypage__header">
+        <h1 class="mypage__title text-h2-w6">マイページ</h1>
+        <p class="mypage__email text-caption-w4">tsuchida.kaho@example.com</p>
+      </div>
+
+      <!-- Sections -->
+      <div class="mypage__sections">
+
+        <!-- アカウント設定 진입 카드 -->
+        <a class="accordion-row accordion-row--link accordion-row--card" href="reader-account-setting.html">
+          <div class="accordion-row__body">
+            <span class="accordion-row__title text-subtext-w6">つちだ</span>
+            <span class="accordion-row__desc text-overline-w4">tsuchida.kaho@example.com</span>
+          </div>
+          <img class="accordion-row__avatar" src="img/img_avatar01.png" alt="">
+          <i class="icon icon-chevron-right accordion-row__chevron" aria-hidden="true"></i>
+        </a>
+
+        <!-- Phase 0 안내 -->
+        <div class="mypage__phase-note">
+          <p class="mypage__phase-note-text text-overline-w4">
+            Phase 0 のマイページは、プロフィールヘッダーと ⚙️ 設定入口のみを表示します。<br>
+            マイ本棚・水管理・フォロー中タブは Phase 1 以降で追加されます。
+          </p>
+        </div>
+
+      </div>
+
     </div>
   </main>
 

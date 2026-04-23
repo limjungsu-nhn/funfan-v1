@@ -1,0 +1,104 @@
+/* ============================================
+   mypage.html 전용 레이아웃 (Phase 0)
+   リーダー マイページ — 좌/우 패널 없이 중앙 single 컬럼.
+   이식 단위: React <MyPage> — navbar만 공유, app-shell 미사용.
+
+   Phase 0 구성:
+     .mypage                        외곽 컨테이너 (bg soft, L/R border)
+       .mypage__inner               1008px 내부 스택 (header + sections)
+         .mypage__header            중앙 정렬 타이틀 + 이메일
+         .mypage__sections          설정 진입 카드 + Phase 0 안내 카드
+           .accordion-row--link.accordion-row--card  프로필/계정 설정 진입
+           .mypage__phase-note      Phase 0 안내 (flex:1 로 하단 여백 채움)
+
+   1440 기준 토큰:
+     - padding:   --p5(72px) / bottom --p12_5(180px)
+     - width:     --p70(1008px)
+     - gap:       --space-7(28px) 섹션간, --space-1_5(6px) 카드간
+   ============================================ */
+
+/* ---------- Base reset (app-shell 미사용 페이지 전용) ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-width: var(--base);
+  background: var(--color-bg-soft);
+  font-family: var(--font-family-base);
+  overscroll-behavior: none;
+}
+
+.navbar { min-width: var(--base); }
+
+/* ---------- Outer Container ---------- */
+.mypage {
+  min-height: calc(100vh - var(--navbar-height));
+  margin-top: var(--navbar-height);
+  background: var(--color-bg-soft);
+  border-left: 1px solid var(--color-gray-5);
+  border-right: 1px solid var(--color-gray-5);
+  padding: var(--p5) 0 var(--p12_5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-7);
+  box-sizing: border-box;
+}
+
+/* ---------- Inner (1008px stack) ---------- */
+.mypage__inner {
+  width: var(--p70);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-7);
+}
+
+/* ---------- Header (centered title + email) ---------- */
+.mypage__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.mypage__title {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+}
+
+.mypage__email {
+  margin: 0;
+  color: var(--color-font-primary-black-50);
+}
+
+/* ---------- Sections ---------- */
+.mypage__sections {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1_5);
+}
+
+/* ---------- Phase 0 안내 카드 ----------
+   flex:1 로 하단 영역을 채워 Phase 1 추가 전까지 시각적 균형 유지.
+   Phase 1 에서 マイ本棚/水管理/フォロー中 탭 추가되면 제거 예정. */
+.mypage__phase-note {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  background: var(--color-white-100);
+  border-radius: var(--radius-md);
+  box-shadow:
+    0 4px 8px var(--color-shadow-subtle),
+    0 0 1px var(--color-shadow-mid);
+}
+
+.mypage__phase-note-text {
+  margin: 0;
+  color: var(--color-font-primary-black-30);
+  text-align: center;
+}

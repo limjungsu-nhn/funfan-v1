@@ -127,7 +127,7 @@ const preset: Partial<Config> = {
         /* Layout percent (page level, 1440 기준) */
         'p1':   '14.4px',
         'p2':   '28.8px',
-        'p2-5': '36px',
+        'p2_5': '36px',
         'p3':   '43.2px',
         'p4':   '57.6px',
         'p5':   '72px',
@@ -213,9 +213,10 @@ const preset: Partial<Config> = {
 
       /* ---------- Box Shadow ---------- */
       boxShadow: {
-        'sm':   '0px 1px 2px rgba(0, 0, 0, 0.05)',
-        'card': '0px 4px 8px rgba(0, 0, 0, 0.02), 0px 0px 1px rgba(0, 0, 0, 0.10)',
-        'ring': '0px 0px 0px 3px #E5E5EA, 0px 1px 2px rgba(0, 0, 0, 0.05)',
+        'sm':         '0px 1px 2px rgba(0, 0, 0, 0.05)',
+        'card':       '0px 4px 8px rgba(0, 0, 0, 0.02), 0px 0px 1px rgba(0, 0, 0, 0.10)',
+        'card-hover': '0px 6px 12px rgba(0, 0, 0, 0.06), 0px 0px 1px rgba(0, 0, 0, 0.10)',
+        'ring':       '0px 0px 0px 3px #E5E5EA, 0px 1px 2px rgba(0, 0, 0, 0.05)',
       },
 
       /* ---------- Ring Width ---------- */

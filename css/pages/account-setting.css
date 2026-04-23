@@ -71,7 +71,7 @@
 }
 
 .settings-form__actions .btn--sm {
-  min-width: 84px;
+  min-width: 84px;  /* Figma 고정값 — 폼 하단 액션 버튼 최소폭 (保存/キャンセル 일관 폭) */
 }
 
 /* 프로필 이미지: avatar-upload 재사용, wood-6 multiply 오버레이 표현 */

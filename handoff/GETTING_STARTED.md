@@ -32,7 +32,7 @@ python3 -m http.server 8788
 - http://localhost:8788/series-post-management.html — 시리즈 관리
 - http://localhost:8788/account-setting.html — 크리에이터 설정
 - http://localhost:8788/reader-account-setting.html — 리더 설정
-- http://localhost:8788/mypage.html — 마이페이지 (쉘만, 본문 TODO)
+- http://localhost:8788/mypage.html — 마이페이지 (Phase 0: 프로필 헤더 + 설정 진입)
 
 > 포트 8788은 `.claude/launch.json` 기준. 다른 포트로 띄워도 무방.
 

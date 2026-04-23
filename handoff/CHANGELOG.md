@@ -8,6 +8,51 @@
 
 ---
 
+## v1.05.2 (2026-04-23, v1.05.1 후속)
+
+v1.05.1 배송 이후 반영된 변경 일괄. **기존 구현 깨지는 변경 없음** — 신규 페이지 본문 완성 + 인터랙션 추가 + 라우팅 연결이 중심.
+
+### 추가 (페이지)
+- **`mypage.html` 본문 완성** — v1.05.1 쉘 상태 → 실제 페이지. 헤더(타이틀 + 이메일) + 프로필 진입 카드(`accordion-row--link.--card`) + Phase 0 안내 카드 구성
+  - 페이지 레이아웃: `css/pages/mypage.css` 신설 (`.reader-account` 패턴 재사용 — 1008px 중앙 스택)
+  - `index.html` 엔트리 ⏳ → ✅
+
+### 추가 (컴포넌트 인터랙션)
+- **`accordion-row` hover 효과 신설**
+  - `--card` (link/접고펼 공통): box-shadow lift (4/8 `shadow-subtle` → 6/12 `shadow-soft`) + `z-index: 1` 상승 + chevron `black-100`
+  - 비-card `--link`: `gray-6` 배경 tint + chevron `black-100`
+  - 비-card 접고펼: 기존 `__header:hover` chevron-only 유지
+  - transition `0.2s var(--ease-standard)` (background / box-shadow)
+
+### 추가 (토큰) ⚠ 개발 싱크
+- **`--color-shadow-soft: rgba(0, 0, 0, 0.06)`** — accordion-row card hover shadow 전용 (기존 `--color-shadow-subtle` 2% / `--color-shadow-light` 5% 사이 단계)
+- `tailwind-preset.ts`에 **`shadow-card-hover`** preset 추가: `0px 6px 12px rgba(0,0,0,0.06), 0px 0px 1px rgba(0,0,0,0.10)`
+
+### 변경 (라우팅)
+- **모든 페이지 navbar의 `マイページ` / `ワークスペース`** 버튼을 `<a href>` 로 전환
+  - `マイページ` → `mypage.html` (8개 파일: workspace · workroom · series-post-management · account-setting · reader-account-setting · workspace-onboarding · mypage · styleguide navbar demo)
+  - `ワークスペース` → `workspace.html` (동일 8개 파일)
+  - 스타일은 `.btn .btn-ghost` / `.btn .btn-filled-nature` 클래스 기반이라 `<a>`에서도 동일 렌더. `.btn`의 `text-decoration: none` 기본 설정으로 밑줄 없음
+  - React 이식 시: `<Link>`(Next.js) 또는 `<NavLink>`(react-router) 로 감싼 `<Button asChild>` 권장
+
+### 변경 (코드 정리)
+- **`css/tokens/typography.css`** — `body { min-width: 1440px }` 하드코딩 → `var(--base)` (규칙 7 준수)
+- **`handoff/tailwind-preset.ts`** — spacing `'p2-5'` (하이픈) → `'p2_5'` (언더스코어) 정정. `design-tokens.json`·`css/tokens/layout.css`와 네이밍 일치
+- **의도 주석 보강** — Figma 고정값임을 명시:
+  - `css/pages/workroom.css` — timer `font-size: 80px` + `rgba(78,71,56)` stroke/shadow
+  - `css/components/chat-input.css` — `width: 256px`
+  - `css/pages/account-setting.css` — 폼 액션 `.btn--sm { min-width: 84px }`
+- **`series-home.html`** — `js/core/keyboard-focus.js` 로드 추가 (프로젝트 일관성)
+- **`styleguide.html` icon showcase** — `.icon-bar-chart-4-bars` alias 표기 추가 (`.icon-bar-chart`와 동일 mask)
+
+### 개발 액션 요약
+1. `tailwind-preset.ts` 재import — `shadow-card-hover` preset 추가 + `p2_5` 네이밍 정정
+2. `mypage` 페이지 라우트 추가 (`/app/mypage` 등)
+3. `accordion-row` cva 에 hover variant 반영 — card variant는 shadow lift + z-index, 비-card link 는 배경 tint
+4. navbar의 프로필/워크스페이스 버튼을 `<Link>` 감싼 `<Button asChild>` 로 전환
+
+---
+
 ## v1.05.1 (2026-04-22, v1.05 후속)
 
 v1.05 오후 배송(`37fa0ec` 시점) 이후 반영된 변경 일괄 정리.
