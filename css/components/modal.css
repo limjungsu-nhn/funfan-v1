@@ -1,0 +1,365 @@
+/* ============================================
+   Modal Component
+
+   HTML 구조:
+     <div class="modal-backdrop modal-backdrop--open">
+       <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-xxx">
+         <h2 class="modal__title" id="modal-title-xxx">Title</h2>
+         <div class="modal__section">
+           <label class="modal__label">Field label</label>
+           <div class="modal__list">...</div>
+         </div>
+         <div class="modal__footer">
+           <button class="btn btn-line btn--sm" data-modal-close><span>閉じる</span></button>
+           <button class="btn btn-filled-nature btn--sm"><span>保存する</span></button>
+         </div>
+       </div>
+     </div>
+
+   Open/Close:
+     - .modal-backdrop--open           — 표시 (default는 display: none)
+     - data-modal-open="#id"           — 트리거 버튼 (JS에서 처리)
+     - data-modal-close                — 내부 닫기 버튼
+     - ESC / 배경 클릭으로도 닫힘 (modal.js)
+
+   Layering:
+     - backdrop top: 64px (navbar 제외)
+     - z-index: 1000 (navbar z-index: 100 위)
+   ============================================ */
+
+/* ---------- Backdrop ---------- */
+.modal-backdrop {
+  display: flex;
+  position: fixed;
+  top: 0;                        /* navbar 포함 전체 영역 오버레이 */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-width: var(--base);
+  background: transparent;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);  /* Safari */
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity 0.24s ease,
+    visibility 0s linear 0.24s,
+    background-color 0.24s ease,
+    backdrop-filter 0.24s ease,
+    -webkit-backdrop-filter 0.24s ease;
+}
+
+.modal-backdrop--open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  background: color-mix(in srgb, var(--color-bg-soft) 50%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition:
+    opacity 0.24s ease,
+    visibility 0s linear 0s,
+    background-color 0.24s ease,
+    backdrop-filter 0.24s ease,
+    -webkit-backdrop-filter 0.24s ease;
+}
+
+/* ---------- Container ---------- */
+.modal {
+  width: 504px;
+  height: 640px;
+  padding: var(--space-10) var(--space-7);  /* 40px 28px */
+  background: var(--color-white-100);
+  border-radius: var(--radius-lg);  /* 20px */
+  box-shadow: 0px 4px 8px var(--color-shadow-subtle), 0px 0px 1px var(--color-shadow-mid);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);  /* 24px */
+  box-sizing: border-box;
+  margin-bottom: var(--navbar-height);  /* 카드 하단 여백 — navbar 높이와 동일 */
+  transform: translateY(40px);
+  opacity: 0;
+  transition: transform 0.4s var(--ease-standard), opacity 0.4s var(--ease-standard);
+}
+
+.modal-backdrop--open .modal {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* ---------- Title ---------- */
+.modal__title {
+  margin: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-body-lg);    /* 18px */
+  line-height: var(--line-height-body-lg); /* 28px */
+  font-weight: var(--font-weight-w6);
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Viewport / Track / Step (multi-step slide) ----------
+   타이틀은 modal 루트에 남고, viewport 안쪽에서 step 1 ↔ step 2 가로 슬라이드.
+   footer 도 각 step 안에 포함되어 함께 슬라이드된다.
+*/
+.modal__viewport {
+  align-self: stretch;
+  /* modal 좌우 패딩(28) 밖으로 확장해 슬라이드가 edge-to-edge 되도록 */
+  margin-left: calc(-1 * var(--space-7));
+  margin-right: calc(-1 * var(--space-7));
+  flex: 1 1 0;
+  min-height: 0;
+  /* clip: overflow:hidden 과 달리 프로그래밍 스크롤(포커스 이동 시 브라우저 auto-scroll) 까지 차단.
+     Tab 이동으로 숨겨진 step 의 요소에 포커스가 가도 viewport 가 밀리지 않음.
+     overflow-clip-margin: 클립 박스를 4px 바깥까지 확장 → step 상단/하단 요소의 focus ring·drop-shadow 생존 */
+  overflow: clip;
+  overflow-clip-margin: var(--space-1);
+  position: relative;
+}
+
+.modal__track {
+  display: flex;
+  width: 200%;
+  height: 100%;
+  transform: translateX(0);
+  transition: transform 0.6s var(--ease-standard);  /* right-panel / accordion과 동일 */
+}
+
+.modal__track[data-step="2"] {
+  transform: translateX(-50%);
+}
+
+.modal__step {
+  width: 50%;
+  flex-shrink: 0;
+  /* 좌우 28px — 슬라이드는 edge-to-edge, 내부 컨텐츠만 인셋.
+     상하 shadow/ring 여유는 viewport 의 overflow-clip-margin 이 처리 */
+  padding: 0 var(--space-7);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);  /* 24px — modal 기본 gap과 동일 */
+  min-height: 0;
+  opacity: 0;
+  transition: opacity 0.45s var(--ease-standard) 0.15s;  /* 0.15s 지연 후 시작, track(0.6s)과 함께 종료 */
+}
+
+/* 현재 step 만 opacity 1 — translateX 와 함께 페이드 인/아웃 */
+.modal__track[data-step="1"] > .modal__step:nth-child(1),
+.modal__track[data-step="2"] > .modal__step:nth-child(2) {
+  opacity: 1;
+}
+
+/* ---------- Section (label + list 묶음) ---------- */
+.modal__section {
+  align-self: stretch;
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1_5);  /* 6px */
+}
+
+/* ---------- Summary card (step 2 상단 선택 작품 표시) ---------- */
+.modal__summary-card {
+  align-self: stretch;
+  display: flex;
+  padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+  outline: 1px solid var(--color-gray-6);
+  outline-offset: -1px;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.modal__summary-card__content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.modal__summary-card__title {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-subtext);      /* 14 */
+  line-height: var(--line-height-subtext);  /* 22 */
+  font-weight: var(--font-weight-w6);
+  color: var(--color-font-primary-black-100);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.modal__summary-card__sub {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-overline);      /* 11 */
+  line-height: var(--line-height-overline);  /* 16 */
+  font-weight: var(--font-weight-w4);
+  color: var(--color-black-50);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* ---------- Tabs wrapper (step 2) ---------- */
+.modal__tabs {
+  align-self: stretch;
+  display: flex;
+  justify-content: center;
+}
+
+/* ---------- Tab Panel (탭 아래쪽 컨텐츠 래퍼) ----------
+   tab 클릭 시 data-tab-panel / data-tab-target 매칭으로 전환.
+   panel 은 step 의 남은 높이를 채우고, 안쪽 form 이 세로 스크롤.
+*/
+.modal__tab-panel {
+  align-self: stretch;
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);  /* 24px */
+}
+
+.modal__tab-panel[hidden] {
+  display: none;
+}
+
+/* field-row 내 좁은 입력 (e.g. 完結予定話数 120px 고정) */
+.modal__field-row > .form-input--narrow {
+  flex: 0 0 120px;
+  width: 120px;
+  min-width: 120px;
+  max-width: 120px;
+}
+
+/* modal 내부 textarea 가 form 의 남은 높이까지 확장되도록 */
+.modal__form > .form-textarea {
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+/* ---------- Helper text ---------- */
+.modal__helper {
+  margin: 0;
+  align-self: stretch;
+  text-align: center;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-overline);      /* 11 */
+  line-height: var(--line-height-overline);  /* 16 */
+  font-weight: var(--font-weight-w4);
+  color: var(--color-black-50);
+}
+
+/* ---------- Form (step 2 입력 영역) ----------
+   필드 수가 고정이라 스크롤 불필요 → overflow 기본(visible) 유지.
+   textarea 가 flex:1 로 남은 높이를 흡수하므로 form 자체는 컨테이너 없이 flow.
+   scroll 이 없으니 focus ring·drop-shadow 는 자연스럽게 밖으로 노출됨. */
+.modal__form {
+  align-self: stretch;
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1_5);  /* 6px */
+}
+
+.modal__field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1_5);
+}
+
+.modal__field-row {
+  display: flex;
+  gap: var(--space-1_5);
+}
+
+.modal__field-row > .form-input {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+/* ---------- Label ---------- */
+.modal__label {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-caption);    /* 12px */
+  line-height: var(--line-height-caption); /* 18px */
+  font-weight: var(--font-weight-w6);
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- List (radio-card 등) ----------
+   flex:1 로 남은 높이를 채우고, 내용이 넘치면 세로 스크롤.
+   스크롤바는 숨김 (Firefox / WebKit 양쪽 대응).
+*/
+.modal__list {
+  flex: 1 1 0;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: clip;
+  overflow-clip-margin: var(--space-1);  /* 가로 ring/shadow 여유 */
+  /* 세로는 scroll 이라 clip-margin 미적용 → 내부 상하 4px padding 으로 ring 생존 공간 확보.
+     Tab 포커스 이동 시 auto-scroll 이 ring 을 edge 에 붙이지 않도록 scroll-padding 도 병행 */
+  padding-block: var(--space-1);
+  scroll-padding-block: var(--space-1);
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE/Edge legacy */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1_5);  /* 6px */
+}
+
+/* WebKit 계열 스크롤바 숨김 */
+.modal__list::-webkit-scrollbar {
+  display: none;
+}
+
+/* modal 내부 radio-card 는 full-width + 세로 축소 방지 */
+.modal .radio-card {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+/* ---------- Footer ----------
+   inline-grid + grid-auto-columns: minmax(max-content, 1fr)
+   → 가장 넓은 버튼의 max-content가 모든 컬럼 min이 되고 1fr로 균등 분배
+   → 결과: 모든 버튼이 가장 긴 버튼 기준으로 동일한 너비
+   텍스트가 바뀌어도 자동 재계산됨.
+*/
+.modal__footer {
+  align-self: flex-end;
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(max-content, 1fr);
+  gap: var(--space-1_5);  /* 6px */
+}
+
+/* Split variant — 왼쪽 단독 버튼(戻る) + 오른쪽 버튼 그룹 */
+.modal__footer--split {
+  align-self: stretch;
+  display: flex;
+  grid-auto-flow: unset;
+  grid-auto-columns: unset;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-1_5);
+}
+
+/* 왼쪽 단독 버튼은 우측 그룹의 최장 버튼(保存する, max-content ≈ 72px)과 동일 너비로 정렬 */
+.modal__footer--split > .btn:first-child {
+  min-width: var(--p5);  /* 72px */
+}
+
+.modal__footer__group {
+  display: inline-grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(max-content, 1fr);
+  gap: var(--space-1_5);
+}

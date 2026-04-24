@@ -11,7 +11,9 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  overflow: hidden;
+  /* clip + margin — 내부 카드/버튼의 focus ring·shadow 여유 */
+  overflow: clip;
+  overflow-clip-margin: var(--space-1);
   border-left: 1px var(--color-gray-5) solid;
   border-right: 1px var(--color-gray-5) solid;
 }

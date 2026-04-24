@@ -194,7 +194,9 @@
 
 .accordion-row__content > * {
   min-height: 0;
-  overflow: hidden;
+  /* clip + margin — grid-rows 수축은 유지하되 내부 input/button focus ring·shadow 4px 여유 */
+  overflow: clip;
+  overflow-clip-margin: var(--space-1);
   opacity: 0;
   /* 닫힐 때: 즉시 fade out (grid 수축보다 먼저 사라짐) */
   transition: opacity 0.3s var(--ease-standard);
@@ -224,7 +226,9 @@
   z-index: 0;
   border-radius: var(--radius-md);
   box-shadow: 0 4px 8px var(--color-shadow-subtle), 0 0 1px var(--color-shadow-mid);
-  overflow: hidden;
+  /* clip + margin — 내부 row hover/focus 시 ring·shadow 여유 */
+  overflow: clip;
+  overflow-clip-margin: var(--space-1);
   transition: background 0.2s var(--ease-standard), box-shadow 0.2s var(--ease-standard);
 }
 

@@ -59,10 +59,12 @@
   <link rel="stylesheet" href="css/components/accordion-row.css">
   <link rel="stylesheet" href="css/components/section-label.css">
   <link rel="stylesheet" href="css/components/character-card.css">
+  <link rel="stylesheet" href="css/components/modal.css">
 
   <!-- Styleguide -->
   <link rel="stylesheet" href="css/styleguide.css">
   <script src="js/core/keyboard-focus.js" defer></script>
+  <script src="js/components/modal.js" defer></script>
 </head>
 <body>
 
@@ -73,7 +75,7 @@
     <span class="sg-header-logo">FunFan</span>
     <span class="sg-header-sep"></span>
     <span class="sg-header-subtitle">Design System</span>
-    <span class="sg-header-badge">v1.05.3</span>
+    <span class="sg-header-badge">v1.05.4</span>
   </header>
 
   <div class="sg-layout">
@@ -112,6 +114,7 @@
         <a href="#right-panel">Right Panel</a>
         <a href="#cards">Cards</a>
         <a href="#radio-group-card">Radio Group Card</a>
+        <a href="#modal">Modal</a>
         <a href="#tab">Tab</a>
         <a href="#badges">Badges</a>
         <a href="#garden-sign">Garden Sign</a>
@@ -3086,7 +3089,7 @@
                 </label>
               </div>
               <code class="sg-type-classname">.radio-card</code>
-              <div class="sg-type-meta"><strong>Default</strong><br>bg gray-6</div>
+              <div class="sg-type-meta"><strong>Default</strong><br>bg bg-soft + gray-6 outline</div>
             </div>
 
             <div class="sg-type-row">
@@ -3101,7 +3104,7 @@
                 </label>
               </div>
               <code class="sg-type-classname">.radio-card--hover</code>
-              <div class="sg-type-meta"><strong>Hover</strong><br>bg gray-5</div>
+              <div class="sg-type-meta"><strong>Hover</strong><br>bg gray-6</div>
             </div>
 
             <div class="sg-type-row">
@@ -3116,7 +3119,7 @@
                 </label>
               </div>
               <code class="sg-type-classname">.radio-card--focus</code>
-              <div class="sg-type-meta"><strong>Focus</strong><br>bg gray-5 + 3px ring</div>
+              <div class="sg-type-meta"><strong>Focus</strong><br>bg gray-6 + 3px gray-5 ring</div>
             </div>
 
             <div class="sg-type-row">
@@ -3131,7 +3134,7 @@
                 </label>
               </div>
               <code class="sg-type-classname">.radio-card--pressed</code>
-              <div class="sg-type-meta"><strong>Pressed</strong><br>bg gray-5 · scale 0.98</div>
+              <div class="sg-type-meta"><strong>Pressed</strong><br>bg gray-6 · scale 0.98</div>
             </div>
 
             <div class="sg-type-row">
@@ -3146,7 +3149,91 @@
                 </label>
               </div>
               <code class="sg-type-classname">.radio-card--selected</code>
-              <div class="sg-type-meta"><strong>Selected</strong><br>bg white + nature-2 outline<br>avatar → gray-6</div>
+              <div class="sg-type-meta"><strong>Selected</strong><br>bg white + nature-3 outline<br>avatar → gray-6</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Variant — Nav (아바타 없음 + chevron) -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Variant — Nav (아바타 없음 + chevron)</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-card radio-card--nav">
+                  <input type="radio" class="radio-card__input" name="sg-rcn-default" value="default">
+                  <div class="radio-card__content">
+                    <span class="radio-card__title">Text</span>
+                    <span class="radio-card__sub">Sub Text</span>
+                  </div>
+                  <i class="icon icon-chevron-right radio-card__chevron"></i>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-card--nav</code>
+              <div class="sg-type-meta"><strong>Default</strong><br>아바타 없음 · 우측 chevron-right</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-card radio-card--nav radio-card--hover">
+                  <input type="radio" class="radio-card__input" name="sg-rcn-hover" value="hover">
+                  <div class="radio-card__content">
+                    <span class="radio-card__title">Text</span>
+                    <span class="radio-card__sub">Sub Text</span>
+                  </div>
+                  <i class="icon icon-chevron-right radio-card__chevron"></i>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-card--nav.--hover</code>
+              <div class="sg-type-meta"><strong>Hover</strong><br>bg gray-6</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-card radio-card--nav radio-card--focus">
+                  <input type="radio" class="radio-card__input" name="sg-rcn-focus" value="focus">
+                  <div class="radio-card__content">
+                    <span class="radio-card__title">Text</span>
+                    <span class="radio-card__sub">Sub Text</span>
+                  </div>
+                  <i class="icon icon-chevron-right radio-card__chevron"></i>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-card--nav.--focus</code>
+              <div class="sg-type-meta"><strong>Focus</strong><br>bg gray-6 + 3px gray-5 ring</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-card radio-card--nav radio-card--pressed">
+                  <input type="radio" class="radio-card__input" name="sg-rcn-pressed" value="pressed">
+                  <div class="radio-card__content">
+                    <span class="radio-card__title">Text</span>
+                    <span class="radio-card__sub">Sub Text</span>
+                  </div>
+                  <i class="icon icon-chevron-right radio-card__chevron"></i>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-card--nav.--pressed</code>
+              <div class="sg-type-meta"><strong>Pressed</strong><br>bg gray-6 · scale 0.98</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-card radio-card--nav radio-card--selected">
+                  <input type="radio" class="radio-card__input" name="sg-rcn-selected" value="selected" checked>
+                  <div class="radio-card__content">
+                    <span class="radio-card__title">Text</span>
+                    <span class="radio-card__sub">Sub Text</span>
+                  </div>
+                  <i class="icon icon-chevron-right radio-card__chevron"></i>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-card--nav.--selected</code>
+              <div class="sg-type-meta"><strong>Selected</strong><br>bg white + nature-3 outline</div>
             </div>
 
           </div>
@@ -4205,6 +4292,178 @@
                 <code>.radio-group-card__footer</code> — 우측 정렬 버튼 영역
               </div>
             </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================
+           MODAL
+      ========================= -->
+      <section class="sg-section" id="modal" data-section="modal">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Modal</h2>
+          <span class="sg-section-desc">modal.css · 중앙 정렬 팝업 · backdrop bg-soft 50% + blur 8px · 전체 화면 오버레이(navbar 포함) · z-index 1000 · 2-step slide 지원</span>
+        </div>
+
+        <!-- Structure -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Structure</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="modal">
+                  <h2 class="modal__title">作品コンテキストを追加</h2>
+                  <div class="modal__viewport">
+                    <div class="modal__track" data-step="1">
+                      <div class="modal__step">
+                        <div class="modal__section">
+                          <label class="modal__label">作品を選ぶ</label>
+                          <div class="modal__list">
+                            <label class="radio-card radio-card--nav">
+                              <input type="radio" class="radio-card__input" name="sg-modal-demo" value="1">
+                              <div class="radio-card__content">
+                                <span class="radio-card__title">私の冒険</span>
+                                <span class="radio-card__sub">連載中・3話公開・主人公ハルの設定あり</span>
+                              </div>
+                              <i class="icon icon-chevron-right radio-card__chevron"></i>
+                            </label>
+                            <label class="radio-card radio-card--nav">
+                              <input type="radio" class="radio-card__input" name="sg-modal-demo" value="2">
+                              <div class="radio-card__content">
+                                <span class="radio-card__title">夜明けのキッチン</span>
+                                <span class="radio-card__sub">準備中・0話公開・ストーリーアーク未登録</span>
+                              </div>
+                              <i class="icon icon-chevron-right radio-card__chevron"></i>
+                            </label>
+                            <label class="radio-card radio-card--nav">
+                              <input type="radio" class="radio-card__input" name="sg-modal-demo" value="3">
+                              <div class="radio-card__content">
+                                <span class="radio-card__title">月の手紙</span>
+                                <span class="radio-card__sub">下書き・1話作成中・サブキャラ設定を追加予定</span>
+                              </div>
+                              <i class="icon icon-chevron-right radio-card__chevron"></i>
+                            </label>
+                          </div>
+                        </div>
+                        <div class="modal__footer">
+                          <button class="btn btn-line btn--sm" type="button"><span>閉じる</span></button>
+                        </div>
+                      </div>
+                      <div class="modal__step" inert></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.modal</code>
+              <div class="sg-type-meta">
+                <strong>Container</strong> 504×640 · padding 40 28 · radius 20 · gap 24<br>
+                <code>.modal__title</code> body-lg 600 (18/28)<br>
+                <code>.modal__viewport</code> 좌우 edge-to-edge 슬라이드 영역 (overflow:clip)<br>
+                <code>.modal__track[data-step="1|2"]</code> width 200% · translateX 0 ↔ -50% (0.6s)<br>
+                <code>.modal__step</code> width 50% · padding 0 28 · inert 시 tab 차단<br>
+                <code>.modal__section</code> label + list 묶음 (gap 6)<br>
+                <code>.modal__label</code> caption 600 (12/18)<br>
+                <code>.modal__list</code> radio-card 등 세로 스크롤 (scrollbar 숨김)<br>
+                <code>.modal__footer</code> inline-grid · minmax(max-content, 1fr) → 버튼 균등 폭
+              </div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="modal">
+                  <h2 class="modal__title">作品コンテキストを追加</h2>
+                  <div class="modal__viewport">
+                    <div class="modal__track" data-step="2">
+                      <div class="modal__step" inert></div>
+                      <div class="modal__step">
+                        <div class="modal__summary-card">
+                          <div class="modal__summary-card__content">
+                            <span class="modal__summary-card__title">私の冒険</span>
+                            <span class="modal__summary-card__sub">連載中・3話公開・主人公ハルの設定あり</span>
+                          </div>
+                          <button class="btn btn-line btn--sm" type="button" data-modal-back><span>作品を選び直す</span></button>
+                        </div>
+                        <div class="modal__tabs">
+                          <div class="tab-group">
+                            <button class="tab tab--selected" type="button" data-tab-target="sg-character">キャラクター情報</button>
+                            <button class="tab" type="button" data-tab-target="sg-story">ストーリーアーク</button>
+                          </div>
+                        </div>
+                        <div class="modal__tab-panel" data-tab-panel="sg-character">
+                          <p class="modal__helper">選択した作品に紐づくキャラクターのみ管理します。</p>
+                          <div class="modal__form">
+                            <div class="modal__field-group">
+                              <label class="modal__label">キャラクター情報</label>
+                              <div class="modal__field-row">
+                                <div class="form-input"><input class="form-input__field" type="text" placeholder="キャラクター名"></div>
+                                <div class="form-input"><input class="form-input__field" type="text" placeholder="年齢/学年"></div>
+                                <div class="form-input"><input class="form-input__field" type="text" placeholder="性別"></div>
+                              </div>
+                            </div>
+                            <div class="form-textarea">
+                              <textarea class="form-textarea__field" placeholder="性格"></textarea>
+                            </div>
+                            <div class="form-input"><input class="form-input__field" type="text" placeholder="役割"></div>
+                          </div>
+                        </div>
+                        <div class="modal__tab-panel" data-tab-panel="sg-story" hidden>
+                          <p class="modal__helper">現在の完成話数：3話。保存後は以降の会話で参照されます。</p>
+                          <div class="modal__form">
+                            <div class="modal__field-group">
+                              <label class="modal__label">ストーリー設定</label>
+                              <div class="modal__field-row">
+                                <div class="form-input"><input class="form-input__field" type="text" placeholder="テーマ・方向性"></div>
+                                <div class="form-input form-input--narrow"><input class="form-input__field" type="text" placeholder="完結予定話数"></div>
+                              </div>
+                            </div>
+                            <div class="form-textarea">
+                              <textarea class="form-textarea__field" placeholder="あらすじ"></textarea>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal__footer modal__footer--split">
+                          <button class="btn btn-line btn--sm" type="button" data-modal-back><span>戻る</span></button>
+                          <div class="modal__footer__group">
+                            <button class="btn btn-line btn--sm" type="button"><span>閉じる</span></button>
+                            <button class="btn btn-filled-nature btn--sm" type="button"><span>保存する</span></button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.modal (step 2)</code>
+              <div class="sg-type-meta">
+                <strong>Step 2 전용 요소</strong><br>
+                <code>.modal__summary-card</code> 선택 작품 요약 (bg-soft · radius-md · 좌측 작품명/서브, 우측 xs 버튼)<br>
+                <code>.modal__summary-card__title</code> subtext 600 (14/22) · 1줄 ellipsis<br>
+                <code>.modal__summary-card__sub</code> overline 400 (11/16) · 1줄 ellipsis<br>
+                <code>.modal__tabs</code> tab-group wrapper (center 정렬)<br>
+                <code>.modal__tab-panel[data-tab-panel]</code> <code>[hidden]</code> 로 전환<br>
+                <code>.modal__helper</code> overline 400 (11/16) · center 정렬 보조 텍스트<br>
+                <code>.modal__form</code> 입력 영역 (flex column · textarea 가 남은 높이 흡수)<br>
+                <code>.modal__field-group</code> label + input 묶음 (gap 6)<br>
+                <code>.modal__field-row</code> 가로 input 나열 (gap 6)<br>
+                <code>.form-input--narrow</code> 120px 고정 (field-row 내)<br>
+                <code>.modal__footer--split</code> + <code>.modal__footer__group</code> 좌측 戻る / 우측 액션 그룹
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Interactive Demo -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Interactive Demo</p>
+          <div class="sg-demo-canvas">
+            <p class="sg-demo-note">버튼 클릭 시 실제 backdrop과 함께 열립니다. 리스트 선택 시 step 2 로 자동 전환 · 戻る 버튼으로 step 1 복귀 · 閉じる 버튼으로 닫기(퇴장 애니메이션 후 초기화).</p>
+            <button class="btn btn-filled-nature" type="button" data-modal-open="#sg-modal-demo-backdrop">
+              <span>作品コンテキストを追加</span>
+            </button>
           </div>
         </div>
 
@@ -5966,6 +6225,113 @@
       });
     });
   </script>
+
+  <!-- Modal Demo Instance (Interactive Demo 트리거용) — workspace.html 과 동일한 2-step 구조 -->
+  <div class="modal-backdrop" id="sg-modal-demo-backdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="sg-modal-demo-title">
+      <h2 class="modal__title" id="sg-modal-demo-title">作品コンテキストを追加</h2>
+      <div class="modal__viewport">
+      <div class="modal__track" data-step="1">
+
+        <!-- ============ STEP 1 ============ -->
+        <div class="modal__step">
+          <div class="modal__section">
+            <label class="modal__label">作品を選ぶ</label>
+            <div class="modal__list">
+              <label class="radio-card radio-card--nav">
+                <input type="radio" class="radio-card__input" name="sg-modal-live" value="adventure">
+                <div class="radio-card__content">
+                  <span class="radio-card__title">私の冒険</span>
+                  <span class="radio-card__sub">連載中・3話公開・主人公ハルの設定あり</span>
+                </div>
+                <i class="icon icon-chevron-right radio-card__chevron"></i>
+              </label>
+              <label class="radio-card radio-card--nav">
+                <input type="radio" class="radio-card__input" name="sg-modal-live" value="kitchen">
+                <div class="radio-card__content">
+                  <span class="radio-card__title">夜明けのキッチン</span>
+                  <span class="radio-card__sub">準備中・0話公開・ストーリーアーク未登録</span>
+                </div>
+                <i class="icon icon-chevron-right radio-card__chevron"></i>
+              </label>
+              <label class="radio-card radio-card--nav">
+                <input type="radio" class="radio-card__input" name="sg-modal-live" value="moon">
+                <div class="radio-card__content">
+                  <span class="radio-card__title">月の手紙</span>
+                  <span class="radio-card__sub">下書き・1話作成中・サブキャラ設定を追加予定</span>
+                </div>
+                <i class="icon icon-chevron-right radio-card__chevron"></i>
+              </label>
+            </div>
+          </div>
+          <div class="modal__footer">
+            <button class="btn btn-line btn--sm" type="button" data-modal-close><span>閉じる</span></button>
+          </div>
+        </div>
+
+        <!-- ============ STEP 2 ============ -->
+        <div class="modal__step">
+          <div class="modal__summary-card">
+            <div class="modal__summary-card__content">
+              <span class="modal__summary-card__title">私の冒険</span>
+              <span class="modal__summary-card__sub">連載中・3話公開・主人公ハルの設定あり</span>
+            </div>
+            <button class="btn btn-line btn--sm" type="button" data-modal-back><span>作品を選び直す</span></button>
+          </div>
+          <div class="modal__tabs">
+            <div class="tab-group">
+              <button class="tab tab--selected" type="button" data-tab-target="sg-character">キャラクター情報</button>
+              <button class="tab" type="button" data-tab-target="sg-story">ストーリーアーク</button>
+            </div>
+          </div>
+
+          <div class="modal__tab-panel" data-tab-panel="sg-character">
+            <p class="modal__helper">選択した作品に紐づくキャラクターのみ管理します。</p>
+            <div class="modal__form">
+              <div class="modal__field-group">
+                <label class="modal__label">キャラクター情報</label>
+                <div class="modal__field-row">
+                  <div class="form-input"><input class="form-input__field" type="text" placeholder="キャラクター名"></div>
+                  <div class="form-input"><input class="form-input__field" type="text" placeholder="年齢/学年"></div>
+                  <div class="form-input"><input class="form-input__field" type="text" placeholder="性別"></div>
+                </div>
+              </div>
+              <div class="form-textarea">
+                <textarea class="form-textarea__field" placeholder="性格"></textarea>
+              </div>
+              <div class="form-input"><input class="form-input__field" type="text" placeholder="役割"></div>
+            </div>
+          </div>
+
+          <div class="modal__tab-panel" data-tab-panel="sg-story" hidden>
+            <p class="modal__helper">現在の完成話数：3話。保存後は以降の会話で参照されます。</p>
+            <div class="modal__form">
+              <div class="modal__field-group">
+                <label class="modal__label">ストーリー設定</label>
+                <div class="modal__field-row">
+                  <div class="form-input"><input class="form-input__field" type="text" placeholder="テーマ・方向性"></div>
+                  <div class="form-input form-input--narrow"><input class="form-input__field" type="text" placeholder="完結予定話数"></div>
+                </div>
+              </div>
+              <div class="form-textarea">
+                <textarea class="form-textarea__field" placeholder="あらすじ"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal__footer modal__footer--split">
+            <button class="btn btn-line btn--sm" type="button" data-modal-back><span>戻る</span></button>
+            <div class="modal__footer__group">
+              <button class="btn btn-line btn--sm" type="button" data-modal-close><span>閉じる</span></button>
+              <button class="btn btn-filled-nature btn--sm" type="button" data-modal-close><span>保存する</span></button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

@@ -37,8 +37,11 @@
   <link rel="stylesheet" href="css/pages/app-shell.css">
   <link rel="stylesheet" href="css/pages/workspace.css">
   <link rel="stylesheet" href="css/pages/workspace-onboarding.css">
+  <link rel="stylesheet" href="css/components/radio-card.css">
+  <link rel="stylesheet" href="css/components/modal.css">
   <script src="js/core/keyboard-focus.js" defer></script>
   <script src="js/components/chat.js" defer></script>
+  <script src="js/components/modal.js" defer></script>
 </head>
 <body>
 
@@ -235,7 +238,7 @@
             <textarea class="chat-input__textarea" aria-label="AIへのメッセージ" placeholder="はなに話しかけてみましょう..." rows="1"></textarea>
           </div>
           <div class="chat-input__actions">
-            <button class="icon-btn" type="button" aria-label="添付">
+            <button class="icon-btn" type="button" aria-label="作品コンテキストを追加" data-modal-open="#modal-context">
               <i class="icon icon-add"></i>
             </button>
             <button class="send-btn" type="button" aria-label="送信">
@@ -371,6 +374,116 @@
       });
     })();
   </script>
+
+  <!-- Modal: 作品コンテキストを追加 -->
+  <div class="modal-backdrop" id="modal-context">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-context-title">
+      <h2 class="modal__title" id="modal-context-title">作品コンテキストを追加</h2>
+      <div class="modal__viewport">
+      <div class="modal__track" data-step="1">
+
+      <!-- ============ STEP 1: 작품 선택 ============ -->
+      <div class="modal__step">
+      <div class="modal__section">
+        <label class="modal__label">作品を選ぶ</label>
+        <div class="modal__list">
+          <label class="radio-card radio-card--nav">
+            <input type="radio" class="radio-card__input" name="modal-context-work" value="adventure">
+            <div class="radio-card__content">
+              <span class="radio-card__title">私の冒険</span>
+              <span class="radio-card__sub">連載中・3話公開・主人公ハルの設定あり</span>
+            </div>
+            <i class="icon icon-chevron-right radio-card__chevron"></i>
+          </label>
+          <label class="radio-card radio-card--nav">
+            <input type="radio" class="radio-card__input" name="modal-context-work" value="kitchen">
+            <div class="radio-card__content">
+              <span class="radio-card__title">夜明けのキッチン</span>
+              <span class="radio-card__sub">準備中・0話公開・ストーリーアーク未登録</span>
+            </div>
+            <i class="icon icon-chevron-right radio-card__chevron"></i>
+          </label>
+          <label class="radio-card radio-card--nav">
+            <input type="radio" class="radio-card__input" name="modal-context-work" value="moon">
+            <div class="radio-card__content">
+              <span class="radio-card__title">月の手紙</span>
+              <span class="radio-card__sub">下書き・1話作成中・サブキャラ設定を追加予定</span>
+            </div>
+            <i class="icon icon-chevron-right radio-card__chevron"></i>
+          </label>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn-line btn--sm" type="button" data-modal-close><span>閉じる</span></button>
+      </div>
+      </div><!-- /step 1 -->
+
+      <!-- ============ STEP 2: キャラクター情報 입력 ============ -->
+      <div class="modal__step">
+        <div class="modal__summary-card">
+          <div class="modal__summary-card__content">
+            <span class="modal__summary-card__title">私の冒険</span>
+            <span class="modal__summary-card__sub">連載中・3話公開・主人公ハルの設定あり</span>
+          </div>
+          <button class="btn btn-line btn--sm" type="button" data-modal-back><span>作品を選び直す</span></button>
+        </div>
+
+        <div class="modal__tabs">
+          <div class="tab-group">
+            <button class="tab tab--selected" type="button" data-tab-target="character">キャラクター情報</button>
+            <button class="tab" type="button" data-tab-target="story">ストーリーアーク</button>
+          </div>
+        </div>
+
+        <!-- Panel: キャラクター情報 -->
+        <div class="modal__tab-panel" data-tab-panel="character">
+          <p class="modal__helper">選択した作品に紐づくキャラクターのみ管理します。</p>
+          <div class="modal__form">
+            <div class="modal__field-group">
+              <label class="modal__label">キャラクター情報</label>
+              <div class="modal__field-row">
+                <div class="form-input"><input class="form-input__field" type="text" placeholder="キャラクター名"></div>
+                <div class="form-input"><input class="form-input__field" type="text" placeholder="年齢/学年"></div>
+                <div class="form-input"><input class="form-input__field" type="text" placeholder="性別"></div>
+              </div>
+            </div>
+            <div class="form-textarea">
+              <textarea class="form-textarea__field" placeholder="性格"></textarea>
+            </div>
+            <div class="form-input"><input class="form-input__field" type="text" placeholder="役割"></div>
+          </div>
+        </div>
+
+        <!-- Panel: ストーリーアーク -->
+        <div class="modal__tab-panel" data-tab-panel="story" hidden>
+          <p class="modal__helper">現在の完成話数：3話。保存後は以降の会話で参照されます。</p>
+          <div class="modal__form">
+            <div class="modal__field-group">
+              <label class="modal__label">ストーリー設定</label>
+              <div class="modal__field-row">
+                <div class="form-input"><input class="form-input__field" type="text" placeholder="テーマ・方向性"></div>
+                <div class="form-input form-input--narrow"><input class="form-input__field" type="text" placeholder="完結予定話数"></div>
+              </div>
+            </div>
+            <div class="form-textarea">
+              <textarea class="form-textarea__field" placeholder="あらすじ"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal__footer modal__footer--split">
+          <button class="btn btn-line btn--sm" type="button" data-modal-back><span>戻る</span></button>
+          <div class="modal__footer__group">
+            <button class="btn btn-line btn--sm" type="button" data-modal-close><span>閉じる</span></button>
+            <button class="btn btn-filled-nature btn--sm" type="button" data-modal-close><span>保存する</span></button>
+          </div>
+        </div>
+      </div><!-- /step 2 -->
+
+      </div><!-- /track -->
+      </div><!-- /viewport -->
+    </div>
+  </div>
 
 </body>
 </html>

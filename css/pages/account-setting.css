@@ -6,7 +6,9 @@
 
 /* main content 영역: 내부 스크롤 대신 숨김 처리 (.workspace__content가 직접 스크롤) */
 .workspace__main {
-  overflow: hidden;
+  /* clip + margin — 내부 카드/버튼의 focus ring·shadow 여유 */
+  overflow: clip;
+  overflow-clip-margin: var(--space-1);
 }
 
 .workspace__content {

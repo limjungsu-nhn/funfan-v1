@@ -9,6 +9,7 @@
 html, body {
   margin: 0;
   padding: 0;
+  min-width: var(--base);  /* 1440px — 축소 금지, 이하 뷰포트에서는 가로 스크롤 */
   min-height: 100vh;
   background: var(--color-bg-soft);
   font-family: var(--font-family-base);

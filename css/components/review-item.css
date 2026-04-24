@@ -229,7 +229,9 @@
 .work-room-left-panel {
   width: var(--p20);     /* 288px */
   background: var(--color-white-100);
-  overflow: hidden;
+  /* clip + margin — 내부 리뷰 아이템/버튼의 focus ring·shadow 여유 */
+  overflow: clip;
+  overflow-clip-margin: var(--space-1);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;

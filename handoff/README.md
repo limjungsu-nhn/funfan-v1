@@ -4,29 +4,30 @@
 
 ---
 
-## 📌 v1.05.3 요약 (2026-04-24, v1.05.2 후속) — 먼저 이것만 보세요
+## 📌 v1.05.4 요약 (2026-04-24, v1.05.3 후속) — 먼저 이것만 보세요
 
-**v1.05.2 배송 이후 반영된 아바타 시각 정비 배치.** 기존 구현 깨지는 변경 없음.
+**모달 컴포넌트 신설 + 2-step 구조 전파 + focus ring 클리핑 정책 현대화 배치.** 기존 구현 깨지는 변경 없음.
 
 | 분류 | 내용 | 개발 영향 |
 |---|---|---|
-| **이미지 에셋 교체** | `img_avatar01.png` / `img_avatar02.png` 신규 이미지 (176×176 사각) | 에셋 재반영 (CDN/`public/img/`) |
-| **data URI 동기화** | `avatar.css`의 `.avatar-01` / `.avatar-02` base64 재임베딩 — 파일 교체만으로는 반영 안 됨 | CSS 재배포 |
-| **컴포넌트 클리핑** | `character-card__portrait` 132×124 → **124×124 원형** (`border-radius: 50%` + `object-fit: cover`) | cva에 `rounded-full object-cover` 반영 |
-| **아바타 클리핑 통일** | avatar 계열 전체 `border-radius: 50%` 로 일원화 (`--radius-full` 쓰던 2곳 교체). `--radius-full` 은 pill 전용 | 아바타 cva는 `rounded-full`, pill류(badge/tab 등)만 `rounded-[100px]` 구분 |
-
-**다음 배치 예정**
-- `creative-partner-onboarding-01~04` 본문 (현재 쉘 상태 유지)
+| **`modal.css` / `modal.js` 신설** 🆕 | 모달이 독립 컴포넌트로 승격 (`css/components/modal.css` · `js/components/modal.js`). 트리거(`[data-modal-open]`) · ESC · backdrop 닫기 · scroll lock · 2-step slide · summary 자동 채움 · `inert` 포커스 차단 포함 | shadcn `Dialog` 매핑으로 등록. 2-step 은 `track` state로 cva 확장 |
+| **모달 2-step 전파** | `workroom` / `workspace-onboarding` / `account-setting` / `series-post-management` 4개 페이지의 단일-step 모달을 workspace 기준 2-step 구조로 치환 (`modal__viewport` > `modal__track` > 2× `modal__step`) | slide 트랜스폼은 `translateX(-50%)` 유지. step2 `.modal__form` 은 스크롤 없음 (`overflow-y-auto` 제거) |
+| **focus ring 클리핑 정책** | `overflow: hidden` → `overflow: clip` + `overflow-clip-margin: var(--space-1)` 일괄 전환. 기존 padding/음수 margin 우회 전부 롤백 | Tailwind `overflow-clip` plugin 또는 `[overflow:clip] [overflow-clip-margin:4px]` arbitrary. 구형 fallback `overflow: hidden` |
+| &nbsp;&nbsp;↳ 적용 범위 | **컴포넌트**: `accordion-row` · `chat-input` · `review-item` · `right-panel` · `task-list` · `water-card` · `modal__viewport` · `modal__list`. **페이지**: `app-shell` · `account-setting` · `series-post-management` · `workroom` · `workspace`. **styleguide**: `.sg-preview-panel` | 수동 치환 대상 12곳 |
+| **토큰화 · 미세 조정** | `navbar.css` 하드코딩 `64px` → `var(--navbar-height)` · `tab.css` padding `space-3` → `space-3_5` (12→14px) · `.modal-backdrop` `color-mix(bg-soft 50%, transparent)` · `.modal__footer--split` 좌측 버튼 `min-width: var(--p5)` · `css/pages/index.css` `min-width: var(--base)` | cva 업데이트 — footer split variant 체크 |
+| **radio-card 개정** | `.radio-card__content gap` `space-1`→`0` · 상태값 재정의 (default `bg-soft+gray-6 outline` · selected `white+nature-3`). **Variant `.radio-card--nav` 신설** — 아바타 없음 + 우측 chevron (icon-chevron-right 18px) | cva 에 `nav` variant 추가 |
+| **styleguide 싱크** | Modal 정적 preview `height: 640px` 오버라이드 + step2 폼을 workspace 실제 구현과 완전 동기화. `.sg-demo-note` 유틸 추가. `btn--xs` 오타 → `btn--sm` 정정 | 디자인 참조용 — 개발 영향 없음 |
+| **이미지 에셋** | `img/bg_workroom.png` 교체 | CDN/`public/img/` 재반영 |
 
 **하위 호환**
+- 모달 외부 API(open/close 이벤트, data-modal-target) 변경 없음
 - 기존 토큰·클래스·BEM 구조 변경 없음
-- `.character-card__portrait` 크기 변경은 포스트잇 카드(300×300) 내에서 자동 중앙 정렬되어 시각 영향 미미
-- HTML `<img width="132" height="124">` 속성은 CSS가 오버라이드 — 즉시 변경 불필요
+- `overflow-clip-margin` 은 미지원 브라우저에서 `overflow: clip` 만 동작 → 레이아웃 깨지지 않음 (ring 만 일부 잘릴 수 있음)
 
 **확인할 곳**
-1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05.3 항목 — **개발 액션 요약** 3줄
-2. `styleguide.html` Avatar 섹션 · character-card 섹션 — 새 이미지 + 원형 클리핑 확인
-3. `mypage.html` — 프로필 카드 아바타(`accordion-row__avatar`) 시각 확인
+1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05.4 항목 — **개발 액션 요약**
+2. `styleguide.html` Modal 섹션 — 정적 preview + 인터랙티브 데모 모두 workspace 실제 구현과 동기화
+3. `workspace.html` / `workroom.html` / `workspace-onboarding.html` / `account-setting.html` / `series-post-management.html` — 2-step 모달 동일 동작 확인
 
 ---
 

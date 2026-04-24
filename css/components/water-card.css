@@ -37,7 +37,9 @@
   flex-direction: column;
   gap: var(--space-3);
   box-sizing: border-box;
-  overflow: hidden;
+  /* clip + margin — 내부 버튼/필드의 focus ring·shadow 여유 */
+  overflow: clip;
+  overflow-clip-margin: var(--space-1);
 }
 
 /* ---------- Title ---------- */

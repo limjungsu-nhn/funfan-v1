@@ -60,7 +60,9 @@
   justify-content: flex-start;
   align-items: flex-start;
   box-sizing: border-box;
-  overflow: hidden;
+  /* clip + margin — 내부 chat-input/컴포넌트의 focus ring·shadow 4px 여유 */
+  overflow: clip;
+  overflow-clip-margin: var(--space-1);
   transform: translateX(0);
   transition: width 0.6s var(--ease-standard), transform 0.6s var(--ease-standard);
 }

@@ -147,7 +147,9 @@ html.mini-mode .workspace__timer {
   transition: opacity 0.22s ease, transform 0.22s ease,
               max-width 0.22s ease, padding-left 0.22s ease, padding-right 0.22s ease,
               margin-left 0.22s ease, margin-right 0.22s ease;
-  overflow: hidden;
+  /* clip + margin — 버튼 자체 focus ring·shadow 여유 (collapse 애니메이션 유지) */
+  overflow: clip;
+  overflow-clip-margin: var(--space-1);
   max-width: 200px;
   margin-inline: var(--space-1);
 }
@@ -182,7 +184,9 @@ html.mini-mode .float-btn { display: none; }
   flex-direction: column;
   align-items: center;
   gap: var(--space-3);
-  overflow: hidden;
+  /* clip + margin — 내부 카드/버튼의 focus ring·shadow 여유 */
+  overflow: clip;
+  overflow-clip-margin: var(--space-1);
   border-left: 1px var(--color-gray-5) solid;
   border-right: 1px var(--color-gray-5) solid;
 }

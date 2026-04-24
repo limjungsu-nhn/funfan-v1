@@ -8,6 +8,69 @@
 
 ---
 
+## v1.05.4 (2026-04-24, v1.05.3 후속)
+
+v1.05.3 배송 이후 반영된 **모달 컴포넌트 신설 + 2-step 구조 전파 + focus ring 클리핑 정책 현대화** 배치. **기존 구현 깨지는 변경 없음**.
+
+### 신규 파일
+- **`css/components/modal.css`** (NEW) — 모달 컴포넌트 CSS 전용 파일 신설 (기존 inline/page CSS 에서 추출 · 독립 컴포넌트로 승격)
+- **`js/components/modal.js`** (NEW) — 모달 동작 전용 JS. 지원 동작:
+  - `[data-modal-open="#id"]` 트리거 / `[data-modal-close]` 내부 닫기 / ESC / backdrop 클릭
+  - body scroll lock · 열림 시 첫 focusable 자동 focus
+  - 2-step slide 트랜지션 (`translateX(-50%)`) · summary-card 자동 채움 · 닫힘 후 step/애니메이션 리셋
+  - radio-card 재클릭 · Enter · Space 로 step 전진
+  - 비활성 step 에 `inert` 속성 자동 부여 → Tab 포커스 차단
+- **`handoff/COMPONENTS.md`** — 모달 항목 신규 등록 (`.modal` / `.modal-backdrop` → shadcn `Dialog` 매핑)
+
+### 변경 (모달 — 2-step 구조 전파)
+- **단일-step 모달 → 2-step 구조** 를 4개 페이지에 전파 (workspace.html 기준)
+  - 적용: `workroom.html` / `workspace-onboarding.html` / `account-setting.html` / `series-post-management.html`
+  - 구조: `.modal__viewport` > `.modal__track[data-step="1|2"]` (`width: 200%`) > 2× `.modal__step` (`width: 50%`). `data-step="2"` 시 track `translateX(-50%)`
+  - step1: radio-card 리스트 + `閉じる` 단일 footer
+  - step2: summary-card + tabs(`キャラクター情報` / `ストーリーアーク`) + character/story panel + `modal__footer--split` (좌 `戻る` / 우 `閉じる` + `保存する`)
+- **step 2 모달 스크롤 컨테이너 제거** — `.modal__form` 은 필드 수 고정이므로 `overflow-y: auto` 폐기. `flex: 1 1 0; min-height: 0` 만 유지 (남는 높이는 textarea 가 흡수)
+- **step 1 스크롤 컨테이너** (`.modal__list`) 만 스크롤 유지 + `scroll-padding-block: var(--space-1)`
+- **`.modal-backdrop`** 배경 토큰화 — `rgba(248, 248, 251, 0.5)` → `color-mix(in srgb, var(--color-bg-soft) 50%, transparent)` (배경 토큰 연동)
+- **`.modal__footer--split > .btn:first-child`** `min-width: var(--p5)` (72px) — 좌측 단독 버튼을 우측 그룹(grid minmax) 너비와 매칭
+
+### 변경 (클리핑 정책 — `overflow: clip` 일괄 도입)
+- **`overflow: hidden` → `overflow: clip` + `overflow-clip-margin: var(--space-1)`** 로 전환 — focus ring / shadow 가 컨테이너 모서리에서 잘리던 문제 해결 (이전 v1.05.3 이하는 padding / 음수 margin 우회였음)
+- **적용 범위 (전수)**:
+  - **컴포넌트 CSS**: `accordion-row` (content · bundle) / `chat-input` / `review-item` / `right-panel` / `task-list` / `water-card` / `modal__viewport` · `modal__list`
+  - **페이지 CSS**: `app-shell` (`.app-shell__main` — 패널 translateX 슬라이드 클리핑 유지) / `account-setting` / `series-post-management` / `workroom` (timer-start-row .btn · workroom 본체) / `workspace`
+  - **styleguide**: `.sg-preview-panel` (480px)
+- `overflow: clip` 은 스크롤 컨테이너를 생성하지 않음 → 불필요한 scroll context 제거 부수 효과
+- 기존 padding · 음수 margin 기반 우회 로직 전부 롤백
+
+### 변경 (토큰 · 미세 조정)
+- **`navbar.css`** — 하드코딩 `height: 64px` → `var(--navbar-height)` (토큰은 v1.05.3 에 이미 존재했으나 navbar 에서 미사용)
+- **`tab.css`** — 탭 padding `var(--space-3)` → `var(--space-3_5)` (12px → 14px)
+- **`radio-card.css`**:
+  - `.radio-card__content gap` `var(--space-1)` → `0` (title/sub 간격은 line-height 로만 제어)
+  - 상태 정의 정비 — default `bg-soft + gray-6 outline` · focus `gray-6 + gray-5 ring` · selected `white + nature-3 outline` · pressed `scale 0.98`
+  - **Variant `.radio-card--nav`** 신설 — 아바타 없음 + 우측 `.radio-card__chevron` (icon-chevron-right 18px · `justify-content: space-between` · padding-right 16px)
+- **`css/pages/index.css`** — `html, body` 에 `min-width: var(--base)` 명시 (1440px 미만 뷰포트 가로 스크롤)
+- **이미지 에셋 — `img/bg_workroom.png`** 교체
+
+### 변경 (styleguide)
+- Modal 섹션 — 정적 preview `.sg-type-preview .modal` 오버라이드 추가 (`opacity: 1; transform: none; position: static; height: 640px`). 기본 `.modal` 은 진입 애니메이션 상태(`opacity: 0 + translateY(40px)`)라 셀 안에서 보이지 않는 문제 해결
+- 인터랙티브 데모 + 정적 preview 의 step 2 폼 구조를 workspace 실제 구현과 완전 동기화 (탭 라벨 `キャラクター情報` / `ストーリーアーク`, 필드 순서 · placeholder · grouping)
+- `.sg-demo-note` 유틸 추가 (데모 셀 상단 설명 문구용)
+- **styleguide 버튼 오타 수정** — 존재하지 않는 `btn--xs` → 실존 클래스 `btn--sm` (36px) 로 정정 (2 위치)
+
+### 개발 액션 요약
+1. **모달 컴포넌트 신설 반영** — shadcn `Dialog` 매핑으로 등록. 2-step 경우 `track` 상태 (step 1/2) 추가, slide 트랜지션은 `translateX(-50%)` 그대로
+2. **`overflow-clip` 적용** — Tailwind 는 `overflow-clip` plugin 또는 `[overflow:clip] [overflow-clip-margin:4px]` arbitrary. 구형 브라우저 fallback 은 `overflow: hidden` 으로 degrade
+3. **`.modal__form` 스크롤 컨테이너 제거** — cva 에서 `overflow-y-auto` 제거
+4. **`img/bg_workroom.png`** 신규 에셋 반영 (CDN 또는 `public/img/`)
+
+### 하위 호환
+- 모달 외부 API(`[data-modal-open]` / `[data-modal-close]` / ESC / backdrop) 변경 없음
+- 기존 토큰·클래스·BEM 구조 변경 없음
+- `overflow-clip-margin` 미지원 브라우저에서는 `overflow: clip` 만 동작 (ring 일부 잘릴 수 있으나 레이아웃은 안전). `overflow: clip` 자체 미지원 시 `overflow: hidden` fallback 권장
+
+---
+
 ## v1.05.3 (2026-04-24, v1.05.2 후속)
 
 v1.05.2 배송 이후 반영된 아바타 시각 정비 배치. **기존 구현 깨지는 변경 없음** — 아바타 이미지 교체 + 일부 아바타 원형 클리핑 정책 통일.

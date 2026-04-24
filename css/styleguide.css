@@ -466,6 +466,12 @@ body {
   min-height: 120px;
   margin-bottom: 12px;
 }
+.sg-demo-note {
+  width: 100%;
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  color: var(--color-font-primary-black-50);
+}
 .sg-demo-canvas--dark {
   background: var(--color-font-primary-black-100);
 }
@@ -559,6 +565,15 @@ body {
 }
 .sg-type-preview--task-list-panel .task-list-panel {
   margin-top: 0;
+}
+
+/* Modal static preview — 기본 .modal 은 opacity:0 + translateY(40px) 진입 상태라 보이지 않음.
+   styleguide preview 셀 안에 넣을 땐 애니메이션 상태를 무력화해 인라인 렌더. */
+.sg-type-preview .modal {
+  opacity: 1;
+  transform: none;
+  position: static;
+  height: 640px; /* workspace 모달과 동일 — 셀 제약에 눌리지 않도록 명시 */
 }
 
 /* preview 안에서 opacity transition이 CSSOM 캐싱과 맞물려 :not() 재평가를 막음 → transition 제거 */
@@ -659,7 +674,7 @@ body {
 .sg-row-top { align-items: flex-start; }
 
 /* ---------- Right Panel 프리뷰 ---------- */
-.sg-preview-panel { height: 480px; overflow: hidden; }
+.sg-preview-panel { height: 480px; overflow: clip; overflow-clip-margin: var(--space-1); }
 .sg-panel-h       { height: 480px; }
 
 /* ---------- Anatomy 서피스 프리뷰 ---------- */

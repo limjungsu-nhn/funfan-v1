@@ -12,10 +12,10 @@
      </label>
 
    States:
-     .radio-card                — Default  (gray-6 bg)
-     .radio-card--hover         — Hover    (gray-5 bg)
-     .radio-card--focus         — Focus    (gray-5 bg + ring)
-     .radio-card--pressed       — Pressed  (gray-5 bg)
+     .radio-card                — Default  (bg-soft + gray-6 outline)
+     .radio-card--hover         — Hover    (gray-6 bg)
+     .radio-card--focus         — Focus    (gray-6 bg + gray-5 ring)
+     .radio-card--pressed       — Pressed  (gray-6 bg)
      .radio-card--selected      — Selected (white bg + nature-2 outline)
    ============================================ */
 
@@ -23,7 +23,7 @@
 .radio-card {
   width: 448px;
   padding: var(--space-4) var(--space-5);
-  background: var(--color-gray-6);
+  background: var(--color-bg-soft);
   border-radius: var(--radius-btn);
   display: inline-flex;
   align-items: center;
@@ -31,7 +31,7 @@
   cursor: pointer;
   overflow: hidden;
   box-sizing: border-box;
-  outline: 1px solid transparent;
+  outline: 1px solid var(--color-gray-6);
   outline-offset: -1px;
   transition: background 0.15s ease, outline-color 0.15s ease, transform 0.08s ease-in;
 }
@@ -39,31 +39,38 @@
 /* ---------- Hover ---------- */
 .radio-card--hover,
 .radio-card:hover:not(.radio-card--selected) {
-  background: var(--color-gray-5);
+  background: var(--color-gray-6);
+  outline-color: transparent;
 }
 
 /* ---------- Pressed ---------- */
 .radio-card--pressed,
 .radio-card:active {
-  background: var(--color-gray-5);
+  background: var(--color-gray-6);
+  outline-color: transparent;
   transform: scale(0.98);
 }
 
 /* ---------- Focus (keyboard only) ---------- */
 .radio-card--focus {
-  background: var(--color-gray-5);
+  background: var(--color-gray-6);
+  outline-color: transparent;
   box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
 }
-body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
-  background: var(--color-gray-5);
+body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected),
+body:not(.using-mouse) .radio-card:focus-visible:not(.radio-card--selected) {
+  background: var(--color-gray-6);
+  outline-color: transparent;
   box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
 }
+/* label 자체에 포커스가 올 때 브라우저 기본 outline 제거 (ring 은 box-shadow 로 표시) */
+.radio-card:focus { outline: none; }
 
 /* ---------- Selected ---------- */
 .radio-card--selected,
 .radio-card:has(.radio-card__input:checked) {
   background: var(--color-white-100);
-  outline-color: var(--color-nature-2);
+  outline-color: var(--color-nature-3);
 }
 
 /* ---------- Input (hidden) ---------- */
@@ -98,7 +105,9 @@ body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
 .radio-card__content {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1);
+  gap: 0;
+  min-width: 0;  /* flex 자식이 overflow 안에서 줄임표 처리되도록 */
+  flex: 1 1 auto;
 }
 
 /* ---------- Title ---------- */
@@ -108,6 +117,12 @@ body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
   line-height: var(--line-height-subtext);
   font-weight: var(--font-weight-w6);
   color: var(--color-font-primary-black-100);
+  /* 한 줄 제한 + 줄임표 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 100%;
 }
 
 /* ---------- Sub ---------- */
@@ -117,6 +132,45 @@ body:not(.using-mouse) .radio-card:focus-within:not(.radio-card--selected) {
   line-height: var(--line-height-overline);
   font-weight: var(--font-weight-w4);
   color: var(--color-font-primary-black-50);
+  /* 한 줄 제한 + 줄임표 */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* ============================================
+   Variant — Nav (아바타 없음 + 우측 chevron)
+   사용: 아바타가 없는 네비게이션형 선택 카드
+   구조: <label class="radio-card radio-card--nav">
+           <input type="radio" class="radio-card__input" ...>
+           <div class="radio-card__content">...</div>
+           <i class="icon icon-chevron-right radio-card__chevron"></i>
+         </label>
+   ============================================ */
+.radio-card--nav {
+  padding-right: var(--space-4);  /* 16px — chevron 전용 우측 여백 */
+  justify-content: space-between;
+}
+
+.radio-card__chevron {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  color: var(--color-font-primary-black-30);  /* default: 30% — hover/focus/pressed/selected에서 100%로 강조 */
+  transition: color 0.15s ease;
+}
+
+.radio-card--nav.radio-card--hover .radio-card__chevron,
+.radio-card--nav:hover:not(.radio-card--selected) .radio-card__chevron,
+.radio-card--nav.radio-card--focus .radio-card__chevron,
+.radio-card--nav.radio-card--pressed .radio-card__chevron,
+.radio-card--nav:active .radio-card__chevron,
+.radio-card--nav.radio-card--selected .radio-card__chevron,
+.radio-card--nav:has(.radio-card__input:checked) .radio-card__chevron,
+body:not(.using-mouse) .radio-card--nav:focus-within .radio-card__chevron {
+  color: var(--color-font-primary-black-100);
 }
 
 

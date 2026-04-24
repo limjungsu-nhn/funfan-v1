@@ -32,7 +32,9 @@ html, body {
   display: flex;
   height: 100%;
   position: relative;
-  overflow: hidden; /* 패널 translateX 슬라이드 클리핑 */
+  /* clip + margin — 패널 translateX 슬라이드 클리핑 유지 + 내부 컴포넌트 focus ring·shadow 4px 여유 */
+  overflow: clip;
+  overflow-clip-margin: var(--space-1);
 }
 
 /* left-panel: 화면 최상단부터 시작, 내부 콘텐츠만 navbar 아래로 밀어냄 */

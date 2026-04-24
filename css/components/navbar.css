@@ -28,8 +28,8 @@
   left: 0;
   right: 0;
   min-width: var(--base);
-  height: 64px;
-  min-height: 64px;
+  height: var(--navbar-height);
+  min-height: var(--navbar-height);
   padding: 0 var(--space-5);
   background: var(--color-white-100);
   box-shadow: 0px 1px 2px var(--color-shadow-light);

@@ -101,9 +101,18 @@ const buttonVariants = cva("...", {
 - disabled: gray-6 배경 + gray-5 border
 
 #### `.radio-card` → shadcn `RadioGroup` + `Card` 조합
-**States**: default(gray-6 bg) / hover(gray-5) / focus(ring) / pressed / **selected**(white + nature-2 outline) / disabled
+**States**: default(bg-soft + gray-6 outline) / hover(gray-6) / focus(gray-6 + 3px gray-5 ring) / pressed(gray-6 · scale 0.98) / **selected**(white + nature-3 outline) / disabled
 - 일반 radio가 아니라 **카드 전체가 클릭 영역**
 - 내부에 avatar emoji + 타이틀 + 설명
+- **Variant `.radio-card--nav`**: 아바타 없음 + 우측 `.radio-card__chevron` (icon-chevron-right 18px) · `justify-content: space-between` · padding-right 16px
+
+#### `.modal` / `.modal-backdrop` → shadcn `Dialog`
+- **Backdrop**: `position: fixed` · `top: 64px` (navbar 제외 · navbar z-index 100 위에 오버레이) · `bg-soft 50%` · z-index 1000 · `.modal-backdrop--open`로 display flex 토글
+- **Container**: 504px · padding 40px 28px · `--radius-lg`(20px) · `shadow-subtle + shadow-mid` · gap 24px column
+- **Sub-elements**: `.modal__title` (body-lg 600) · `.modal__section` (label+list 묶음, gap 6px) · `.modal__label` (caption 600) · `.modal__list` (radio-card 등) · `.modal__footer` (우측 정렬 액션, gap 6px)
+- **동작 (`js/components/modal.js`)**: `[data-modal-open="#id"]` 트리거 / `[data-modal-close]` 내부 닫기 / ESC / backdrop 클릭 / body scroll lock / 열림 시 첫 focusable 자동 focus
+- 접근성: `role="dialog"` · `aria-modal="true"` · `aria-labelledby` 필수
+- TODO: 포커스 트랩 완전 구현 (현재는 첫 focusable 포커스만)
 
 #### `.chat-input` → shadcn `Textarea` + icon buttons
 - Container: `.chat-input__field` (textarea 감싸는 필드)
