@@ -8,6 +8,40 @@
 
 ---
 
+## v1.05.3 (2026-04-24, v1.05.2 후속)
+
+v1.05.2 배송 이후 반영된 아바타 시각 정비 배치. **기존 구현 깨지는 변경 없음** — 아바타 이미지 교체 + 일부 아바타 원형 클리핑 정책 통일.
+
+### 변경 (이미지 에셋)
+- **`img/img_avatar01.png`** · **`img/img_avatar02.png`** 신규 교체 — **176×176 정사각 RGBA** (루피 / 양). 기존은 투명 모서리의 원형 디자인이었으나 새 이미지는 사각 프레임에 가득 찬 일러스트
+- **`css/components/avatar.css`** 의 `.avatar-01` / `.avatar-02` base64 data URI 재임베딩 — 새 PNG로 동기화 (data URI 방식이라 파일 교체만으로는 반영되지 않아 필수)
+
+### 변경 (컴포넌트 — 클리핑 정책)
+- **`character-card__portrait`** — 기존 `132×124 직사각 display:block` → **`124×124 원형 클리핑`**
+  - `border-radius: 50%` + `object-fit: cover` + `object-position: center`
+  - `background: var(--color-wood-6)` 로 이미지 로딩 전/알파 영역 fallback
+  - **의도**: "어떤 이미지가 들어와도 동그라미로 렌더"되도록 — 원본 PNG 형태와 무관하게 일관된 원형 프레임 보장
+  - 기존 hana/fuku/tonton PNG(132×124)는 양쪽 약 4px crop됨 — 시각적으로 미미
+- **아바타 클리핑 표기 통일** — 아바타 계열 전체 `border-radius: 50%`로 일원화
+  - 기존 `var(--radius-full)` (= 100px) 사용하던 2곳 → `50%` 로 교체
+    - `.avatar-upload__preview` ([avatar-upload.css:34](../css/components/avatar-upload.css))
+    - `.settings-form__avatar-overlay::after` ([account-setting.css:88](../css/pages/account-setting.css))
+  - 최종 적용 범위: `.avatar` / `.accordion-row__avatar` / `.radio-card__avatar` / `.character-card__portrait` / `.avatar-upload__preview` / `.settings-form__avatar-overlay::after`
+  - **의도**: `50%`는 "요소 크기와 무관하게 항상 원형"을 보장하는 CSS 관용구 — 토큰(100px)은 요소가 100px 초과 시 원이 깨짐. Tailwind `rounded-full` 과 동일 개념
+  - `--radius-full` 토큰은 pill 형태(badge / tab / icon-btn / send-btn / review-item) 전용으로 계속 사용
+
+### 개발 액션 요약
+1. `img_avatar01.png` / `img_avatar02.png` 신규 에셋 반영 (CDN 또는 프로젝트 `public/img/`)
+2. `character-card` cva 에 portrait 원형 클리핑 반영 — `rounded-full object-cover` (Tailwind) / `aspect-square` 고려
+3. 아바타 계열 전체 `rounded-full` 통일 — `--radius-full` 토큰은 pill 전용으로 분리 (CSS `50%` ≡ Tailwind `rounded-full`)
+
+### 하위 호환
+- 기존 토큰·클래스·BEM 구조 변경 없음
+- `.character-card__portrait` 크기가 `132×124` → `124×124`로 변경되어 레이아웃에 미세한 차이 발생 가능하나, `.character-card` 외곽 300×300 포스트잇 안에서 자동 중앙 정렬되어 시각 영향 미미
+- 기존 HTML 마크업의 `<img width="132" height="124">` 속성은 CSS가 오버라이드하므로 그대로 유지 OK — 추후 순차적으로 `width="124" height="124"` 로 업데이트 권장
+
+---
+
 ## v1.05.2 (2026-04-23, v1.05.1 후속)
 
 v1.05.1 배송 이후 반영된 변경 일괄. **기존 구현 깨지는 변경 없음** — 신규 페이지 본문 완성 + 인터랙션 추가 + 라우팅 연결이 중심.

@@ -4,30 +4,29 @@
 
 ---
 
-## 📌 v1.05.2 요약 (2026-04-23, v1.05.1 후속) — 먼저 이것만 보세요
+## 📌 v1.05.3 요약 (2026-04-24, v1.05.2 후속) — 먼저 이것만 보세요
 
-**v1.05.1 배송 이후 반영된 변경 일괄.** 기존 구현 깨지는 변경 없음.
+**v1.05.2 배송 이후 반영된 아바타 시각 정비 배치.** 기존 구현 깨지는 변경 없음.
 
 | 분류 | 내용 | 개발 영향 |
 |---|---|---|
-| **신규 페이지 본문** | `mypage.html` **본문 완성** (쉘 → 실제 페이지) — 헤더 + 프로필 진입 카드 + Phase 0 안내 | `mypage` 라우트·레이아웃 추가 |
-| **컴포넌트 인터랙션** | `accordion-row` hover 효과 신설 — `--card`는 shadow lift + z-index↑, 비-card `--link`는 bg tint | cva `hover` variant 축 추가 |
-| **토큰 추가** ⚠ | `--color-shadow-soft: rgba(0,0,0,0.06)` · tailwind preset `shadow-card-hover` | `tailwind-preset.ts` **재import** |
-| **라우팅 연결** | navbar `マイページ` / `ワークスペース` 버튼 → `<a href>` 로 전환 (8개 페이지) | `<Link>` + `<Button asChild>` 패턴으로 이식 |
-| **코드 정리** | typography.css min-width 토큰화 · tailwind-preset `p2-5` → `p2_5` 정정 · Figma 고정값 의도 주석 보강 · `series-home`에 keyboard-focus 로드 | **영향 없음** (내부 정리) |
+| **이미지 에셋 교체** | `img_avatar01.png` / `img_avatar02.png` 신규 이미지 (176×176 사각) | 에셋 재반영 (CDN/`public/img/`) |
+| **data URI 동기화** | `avatar.css`의 `.avatar-01` / `.avatar-02` base64 재임베딩 — 파일 교체만으로는 반영 안 됨 | CSS 재배포 |
+| **컴포넌트 클리핑** | `character-card__portrait` 132×124 → **124×124 원형** (`border-radius: 50%` + `object-fit: cover`) | cva에 `rounded-full object-cover` 반영 |
+| **아바타 클리핑 통일** | avatar 계열 전체 `border-radius: 50%` 로 일원화 (`--radius-full` 쓰던 2곳 교체). `--radius-full` 은 pill 전용 | 아바타 cva는 `rounded-full`, pill류(badge/tab 등)만 `rounded-[100px]` 구분 |
 
 **다음 배치 예정**
 - `creative-partner-onboarding-01~04` 본문 (현재 쉘 상태 유지)
 
 **하위 호환**
 - 기존 토큰·클래스·BEM 구조 변경 없음
-- `accordion-row` 기본 상태 렌더는 동일 — hover 시에만 lift/tint 추가
-- navbar 버튼 → 앵커 전환은 시맨틱만 바뀜 (스타일 동일)
+- `.character-card__portrait` 크기 변경은 포스트잇 카드(300×300) 내에서 자동 중앙 정렬되어 시각 영향 미미
+- HTML `<img width="132" height="124">` 속성은 CSS가 오버라이드 — 즉시 변경 불필요
 
 **확인할 곳**
-1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05.2 항목 — **개발 액션 요약** 4줄
-2. [`tailwind-preset.ts`](./tailwind-preset.ts) — `shadow-card-hover` preset 추가, 프로젝트에 재import
-3. `mypage.html` · `styleguide.html` (accordion-row hover) — 실제 동작 확인
+1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05.3 항목 — **개발 액션 요약** 3줄
+2. `styleguide.html` Avatar 섹션 · character-card 섹션 — 새 이미지 + 원형 클리핑 확인
+3. `mypage.html` — 프로필 카드 아바타(`accordion-row__avatar`) 시각 확인
 
 ---
 

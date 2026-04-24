@@ -312,7 +312,7 @@ const buttonVariants = cva("...", {
 - 파트너 선택 화면 전용 조합 카드. 300×300 고정
 - 배경은 `bg_postit_*.png`(3색) — `background-size: 300px 300px`, `background-repeat: no-repeat`
 - **Variant (포스트잇 색)**: `.character-card--blue` / `.character-card--yellow` / `.character-card--pink`
-- 캐릭터 초상: `.character-card__portrait` (132×124, `img_character_{fuku|hana|tonton}_{default|selected}.png`) — 그림자는 PNG 자체에 포함 (CSS filter 없음)
+- 캐릭터 초상: `.character-card__portrait` — **124×124 원형 클리핑** (`border-radius: 50%` + `object-fit: cover` + `object-position: center`, `background: var(--color-wood-6)` fallback). 원본 PNG는 `img_character_{fuku|hana|tonton}_{default|selected}.png` (132×124, 그림자 포함 · CSS filter 없음). 어떤 이미지가 들어와도 동그라미로 렌더되도록 설계 — v1.05.3 적용
 - 헤더: `__header` → `__name-row` (이름 `text-h3-w6` 22/600 + 역할 `text-caption-w6` 12/600 muted, gap `--space-1_5`) → 초상 (gap `--space-3`)
 - 설명: `__description` — `text-caption-w6` 중앙정렬, `--color-font-primary-black-50`
 - 내부 padding `--space-9 --space-5_5 44px`(상/좌우/하), flex-column gap `--space-4`, `align-items: center`

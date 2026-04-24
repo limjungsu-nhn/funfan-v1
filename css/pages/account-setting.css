@@ -85,7 +85,7 @@
   background: var(--color-wood-6);
   mix-blend-mode: multiply;
   pointer-events: none;
-  border-radius: var(--radius-full);
+  border-radius: 50%;
 }
 
 /* 삭제 경고 헤더 — title 옆 red error 아이콘 */
