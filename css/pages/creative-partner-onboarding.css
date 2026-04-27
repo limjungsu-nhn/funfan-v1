@@ -14,10 +14,9 @@ body:has(.creative-partner-onboarding) {
   align-items: center;
 }
 
-/* 상단 정렬 modifier — step2 처럼 상단 padding 으로 위치 잡는 단계용 */
+/* 상단 정렬 modifier — step2~5 (상단 padding 으로 위치 잡는 단계) */
 .creative-partner-onboarding--top {
   align-items: flex-start;
-  padding-top: 0;
 }
 
 /* ============================================
@@ -122,8 +121,15 @@ body:has(.creative-partner-onboarding) {
   gap: var(--space-5_5);  /* 22px */
 }
 
-/* 장르 그리드 — 2열 (step2, step4 공용) */
-.creative-partner-onboarding__genre-grid,
+/* 장르 그리드 (step2) — 2열 */
+.creative-partner-onboarding__genre-grid {
+  align-self: stretch;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2_5);  /* 10px */
+}
+
+/* 스킬 그리드 (step4) — 2열 */
 .creative-partner-onboarding__skill-grid {
   align-self: stretch;
   display: grid;
@@ -141,6 +147,7 @@ body:has(.creative-partner-onboarding) {
 
 .creative-partner-onboarding__step2-hint {
   margin: 0;
+  text-align: center;
   color: var(--color-font-primary-black-100);
 }
 

@@ -4,33 +4,26 @@
 
 ---
 
-## 📌 v1.05.5 요약 (2026-04-27, v1.05.4 후속) — 먼저 이것만 보세요
+## 📌 v1.05.6 요약 (2026-04-27, v1.05.5 후속) — 먼저 이것만 보세요
 
-**인증 플로우 + Floom 파트너 온보딩 시퀀스 + radio-list 컴포넌트 배치.** 기존 구현 깨지는 변경 없음.
+**cp-onboarding 시퀀스 시각 디테일 보정 패치.** 신규 페이지·컴포넌트·토큰 없음. 기존 구현 깨지는 변경 없음.
 
 | 분류 | 내용 | 개발 영향 |
 |---|---|---|
-| **인증 화면 3종 신설** 🆕 | `auth-login.html` / `auth-signup.html` / `auth-signup-password.html`. 로그인 → cp-onboarding-01, 회원가입 → 비밀번호 설정 → cp-onboarding-01 라우팅. 비밀번호 검증 3-rule + 불일치 caution(`form-input--error` + `パスワードが一致しません`) | shadcn `Form` + `Input` 변형. `登録する` 항상 활성, 검증 실패 시 caution 표시 + focus 이동 |
-| **Floom 파트너 온보딩 6단계 신설** 🆕 | `creative-partner-onboarding-01.html` ~ `-06.html`. Step 1 인사 + CTA, Step 2~5 입력(펜네임/장르/스타일/스킬/목표), Step 6 캐릭터 카드 추천 | step 라우팅 그래프 등록. step 진입 시 progress bar `--progress-from` → `--progress-to` 보간 (CSS 변수 + keyframe) |
-| **`radio-list` 컴포넌트 신설** 🆕 | `css/components/radio-list.css`. 1줄 리스트형 라디오. avatar(letter) · icon 두 슬롯 지원, 우측 check 18px. radio · checkbox 모두 동작 | shadcn `RadioGroup` + 리스트 아이템 매핑. avatar/icon 폴리모픽 슬롯, `:has(:checked)` 자동 selected |
-| **신규 아이콘 11종** 🆕 | `bolt` · `castle` · `close` · `filter-vintage` · `help` · `light-mode` · `skull` · `tool-tip` · `visibility` · `visibility-off` · `visibility-on`. 총 51개 | lucide 매핑 [`ICONS.md`](./ICONS.md) 참조 |
-| **form-input toggle-password 공통화** | 페이지별 중복 토글 스타일 → `form-input.css` 의 `[data-role="toggle-password"]` 단일 규칙으로 통합. `aria-pressed="false"` opacity 0.5 / `true` 100% | cva variant 또는 Tailwind `aria-pressed` modifier 로 표현 |
-| **신규 토큰 3종** | `--space-11: 44px` · `--space-15: 60px` · `--space-50: 200px`. `design-tokens.json` + `tailwind-preset.ts` 동기화 | preset import 만 하면 자동 반영 |
-| **cp-onboarding 페이지 CSS** | `body:has(.creative-partner-onboarding)` 흰색 배경 · `--top` modifier · top progress bar (position fixed · z-index 200 · `cp-progress-grow` 600ms ease-out 애니메이션) · 720px(`--p50`) · 576px(`--p40`) 컬럼 정의 | 페이지 전용 — 컴포넌트 영향 없음 |
-| **이미지 에셋** | `img/bg_postit_{blue,pink,yellow}.png` 색상 미세 조정 | CDN/`public/img/` 재반영 |
-| **logo · 토큰 정합성 정리** | `logo--lg` 120×45 → 128×48 (auth 페이지 표준화) · `auth-*.css` divider gap 하드코딩 18px → `var(--space-4)` · `cp-onboarding step2 width 720px` → `var(--p50)` | 사용처 없는 변경 (logo--lg) — 영향 없음 |
-| **styleguide · index 싱크** | radio-list 섹션 신설 (5 state 정적 + 인터랙티브 그룹 데모) · 신규 아이콘 11종 카드 추가 · index.html 신규 9개 페이지 묶음을 styleguide 아래로 이동 + ✅ 표시 | 디자인 참조용 — 개발 영향 없음 |
+| **장르 아이콘 4종 교체** | `creative-partner-onboarding-02.html` 장르 그리드. `恋愛` favorite → **favorite-filled** · `日常` sentiment-very-satisfied-filled → **light-mode** · `BL・GL` favorite-filled → **filter-vintage** · `まだ決めていない` schedule → **help** | 페이지 마크업의 `icon-*` 클래스 교체만. 아이콘 토큰·매핑 변경 없음 |
+| **hint 위치/정렬** | `__step2-hint` 를 `form-field` 내부 → **`form` 직속**으로 한 단계 꺼냄. `text-align: center` 추가 | 페이지 마크업 한 줄 이동 |
+| **desc 텍스트 사이즈 (02~05)** | `__step2-desc` 텍스트 클래스 `text-subtext-w4` (14px) → **`text-assist-w4`** (13px). 4페이지 적용 | 마크업 클래스 교체. 토큰·typography.css 변경 없음 |
+| **그리드 gap 분리** | 기존 `__genre-grid, __skill-grid` 공용 룰 분리. `__genre-grid` 8 → **10px** (`--space-2_5`) · `__skill-grid` 8px (`--space-2`) 유지 | cp-onboarding.css 만 변경 |
+| **dead code 정리** | `.creative-partner-onboarding--top` 의 `padding-top: 0` 제거 (부모에 padding-top 없어 무효) | 영향 없음 |
 
 **하위 호환**
 - 기존 토큰·클래스·BEM 구조 변경 없음
-- `logo--lg` 사이즈 변경 — 기존 사용처 없음
-- form-input `[data-role="toggle-password"]` 셀렉터 신규 — 기존 페이지 영향 없음
+- 모든 변경이 cp-onboarding 02~05 페이지 마크업 + cp-onboarding.css 한정
 
 **확인할 곳**
-1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05.5 항목 — **개발 액션 요약**
-2. `styleguide.html` radio-list 섹션 — 정적 5 state + 인터랙티브 그룹 데모
-3. `auth-login.html` / `auth-signup.html` / `auth-signup-password.html` — 인증 플로우 라우팅·검증 확인
-4. `creative-partner-onboarding-01.html` ~ `-06.html` — 6단계 시퀀스 + progress bar 진입 애니메이션 확인
+1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05.6 항목 — **개발 액션 요약**
+2. `creative-partner-onboarding-02.html` — 장르 아이콘 4종, hint 위치/정렬
+3. `creative-partner-onboarding-02~05.html` — desc 13px 통일
 
 ---
 

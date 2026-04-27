@@ -8,6 +8,39 @@
 
 ---
 
+## v1.05.6 (2026-04-27, v1.05.5 후속)
+
+cp-onboarding 시퀀스 **시각 디테일 보정 패치**. 신규 페이지·컴포넌트·토큰 없음. **기존 구현 깨지는 변경 없음**.
+
+### 변경 (creative-partner-onboarding-02 — 장르 아이콘 교체)
+- 디자인 레퍼런스 기준 4종 아이콘을 filled/올바른 매핑으로 교체:
+  - 恋愛・ラブコメ: `icon-favorite` → **`icon-favorite-filled`**
+  - 日常・ヒューマンドラマ: `icon-sentiment-very-satisfied-filled` → **`icon-light-mode`**
+  - BL・GL: `icon-favorite-filled` → **`icon-filter-vintage`**
+  - まだ決めていない: `icon-schedule` → **`icon-help`**
+
+### 변경 (creative-partner-onboarding-02 — hint 위치/정렬)
+- `__step2-hint` 를 `form-field` 내부 → **`form` 직속**으로 한 단계 꺼냄 (form-field 내부 종속 컨테이너에서 분리)
+- `text-align: center` 추가 — 컨테이너 폭 안에서 가운데 정렬
+
+### 변경 (cp-onboarding 02~05 — desc 텍스트 사이즈)
+- `__step2-desc` 의 텍스트 클래스 `text-subtext-w4` (14px) → **`text-assist-w4`** (13px)
+- 적용 페이지: `creative-partner-onboarding-02.html` ~ `-05.html` (4종)
+
+### 변경 (cp-onboarding — 그리드 gap 분리)
+- 기존 `__genre-grid, __skill-grid` 공용 룰 (`gap: 8px`) 분리:
+  - `__genre-grid` (step2): **`var(--space-2_5)`** (10px)
+  - `__skill-grid` (step4): `var(--space-2)` (8px) — 유지
+
+### 정리 (dead code)
+- `.creative-partner-onboarding--top` modifier 의 `padding-top: 0` 제거. 부모 `.creative-partner-onboarding` 에 padding-top 이 없어 무효였음. `align-items: flex-start` 만 남김.
+
+### 개발 액션
+- shadcn 매핑 변경 없음 — 모든 변경이 페이지 마크업/CSS 한정. 컴포넌트(`radio-list`, `form-field`, `form-input`, `icon`) 스펙 동일.
+- cp-onboarding 페이지 마크업을 prod에 옮길 때 위 4종 아이콘 매핑·desc 텍스트 사이즈·hint 위치만 동기화하면 됨.
+
+---
+
 ## v1.05.5 (2026-04-27, v1.05.4 후속)
 
 v1.05.4 배송 이후 반영된 **인증 플로우 + 크리에이티브 파트너 온보딩 시퀀스 + radio-list 컴포넌트** 배치. **기존 구현 깨지는 변경 없음**.
