@@ -110,16 +110,10 @@
   color: var(--color-font-primary-black-50);
 }
 
-/* 캐릭터 초상 — 124×124 원형 클리핑.
-   어떤 이미지가 들어와도 동그라미로 렌더되도록 object-fit: cover + border-radius: 50%.
-   기존 PNG 원본은 132×124 (그림자 포함) — cover 로 중앙 crop 되어 양쪽 4px 정도 잘림. */
+/* 캐릭터 초상 — PNG 원본(132×124, 투명 배경) 그대로 표시. */
 .character-card__portrait {
-  width: 124px;
+  width: 132px;
   height: 124px;
-  border-radius: 50%;
-  object-fit: cover;
-  object-position: center;
-  background: var(--color-wood-6);  /* 이미지 로딩 전 / 알파 영역 fallback */
   display: block;
 }
 
