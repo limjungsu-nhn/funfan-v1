@@ -1,0 +1,128 @@
+/* ============================================
+   Post Card — 핀터레스트 스타일 포스트 카드
+
+   HTML 구조:
+     <a class="post-card" href="...">
+       <img class="post-card__image" src="img/img_comic_01.png" alt="">
+       <div class="post-card__meta">
+         <div class="post-card__head">
+           <span class="post-card__title text-caption-w6">彼氏お断り！</span>
+           <span class="post-card__count">
+             <i class="icon icon-favorite"></i>
+             <span class="text-overline-w6">20</span>
+           </span>
+         </div>
+         <span class="post-card__sub text-caption-w4">富所風雅１番目</span>
+       </div>
+     </a>
+
+   Notes:
+     - 폭 322px 고정 (4-col masonry 기준)
+     - 이미지 자연 비율 유지 (height: auto) → 핀터레스트 masonry 효과
+     - radius 12 + 1px gray-6 border
+     - hover/focus 효과는 추후 부착 (현재 정적)
+   ============================================ */
+
+.post-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3); /* 12 */
+  break-inside: avoid; /* CSS columns masonry — 카드 분할 방지 */
+  text-decoration: none;
+  color: inherit;
+  transition: transform .12s var(--ease-standard);
+  transform-origin: center;
+}
+
+/* Pressed — 카드 전체(이미지·오버레이·메타) 일괄 축소 */
+.post-card:active {
+  transform: scale(0.97);
+}
+
+/* Focus — 키보드 전용 ring (이미지 영역에만, button 컴포넌트 패턴 동일) */
+.post-card:focus { outline: none; }
+.post-card:focus-visible .post-card__image-wrap {
+  box-shadow:
+    0 0 0 var(--ring-width) var(--color-gray-5),
+    0 1px 2px var(--color-shadow-light);
+}
+
+.post-card__image-wrap {
+  position: relative;
+  display: block;
+  border-radius: var(--radius-btn); /* 12 */
+  overflow: hidden;
+}
+
+.post-card__image-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid var(--color-gray-6);
+  mix-blend-mode: multiply;
+  pointer-events: none;
+}
+
+/* Hover — 30% 검정 오버레이 */
+.post-card__image-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-black-30);
+  opacity: 0;
+  transition: opacity .15s var(--ease-standard);
+  pointer-events: none;
+}
+
+.post-card:hover .post-card__image-wrap::before {
+  opacity: 1;
+}
+
+.post-card__image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.post-card__meta {
+  padding: 0 var(--space-1_5); /* 0 6 */
+  display: flex;
+  flex-direction: column;
+}
+
+.post-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.post-card__title {
+  flex: 1;
+  min-width: 0;
+  color: var(--color-font-primary-black-100);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-card__count {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1); /* 4 */
+  flex-shrink: 0;
+  color: var(--color-font-primary-black-100);
+}
+
+.post-card__count .icon {
+  color: var(--color-sky-3);
+}
+
+.post-card__sub {
+  color: var(--color-font-primary-black-50);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

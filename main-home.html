@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>メインホーム — FunFan</title>
+
+  <!-- Design Tokens -->
+  <link rel="stylesheet" href="css/tokens/typography.css">
+  <link rel="stylesheet" href="css/tokens/layout.css">
+  <link rel="stylesheet" href="css/tokens/color.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/logo.css">
+  <link rel="stylesheet" href="css/components/icon.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/tab.css">
+  <link rel="stylesheet" href="css/components/badge.css">
+  <link rel="stylesheet" href="css/components/accordion-row.css">
+  <link rel="stylesheet" href="css/components/section-label.css">
+  <link rel="stylesheet" href="css/components/form-field.css">
+  <link rel="stylesheet" href="css/components/form-input.css">
+  <link rel="stylesheet" href="css/components/avatar-upload.css">
+  <link rel="stylesheet" href="css/components/post-card.css">
+
+  <!-- Page -->
+  <link rel="stylesheet" href="css/pages/main-home.css">
+
+  <script src="js/core/keyboard-focus.js" defer></script>
+  <script src="js/components/accordion-row.js" defer></script>
+  <script src="js/components/avatar-upload.js" defer></script>
+  <script src="js/components/form-input.js" defer></script>
+  <script src="js/pages/main-home.js" defer></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar-logo">
+      <i class="logo logo-funfan"></i>
+    </div>
+    <div class="navbar-actions">
+      <div class="navbar-tabs">
+        <div class="tab-group">
+          <button class="tab tab--selected">公開</button>
+          <button class="tab">非公開</button>
+        </div>
+      </div>
+      <a class="btn btn-ghost" href="mypage.html">
+        <i class="icon icon-account-circle"></i>
+        <span class="text-assist-w4">マイページ</span>
+      </a>
+      <a class="btn btn-filled-nature" href="workspace.html">
+        <i class="icon icon-laptop-mac"></i>
+        <span class="text-assist-w4">ワークスペース</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="main-home">
+
+    <!-- Section: 最新の投稿作品 -->
+    <section class="main-home__section">
+      <h1 class="main-home__title text-h2-w6">最新の投稿作品</h1>
+    </section>
+
+    <!-- Masonry grid (4-column Pinterest style) -->
+    <section class="main-home__section">
+      <div class="main-home__masonry">
+        <div class="main-home__column">
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_14.png" alt="" width="644" height="382"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">彼氏お断り！</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">20</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">富所風雅１番目</span>
+          </div>
+        </a>
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_01.png" alt="" width="644" height="482"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">星屑のレシピ</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">12</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">桜井あかね</span>
+          </div>
+        </a>
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_05.png" alt="" width="644" height="382"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">深海図書館</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">38</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">海野こずえ</span>
+          </div>
+        </a>
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_11.png" alt="" width="644" height="382"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">サクラ通信</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">7</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">川辺ふうか</span>
+          </div>
+        </a>
+        </div>
+        <div class="main-home__column">
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_04.png" alt="" width="644" height="644"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">硝子の街角</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">25</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">月村あいり</span>
+          </div>
+        </a>
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_08.png" alt="" width="644" height="390"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">風と猫の駅</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">19</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">高橋りお</span>
+          </div>
+        </a>
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_16.png" alt="" width="644" height="382"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">真夜中ラジオ</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">42</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">霧島ナナ</span>
+          </div>
+        </a>
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_13.png" alt="" width="644" height="382"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">夜明けのキッチン</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">31</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">朝倉さくら</span>
+          </div>
+        </a>
+        </div>
+        <div class="main-home__column">
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_20.png" alt="" width="644" height="382"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">月の手紙</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">9</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">小川みち</span>
+          </div>
+        </a>
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_03.png" alt="" width="644" height="618"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">私の冒険</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">56</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">山本ハル</span>
+          </div>
+        </a>
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_15.png" alt="" width="644" height="382"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">青い雨の日</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">14</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">水木れい</span>
+          </div>
+        </a>
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_17.png" alt="" width="644" height="382"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">花咲く屋上</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">22</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">西野はる</span>
+          </div>
+        </a>
+        </div>
+        <div class="main-home__column">
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_18.png" alt="" width="644" height="382"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">星間カフェ</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">17</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">藤本そら</span>
+          </div>
+        </a>
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_07.png" alt="" width="644" height="382"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">夕焼けジャム</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">5</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">岡田ことり</span>
+          </div>
+        </a>
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_19.png" alt="" width="644" height="382"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">雪の日記</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">28</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">白石みお</span>
+          </div>
+        </a>
+        <a class="post-card" href="#">
+          <span class="post-card__image-wrap"><img class="post-card__image" src="img/img_comic_02.png" alt="" width="644" height="644"></span>
+          <div class="post-card__meta">
+            <div class="post-card__head">
+              <span class="post-card__title text-subtext-w6">海辺のメロディ</span>
+              <span class="post-card__count"><i class="icon icon-humidity-high-filled icon--sm"></i><span class="text-overline-w6">11</span></span>
+            </div>
+            <span class="post-card__sub text-caption-w4">木下なぎさ</span>
+          </div>
+        </a>
+        </div>
+      </div>
+      <div class="main-home__sentinel" aria-hidden="true"></div>
+    </section>
+
+  </main>
+
+</body>
+</html>

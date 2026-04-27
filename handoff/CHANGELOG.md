@@ -8,6 +8,59 @@
 
 ---
 
+## v1.05.7 (2026-04-28, v1.05.6 후속)
+
+**메인 디스커버리 + 작품 등록 + 작품 관리 페이지 배치.** 4개 신규 페이지 + 7개 신규 컴포넌트 + 무한 스크롤 JS + 20장 작품 표지 이미지. **기존 구현 깨지는 변경 없음**.
+
+### 신규 페이지 (4개)
+- **`main-home.html`** (NEW) — 핀터레스트 스타일 디스커버리 피드. 4-column flex masonry + 무한 스크롤. 기존 16장(작품 표지 풀) → sentinel 도달 시 12장씩 랜덤 추가
+- **`creator-series-home.html`** (NEW) — 작가용 시리즈 홈 (시리즈 정보·정원·에피소드 관리 통합 뷰)
+- **`series-register.html`** (NEW) — 작품 등록 폼. `form-card` + `thumbnail-upload` + `inline-alert(error)` + `radio-block`
+- **`series-post-management-empty.html`** (NEW) — `series-post-management` 의 empty state 버전. `empty-state` 컴포넌트 적용
+
+### 신규 컴포넌트 (7개)
+- **`post-card.css`** — 핀터레스트 스타일 포스트 카드 (322px · 이미지 자연 비율 · radius-btn(12) · gray-6 1px border with `mix-blend-mode: multiply` · hover overlay 30% black · 이미지 영역 한정 focus ring · 카드 전체 `:active scale(0.97)`)
+- **`post-manage.css`** — 작품(시리즈) 관리 카드 + 행 (720px · padding 32/28 · 썸네일 76×108 · status badge 3종: 公開中/非公開/下書き)
+- **`empty-state.css`** — 데이터 없음 플레이스홀더 (720×360 · bg-soft + gray-4 1px dashed · radius-md · 중앙 정렬 액션 버튼 + hint)
+- **`form-card.css`** — 헤더 + 바디 폼 래퍼 (720px · radius-md · header 80px · body padding 0/24/32 · gap 24)
+- **`thumbnail-upload.css`** — 썸네일 업로드 영역 (100% × 280 · bg-soft + gray-4 1px dashed · 첨부 후: 미리보기 + hover overlay + 削除 버튼)
+- **`inline-alert.css`** — 인라인 경고/안내 배너 (padding 12/8 · radius-sm · variants: error)
+- **`radio-block.css`** — 큰 면적 라디오 블록 (series-register 의 タテ読み/ヨコ読み 선택)
+
+### 신규 JS
+- **`js/pages/main-home.js`** (NEW) — IntersectionObserver 기반 무한 스크롤. 4-column 누적 height 추적 + shortest-append 전략 (CSS columns 대신 JS append-to-shortest 사용 — 기존 카드 재배치 방지). 셔플된 비복원 풀 + `RECENT_AVOID=8` 윈도우로 viewport 내 이미지 중복 차단. `history.scrollRestoration='manual'` + `scrollTo(0,0)` 으로 새로고침 시 상단 시작. `<a href="#">` 클릭 점프 차단(이벤트 위임)
+
+### 신규 에셋
+- **작품 표지 이미지 20장** — `img/img_comic_01.png` ~ `img_comic_20.png` (가로 644px · 자연 비율 유지 · 핀터레스트 masonry 풀)
+
+### 토큰 변경
+- `color.css` — `--color-red-10` (#FFEAE8 — inline alert bg), `--color-red-text` (#FB2C36 — inline alert text) **추가**
+- `layout.css` — `--space-0_5` (2px), `--space-45` (180px) **추가**. `--episode-card-width` 하드코딩 1000px → `var(--p70)` (1008px) 정렬
+- `typography.css` — body 의 기본 `margin: 0` 명시 (브라우저 기본 8px 제거)
+
+### 신규 아이콘
+- `icon-delete` (휴지통 — thumbnail-upload `削除` 버튼 등에서 사용)
+
+### 변경 (인라인 스타일 제거 — Rule #1 위반 일소)
+- `creative-partner-onboarding-02~05.html` 의 `style="--progress-from/to: ..."` 4건 제거
+- 대신 `creative-partner-onboarding.css` 에 step modifier 클래스 추가:
+  - `.creative-partner-onboarding__progress--step1` ~ `--step4`
+
+### 변경 (styleguide 정비)
+- 컴포넌트 등록 형식을 `.sg-demo-canvas` → `.sg-type-table` 로 통일 (Rule #6). 변환 6종: `post-manage`, `empty-state`, `form-card`, `thumbnail-upload`, `inline-alert`, `post-card`
+- 720px 컴포넌트용 preview modifier 추가: `.sg-type-preview--post-manage / --empty-state / --form-card / --thumbnail-upload` (가로 스크롤 허용)
+- `post-card` preview 322px 고정 폭 유지
+- nav 평탄화 — Cards 그룹 하위 들여쓰기(`sg-nav-sub`) 해제 (불필요한 시각 위계 제거)
+
+### 개발 액션
+- **신규 페이지 우선순위**: `main-home` (디스커버리) > `series-register` (등록 플로우) > `series-post-management(-empty)` (관리)
+- **`post-card` 의 `mix-blend-mode: multiply` border** — 1px gray-6 가장자리 라인. 이미지가 흰색에 가까울 때만 또렷이 보이도록 의도. shadcn 매핑 시 동일 패턴 유지(`::after` border + multiply)
+- **무한 스크롤** — Pinterest 효과는 CSS columns 가 아닌 4 fixed flex columns + JS append-to-shortest 로 구현. CSS columns 사용 시 새 카드 추가마다 기존 카드가 재정렬되는 문제 회피. 카드 높이 추정식: `(colWidth × imgH/644) + 64(meta) + 28(gap)`
+- **focus ring 영역 제한** — `post-card:focus-visible` 시 `.post-card__image-wrap` 에만 box-shadow ring (`button.css` 패턴 동일). 메타 영역까지 ring 이 늘어지지 않도록
+- **inline alert** — `--color-red-10` / `--color-red-text` 는 Figma 고정 hex 값. 기존 red 스케일과 별도 토큰으로 유지 (디자인이 별도 hex 를 지정한 경우)
+
+---
+
 ## v1.05.6 (2026-04-27, v1.05.5 후속)
 
 cp-onboarding 시퀀스 **시각 디테일 보정 패치**. 신규 페이지·컴포넌트·토큰 없음. **기존 구현 깨지는 변경 없음**.

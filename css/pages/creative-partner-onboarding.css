@@ -66,7 +66,7 @@ body:has(.creative-partner-onboarding) {
    ============================================ */
 
 /* Top progress bar — viewport 상단 고정, navbar 위
-   width 는 인라인 --progress-to (현재 step), --progress-from (이전 step) 로 지정 */
+   step modifier(--step1~4)로 --progress-from / --progress-to 지정 */
 .creative-partner-onboarding__progress {
   position: fixed;
   left: 0;
@@ -77,6 +77,11 @@ body:has(.creative-partner-onboarding) {
   width: var(--progress-to, 0);
   animation: cp-progress-grow 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+.creative-partner-onboarding__progress--step1 { --progress-from: 0;     --progress-to: 25vw;  }
+.creative-partner-onboarding__progress--step2 { --progress-from: 25vw;  --progress-to: 50vw;  }
+.creative-partner-onboarding__progress--step3 { --progress-from: 50vw;  --progress-to: 75vw;  }
+.creative-partner-onboarding__progress--step4 { --progress-from: 75vw;  --progress-to: 100vw; }
 
 @keyframes cp-progress-grow {
   from { width: var(--progress-from, 0); }

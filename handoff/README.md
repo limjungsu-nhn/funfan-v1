@@ -4,26 +4,31 @@
 
 ---
 
-## 📌 v1.05.6 요약 (2026-04-27, v1.05.5 후속) — 먼저 이것만 보세요
+## 📌 v1.05.7 요약 (2026-04-28, v1.05.6 후속) — 먼저 이것만 보세요
 
-**cp-onboarding 시퀀스 시각 디테일 보정 패치.** 신규 페이지·컴포넌트·토큰 없음. 기존 구현 깨지는 변경 없음.
+**메인 디스커버리 + 작품 등록 + 작품 관리 페이지 배치.** 4개 신규 페이지 + 7개 신규 컴포넌트 + 무한 스크롤 JS + 20장 작품 표지. 기존 구현 깨지는 변경 없음.
 
 | 분류 | 내용 | 개발 영향 |
 |---|---|---|
-| **장르 아이콘 4종 교체** | `creative-partner-onboarding-02.html` 장르 그리드. `恋愛` favorite → **favorite-filled** · `日常` sentiment-very-satisfied-filled → **light-mode** · `BL・GL` favorite-filled → **filter-vintage** · `まだ決めていない` schedule → **help** | 페이지 마크업의 `icon-*` 클래스 교체만. 아이콘 토큰·매핑 변경 없음 |
-| **hint 위치/정렬** | `__step2-hint` 를 `form-field` 내부 → **`form` 직속**으로 한 단계 꺼냄. `text-align: center` 추가 | 페이지 마크업 한 줄 이동 |
-| **desc 텍스트 사이즈 (02~05)** | `__step2-desc` 텍스트 클래스 `text-subtext-w4` (14px) → **`text-assist-w4`** (13px). 4페이지 적용 | 마크업 클래스 교체. 토큰·typography.css 변경 없음 |
-| **그리드 gap 분리** | 기존 `__genre-grid, __skill-grid` 공용 룰 분리. `__genre-grid` 8 → **10px** (`--space-2_5`) · `__skill-grid` 8px (`--space-2`) 유지 | cp-onboarding.css 만 변경 |
-| **dead code 정리** | `.creative-partner-onboarding--top` 의 `padding-top: 0` 제거 (부모에 padding-top 없어 무효) | 영향 없음 |
+| **신규 페이지 4종** | `main-home.html` (디스커버리 피드 + 무한 스크롤) · `creator-series-home.html` (작가용 시리즈 홈) · `series-register.html` (작품 등록 폼) · `series-post-management-empty.html` (작품 관리 empty state) | Next.js 라우팅 4개 추가. 우선순위: main-home > series-register > 관리 페이지들 |
+| **신규 컴포넌트 7종** | `post-card` (322px Pinterest 카드) · `post-manage` (작품 관리 행 720px) · `empty-state` (720×360 플레이스홀더) · `form-card` (720px 폼 래퍼) · `thumbnail-upload` (100%×280 업로드 영역) · `inline-alert` (배너) · `radio-block` (큰 면적 라디오) | 신규 cva 정의 7개. 자세한 매핑은 [`COMPONENTS.md`](./COMPONENTS.md) |
+| **무한 스크롤 JS** | `js/pages/main-home.js` — IntersectionObserver + 4-column flex masonry + JS append-to-shortest. CSS columns 대신 JS 로 컬럼 분배(추가 시 기존 카드 재정렬 방지). 셔플 비복원 풀 + `RECENT_AVOID=8` 으로 viewport 내 중복 차단 | React: `useEffect(IO observer)` + `useState(columns[])` 패턴으로 이식 |
+| **신규 토큰** | color: `--color-red-10` (#FFEAE8), `--color-red-text` (#FB2C36) — inline alert 전용 · layout: `--space-0_5` (2px), `--space-45` (180px) | Tailwind preset 동기화 |
+| **신규 아이콘** | `icon-delete` (휴지통) | lucide-react `Trash2` 매핑 |
+| **신규 에셋** | `img/img_comic_01.png` ~ `img_comic_20.png` (가로 644px · 자연 비율) | public/ 으로 그대로 이관 |
+| **인라인 스타일 제거** | `creative-partner-onboarding-02~05.html` 의 `style="--progress-from/to"` 4건 → `__progress--step1~4` modifier 클래스로 대체 | Rule #1(인라인 스타일 금지) 전체 페이지 준수 상태 달성 |
+| **styleguide 정비** | `.sg-demo-canvas` → `.sg-type-table` 일괄 변환(6종) · 720px 컴포넌트용 preview modifier 추가 · nav 평탄화 | 디자인 시스템 문서 일관성 향상 (개발에 직접 영향 없음) |
 
 **하위 호환**
 - 기존 토큰·클래스·BEM 구조 변경 없음
-- 모든 변경이 cp-onboarding 02~05 페이지 마크업 + cp-onboarding.css 한정
+- 신규 컴포넌트는 모두 추가만 (기존 컴포넌트 시그니처 유지)
+- `--episode-card-width` 가 하드코딩 1000px → `var(--p70)` (1008px) 로 8px 미세 변경 — 시각 영향 거의 없음
 
 **확인할 곳**
-1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05.6 항목 — **개발 액션 요약**
-2. `creative-partner-onboarding-02.html` — 장르 아이콘 4종, hint 위치/정렬
-3. `creative-partner-onboarding-02~05.html` — desc 13px 통일
+1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05.7 항목 — **개발 액션 요약** (특히 post-card mix-blend-mode border + 무한 스크롤 구현 노트)
+2. [`COMPONENTS.md`](./COMPONENTS.md) — 7개 신규 컴포넌트 shadcn 매핑
+3. `main-home.html` + `js/pages/main-home.js` — Pinterest masonry + 무한 스크롤 패턴
+4. `series-register.html` — `form-card` + `thumbnail-upload` + `inline-alert` + `radio-block` 합성 예시
 
 ---
 
@@ -34,7 +39,7 @@
 |---|---|---|
 | [`design-tokens.json`](./design-tokens.json) | 모든 디자인 토큰 (color/spacing/typography/shadow/radius) | 참고용 원본 |
 | [`tailwind-preset.ts`](./tailwind-preset.ts) | Tailwind `theme.extend` 프리셋 | `tailwind.config.ts`에 직접 import |
-| [`COMPONENTS.md`](./COMPONENTS.md) | 51개 컴포넌트 → shadcn 매핑 + variant/size/state | cva 정의 작성 시 |
+| [`COMPONENTS.md`](./COMPONENTS.md) | 52개 컴포넌트 → shadcn 매핑 + variant/size/state | cva 정의 작성 시 |
 | [`ICONS.md`](./ICONS.md) | 51개 아이콘 → lucide-react 매핑 | 아이콘 치환 시 |
 
 ### 개발 문서

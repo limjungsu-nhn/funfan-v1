@@ -105,6 +105,9 @@ body {
 }
 .sg-nav a:hover { background: var(--sg-bg); color: var(--sg-text-primary); }
 .sg-nav a.active { background: var(--sg-tag-bg); color: var(--sg-accent); font-weight: var(--font-weight-w6); }
+/* 부모 섹션의 하위 항목 — 들여쓰기로 계층 표시 */
+.sg-nav a.sg-nav-sub { padding-left: 20px; font-size: 12px; }
+.sg-nav a.sg-nav-sub::before { content: "↳ "; color: var(--sg-text-tag); }
 .sg-nav-divider {
   height: 1px;
   background: var(--sg-border-light);
@@ -533,6 +536,23 @@ body {
   padding: 16px;
 }
 
+/* 720px(--p50) 본 컴포넌트들 · 셀이 좁으면 가로 스크롤 */
+.sg-type-preview--post-manage,
+.sg-type-preview--empty-state,
+.sg-type-preview--form-card,
+.sg-type-preview--thumbnail-upload {
+  overflow-x: auto;
+  padding: 16px;
+}
+
+/* Post Card preview · 322px 고정 폭 (main-home masonry 기준) */
+.sg-type-preview--post-card {
+  padding: 16px;
+}
+.sg-type-preview--post-card .post-card {
+  width: 322px;
+}
+
 /* Fan Feed 데모 프리뷰 높이 */
 .sg-type-preview--fan-feed {
   padding: 0;
@@ -662,6 +682,11 @@ body {
 /* 에셋 PNG는 2x 레티나 — HTML width/height 속성에 디자인 사이즈(PNG/2) 지정 */
 .sg-img-thumb {
   display: block;
+}
+/* 비율 고정 프리뷰 — 박스 안에 잘림 없이 contain (letterbox 허용) */
+.sg-img-thumb--cover {
+  object-fit: contain;
+  object-position: center;
 }
 .sg-img-pair {
   display: flex;

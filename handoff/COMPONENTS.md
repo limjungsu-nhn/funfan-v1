@@ -121,6 +121,14 @@ const buttonVariants = cva("...", {
 - `.post-row__title-line`: title(body-md-w6) + status badge(badge--status / status-gray / status-wood)
 - `.post-row__meta`: 가로 메타 (가로/세로 읽기 · 최종 업데이트), `__meta-sep` 1×10 black-30
 
+#### `.post-card` → shadcn `Card` (Pinterest masonry tile)
+- 핀터레스트 스타일 포스트 카드. main-home.html 4-col masonry에서 사용
+- 컨테이너 `.post-card`: 322px width, gap 12, `break-inside: avoid` (CSS columns 분할 방지)
+- `.post-card__image`: width 100% / height auto (자연 비율), radius-btn(12), 1px gray-6 border
+- `.post-card__meta`: padding 0 6, column
+- `.post-card__head`: title(caption-w6, ellipsis) + 우측 `.post-card__count` (favorite 16px sky-3 + overline-w6 숫자)
+- `.post-card__sub`: caption-w4, black-50, ellipsis
+
 #### `.empty-state` → shadcn `Card` (empty placeholder)
 - 데이터 없음 플레이스홀더 카드. series-post-management-empty.html 등 빈 상태 페이지에서 사용
 - 720(--p50, 1440의 50%) × 360 (높이만 Figma 고정값)
