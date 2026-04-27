@@ -1,0 +1,138 @@
+/* ============================================
+   Radio List — 리스트형 라디오 (한 줄, 작은 letter avatar)
+
+   HTML 구조:
+     <label class="radio-list">
+       <input type="radio" class="radio-list__input" name="..." value="...">
+       <span class="radio-list__avatar">A</span>
+       <span class="radio-list__text">Text</span>
+       <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+     </label>
+
+   States:
+     .radio-list           — Default  (bg gray-6, check hidden)
+     :hover                — Hover    (bg-soft #F8F8FB)
+     :has(:checked)
+     .radio-list--selected — Selected (white bg + nature-3 outline + shadow + bold + check visible + black avatar)
+   ============================================ */
+
+.radio-list {
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-5);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-4);
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-btn);
+  outline: 1px solid var(--color-gray-6);
+  outline-offset: -1px;
+  cursor: pointer;
+  overflow: hidden;
+  box-sizing: border-box;
+  transition: background 0.15s ease, outline-color 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease-in;
+}
+
+/* ---------- Hover ---------- */
+.radio-list--hover,
+.radio-list:hover:not(.radio-list--selected) {
+  background: var(--color-gray-6);
+}
+
+/* ---------- Pressed ---------- */
+.radio-list--pressed,
+.radio-list:active:not(.radio-list--selected) {
+  background: var(--color-gray-6);
+  transform: scale(0.98);
+}
+
+/* ---------- Focus (keyboard only) ---------- */
+.radio-list--focus,
+body:not(.using-mouse) .radio-list:focus-within:not(.radio-list--selected) {
+  background: var(--color-gray-6);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5);
+}
+/* label 자체에 포커스가 올 때 브라우저 기본 outline 제거 (ring 은 box-shadow 로 표시) */
+.radio-list:focus { outline: 1px solid var(--color-gray-6); outline-offset: -1px; }
+
+/* ---------- Selected ---------- */
+.radio-list--selected,
+.radio-list:has(.radio-list__input:checked) {
+  background: var(--color-white-100);
+  outline-color: var(--color-nature-3);
+  box-shadow: 0px 4px 8px var(--color-shadow-subtle), 0px 0px 1px var(--color-shadow-mid);
+}
+
+/* ---------- Input (hidden) ---------- */
+.radio-list__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ---------- Icon slot (좌측, avatar 대안) ---------- */
+.radio-list__icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  background-color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Avatar (letter circle) ---------- */
+.radio-list__avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: var(--radius-full);
+  background: var(--color-white-100);
+  color: var(--color-font-primary-black-100);
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  font-weight: var(--font-weight-w6);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.radio-list--selected .radio-list__avatar,
+.radio-list:has(.radio-list__input:checked) .radio-list__avatar {
+  background: var(--color-black-100);
+  color: var(--color-white-100);
+}
+
+/* ---------- Text ---------- */
+.radio-list__text {
+  flex: 1 1 0;
+  min-width: 0;
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-assist);
+  line-height: var(--line-height-assist);
+  font-weight: var(--font-weight-w4);
+  color: var(--color-font-primary-black-100);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.radio-list--selected .radio-list__text,
+.radio-list:has(.radio-list__input:checked) .radio-list__text {
+  font-weight: var(--font-weight-w6);
+}
+
+/* ---------- Check (right) ---------- */
+.radio-list__check {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  background-color: var(--color-font-primary-black-100);
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.radio-list--selected .radio-list__check,
+.radio-list:has(.radio-list__input:checked) .radio-list__check {
+  opacity: 1;
+}

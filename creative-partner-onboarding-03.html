@@ -12,9 +12,12 @@
 
   <!-- Components -->
   <link rel="stylesheet" href="css/components/logo.css">
+  <link rel="stylesheet" href="css/components/icon.css">
   <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/radio-list.css">
 
-  <!-- App Shell (body background + navbar min-width) -->
+  <!-- App Shell + Page -->
   <link rel="stylesheet" href="css/pages/app-shell.css">
   <link rel="stylesheet" href="css/pages/creative-partner-onboarding.css">
 
@@ -22,15 +25,73 @@
 </head>
 <body>
 
-  <!-- Navbar — Transparent 케이스 (로고만) -->
+  <!-- Top progress bar — 50% (960px) -->
+  <div class="creative-partner-onboarding__progress" style="--progress-from: 25vw; --progress-to: 50vw;" aria-hidden="true"></div>
+
+  <!-- Navbar — Transparent (로고만) -->
   <header class="navbar navbar--transparent">
     <div class="navbar-logo">
       <i class="logo logo-funfan"></i>
     </div>
   </header>
 
-  <!-- Main — body bg-soft 상속 -->
-  <main class="creative-partner-onboarding"></main>
+  <!-- Main -->
+  <main class="creative-partner-onboarding creative-partner-onboarding--top">
+    <section class="creative-partner-onboarding__step2">
+
+      <!-- Header -->
+      <header class="creative-partner-onboarding__step2-header">
+        <h1 class="creative-partner-onboarding__step2-title text-h1-w6">あなたの話し相手のスタイルは？</h1>
+        <p class="creative-partner-onboarding__step2-desc text-subtext-w4">創作で迷ったとき、どんな相手にそばにいてほしいですか？</p>
+      </header>
+
+      <!-- Form -->
+      <form class="creative-partner-onboarding__step3-form" novalidate>
+        <label class="radio-list">
+          <input type="radio" class="radio-list__input" name="cp-style" value="listener">
+          <span class="radio-list__avatar">A</span>
+          <span class="radio-list__text">ひたすら聞いてくれる友達。一緒に気持ちを整理してくれる。</span>
+          <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+        </label>
+        <label class="radio-list">
+          <input type="radio" class="radio-list__input" name="cp-style" value="asker">
+          <span class="radio-list__avatar">B</span>
+          <span class="radio-list__text">質問してくれる友達。自分でも気づいてなかったことを引き出してくれる。</span>
+          <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+        </label>
+        <label class="radio-list">
+          <input type="radio" class="radio-list__input" name="cp-style" value="frank">
+          <span class="radio-list__avatar">C</span>
+          <span class="radio-list__text">ズバッと言ってくれる友達。何が問題か教えてくれる。</span>
+          <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+        </label>
+      </form>
+
+      <!-- Actions -->
+      <div class="creative-partner-onboarding__step2-actions">
+        <a class="btn btn-line btn--lg" href="creative-partner-onboarding-02.html">
+          <span class="text-assist-w4">戻る</span>
+        </a>
+        <button type="button" class="btn btn-filled-black btn--lg" data-role="next" disabled>
+          <span class="text-assist-w4">次へ</span>
+        </button>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const next = document.querySelector('[data-role="next"]');
+      const radios = document.querySelectorAll('input[name="cp-style"]');
+      radios.forEach((r) => r.addEventListener('change', () => {
+        next.disabled = !Array.from(radios).some((x) => x.checked);
+      }));
+      next.addEventListener('click', () => {
+        if (!next.disabled) location.href = 'creative-partner-onboarding-04.html';
+      });
+    })();
+  </script>
 
 </body>
 </html>

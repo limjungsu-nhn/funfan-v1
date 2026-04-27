@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新規会員登録 — FunFan</title>
+
+  <!-- Design Tokens -->
+  <link rel="stylesheet" href="css/tokens/typography.css">
+  <link rel="stylesheet" href="css/tokens/layout.css">
+  <link rel="stylesheet" href="css/tokens/color.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/logo.css">
+  <link rel="stylesheet" href="css/components/icon.css">
+  <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/form-field.css">
+  <link rel="stylesheet" href="css/components/form-input.css">
+
+  <!-- Page -->
+  <link rel="stylesheet" href="css/pages/auth-signup.css">
+
+  <script src="js/core/keyboard-focus.js" defer></script>
+  <script src="js/components/form-input.js" defer></script>
+</head>
+<body>
+
+  <!-- Navbar — 로고만 -->
+  <header class="navbar navbar--transparent">
+    <div class="navbar-logo">
+      <i class="logo logo-funfan" aria-label="FunFan"></i>
+    </div>
+  </header>
+
+  <main class="auth-signup">
+    <div class="auth-signup__card">
+
+      <!-- Header -->
+      <header class="auth-signup__header">
+        <h1 class="auth-signup__title text-h2-w6">新規会員登録</h1>
+        <p class="auth-signup__subtitle text-caption-w4">招待を受けた方のみご登録いただけます。 招待メールに記載のコードをご用意ください。</p>
+      </header>
+
+      <!-- Form -->
+      <form class="auth-signup__form" novalidate>
+
+        <!-- Email -->
+        <div class="form-field">
+          <label class="form-field__label" for="auth-signup-email">
+            <span class="form-field__title text-caption-w6">メールアドレス</span>
+            <span class="form-field__required" aria-hidden="true"></span>
+          </label>
+          <div class="form-input">
+            <input id="auth-signup-email" class="form-input__field" type="email" autocomplete="email" placeholder="example@email.com" required>
+          </div>
+        </div>
+
+        <!-- Invitation Code -->
+        <div class="form-field">
+          <label class="form-field__label" for="auth-signup-code">
+            <span class="form-field__title text-caption-w6">招待コード</span>
+            <span class="form-field__required" aria-hidden="true"></span>
+          </label>
+          <div class="form-input">
+            <input id="auth-signup-code" class="form-input__field" type="text" inputmode="latin" autocomplete="one-time-code" maxlength="8" pattern="[A-Z0-9]{8}" lang="en" data-uppercase-alnum required>
+          </div>
+          <p class="form-field__hint">招待メールに記載の8桁コード（英大文字＋数字）</p>
+        </div>
+
+      </form>
+
+      <!-- Actions -->
+      <div class="auth-signup__actions">
+        <a class="btn btn-filled-black" href="auth-signup-password.html" data-role="verify">
+          <span class="text-assist-w4">認証する</span>
+        </a>
+
+        <div class="auth-signup__divider">
+          <span class="text-caption-w4">すでにアカウントをお持ちの方は</span>
+        </div>
+
+        <a class="btn btn-line" href="auth-login.html">
+          <span class="text-assist-w4">ログインはこちら</span>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // 초대코드 입력: 대문자 A-Z + 숫자 0-9 만 유지
+    (() => {
+      const code = document.getElementById('auth-signup-code');
+      if (!code) return;
+      code.addEventListener('input', () => {
+        const cleaned = code.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+        if (cleaned !== code.value) {
+          const pos = Math.min(code.selectionStart ?? cleaned.length, cleaned.length);
+          code.value = cleaned;
+          try { code.setSelectionRange(pos, pos); } catch (_) {}
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>

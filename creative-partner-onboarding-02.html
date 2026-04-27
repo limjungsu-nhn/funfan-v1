@@ -12,25 +12,143 @@
 
   <!-- Components -->
   <link rel="stylesheet" href="css/components/logo.css">
+  <link rel="stylesheet" href="css/components/icon.css">
   <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/form-field.css">
+  <link rel="stylesheet" href="css/components/form-input.css">
+  <link rel="stylesheet" href="css/components/radio-list.css">
 
-  <!-- App Shell (body background + navbar min-width) -->
+  <!-- App Shell + Page -->
   <link rel="stylesheet" href="css/pages/app-shell.css">
   <link rel="stylesheet" href="css/pages/creative-partner-onboarding.css">
 
   <script src="js/core/keyboard-focus.js" defer></script>
+  <script src="js/components/form-input.js" defer></script>
 </head>
 <body>
 
-  <!-- Navbar — Transparent 케이스 (로고만) -->
+  <!-- Top progress bar -->
+  <div class="creative-partner-onboarding__progress" style="--progress-from: 0; --progress-to: 25vw;" aria-hidden="true"></div>
+
+  <!-- Navbar — Transparent (로고만) -->
   <header class="navbar navbar--transparent">
     <div class="navbar-logo">
       <i class="logo logo-funfan"></i>
     </div>
   </header>
 
-  <!-- Main — body bg-soft 상속 -->
-  <main class="creative-partner-onboarding"></main>
+  <!-- Main -->
+  <main class="creative-partner-onboarding creative-partner-onboarding--top">
+    <section class="creative-partner-onboarding__step2">
+
+      <!-- Header -->
+      <header class="creative-partner-onboarding__step2-header">
+        <h1 class="creative-partner-onboarding__step2-title text-h1-w6">あなたについて教えてください</h1>
+        <p class="creative-partner-onboarding__step2-desc text-subtext-w4">ペンネームとジャンルを入力してください</p>
+      </header>
+
+      <!-- Form -->
+      <form class="creative-partner-onboarding__step2-form" novalidate>
+
+        <!-- Pen name -->
+        <div class="form-field">
+          <label class="form-field__label" for="cp-onboarding-pen">
+            <span class="form-field__title text-caption-w6">ペンネーム</span>
+            <span class="form-field__required" aria-hidden="true"></span>
+          </label>
+          <div class="form-input">
+            <input id="cp-onboarding-pen" class="form-input__field" type="text" placeholder="例:さくらめいこ" required>
+          </div>
+        </div>
+
+        <!-- Genre -->
+        <div class="form-field">
+          <label class="form-field__label">
+            <span class="form-field__title text-caption-w6">描きたい漫画のジャンル</span>
+            <span class="form-field__required" aria-hidden="true"></span>
+          </label>
+
+          <div class="creative-partner-onboarding__genre-grid">
+            <label class="radio-list">
+              <input type="radio" class="radio-list__input" name="cp-genre" value="action">
+              <i class="icon icon-bolt radio-list__icon" aria-hidden="true"></i>
+              <span class="radio-list__text">アクション・スポーツ</span>
+              <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+            </label>
+            <label class="radio-list">
+              <input type="radio" class="radio-list__input" name="cp-genre" value="romance">
+              <i class="icon icon-favorite radio-list__icon" aria-hidden="true"></i>
+              <span class="radio-list__text">恋愛・ラブコメ</span>
+              <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+            </label>
+            <label class="radio-list">
+              <input type="radio" class="radio-list__input" name="cp-genre" value="fantasy">
+              <i class="icon icon-castle radio-list__icon" aria-hidden="true"></i>
+              <span class="radio-list__text">ファンタジー・異世界</span>
+              <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+            </label>
+            <label class="radio-list">
+              <input type="radio" class="radio-list__input" name="cp-genre" value="daily">
+              <i class="icon icon-sentiment-very-satisfied-filled radio-list__icon" aria-hidden="true"></i>
+              <span class="radio-list__text">日常・ヒューマンドラマ</span>
+              <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+            </label>
+            <label class="radio-list">
+              <input type="radio" class="radio-list__input" name="cp-genre" value="bl-gl">
+              <i class="icon icon-favorite-filled radio-list__icon" aria-hidden="true"></i>
+              <span class="radio-list__text">BL・GL</span>
+              <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+            </label>
+            <label class="radio-list">
+              <input type="radio" class="radio-list__input" name="cp-genre" value="horror">
+              <i class="icon icon-skull radio-list__icon" aria-hidden="true"></i>
+              <span class="radio-list__text">ホラー・ミステリー・その他</span>
+              <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+            </label>
+            <label class="radio-list">
+              <input type="radio" class="radio-list__input" name="cp-genre" value="undecided">
+              <i class="icon icon-schedule radio-list__icon" aria-hidden="true"></i>
+              <span class="radio-list__text">まだ決めていない</span>
+              <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+            </label>
+          </div>
+
+          <p class="creative-partner-onboarding__step2-hint text-caption-w4">一番近いものを選んでください。 後から変えられます。</p>
+        </div>
+
+      </form>
+
+      <!-- Actions -->
+      <div class="creative-partner-onboarding__step2-actions">
+        <a class="btn btn-line btn--lg" href="creative-partner-onboarding-01.html">
+          <span class="text-assist-w4">戻る</span>
+        </a>
+        <button type="button" class="btn btn-filled-black btn--lg" data-role="next" disabled>
+          <span class="text-assist-w4">次へ</span>
+        </button>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    // 펜네임 + 장르 모두 채워지면 "次へ" 활성화
+    (() => {
+      const pen = document.getElementById('cp-onboarding-pen');
+      const next = document.querySelector('[data-role="next"]');
+      const genres = document.querySelectorAll('input[name="cp-genre"]');
+      function check() {
+        const hasGenre = Array.from(genres).some((r) => r.checked);
+        next.disabled = !(pen.value.trim() && hasGenre);
+      }
+      pen.addEventListener('input', check);
+      genres.forEach((r) => r.addEventListener('change', check));
+      next.addEventListener('click', () => {
+        if (!next.disabled) location.href = 'creative-partner-onboarding-03.html';
+      });
+    })();
+  </script>
 
 </body>
 </html>

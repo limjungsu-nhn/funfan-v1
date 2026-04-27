@@ -1,0 +1,90 @@
+/* ============================================
+   Auth Signup — 신규 회원 등록 페이지
+   상단 navbar(투명, 로고만) + 중앙 카드(432px)
+   body 배경 화이트
+   ============================================ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-width: var(--base);
+  background: var(--color-white-100);
+}
+
+.auth-signup {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: var(--space-50) 0 0;
+}
+
+.auth-signup__card {
+  width: var(--p30);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-10);
+  padding-bottom: var(--space-10);
+}
+
+/* ---------- Header (title + subtitle) ---------- */
+.auth-signup__header {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.auth-signup__title {
+  margin: 0;
+  text-align: center;
+  color: var(--color-font-primary-black-100);
+}
+
+.auth-signup__subtitle {
+  margin: 0;
+  align-self: stretch;
+  text-align: center;
+  color: var(--color-font-primary-black-50);
+}
+
+/* ---------- Form ---------- */
+.auth-signup__form {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5_5);
+}
+
+/* ---------- Actions ---------- */
+.auth-signup__actions {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.auth-signup__actions .btn {
+  align-self: stretch;
+  width: 100%;
+}
+
+/* Divider with text */
+.auth-signup__divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--color-font-primary-black-50);
+}
+
+.auth-signup__divider::before,
+.auth-signup__divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--color-gray-5);
+}

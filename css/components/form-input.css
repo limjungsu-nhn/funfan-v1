@@ -98,3 +98,28 @@ body:not(.using-mouse) .form-input:has(.form-input__field:focus-visible):not(.fo
 .form-input--disabled .form-input__field::placeholder {
   color: var(--color-font-primary-black-30);
 }
+
+/* ---------- Password visibility toggle (눈 아이콘 버튼) ----------
+   <button data-role="toggle-password" aria-pressed="false|true">
+     · aria-pressed="false" (눈 꺼짐 / 비밀번호 숨김) → black 50% opacity
+     · aria-pressed="true"  (눈 켜짐 / 비밀번호 표시) → black 100%
+   ============================================================= */
+.form-input [data-role="toggle-password"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-font-primary-black-100);
+}
+
+.form-input [data-role="toggle-password"][aria-pressed="false"] {
+  opacity: 0.5;
+}
+
+.form-input [data-role="toggle-password"] .icon {
+  width: 16px;
+  height: 16px;
+}

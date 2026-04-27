@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Creative Partner Onboarding — Step 6 — FunFan</title>
+
+  <!-- Design Tokens -->
+  <link rel="stylesheet" href="css/tokens/typography.css">
+  <link rel="stylesheet" href="css/tokens/layout.css">
+  <link rel="stylesheet" href="css/tokens/color.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/logo.css">
+  <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/character-card.css">
+
+  <!-- App Shell (body background + navbar min-width) -->
+  <link rel="stylesheet" href="css/pages/app-shell.css">
+  <link rel="stylesheet" href="css/pages/creative-partner-onboarding.css">
+
+  <script src="js/core/keyboard-focus.js" defer></script>
+</head>
+<body>
+
+  <!-- Navbar — Transparent 케이스 (로고만) -->
+  <header class="navbar navbar--transparent">
+    <div class="navbar-logo">
+      <i class="logo logo-funfan"></i>
+    </div>
+  </header>
+
+  <main class="creative-partner-onboarding">
+    <div class="creative-partner-onboarding__step5">
+
+      <!-- Title -->
+      <div class="creative-partner-onboarding__title">
+        <h1 class="text-h1-w6">あなたにおすすめのパートナーはごちら</h1>
+        <p class="text-subtext-w4">候補はいつでも変更できます</p>
+      </div>
+
+      <!-- Character Cards (radio group) -->
+      <div class="creative-partner-onboarding__cards" role="radiogroup" aria-label="パートナー選択">
+
+        <div class="character-card character-card--pink" role="radio" tabindex="0" aria-checked="false"
+             data-portrait-default="img/img_character_hana_default.png"
+             data-portrait-selected="img/img_character_hana_selected.png">
+          <div class="character-card__inner">
+            <div class="character-card__header">
+              <div class="character-card__name-row">
+                <span class="text-h3-w6 character-card__name">はな</span>
+                <span class="text-caption-w6 character-card__role">漫画鑑定士</span>
+              </div>
+              <img src="img/img_character_hana_default.png" alt="はな" class="character-card__portrait" width="132" height="124">
+            </div>
+            <p class="text-caption-w6 character-card__description">質問で引き出すタイプ。<br>気づいていない強みを一緒に掘り当てます。</p>
+          </div>
+          <img src="img/img_bubble_recommend.png" alt="あなたにおすすめ" class="character-card__bubble" width="76" height="76">
+          <img src="img/img_check_selected.png" alt="" aria-hidden="true" class="character-card__check" width="52" height="58">
+        </div>
+
+        <div class="character-card character-card--yellow" role="radio" tabindex="0" aria-checked="false"
+             data-portrait-default="img/img_character_fuku_default.png"
+             data-portrait-selected="img/img_character_fuku_selected.png">
+          <div class="character-card__inner">
+            <div class="character-card__header">
+              <div class="character-card__name-row">
+                <span class="text-h3-w6 character-card__name">ふく</span>
+                <span class="text-caption-w6 character-card__role">作品磨き師</span>
+              </div>
+              <img src="img/img_character_fuku_default.png" alt="ふく" class="character-card__portrait" width="132" height="124">
+            </div>
+            <p class="text-caption-w6 character-card__description">問題をズバッと整理。論理的に課題を特定して突破口を開きます。</p>
+          </div>
+          <img src="img/img_check_selected.png" alt="" aria-hidden="true" class="character-card__check" width="52" height="58">
+        </div>
+
+        <div class="character-card character-card--blue" role="radio" tabindex="0" aria-checked="false"
+             data-portrait-default="img/img_character_tonton_default.png"
+             data-portrait-selected="img/img_character_tonton_selected.png">
+          <div class="character-card__inner">
+            <div class="character-card__header">
+              <div class="character-card__name-row">
+                <span class="text-h3-w6 character-card__name">トントン</span>
+                <span class="text-caption-w6 character-card__role">こころほぐし師</span>
+              </div>
+              <img src="img/img_character_tonton_default.png" alt="トントン" class="character-card__portrait" width="132" height="124">
+            </div>
+            <p class="text-caption-w6 character-card__description">まず気持ちを整理してから、一歩踏み出せるようサポート。</p>
+          </div>
+          <img src="img/img_check_selected.png" alt="" aria-hidden="true" class="character-card__check" width="52" height="58">
+        </div>
+
+      </div>
+
+      <!-- Actions -->
+      <div class="creative-partner-onboarding__actions">
+        <a class="btn btn-line btn--lg" href="creative-partner-onboarding-05.html">
+          <span class="text-assist-w4">戻る</span>
+        </a>
+        <button class="btn btn-filled-black btn--lg" data-role="submit" disabled>
+          <span class="text-assist-w4">決定する</span>
+        </button>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // Character Card radio 동작 — 단일 선택 시 決定 버튼 활성화
+    (() => {
+      const cards = document.querySelectorAll('.creative-partner-onboarding__cards .character-card');
+      const submitBtn = document.querySelector('.creative-partner-onboarding__actions [data-role="submit"]');
+
+      // selected 초상 이미지 프리로드 — 최초 클릭 시 네트워크 지연 제거
+      cards.forEach((c) => {
+        const url = c.dataset.portraitSelected;
+        if (url) { const img = new Image(); img.src = url; }
+      });
+
+      const select = (target) => {
+        cards.forEach((c) => {
+          const isTarget = c === target;
+          c.classList.toggle('is-selected', isTarget);
+          c.setAttribute('aria-checked', String(isTarget));
+          const portrait = c.querySelector('.character-card__portrait');
+          const src = isTarget ? c.dataset.portraitSelected : c.dataset.portraitDefault;
+          if (portrait && src) portrait.src = src;
+        });
+        submitBtn.disabled = false;
+      };
+
+      submitBtn.addEventListener('click', () => {
+        if (submitBtn.disabled) return;
+        window.location.href = 'workspace-onboarding.html';
+      });
+
+      cards.forEach((card) => {
+        card.addEventListener('click', () => select(card));
+        card.addEventListener('keydown', (e) => {
+          if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            select(card);
+          }
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

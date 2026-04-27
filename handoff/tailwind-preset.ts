@@ -119,10 +119,13 @@ const preset: Partial<Config> = {
         'space-8':   '32px',
         'space-9':   '36px',
         'space-10':  '40px',
+        'space-11':  '44px',
         'space-12':  '48px',
         'space-14':  '56px',
+        'space-15':  '60px',
         'space-16':  '64px',
         'space-20':  '80px',
+        'space-50':  '200px',
 
         /* Layout percent (page level, 1440 기준) */
         'p1':   '14.4px',

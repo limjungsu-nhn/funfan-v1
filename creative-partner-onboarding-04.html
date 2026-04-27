@@ -12,9 +12,12 @@
 
   <!-- Components -->
   <link rel="stylesheet" href="css/components/logo.css">
+  <link rel="stylesheet" href="css/components/icon.css">
   <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/radio-list.css">
 
-  <!-- App Shell (body background + navbar min-width) -->
+  <!-- App Shell + Page -->
   <link rel="stylesheet" href="css/pages/app-shell.css">
   <link rel="stylesheet" href="css/pages/creative-partner-onboarding.css">
 
@@ -22,15 +25,92 @@
 </head>
 <body>
 
-  <!-- Navbar — Transparent 케이스 (로고만) -->
+  <!-- Top progress bar — 75% (1440px) -->
+  <div class="creative-partner-onboarding__progress" style="--progress-from: 50vw; --progress-to: 75vw;" aria-hidden="true"></div>
+
+  <!-- Navbar — Transparent (로고만) -->
   <header class="navbar navbar--transparent">
     <div class="navbar-logo">
       <i class="logo logo-funfan"></i>
     </div>
   </header>
 
-  <!-- Main — body bg-soft 상속 -->
-  <main class="creative-partner-onboarding"></main>
+  <!-- Main -->
+  <main class="creative-partner-onboarding creative-partner-onboarding--top">
+    <section class="creative-partner-onboarding__step2">
+
+      <!-- Header -->
+      <header class="creative-partner-onboarding__step2-header">
+        <h1 class="creative-partner-onboarding__step2-title text-h1-w6">あなたの話し相手のスタイルは？</h1>
+        <p class="creative-partner-onboarding__step2-desc text-subtext-w4">「苦手なこと」ではなく「今いちばん磨きたいこと」で選んでください。後から変更可能です。</p>
+      </header>
+
+      <!-- Form (multi-select 2-col grid) -->
+      <form class="creative-partner-onboarding__step4-form" novalidate>
+        <div class="creative-partner-onboarding__skill-grid">
+          <label class="radio-list">
+            <input type="checkbox" class="radio-list__input" name="cp-skill" value="paneling">
+            <span class="radio-list__text">コマ割り・ページ構成</span>
+            <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+          </label>
+          <label class="radio-list">
+            <input type="checkbox" class="radio-list__input" name="cp-skill" value="emotion">
+            <span class="radio-list__text">キャラクターの感情・心理描写</span>
+            <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+          </label>
+          <label class="radio-list">
+            <input type="checkbox" class="radio-list__input" name="cp-skill" value="story">
+            <span class="radio-list__text">ストーリー展開・プロット</span>
+            <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+          </label>
+          <label class="radio-list">
+            <input type="checkbox" class="radio-list__input" name="cp-skill" value="character">
+            <span class="radio-list__text">キャラクターの魅力・個性</span>
+            <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+          </label>
+          <label class="radio-list">
+            <input type="checkbox" class="radio-list__input" name="cp-skill" value="motivation">
+            <span class="radio-list__text">描き続けるモチベーション</span>
+            <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+          </label>
+          <label class="radio-list">
+            <input type="checkbox" class="radio-list__input" name="cp-skill" value="idea">
+            <span class="radio-list__text">アイデアが思い浮かばない</span>
+            <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+          </label>
+          <label class="radio-list">
+            <input type="checkbox" class="radio-list__input" name="cp-skill" value="other">
+            <span class="radio-list__text">その他(自由記述)</span>
+            <i class="icon icon-check radio-list__check" aria-hidden="true"></i>
+          </label>
+        </div>
+      </form>
+
+      <!-- Actions -->
+      <div class="creative-partner-onboarding__step2-actions">
+        <a class="btn btn-line btn--lg" href="creative-partner-onboarding-03.html">
+          <span class="text-assist-w4">戻る</span>
+        </a>
+        <button type="button" class="btn btn-filled-black btn--lg" data-role="next" disabled>
+          <span class="text-assist-w4">次へ</span>
+        </button>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const next = document.querySelector('[data-role="next"]');
+      const checks = document.querySelectorAll('input[name="cp-skill"]');
+      checks.forEach((c) => c.addEventListener('change', () => {
+        next.disabled = !Array.from(checks).some((x) => x.checked);
+      }));
+      next.addEventListener('click', () => {
+        if (!next.disabled) location.href = 'creative-partner-onboarding-05.html';
+      });
+    })();
+  </script>
 
 </body>
 </html>

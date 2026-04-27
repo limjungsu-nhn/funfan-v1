@@ -34,7 +34,7 @@
 
 /* ---------- Size Variants ---------- */
 .logo-funfan.logo--sm { width: 53px;  height: 20px; }
-.logo-funfan.logo--lg { width: 120px; height: 45px; }
+.logo-funfan.logo--lg { width: 128px; height: 48px; }
 
 /* ---------- Color Variants ---------- */
 .logo--white { color: var(--color-font-primary-white-100); }

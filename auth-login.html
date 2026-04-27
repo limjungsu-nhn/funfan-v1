@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ログイン — FunFan</title>
+
+  <!-- Design Tokens -->
+  <link rel="stylesheet" href="css/tokens/typography.css">
+  <link rel="stylesheet" href="css/tokens/layout.css">
+  <link rel="stylesheet" href="css/tokens/color.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/logo.css">
+  <link rel="stylesheet" href="css/components/icon.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/form-field.css">
+  <link rel="stylesheet" href="css/components/form-input.css">
+
+  <!-- Page -->
+  <link rel="stylesheet" href="css/pages/auth-login.css">
+
+  <script src="js/core/keyboard-focus.js" defer></script>
+  <script src="js/components/form-input.js" defer></script>
+</head>
+<body>
+
+  <main class="auth-login">
+    <div class="auth-login__card">
+
+      <!-- Header -->
+      <header class="auth-login__header">
+        <i class="logo logo-funfan logo--lg" aria-label="FunFan"></i>
+        <p class="auth-login__subtitle text-caption-w4">登録済みのメールアドレスとパスワードでログインしてください。</p>
+      </header>
+
+      <!-- Form -->
+      <form class="auth-login__form" novalidate>
+
+        <!-- Email -->
+        <div class="form-field">
+          <label class="form-field__label" for="auth-login-email">
+            <span class="form-field__title text-caption-w6">メールアドレス</span>
+            <span class="form-field__required" aria-hidden="true"></span>
+          </label>
+          <div class="form-input">
+            <input id="auth-login-email" class="form-input__field" type="email" autocomplete="email" placeholder="example@email.com" required>
+          </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-field">
+          <label class="form-field__label" for="auth-login-password">
+            <span class="form-field__title text-caption-w6">パスワード</span>
+            <span class="form-field__required" aria-hidden="true"></span>
+          </label>
+          <div class="form-input">
+            <input id="auth-login-password" class="form-input__field" type="password" autocomplete="current-password" placeholder="パスワードを入力" required>
+            <button type="button" data-role="toggle-password" aria-label="パスワードを表示" aria-pressed="false">
+              <i class="icon icon-visibility-off" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="auth-login__forgot">
+            <a class="auth-login__forgot-link text-caption-w4" href="#">パスワードを忘れた方はこちら</a>
+          </div>
+        </div>
+
+      </form>
+
+      <!-- Actions -->
+      <div class="auth-login__actions">
+        <a class="btn btn-filled-black" href="creative-partner-onboarding-01.html" data-role="login">
+          <span class="text-assist-w4">ログイン</span>
+        </a>
+
+        <div class="auth-login__divider">
+          <span class="text-caption-w4">アカウントをお持ちでない方は</span>
+        </div>
+
+        <a class="btn btn-line" href="auth-signup.html">
+          <span class="text-assist-w4">新規会員登録</span>
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    // 비밀번호 표시/숨김 토글
+    (() => {
+      const toggle = document.querySelector('[data-role="toggle-password"]');
+      const input = document.getElementById('auth-login-password');
+      if (!toggle || !input) return;
+
+      toggle.addEventListener('click', () => {
+        const showing = input.type === 'text';
+        input.type = showing ? 'password' : 'text';
+        toggle.setAttribute('aria-pressed', String(!showing));
+        toggle.setAttribute('aria-label', showing ? 'パスワードを表示' : 'パスワードを非表示');
+        const icon = toggle.querySelector('.icon');
+        icon.classList.toggle('icon-visibility-off', showing);
+        icon.classList.toggle('icon-visibility', !showing);
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -106,6 +106,12 @@ const buttonVariants = cva("...", {
 - 내부에 avatar emoji + 타이틀 + 설명
 - **Variant `.radio-card--nav`**: 아바타 없음 + 우측 `.radio-card__chevron` (icon-chevron-right 18px) · `justify-content: space-between` · padding-right 16px
 
+#### `.radio-list` → shadcn `RadioGroup` + 리스트 아이템
+**States**: default(bg-soft) / hover(gray-6) / focus(gray-6 + 3px gray-5 ring · 키보드 전용) / pressed(gray-6 · scale 0.98) / **selected**(white bg + nature-3 outline + shadow-subtle/mid · letter avatar black/white · 텍스트 w6 · 우측 check 표시)
+- 라디오 카드의 콤팩트 1줄 변형. min-height 48px · padding 12/20/16
+- 구조: `__avatar` (24px letter circle) + `__text` (한 줄 ellipsis) + `__check` (icon-check 18px · 선택 시 opacity 0→1)
+- `:has(.radio-list__input:checked)`로 selected 상태 자동 적용 — `.radio-list--selected` 강제 클래스도 지원
+
 #### `.modal` / `.modal-backdrop` → shadcn `Dialog`
 - **Backdrop**: `position: fixed` · `top: 64px` (navbar 제외 · navbar z-index 100 위에 오버레이) · `bg-soft 50%` · z-index 1000 · `.modal-backdrop--open`로 display flex 토글
 - **Container**: 504px · padding 40px 28px · `--radius-lg`(20px) · `shadow-subtle + shadow-mid` · gap 24px column

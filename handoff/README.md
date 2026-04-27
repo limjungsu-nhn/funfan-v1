@@ -4,30 +4,33 @@
 
 ---
 
-## 📌 v1.05.4 요약 (2026-04-24, v1.05.3 후속) — 먼저 이것만 보세요
+## 📌 v1.05.5 요약 (2026-04-27, v1.05.4 후속) — 먼저 이것만 보세요
 
-**모달 컴포넌트 신설 + 2-step 구조 전파 + focus ring 클리핑 정책 현대화 배치.** 기존 구현 깨지는 변경 없음.
+**인증 플로우 + Floom 파트너 온보딩 시퀀스 + radio-list 컴포넌트 배치.** 기존 구현 깨지는 변경 없음.
 
 | 분류 | 내용 | 개발 영향 |
 |---|---|---|
-| **`modal.css` / `modal.js` 신설** 🆕 | 모달이 독립 컴포넌트로 승격 (`css/components/modal.css` · `js/components/modal.js`). 트리거(`[data-modal-open]`) · ESC · backdrop 닫기 · scroll lock · 2-step slide · summary 자동 채움 · `inert` 포커스 차단 포함 | shadcn `Dialog` 매핑으로 등록. 2-step 은 `track` state로 cva 확장 |
-| **모달 2-step 전파** | `workroom` / `workspace-onboarding` / `account-setting` / `series-post-management` 4개 페이지의 단일-step 모달을 workspace 기준 2-step 구조로 치환 (`modal__viewport` > `modal__track` > 2× `modal__step`) | slide 트랜스폼은 `translateX(-50%)` 유지. step2 `.modal__form` 은 스크롤 없음 (`overflow-y-auto` 제거) |
-| **focus ring 클리핑 정책** | `overflow: hidden` → `overflow: clip` + `overflow-clip-margin: var(--space-1)` 일괄 전환. 기존 padding/음수 margin 우회 전부 롤백 | Tailwind `overflow-clip` plugin 또는 `[overflow:clip] [overflow-clip-margin:4px]` arbitrary. 구형 fallback `overflow: hidden` |
-| &nbsp;&nbsp;↳ 적용 범위 | **컴포넌트**: `accordion-row` · `chat-input` · `review-item` · `right-panel` · `task-list` · `water-card` · `modal__viewport` · `modal__list`. **페이지**: `app-shell` · `account-setting` · `series-post-management` · `workroom` · `workspace`. **styleguide**: `.sg-preview-panel` | 수동 치환 대상 12곳 |
-| **토큰화 · 미세 조정** | `navbar.css` 하드코딩 `64px` → `var(--navbar-height)` · `tab.css` padding `space-3` → `space-3_5` (12→14px) · `.modal-backdrop` `color-mix(bg-soft 50%, transparent)` · `.modal__footer--split` 좌측 버튼 `min-width: var(--p5)` · `css/pages/index.css` `min-width: var(--base)` | cva 업데이트 — footer split variant 체크 |
-| **radio-card 개정** | `.radio-card__content gap` `space-1`→`0` · 상태값 재정의 (default `bg-soft+gray-6 outline` · selected `white+nature-3`). **Variant `.radio-card--nav` 신설** — 아바타 없음 + 우측 chevron (icon-chevron-right 18px) | cva 에 `nav` variant 추가 |
-| **styleguide 싱크** | Modal 정적 preview `height: 640px` 오버라이드 + step2 폼을 workspace 실제 구현과 완전 동기화. `.sg-demo-note` 유틸 추가. `btn--xs` 오타 → `btn--sm` 정정 | 디자인 참조용 — 개발 영향 없음 |
-| **이미지 에셋** | `img/bg_workroom.png` 교체 | CDN/`public/img/` 재반영 |
+| **인증 화면 3종 신설** 🆕 | `auth-login.html` / `auth-signup.html` / `auth-signup-password.html`. 로그인 → cp-onboarding-01, 회원가입 → 비밀번호 설정 → cp-onboarding-01 라우팅. 비밀번호 검증 3-rule + 불일치 caution(`form-input--error` + `パスワードが一致しません`) | shadcn `Form` + `Input` 변형. `登録する` 항상 활성, 검증 실패 시 caution 표시 + focus 이동 |
+| **Floom 파트너 온보딩 6단계 신설** 🆕 | `creative-partner-onboarding-01.html` ~ `-06.html`. Step 1 인사 + CTA, Step 2~5 입력(펜네임/장르/스타일/스킬/목표), Step 6 캐릭터 카드 추천 | step 라우팅 그래프 등록. step 진입 시 progress bar `--progress-from` → `--progress-to` 보간 (CSS 변수 + keyframe) |
+| **`radio-list` 컴포넌트 신설** 🆕 | `css/components/radio-list.css`. 1줄 리스트형 라디오. avatar(letter) · icon 두 슬롯 지원, 우측 check 18px. radio · checkbox 모두 동작 | shadcn `RadioGroup` + 리스트 아이템 매핑. avatar/icon 폴리모픽 슬롯, `:has(:checked)` 자동 selected |
+| **신규 아이콘 11종** 🆕 | `bolt` · `castle` · `close` · `filter-vintage` · `help` · `light-mode` · `skull` · `tool-tip` · `visibility` · `visibility-off` · `visibility-on`. 총 51개 | lucide 매핑 [`ICONS.md`](./ICONS.md) 참조 |
+| **form-input toggle-password 공통화** | 페이지별 중복 토글 스타일 → `form-input.css` 의 `[data-role="toggle-password"]` 단일 규칙으로 통합. `aria-pressed="false"` opacity 0.5 / `true` 100% | cva variant 또는 Tailwind `aria-pressed` modifier 로 표현 |
+| **신규 토큰 3종** | `--space-11: 44px` · `--space-15: 60px` · `--space-50: 200px`. `design-tokens.json` + `tailwind-preset.ts` 동기화 | preset import 만 하면 자동 반영 |
+| **cp-onboarding 페이지 CSS** | `body:has(.creative-partner-onboarding)` 흰색 배경 · `--top` modifier · top progress bar (position fixed · z-index 200 · `cp-progress-grow` 600ms ease-out 애니메이션) · 720px(`--p50`) · 576px(`--p40`) 컬럼 정의 | 페이지 전용 — 컴포넌트 영향 없음 |
+| **이미지 에셋** | `img/bg_postit_{blue,pink,yellow}.png` 색상 미세 조정 | CDN/`public/img/` 재반영 |
+| **logo · 토큰 정합성 정리** | `logo--lg` 120×45 → 128×48 (auth 페이지 표준화) · `auth-*.css` divider gap 하드코딩 18px → `var(--space-4)` · `cp-onboarding step2 width 720px` → `var(--p50)` | 사용처 없는 변경 (logo--lg) — 영향 없음 |
+| **styleguide · index 싱크** | radio-list 섹션 신설 (5 state 정적 + 인터랙티브 그룹 데모) · 신규 아이콘 11종 카드 추가 · index.html 신규 9개 페이지 묶음을 styleguide 아래로 이동 + ✅ 표시 | 디자인 참조용 — 개발 영향 없음 |
 
 **하위 호환**
-- 모달 외부 API(open/close 이벤트, data-modal-target) 변경 없음
 - 기존 토큰·클래스·BEM 구조 변경 없음
-- `overflow-clip-margin` 은 미지원 브라우저에서 `overflow: clip` 만 동작 → 레이아웃 깨지지 않음 (ring 만 일부 잘릴 수 있음)
+- `logo--lg` 사이즈 변경 — 기존 사용처 없음
+- form-input `[data-role="toggle-password"]` 셀렉터 신규 — 기존 페이지 영향 없음
 
 **확인할 곳**
-1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05.4 항목 — **개발 액션 요약**
-2. `styleguide.html` Modal 섹션 — 정적 preview + 인터랙티브 데모 모두 workspace 실제 구현과 동기화
-3. `workspace.html` / `workroom.html` / `workspace-onboarding.html` / `account-setting.html` / `series-post-management.html` — 2-step 모달 동일 동작 확인
+1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05.5 항목 — **개발 액션 요약**
+2. `styleguide.html` radio-list 섹션 — 정적 5 state + 인터랙티브 그룹 데모
+3. `auth-login.html` / `auth-signup.html` / `auth-signup-password.html` — 인증 플로우 라우팅·검증 확인
+4. `creative-partner-onboarding-01.html` ~ `-06.html` — 6단계 시퀀스 + progress bar 진입 애니메이션 확인
 
 ---
 
@@ -38,8 +41,8 @@
 |---|---|---|
 | [`design-tokens.json`](./design-tokens.json) | 모든 디자인 토큰 (color/spacing/typography/shadow/radius) | 참고용 원본 |
 | [`tailwind-preset.ts`](./tailwind-preset.ts) | Tailwind `theme.extend` 프리셋 | `tailwind.config.ts`에 직접 import |
-| [`COMPONENTS.md`](./COMPONENTS.md) | 43개 컴포넌트 → shadcn 매핑 + variant/size/state | cva 정의 작성 시 |
-| [`ICONS.md`](./ICONS.md) | 40개 아이콘 → lucide-react 매핑 | 아이콘 치환 시 |
+| [`COMPONENTS.md`](./COMPONENTS.md) | 45개 컴포넌트 → shadcn 매핑 + variant/size/state | cva 정의 작성 시 |
+| [`ICONS.md`](./ICONS.md) | 51개 아이콘 → lucide-react 매핑 | 아이콘 치환 시 |
 
 ### 개발 문서
 | 파일 | 용도 |
