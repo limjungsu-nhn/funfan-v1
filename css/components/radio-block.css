@@ -1,0 +1,141 @@
+/* ============================================
+   Radio Block Component — 블록형 라디오 (사이드바·필터용 컴팩트 카드)
+
+   HTML 구조:
+     <label class="radio-block [--selected --hover --focus --pressed --disabled]">
+       <input type="radio" class="radio-block__input" name="..." value="...">
+       <div class="radio-block__content">
+         <span class="radio-block__title">Title</span>
+         <span class="radio-block__desc">Description</span>
+       </div>
+       <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+     </label>
+
+   States:
+     .radio-block               — Default  (bg-soft + gray-6 outline)
+     .radio-block--hover        — Hover    (gray-6 bg)
+     .radio-block--focus        — Focus    (gray-6 bg + gray-5 ring)
+     .radio-block--pressed      — Pressed  (gray-6 bg + scale 0.98)
+     .radio-block--selected     — Selected (white bg + nature-3 outline + check 표시 + card shadow)
+     .radio-block--disabled     — Disabled (bg-soft + gray-3 텍스트)
+
+   Notes:
+     - 폭 216px 고정 (사이드바 컬럼 단위)
+     - radio-card(448px, avatar)와 다른 컴팩트 variant
+     - check 아이콘은 selected 상태에서만 visible
+   ============================================ */
+
+/* ---------- Container ---------- */
+.radio-block {
+  width: var(--p15); /* 216 */
+  padding: var(--space-3) var(--space-3_5); /* 12px 14px */
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-sm);
+  outline: 1px solid var(--color-gray-6);
+  outline-offset: -1px;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-1_5); /* 6px */
+  cursor: pointer;
+  box-sizing: border-box;
+  overflow: hidden;
+  transition: background 0.15s ease, outline-color 0.15s ease, transform 0.08s ease-in;
+}
+
+/* ---------- Fluid (그리드/플렉스 안에서 폭 채움) ---------- */
+.radio-block--fluid {
+  width: 100%;
+}
+
+/* ---------- Hover ---------- */
+.radio-block--hover,
+.radio-block:hover:not(.radio-block--selected):not(.radio-block--disabled):not(:has(.radio-block__input:checked)) {
+  background: var(--color-gray-6);
+}
+
+/* ---------- Pressed ---------- */
+.radio-block--pressed,
+.radio-block:active:not(.radio-block--disabled):not(:has(.radio-block__input:checked)) {
+  background: var(--color-gray-6);
+  transform: scale(0.98);
+}
+
+/* ---------- Focus (keyboard only) ---------- */
+.radio-block--focus {
+  background: var(--color-gray-6);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+body:not(.using-mouse) .radio-block:focus-within:not(.radio-block--selected):not(.radio-block--disabled):not(:has(.radio-block__input:checked)) {
+  background: var(--color-gray-6);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+.radio-block:focus { outline: none; }
+
+/* ---------- Selected ---------- */
+.radio-block--selected,
+.radio-block:has(.radio-block__input:checked) {
+  background: var(--color-white-100);
+  outline-color: var(--color-nature-3);
+  box-shadow: 0px 4px 8px var(--color-shadow-subtle), 0px 0px 1px var(--color-shadow-mid);
+}
+
+/* ---------- Disabled ---------- */
+.radio-block--disabled {
+  background: var(--color-bg-soft);
+  cursor: not-allowed;
+}
+
+/* ---------- Input (hidden) ---------- */
+.radio-block__input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+/* ---------- Content ---------- */
+.radio-block__content {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2); /* 8px */
+}
+
+/* ---------- Title ---------- */
+.radio-block__title {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  font-weight: var(--font-weight-w6);
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Desc ---------- */
+.radio-block__desc {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-overline);
+  line-height: var(--line-height-overline);
+  font-weight: var(--font-weight-w4);
+  color: var(--color-font-secondary);
+}
+
+.radio-block--disabled .radio-block__title,
+.radio-block--disabled .radio-block__desc {
+  color: var(--color-gray-3);
+}
+
+/* ---------- Check Icon (selected only) ---------- */
+.radio-block__check {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  color: var(--color-font-primary-black-100);
+  visibility: hidden;
+}
+
+.radio-block--selected .radio-block__check,
+.radio-block:has(.radio-block__input:checked) .radio-block__check {
+  visibility: visible;
+}

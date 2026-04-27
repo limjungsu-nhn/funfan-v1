@@ -70,7 +70,7 @@
 
 /* ---------- Container ---------- */
 .modal {
-  width: 504px;
+  width: var(--p35); /* 504 */
   height: 640px;
   padding: var(--space-10) var(--space-7);  /* 40px 28px */
   background: var(--color-white-100);

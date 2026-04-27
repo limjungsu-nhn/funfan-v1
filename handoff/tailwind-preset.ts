@@ -63,7 +63,9 @@ const preset: Partial<Config> = {
           100: 'rgba(255, 17, 0, 1)',
           50:  'rgba(255, 17, 0, 0.5)',
           30:  'rgba(255, 17, 0, 0.3)',
+          10:  '#FFEAE8',
           0:   'rgba(255, 17, 0, 0)',
+          text: '#FB2C36',
         },
         // Brand: Nature
         nature: {
@@ -105,6 +107,7 @@ const preset: Partial<Config> = {
          Usage: className="p-space-4 gap-space-2"
       ---------------------------------------------------------- */
       spacing: {
+        'space-0_5': '2px',
         'space-1':   '4px',
         'space-1_5': '6px',
         'space-2':   '8px',
@@ -125,6 +128,7 @@ const preset: Partial<Config> = {
         'space-15':  '60px',
         'space-16':  '64px',
         'space-20':  '80px',
+        'space-45':  '180px',
         'space-50':  '200px',
 
         /* Layout percent (page level, 1440 기준) */
@@ -200,6 +204,7 @@ const preset: Partial<Config> = {
         'body-md':   ['16px', { lineHeight: '26px' }],
         'body-lg':   ['18px', { lineHeight: '28px' }],
         'body-xl':   ['20px', { lineHeight: '28px' }],
+        'h4':        ['20px', { lineHeight: '30px' }],
         'h3':        ['22px', { lineHeight: '32px' }],
         'h2':        ['28px', { lineHeight: '38px' }],
         'h1':        ['36px', { lineHeight: '48px' }],

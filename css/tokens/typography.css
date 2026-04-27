@@ -16,6 +16,7 @@
   --font-size-body-md:     16px;
   --font-size-body-lg:     18px;
   --font-size-body-xl:     20px;
+  --font-size-h4:          20px;
   --font-size-h3:          22px;
   --font-size-h2:          28px;
   --font-size-h1:          36px;
@@ -33,6 +34,7 @@
   --line-height-body-md:   26px;
   --line-height-body-lg:   28px;
   --line-height-body-xl:   28px;
+  --line-height-h4:        30px;
   --line-height-h3:        32px;
   --line-height-h2:        38px;
   --line-height-h1:        48px;
@@ -62,6 +64,18 @@ body {
   min-width: var(--base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   Scrollbar — 시각적으로만 숨김 (스크롤 동작은 유지)
+   Firefox / IE-Edge legacy / Chrome-Safari 전부 커버
+   ============================================ */
+* {
+  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none;     /* IE / 구 Edge */
+}
+*::-webkit-scrollbar {
+  display: none;                /* Chrome / Safari / 신 Edge */
 }
 
 /* ============================================
@@ -100,6 +114,10 @@ body {
 /* Body 20 */
 .text-body-xl-w4  { font-size: var(--font-size-body-xl);   line-height: var(--line-height-body-xl);   font-weight: var(--font-weight-w4); }
 .text-body-xl-w6  { font-size: var(--font-size-body-xl);   line-height: var(--line-height-body-xl);   font-weight: var(--font-weight-w6); }
+
+/* H4 */
+.text-h4-w4       { font-size: var(--font-size-h4);        line-height: var(--line-height-h4);        font-weight: var(--font-weight-w4); }
+.text-h4-w6       { font-size: var(--font-size-h4);        line-height: var(--line-height-h4);        font-weight: var(--font-weight-w6); }
 
 /* H3 */
 .text-h3-w4       { font-size: var(--font-size-h3);        line-height: var(--line-height-h3);        font-weight: var(--font-weight-w4); }

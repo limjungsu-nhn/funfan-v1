@@ -1,0 +1,38 @@
+/* ============================================
+   Empty State Component — 빈 상태 플레이스홀더 카드
+
+   HTML 구조:
+     <div class="empty-state">
+       <button class="btn btn-filled-black btn--sm">
+         <i class="icon icon-add"></i>
+         <span class="text-caption-w4">作品を登録する</span>
+       </button>
+       <p class="empty-state__hint text-overline-w4">まだ作品がありません。最初の作品を登録しましょう！</p>
+     </div>
+
+   Notes:
+     - 데이터가 없을 때 자리 채우는 안내 카드 (예: 작품 0개일 때)
+     - 폭 720(--p50, 1440의 50%) / 높이 360(Figma 고정값)
+     - bg-soft + gray-4 1px dashed border + radius-md (그림자 없음)
+     - 중앙 정렬: 액션 버튼 + 안내 텍스트 (gap 12)
+   ============================================ */
+
+.empty-state {
+  width: var(--p50); /* 1440의 50% = 720 */
+  height: var(--p25); /* 360 */
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+  border: 1px dashed var(--color-gray-4);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-3); /* 12 */
+  box-sizing: border-box;
+}
+
+.empty-state__hint {
+  margin: 0;
+  color: var(--color-font-primary-black-30);
+  text-align: center;
+}

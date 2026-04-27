@@ -74,7 +74,7 @@
   align-self: stretch;
   display: flex;
   flex-direction: column;
-  gap: var(--space-14); /* 56px — top/bottom 블록 사이 여백. 컨텐츠 상태와 무관하게 유지 */
+  gap: var(--space-11); /* 44px — top/bottom 블록 사이 여백. 컨텐츠 상태와 무관하게 유지 */
 }
 
 /* ---------- Top (메타 + 제목 + 작가) ---------- */

@@ -23,6 +23,12 @@
   <link rel="stylesheet" href="css/components/chat-msg.css">
   <link rel="stylesheet" href="css/components/my-msg.css">
   <link rel="stylesheet" href="css/components/radio-card.css">
+  <link rel="stylesheet" href="css/components/radio-block.css">
+  <link rel="stylesheet" href="css/components/post-manage.css">
+  <link rel="stylesheet" href="css/components/empty-state.css">
+  <link rel="stylesheet" href="css/components/form-card.css">
+  <link rel="stylesheet" href="css/components/thumbnail-upload.css">
+  <link rel="stylesheet" href="css/components/inline-alert.css">
   <link rel="stylesheet" href="css/components/radio-list.css">
   <link rel="stylesheet" href="css/components/stat-card.css">
   <script src="js/components/stat-card.js" defer></script>
@@ -108,6 +114,7 @@
         <a href="#chat-msg">Chat Message</a>
         <a href="#my-msg">My Message</a>
         <a href="#radio-card">Radio Card</a>
+        <a href="#radio-block">Radio Block</a>
         <a href="#radio-list">Radio List</a>
         <a href="#character-card">Character Card</a>
         <a href="#icon-btn">Icon Button</a>
@@ -129,6 +136,11 @@
         <a href="#episode-card">Episode Card</a>
         <a href="#review-score">Review Score</a>
         <a href="#review-item-episode">Review Item (Episode)</a>
+        <a href="#post-manage">Post Manage</a>
+        <a href="#empty-state">Empty State</a>
+        <a href="#form-card">Form Card</a>
+        <a href="#thumbnail-upload">Thumbnail Upload</a>
+        <a href="#inline-alert">Inline Alert</a>
         <a href="#review-item">Review Item</a>
         <a href="#fan-feed">Fan Feed</a>
         <a href="#accordion-row">Accordion Row</a>
@@ -261,6 +273,17 @@
               <div class="sg-type-preview text-h3-w6">Heading 3</div>
               <code class="sg-type-classname">.text-h3-w6</code>
               <div class="sg-type-meta"><strong>22px</strong> / 32px<br><span class="sg-weight-badge sg-weight-w6">w6</span>SemiBold</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview text-h4-w4">Heading 4</div>
+              <code class="sg-type-classname">.text-h4-w4</code>
+              <div class="sg-type-meta"><strong>20px</strong> / 30px<br><span class="sg-weight-badge sg-weight-w4">w4</span>Regular</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview text-h4-w6">Heading 4</div>
+              <code class="sg-type-classname">.text-h4-w6</code>
+              <div class="sg-type-meta"><strong>20px</strong> / 30px<br><span class="sg-weight-badge sg-weight-w6">w6</span>SemiBold</div>
             </div>
           </div>
         </div>
@@ -752,12 +775,28 @@
                 <span class="sg-color-hex">#FF1100 · 30%</span>
               </div>
             </div>
+            <div class="sg-color-card">
+              <div class="sg-color-swatch" style="background:var(--color-red-10)"></div>
+              <div class="sg-color-info">
+                <span class="sg-color-name">Red 10</span>
+                <code class="sg-color-var">--color-red-10</code>
+                <span class="sg-color-hex">#FFEAE8 (Inline alert bg)</span>
+              </div>
+            </div>
             <div class="sg-color-card sg-color-card--dark">
               <div class="sg-color-swatch" style="background:var(--color-red-0)"></div>
               <div class="sg-color-info">
                 <span class="sg-color-name">Red 0</span>
                 <code class="sg-color-var">--color-red-0</code>
                 <span class="sg-color-hex">#FF1100 · 0%</span>
+              </div>
+            </div>
+            <div class="sg-color-card">
+              <div class="sg-color-swatch" style="background:var(--color-red-text)"></div>
+              <div class="sg-color-info">
+                <span class="sg-color-name">Red Text</span>
+                <code class="sg-color-var">--color-red-text</code>
+                <span class="sg-color-hex">#FB2C36 (Inline alert text)</span>
               </div>
             </div>
           </div>
@@ -1083,6 +1122,16 @@
               <div class="sg-icon-info">
                 <span class="sg-icon-name">chevron-right</span>
                 <code class="sg-type-classname">.icon-chevron-right</code>
+              </div>
+            </div>
+
+            <div class="sg-icon-card">
+              <div class="sg-icon-preview">
+                <i class="icon icon-delete"></i>
+              </div>
+              <div class="sg-icon-info">
+                <span class="sg-icon-name">delete</span>
+                <code class="sg-type-classname">.icon-delete</code>
               </div>
             </div>
 
@@ -2395,6 +2444,30 @@
             </div>
           </div>
         </div>
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Soft Red — States Reference (Size × State)</p>
+          <div class="sg-btn-matrix">
+            <div class="sg-btn-matrix__head">
+              <span></span><span>Default</span><span>Hover</span><span>Focus</span><span>Pressed</span><span>Disabled</span>
+            </div>
+            <div class="sg-btn-matrix__row">
+              <span class="sg-btn-matrix__label">sm</span>
+              <div class="sg-btn-matrix__cell"><button class="btn btn-soft-red btn--sm"><i class="icon icon-format-paint"></i><span class="text-assist-w4">Button sm</span></button></div>
+              <div class="sg-btn-matrix__cell"><button class="btn btn-soft-red btn--sm btn-soft-red--hover"><i class="icon icon-format-paint"></i><span class="text-assist-w4">Button sm</span></button></div>
+              <div class="sg-btn-matrix__cell"><button class="btn btn-soft-red btn--sm btn-soft-red--focus"><i class="icon icon-format-paint"></i><span class="text-assist-w4">Button sm</span></button></div>
+              <div class="sg-btn-matrix__cell"><button class="btn btn-soft-red btn--sm btn-soft-red--pressed"><i class="icon icon-format-paint"></i><span class="text-assist-w4">Button sm</span></button></div>
+              <div class="sg-btn-matrix__cell"><button class="btn btn-soft-red btn--sm btn-soft-red--disabled"><i class="icon icon-format-paint"></i><span class="text-assist-w4">Button sm</span></button></div>
+            </div>
+            <div class="sg-btn-matrix__row">
+              <span class="sg-btn-matrix__label">xs</span>
+              <div class="sg-btn-matrix__cell"><button class="btn btn-soft-red btn--xs"><i class="icon icon-format-paint"></i><span class="text-assist-w4">Button xs</span></button></div>
+              <div class="sg-btn-matrix__cell"><button class="btn btn-soft-red btn--xs btn-soft-red--hover"><i class="icon icon-format-paint"></i><span class="text-assist-w4">Button xs</span></button></div>
+              <div class="sg-btn-matrix__cell"><button class="btn btn-soft-red btn--xs btn-soft-red--focus"><i class="icon icon-format-paint"></i><span class="text-assist-w4">Button xs</span></button></div>
+              <div class="sg-btn-matrix__cell"><button class="btn btn-soft-red btn--xs btn-soft-red--pressed"><i class="icon icon-format-paint"></i><span class="text-assist-w4">Button xs</span></button></div>
+              <div class="sg-btn-matrix__cell"><button class="btn btn-soft-red btn--xs btn-soft-red--disabled"><i class="icon icon-format-paint"></i><span class="text-assist-w4">Button xs</span></button></div>
+            </div>
+          </div>
+        </div>
 
         <!-- ── sm States Reference (모든 변형 공통) ── -->
         <div class="sg-subsection">
@@ -3388,6 +3461,149 @@
       </section>
 
       <!-- ========================
+           RADIO BLOCK
+      ========================= -->
+      <section class="sg-section" id="radio-block" data-section="radio-block">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Radio Block</h2>
+          <span class="sg-section-desc">radio-block.css · 블록형 컴팩트 라디오 · 216px · title(12/18 w6) + desc(11/16 w4) · 5 states + disabled · :has(:checked) 기반 선택</span>
+        </div>
+
+        <!-- States -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">States</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-block">
+                  <input type="radio" class="radio-block__input" name="sg-rb-default" value="default">
+                  <div class="radio-block__content">
+                    <span class="radio-block__title">Title</span>
+                    <span class="radio-block__desc">Text area Text area<br>Text area</span>
+                  </div>
+                  <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-block</code>
+              <div class="sg-type-meta"><strong>Default</strong><br>bg bg-soft + gray-6 outline</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-block radio-block--hover">
+                  <input type="radio" class="radio-block__input" name="sg-rb-hover" value="hover">
+                  <div class="radio-block__content">
+                    <span class="radio-block__title">Title</span>
+                    <span class="radio-block__desc">Text area Text area<br>Text area</span>
+                  </div>
+                  <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-block--hover</code>
+              <div class="sg-type-meta"><strong>Hover</strong><br>bg gray-6</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-block radio-block--focus">
+                  <input type="radio" class="radio-block__input" name="sg-rb-focus" value="focus">
+                  <div class="radio-block__content">
+                    <span class="radio-block__title">Title</span>
+                    <span class="radio-block__desc">Text area Text area<br>Text area</span>
+                  </div>
+                  <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-block--focus</code>
+              <div class="sg-type-meta"><strong>Focus</strong><br>bg gray-6 + 3px gray-5 ring</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-block radio-block--pressed">
+                  <input type="radio" class="radio-block__input" name="sg-rb-pressed" value="pressed">
+                  <div class="radio-block__content">
+                    <span class="radio-block__title">Title</span>
+                    <span class="radio-block__desc">Text area Text area<br>Text area</span>
+                  </div>
+                  <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-block--pressed</code>
+              <div class="sg-type-meta"><strong>Pressed</strong><br>bg gray-6 · scale 0.98</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-block radio-block--selected">
+                  <input type="radio" class="radio-block__input" name="sg-rb-selected" value="selected" checked>
+                  <div class="radio-block__content">
+                    <span class="radio-block__title">Title</span>
+                    <span class="radio-block__desc">Text area Text area<br>Text area</span>
+                  </div>
+                  <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-block--selected</code>
+              <div class="sg-type-meta"><strong>Selected</strong><br>bg white + nature-3 outline + card shadow<br>check 아이콘 표시</div>
+            </div>
+
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="radio-block radio-block--disabled">
+                  <input type="radio" class="radio-block__input" name="sg-rb-disabled" value="disabled" disabled>
+                  <div class="radio-block__content">
+                    <span class="radio-block__title">Title</span>
+                    <span class="radio-block__desc">Text area Text area<br>Text area</span>
+                  </div>
+                  <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                </label>
+              </div>
+              <code class="sg-type-classname">.radio-block--disabled</code>
+              <div class="sg-type-meta"><strong>Disabled</strong><br>bg bg-soft · 텍스트 gray-3</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Interactive Demo -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Interactive Demo</p>
+          <div class="sg-demo-canvas">
+            <div class="sg-demo-stack">
+              <label class="radio-block">
+                <input type="radio" class="radio-block__input" name="sg-rb-demo" value="1">
+                <div class="radio-block__content">
+                  <span class="radio-block__title">Option A</span>
+                  <span class="radio-block__desc">Text area Text area<br>Text area</span>
+                </div>
+                <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+              </label>
+              <label class="radio-block">
+                <input type="radio" class="radio-block__input" name="sg-rb-demo" value="2">
+                <div class="radio-block__content">
+                  <span class="radio-block__title">Option B</span>
+                  <span class="radio-block__desc">Text area Text area<br>Text area</span>
+                </div>
+                <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+              </label>
+              <label class="radio-block">
+                <input type="radio" class="radio-block__input" name="sg-rb-demo" value="3">
+                <div class="radio-block__content">
+                  <span class="radio-block__title">Option C</span>
+                  <span class="radio-block__desc">Text area Text area<br>Text area</span>
+                </div>
+                <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+              </label>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ========================
            RADIO LIST
       ========================= -->
       <section class="sg-section" id="radio-list" data-section="radio-list">
@@ -4181,7 +4397,7 @@
               <div class="sg-type-preview">
                 <div class="episode-header">
                   <div class="episode-header__title-group">
-                    <p class="episode-header__title text-body-xl-w6">エピソード</p>
+                    <p class="episode-header__title text-h4-w6">エピソード</p>
                     <p class="episode-header__meta text-subtext-w4">全109話</p>
                   </div>
                   <button class="episode-header__sort" type="button" aria-label="並び替え">
@@ -4235,7 +4451,7 @@
                 <section class="episode-card">
                   <div class="episode-header">
                     <div class="episode-header__title-group">
-                      <p class="episode-header__title text-body-xl-w6">エピソード</p>
+                      <p class="episode-header__title text-h4-w6">エピソード</p>
                       <p class="episode-header__meta text-subtext-w4">全109話</p>
                     </div>
                     <button class="episode-header__sort" type="button" aria-label="並び替え">
@@ -4287,7 +4503,7 @@
             <section class="episode-card">
               <div class="episode-header">
                 <div class="episode-header__title-group">
-                  <p class="episode-header__title text-body-xl-w6">エピソード</p>
+                  <p class="episode-header__title text-h4-w6">エピソード</p>
                   <p class="episode-header__meta text-subtext-w4">全5話</p>
                 </div>
                 <button class="episode-header__sort" type="button" aria-label="並び替え">
@@ -4760,7 +4976,7 @@
       <section class="sg-section" id="badges" data-section="badges">
         <div class="sg-section-header">
           <h2 class="sg-section-title">Badges</h2>
-          <span class="sg-section-desc">badge.css · min-height 28/30px · border-radius 100px · 2 variants (Default · Nature)</span>
+          <span class="sg-section-desc">badge.css · min-height 28/30px · border-radius 100px / 8px (status) · 5 variants (Default · Nature · Status · Status Wood · Status Gray)</span>
         </div>
 
         <!-- Preview -->
@@ -4782,9 +4998,218 @@
               <code class="sg-type-classname">.badge.badge--nature + .text-caption-w4</code>
               <div class="sg-type-meta"><strong>Nature</strong><br>nature-6 bg<br>+ nature-2 text</div>
             </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <span class="badge badge--status"><span class="text-overline-w4">Badge</span></span>
+              </div>
+              <code class="sg-type-classname">.badge.badge--status + .text-overline-w6</code>
+              <div class="sg-type-meta"><strong>Status</strong><br>nature-6 bg + nature-2 text<br>radius 8px · 8/4 padding</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <span class="badge badge--status-wood"><span class="text-overline-w4">Badge</span></span>
+              </div>
+              <code class="sg-type-classname">.badge.badge--status-wood + .text-overline-w6</code>
+              <div class="sg-type-meta"><strong>Status Wood</strong><br>wood-6 bg + wood-3 text<br>radius 8px · 8/4 padding</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <span class="badge badge--status-gray"><span class="text-overline-w4">Badge</span></span>
+              </div>
+              <code class="sg-type-classname">.badge.badge--status-gray + .text-overline-w6</code>
+              <div class="sg-type-meta"><strong>Status Gray</strong><br>gray-6 bg + secondary text<br>radius 8px · 8/4 padding</div>
+            </div>
           </div>
         </div>
 
+      </section>
+
+      <!-- ========================
+           POST MANAGE
+      ========================= -->
+      <section class="sg-section" id="post-manage" data-section="post-manage">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Post Manage</h2>
+          <span class="sg-section-desc">post-manage.css · 작품(시리즈) 관리 카드 + 행 · 720px(--p50) · padding 32/28 · radius-md · 썸네일 76×108 · status badge 3종(公開中/非公開/下書き)</span>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Default</p>
+          <div class="sg-demo-canvas">
+            <section class="post-manage">
+              <div class="post-manage__header">
+                <h2 class="post-manage__title text-body-lg-w6">作品一覧</h2>
+                <button class="btn btn-filled-black btn--sm" type="button">
+                  <i class="icon icon-add"></i>
+                  <span class="text-caption-w4">作品を登録する</span>
+                </button>
+              </div>
+              <ul class="post-manage__list">
+                <li class="post-row">
+                  <img class="post-row__thumb" src="img/img_series01.png" alt="">
+                  <div class="post-row__body">
+                    <div class="post-row__title-line">
+                      <span class="post-row__title text-body-md-w6">私の冒険</span>
+                      <span class="badge badge--status"><span class="text-overline-w4">公開中</span></span>
+                    </div>
+                    <p class="post-row__meta text-caption-w4">
+                      <span>ヨコ読み</span>
+                      <span class="post-row__meta-sep" aria-hidden="true"></span>
+                      <span>最終更新 2026/3/20</span>
+                    </p>
+                  </div>
+                  <button class="btn btn-line btn--sm" type="button"><span class="text-caption-w4">編集・話を追加</span></button>
+                </li>
+                <li class="post-row">
+                  <img class="post-row__thumb" src="img/img_series01.png" alt="">
+                  <div class="post-row__body">
+                    <div class="post-row__title-line">
+                      <span class="post-row__title text-body-md-w6">夜明けのキッチン</span>
+                      <span class="badge badge--status-gray"><span class="text-overline-w4">非公開</span></span>
+                    </div>
+                    <p class="post-row__meta text-caption-w4">
+                      <span>タテ読み</span>
+                      <span class="post-row__meta-sep" aria-hidden="true"></span>
+                      <span>最終更新 2026/3/21</span>
+                    </p>
+                  </div>
+                  <button class="btn btn-line btn--sm" type="button"><span class="text-caption-w4">編集・話を追加</span></button>
+                </li>
+                <li class="post-row">
+                  <img class="post-row__thumb" src="img/img_series01.png" alt="">
+                  <div class="post-row__body">
+                    <div class="post-row__title-line">
+                      <span class="post-row__title text-body-md-w6">月の手紙</span>
+                      <span class="badge badge--status-wood"><span class="text-overline-w4">下書き</span></span>
+                    </div>
+                    <p class="post-row__meta text-caption-w4">
+                      <span>タテ読み</span>
+                      <span class="post-row__meta-sep" aria-hidden="true"></span>
+                      <span>最終更新 2026/3/21</span>
+                    </p>
+                  </div>
+                  <button class="btn btn-line btn--sm" type="button"><span class="text-caption-w4">編集・話を追加</span></button>
+                </li>
+              </ul>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================
+           EMPTY STATE
+      ========================= -->
+      <section class="sg-section" id="empty-state" data-section="empty-state">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Empty State</h2>
+          <span class="sg-section-desc">empty-state.css · 데이터 없음 플레이스홀더 · 720(--p50)×360 · bg-soft + gray-4 1px dashed border + radius-md · 중앙 정렬 액션 버튼 + 안내 텍스트</span>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Default</p>
+          <div class="sg-demo-canvas">
+            <div class="empty-state">
+              <button class="btn btn-filled-black btn--sm" type="button">
+                <i class="icon icon-add"></i>
+                <span class="text-caption-w4">作品を登録する</span>
+              </button>
+              <p class="empty-state__hint text-overline-w4">まだ作品がありません。最初の作品を登録しましょう！</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================
+           FORM CARD
+      ========================= -->
+      <section class="sg-section" id="form-card" data-section="form-card">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Form Card</h2>
+          <span class="sg-section-desc">form-card.css · 헤더 + 바디 폼 래퍼 카드 · 720px(--p50) · radius-md · header 80px · body padding 0/24/32 · gap 24 · 사용처 series-register.html</span>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Default</p>
+          <div class="sg-demo-canvas">
+            <section class="form-card">
+              <header class="form-card__header">
+                <h2 class="form-card__title text-body-lg-w6">作品情報</h2>
+              </header>
+              <div class="form-card__body">
+                <div class="form-card__fields">
+                  <div class="form-field">
+                    <div class="form-field__label">
+                      <span class="form-field__title">タイトル</span>
+                      <span class="form-field__required" aria-hidden="true"></span>
+                    </div>
+                    <div class="form-input"><input class="form-input__field" type="text" placeholder="最大50文字"></div>
+                  </div>
+                </div>
+                <div class="form-card__actions">
+                  <button class="btn btn-line btn--sm" type="button"><span class="text-caption-w4">下書き保存</span></button>
+                  <button class="btn btn-filled-black btn--sm" type="button" disabled><span class="text-caption-w4">登録する</span></button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================
+           THUMBNAIL UPLOAD
+      ========================= -->
+      <section class="sg-section" id="thumbnail-upload" data-section="thumbnail-upload">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Thumbnail Upload</h2>
+          <span class="sg-section-desc">thumbnail-upload.css · 썸네일 업로드 영역 · 100% × 280 · bg-soft + gray-4 1px dashed border + radius-sm · 중앙 정렬 버튼 + hint</span>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Interactive — 첨부 / Hover / 削除</p>
+          <div class="sg-demo-canvas">
+            <div class="thumbnail-upload" id="sg-thumb-upload">
+              <input type="file" id="sg-thumb-input" accept="image/jpeg,image/png" hidden>
+              <button class="btn btn-line btn--sm thumbnail-upload__btn" type="button" id="sg-thumb-pick">
+                <i class="icon icon-add"></i>
+                <span class="text-caption-w4">クリックして画像を選択</span>
+              </button>
+              <p class="thumbnail-upload__hint text-overline-w4">JPG・PNG 形式、500KB以下、推薦：16:9比率</p>
+              <div class="thumbnail-upload__preview-wrap">
+                <img class="thumbnail-upload__preview" id="sg-thumb-preview" alt="">
+                <div class="thumbnail-upload__overlay">
+                  <div class="thumbnail-upload__file-info">
+                    <div class="thumbnail-upload__filename" id="sg-thumb-filename"></div>
+                    <div class="thumbnail-upload__filesize" id="sg-thumb-filesize"></div>
+                  </div>
+                  <button class="btn btn-soft-red btn--xs thumbnail-upload__delete" id="sg-thumb-delete" type="button">
+                    <i class="icon icon-delete"></i>
+                    <span class="text-caption-w4">削除</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================
+           INLINE ALERT
+      ========================= -->
+      <section class="sg-section" id="inline-alert" data-section="inline-alert">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Inline Alert</h2>
+          <span class="sg-section-desc">inline-alert.css · 인라인 경고/안내 배너 · padding 12/8 · radius-sm · variants: error</span>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Error</p>
+          <div class="sg-demo-canvas">
+            <div class="inline-alert inline-alert--error">
+              <i class="icon icon-error-filled"></i>
+              <span class="inline-alert__text text-overline-w4">AI活用の事実が後から確認された場合、作品が非公開になる可能性があります。</span>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- ========================
@@ -6442,6 +6867,39 @@
         });
       });
     });
+
+    /* ---------- Thumbnail Upload Interactive Demo ---------- */
+    (function () {
+        const wrap = document.getElementById('sg-thumb-upload');
+        if (!wrap) return;
+        const input = document.getElementById('sg-thumb-input');
+        const pickBtn = document.getElementById('sg-thumb-pick');
+        const preview = document.getElementById('sg-thumb-preview');
+        const fnameEl = document.getElementById('sg-thumb-filename');
+        const fsizeEl = document.getElementById('sg-thumb-filesize');
+        const delBtn = document.getElementById('sg-thumb-delete');
+        function fmtSize(b) {
+          if (b < 1024) return b + 'B';
+          if (b < 1024 * 1024) return (b / 1024).toFixed(1) + 'KB';
+          return (b / 1024 / 1024).toFixed(1) + 'MB';
+        }
+        pickBtn.addEventListener('click', () => input.click());
+        preview.addEventListener('click', () => input.click());
+        input.addEventListener('change', () => {
+          const f = input.files && input.files[0];
+          if (!f) return;
+          preview.src = URL.createObjectURL(f);
+          fnameEl.textContent = f.name;
+          fsizeEl.textContent = fmtSize(f.size);
+          wrap.classList.add('thumbnail-upload--attached');
+        });
+        delBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          input.value = '';
+          preview.src = '';
+          wrap.classList.remove('thumbnail-upload--attached');
+        });
+    })();
   </script>
 
   <!-- Modal Demo Instance (Interactive Demo 트리거용) — workspace.html 과 동일한 2-step 구조 -->

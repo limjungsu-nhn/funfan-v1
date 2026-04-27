@@ -1,0 +1,71 @@
+/* ============================================
+   series-register.html 전용 레이아웃
+   공통 App Shell은 app-shell.css 참조 — 여기는 content 영역만 담당
+   ============================================ */
+
+.workspace__content {
+  /* flex:1 + min-height:0 을 쓰지 않음 — 콘텐츠가 긴 폼 페이지라 자연 높이로 흘러야
+     자식의 margin-bottom 이 스크롤 영역에 정상 포함됨 */
+  padding: var(--p5) 0 0; /* 72 / 0 / 0 — 하단 180은 .form-card margin-bottom 으로 처리 */
+  background: var(--color-bg-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-7); /* 28 */
+  border-left: 1px var(--color-gray-5) solid;
+  border-right: 1px var(--color-gray-5) solid;
+}
+
+/* ---------- Page Header ---------- */
+.series-register__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.series-register__title {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+}
+
+.series-register__desc {
+  margin: 0;
+  color: var(--color-font-primary-black-50);
+  text-align: center;
+}
+
+/* ---------- Choice Row ----------
+   radio-block 들을 가로로 등분배 — 3열 / 6열 등 레이아웃은 인라인 클래스로 컨트롤
+   페이지 내부에서 form-card body 안의 radio-block 그룹 정렬을 담당
+---------------------------------------- */
+.series-register__choice-row {
+  width: 100%;
+  display: flex;
+  gap: var(--space-2);
+}
+
+.series-register__choice-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+/* ---------- AI Toggle Row ---------- */
+.series-register__ai-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.series-register__ai-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2_5); /* 10 */
+}
+
+.series-register__ai-check-label {
+  color: var(--color-font-primary-black-100);
+}

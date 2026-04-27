@@ -5,15 +5,33 @@
    ============================================ */
 
 .workspace__content {
-  flex: 1;
-  min-height: 0;
-  padding: 0;
+  /* flex:1 + min-height:0 을 쓰지 않음 — 리스트가 길어지는 페이지라 자연 높이로 흘러야
+     자식의 margin-bottom 이 스크롤 영역에 정상 포함됨 */
+  padding: var(--p5) 0 0; /* 72 / 0 / 0 — 하단 180은 .post-manage margin-bottom 으로 처리 */
+  background: var(--color-bg-soft);
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  /* clip + margin — 내부 카드/버튼의 focus ring·shadow 여유 */
-  overflow: clip;
-  overflow-clip-margin: var(--space-1);
+  align-items: center;
+  gap: var(--space-7); /* 28 */
   border-left: 1px var(--color-gray-5) solid;
   border-right: 1px var(--color-gray-5) solid;
+}
+
+/* ---------- Page Header ---------- */
+.series-post-management__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.series-post-management__title {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+}
+
+.series-post-management__desc {
+  margin: 0;
+  color: var(--color-font-primary-black-50);
+  text-align: center;
 }

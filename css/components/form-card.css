@@ -1,0 +1,67 @@
+/* ============================================
+   Form Card — 헤더 + 바디 구조의 폼 래퍼 카드
+
+   HTML 구조:
+     <section class="form-card">
+       <header class="form-card__header">
+         <h2 class="form-card__title text-body-lg-w6">作品情報</h2>
+       </header>
+       <div class="form-card__body">
+         <!-- form-field 들 -->
+         <div class="form-card__actions">
+           <!-- footer buttons -->
+         </div>
+       </div>
+     </section>
+
+   Notes:
+     - 720px(--p50) 폭 · radius-md(16px) · white bg · card shadow
+     - header: 80px min-height · padding 0 20px 0 24px
+     - body: padding 0 24px 32px · gap 24
+     - 사용처: series-register.html (작품 등록 폼)
+   ============================================ */
+
+.form-card {
+  width: var(--p50);
+  background: var(--color-white-100);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 8px var(--color-shadow-subtle), 0 0 1px var(--color-shadow-mid);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  margin-bottom: var(--space-45); /* 180 */
+  box-sizing: border-box;
+}
+
+.form-card__header {
+  min-height: 80px;
+  padding: 0 var(--space-5) 0 var(--space-6); /* 0 20 0 24 */
+  display: flex;
+  align-items: center;
+}
+
+.form-card__title {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+}
+
+.form-card__body {
+  padding: 0 var(--space-6) var(--space-8); /* 0 24 32 */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6); /* 24 */
+}
+
+.form-card__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5_5); /* 22 */
+}
+
+.form-card__actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--space-1_5); /* 6 */
+}

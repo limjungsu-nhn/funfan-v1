@@ -115,3 +115,25 @@ body:not(.using-mouse) .form-textarea:has(.form-textarea__field:focus-visible):n
 .form-textarea--disabled .form-textarea__field::placeholder {
   color: var(--color-font-primary-black-30);
 }
+
+/* ---------- Counter (글자수 카운터) ----------
+   HTML: <span class="form-textarea__counter text-overline-w4">0/300</span>
+   form-textarea 컨테이너 내부 우측 하단에 absolute로 배치
+   사용 시 form-textarea에 .form-textarea--with-counter 함께 적용해 textarea 우측 padding 확보
+---------------------------------------- */
+.form-textarea--with-counter {
+  position: relative;
+}
+
+.form-textarea--with-counter .form-textarea__field {
+  padding-right: var(--space-12); /* 48px — 카운터 자리 확보 */
+  padding-bottom: var(--space-6); /* 24px — 마지막 줄 안 가림 */
+}
+
+.form-textarea__counter {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-2);
+  color: var(--color-gray-3);
+  pointer-events: none;
+}

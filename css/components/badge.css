@@ -9,6 +9,9 @@
    Variants:
      .badge           — 기본 (white bg + gray outline + shadow, overline 텍스트)
      .badge--nature   — nature-6 bg + nature-2 텍스트, outline/shadow 없음 (caption-w4 권장)
+     .badge--status        — nature-6 bg + nature-2 텍스트, 컴팩트 (radius-2xs / overline-w6 / 8·4 padding). 상태 표시용 (예: 公開中)
+     .badge--status-wood   — wood-6 bg + wood-3 텍스트, 컴팩트 (status 형제 — 예: 下書き)
+     .badge--status-gray   — gray-6 bg + secondary 텍스트, 컴팩트 (status 형제 — 예: 非公開)
    ============================================ */
 
 /* ---------- Base ---------- */
@@ -36,4 +39,41 @@
   color: var(--color-nature-2);
   box-shadow: none;
   outline: none;
+}
+
+/* ---------- Variant: Status ----------
+   상태 표시용 컴팩트 뱃지 (예: 公開中).
+   nature-6 bg + nature-2 텍스트, 8px radius, 8/4 padding, overline-w4 권장. */
+.badge--status {
+  min-height: 0;
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-nature-6);
+  color: var(--color-nature-2);
+  box-shadow: none;
+  outline: none;
+  border-radius: var(--radius-2xs);
+}
+
+/* ---------- Variant: Status Wood ----------
+   상태 표시용 컴팩트 뱃지 (wood 색상). 예: 下書き. */
+.badge--status-wood {
+  min-height: 0;
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-wood-6);
+  color: var(--color-wood-3);
+  box-shadow: none;
+  outline: none;
+  border-radius: var(--radius-2xs);
+}
+
+/* ---------- Variant: Status Gray ----------
+   상태 표시용 컴팩트 뱃지 (중립 회색). 예: 非公開. */
+.badge--status-gray {
+  min-height: 0;
+  padding: var(--space-1) var(--space-2);
+  background: var(--color-gray-6);
+  color: var(--color-font-secondary);
+  box-shadow: none;
+  outline: none;
+  border-radius: var(--radius-2xs);
 }

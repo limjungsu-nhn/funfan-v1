@@ -29,7 +29,7 @@
 | Icon | `lucide-react` | `ICONS.md` 참조. 현재 40개 사용 |
 | Avatar | `Avatar` | 5 사이즈: xs(20) / sm(32) / md(40) / lg(56) / xl(80) · 10+ variant (avatar-01~) |
 | Logo | (이미지 only) | `.logo-funfan` 단일 variant |
-| Badge | `Badge` | 2 variants: 기본(white 배경 + gray-5 outline + shadow) / `.badge--nature`(nature-6 배경 + nature-2 텍스트, outline/shadow 없음, min-height 30) |
+| Badge | `Badge` | 5 variants: 기본(white 배경 + gray-5 outline + shadow) / `.badge--nature`(nature-6 배경 + nature-2 텍스트, outline/shadow 없음, min-height 30) / `.badge--status`(nature-6 배경 + nature-2 텍스트, radius 8px, padding 8/4, overline-w4 권장 — 상태 표시용 컴팩트) / `.badge--status-wood`(wood-6 배경 + wood-3 텍스트, status 형제) / `.badge--status-gray`(gray-6 배경 + secondary 텍스트, status 형제 — 예: 非公開) |
 
 ---
 
@@ -105,6 +105,47 @@ const buttonVariants = cva("...", {
 - 일반 radio가 아니라 **카드 전체가 클릭 영역**
 - 내부에 avatar emoji + 타이틀 + 설명
 - **Variant `.radio-card--nav`**: 아바타 없음 + 우측 `.radio-card__chevron` (icon-chevron-right 18px) · `justify-content: space-between` · padding-right 16px
+
+#### `.radio-block` → shadcn `RadioGroup` + 컴팩트 카드
+**States**: default(bg-soft + gray-6 outline) / hover(gray-6) / focus(gray-6 + 3px gray-5 ring) / pressed(gray-6 · scale 0.98) / **selected**(white + nature-3 outline + card shadow + check 아이콘 표시) / disabled(bg-soft + gray-3 텍스트)
+- 폭 216px 고정 — 사이드바·필터 컬럼용 컴팩트 라디오
+- 구조: `__content`(title 12/18 w6 + desc 11/16 w4) + `__check`(icon-check 18px · selected 시에만 visible)
+- radio-card(448px, avatar)와 다른 variant — title/desc 멀티라인 + radius-sm(10px)
+
+#### `.post-manage` / `.post-row` → shadcn `Card` + custom list
+- 작품(시리즈) 관리 카드 + 행. series-post-management.html 메인 컴포넌트
+- 컨테이너 `.post-manage`: 720px(--p50), padding 32/28, radius-md, card shadow, gap 24
+- `.post-manage__header`: title(body-lg-w6) + 우측 action 버튼 (btn-filled-black btn--sm `作品を登録する`)
+- `.post-manage__list`: gap 16
+- `.post-row`: 썸네일 76×108(radius-2xs) + body(title-line + meta) + 우측 edit btn(btn-line btn--sm)
+- `.post-row__title-line`: title(body-md-w6) + status badge(badge--status / status-gray / status-wood)
+- `.post-row__meta`: 가로 메타 (가로/세로 읽기 · 최종 업데이트), `__meta-sep` 1×10 black-30
+
+#### `.empty-state` → shadcn `Card` (empty placeholder)
+- 데이터 없음 플레이스홀더 카드. series-post-management-empty.html 등 빈 상태 페이지에서 사용
+- 720(--p50, 1440의 50%) × 360 (높이만 Figma 고정값)
+- bg-soft + gray-4 1px dashed border + radius-md (그림자 없음)
+- 중앙 정렬: 액션 버튼(btn-filled-black btn--sm) + `.empty-state__hint`(overline-w4, black-30) — gap 12
+
+#### `.form-card` → shadcn `Card` (form wrapper)
+- 헤더 + 바디 구조의 폼 래퍼 카드. series-register.html 메인 컴포넌트
+- 컨테이너: 720px(--p50), radius-md, white bg, card shadow
+- `.form-card__header`: 80px min-height, padding 0 20px 0 24px, body-lg-w6 타이틀
+- `.form-card__body`: padding 0 24px 32px, gap 24 (column)
+- `.form-card__fields`: form-field들의 세로 스택 (gap 22)
+- `.form-card__actions`: 우측 정렬 액션 버튼 그룹 (gap 6)
+
+#### `.thumbnail-upload` → shadcn custom upload zone
+- 썸네일 이미지 업로드 영역. series-register.html 등 작품 등록 폼에서 사용
+- 폭 100% (부모 폭 채움) × 높이 280
+- bg-soft + gray-4 1px dashed border + radius-sm
+- 중앙 정렬: 액션 버튼(btn-line btn--sm `クリックして画像を選択`) + `.thumbnail-upload__hint`(overline-w4, black-50) — gap 12
+
+#### `.inline-alert` → shadcn `Alert` (variant=destructive 등)
+- 인라인 경고/안내 배너. 폼 내부 caution 표시용
+- padding 12/8, radius-sm, gap 8 (icon + text)
+- **Variants**: `inline-alert--error`(red-10 bg + red-30 outline + red-100 text · icon-error-filled)
+- 텍스트: `.inline-alert__text` (overline-w4 권장, flex:1, text-align:center)
 
 #### `.radio-list` → shadcn `RadioGroup` + 리스트 아이템
 **States**: default(bg-soft) / hover(gray-6) / focus(gray-6 + 3px gray-5 ring · 키보드 전용) / pressed(gray-6 · scale 0.98) / **selected**(white bg + nature-3 outline + shadow-subtle/mid · letter avatar black/white · 텍스트 w6 · 우측 check 표시)

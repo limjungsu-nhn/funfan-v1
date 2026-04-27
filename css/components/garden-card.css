@@ -15,7 +15,7 @@
    ============================================ */
 
 .garden-card {
-  width: 1000px;
+  width: var(--p70);
   padding: var(--space-12) var(--space-9) var(--space-9) var(--space-9);
   background: var(--color-wood-6);
   border-radius: var(--radius-xl);

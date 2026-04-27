@@ -15,6 +15,7 @@
      컴포넌트 내부 간격(padding, gap, margin)용 절대값 토큰
      --p{n} (페이지 레벨 1440 퍼센트) 와 구분해서 사용
   ---------------------------------------- */
+  --space-0_5:  2px;
   --space-1:    4px;
   --space-1_5:  6px;
   --space-2:    8px;
@@ -35,6 +36,7 @@
   --space-15:  60px;
   --space-16:  64px;
   --space-20:  80px;
+  --space-45: 180px;
   --space-50: 200px;
 
   /* ---------- Ring Width ---------- */
@@ -59,7 +61,7 @@
   /* ---------- Component Widths ----------
      특정 컴포넌트 고정 폭 (1440 % 스케일 외 고정값)
   ---------------------------------------- */
-  --episode-card-width: 1000px;  /* episode-header / episode-card 공용 */
+  --episode-card-width: var(--p70);  /* episode-header / episode-card 공용 — series-card 와 동일 (1008px) */
 
   /* ---------- % of 1440 ----------
      너비(width), 여백(margin/padding), 간격(gap) 모두 공용

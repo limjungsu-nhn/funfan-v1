@@ -18,7 +18,7 @@
 
    Notes:
      - 에피소드 리스트 상단 헤더. 좌측 타이틀 + 전체 수, 우측 정렬 토글
-     - 폭 --episode-card-width (1000px) — garden-card 폭과 일치
+     - 폭 --episode-card-width (--p70 = 1008px) — series-card / garden-card 폭과 일치
      - 정렬 토글 동작은 .episode-card 컨텍스트에서 js/components/episode-card.js가 담당
      - standalone 헤더는 라벨만 표시
    ============================================ */

@@ -1,0 +1,96 @@
+/* ============================================
+   creator-series-home.html 전용 레이아웃
+   - 작가용 시리즈 홈 (series-home.css 위에 얹는 보강분)
+   - 추가: 에피소드 관리 헤더 + 관리 행 (창작 상태 뱃지 + 편집 버튼)
+   ============================================ */
+
+/* ---------- Episode Manage — 헤더 ---------- */
+.creator-episode-manage__header {
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.creator-episode-manage__title-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0_5);  /* 2px */
+}
+
+.creator-episode-manage__title {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+}
+
+.creator-episode-manage__subtitle {
+  margin: 0;
+  color: var(--color-font-primary-black-50);
+}
+
+/* ---------- Episode Manage — 리스트 ---------- */
+.creator-episode-manage__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);  /* 16px */
+}
+
+/* ---------- Episode Manage — 행 ---------- */
+.creator-episode-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);  /* 20px */
+}
+
+.creator-episode-row__thumb {
+  width: 120px;
+  height: 80px;
+  border-radius: var(--radius-2xs);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.creator-episode-row__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.creator-episode-row__body {
+  flex: 1;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-2);  /* 8px */
+}
+
+.creator-episode-row__title-line {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);  /* 8px */
+}
+
+.creator-episode-row__title {
+  color: var(--color-font-primary-black-100);
+}
+
+.creator-episode-row__meta {
+  margin: 0;
+  padding-left: var(--space-1_5);  /* 6px — Figma 명세 */
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-font-primary-black-50);
+}
+
+.creator-episode-row__meta-sep {
+  width: 1px;
+  height: 10px;
+  background: var(--color-black-30);
+}

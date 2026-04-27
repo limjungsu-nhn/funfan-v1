@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新しい作品を登録する — FunFan</title>
+
+  <!-- Design Tokens -->
+  <link rel="stylesheet" href="css/tokens/typography.css">
+  <link rel="stylesheet" href="css/tokens/layout.css">
+  <link rel="stylesheet" href="css/tokens/color.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/logo.css">
+  <link rel="stylesheet" href="css/components/icon.css">
+  <link rel="stylesheet" href="css/components/avatar.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/tab.css">
+  <link rel="stylesheet" href="css/components/panel-header.css">
+  <link rel="stylesheet" href="css/components/menu-item.css">
+  <link rel="stylesheet" href="css/components/left-panel.css">
+  <link rel="stylesheet" href="css/components/msg-bubble.css">
+  <link rel="stylesheet" href="css/components/chat-msg.css">
+  <link rel="stylesheet" href="css/components/my-msg.css">
+  <link rel="stylesheet" href="css/components/chat-input.css">
+  <link rel="stylesheet" href="css/components/icon-btn.css">
+  <link rel="stylesheet" href="css/components/send-btn.css">
+  <link rel="stylesheet" href="css/components/right-panel.css">
+  <link rel="stylesheet" href="css/components/float-btn.css">
+  <link rel="stylesheet" href="css/components/badge.css">
+  <link rel="stylesheet" href="css/components/form-field.css">
+  <link rel="stylesheet" href="css/components/form-input.css">
+  <link rel="stylesheet" href="css/components/form-textarea.css">
+  <link rel="stylesheet" href="css/components/checkbox.css">
+  <link rel="stylesheet" href="css/components/radio-block.css">
+  <link rel="stylesheet" href="css/components/form-card.css">
+  <link rel="stylesheet" href="css/components/thumbnail-upload.css">
+  <link rel="stylesheet" href="css/components/inline-alert.css">
+
+  <!-- 페이지 전용 App Shell -->
+  <link rel="stylesheet" href="css/pages/app-shell.css">
+  <link rel="stylesheet" href="css/pages/series-register.css">
+  <link rel="stylesheet" href="css/components/radio-card.css">
+  <link rel="stylesheet" href="css/components/modal.css">
+  <script src="js/core/keyboard-focus.js" defer></script>
+  <script src="js/components/chat.js" defer></script>
+  <script src="js/components/modal.js" defer></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar-logo">
+      <i class="logo logo-funfan"></i>
+    </div>
+    <div class="navbar-actions">
+      <div class="navbar-tabs">
+        <div class="tab-group">
+          <button class="tab tab--selected">公開</button>
+          <button class="tab">非公開</button>
+        </div>
+      </div>
+      <a class="btn btn-ghost" href="mypage.html">
+        <i class="icon icon-account-circle"></i>
+        <span class="text-assist-w4">マイページ</span>
+      </a>
+      <a class="btn btn-filled-nature" href="workspace.html">
+        <i class="icon icon-laptop-mac"></i>
+        <span class="text-assist-w4">ワークスペース</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- App Shell -->
+  <div class="workspace">
+
+    <!-- Left Panel -->
+    <div class="left-panel">
+
+      <div class="panel-header">
+        <i class="avatar avatar-01"></i>
+        <div class="panel-header__body">
+          <span class="panel-header__name">つちだ さん</span>
+        </div>
+      </div>
+
+      <nav class="left-panel__menu">
+        <button class="menu-item" onclick="location.href='workspace.html'">
+          <i class="icon icon-bar-chart"></i>
+          <span class="menu-item__label">トップ</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+        <button class="menu-item" onclick="location.href='workroom.html'">
+          <i class="icon icon-edit"></i>
+          <span class="menu-item__label">作業室</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+        <button class="menu-item menu-item--selected" onclick="location.href='series-post-management.html'">
+          <i class="icon icon-folder"></i>
+          <span class="menu-item__label">作品管理</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+        <button class="menu-item" onclick="location.href='account-setting.html'">
+          <i class="icon icon-settings"></i>
+          <span class="menu-item__label">アカウント設定</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+      </nav>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="workspace__main">
+      <div class="workspace__content">
+
+        <header class="series-register__header">
+          <h1 class="series-register__title text-h2-w6">新しい作品を登録する</h1>
+          <p class="series-register__desc text-caption-w4">この作品はまだ公開されません</p>
+        </header>
+
+        <section class="form-card">
+          <header class="form-card__header">
+            <h2 class="form-card__title text-body-lg-w6">作品情報</h2>
+          </header>
+
+          <div class="form-card__body">
+
+            <div class="form-card__fields">
+
+              <!-- サムネイル画像 -->
+              <div class="form-field">
+                <div class="form-field__label">
+                  <span class="form-field__title">サムネイル画像</span>
+                </div>
+                <div class="thumbnail-upload" id="thumbnail-upload">
+                  <input type="file" id="thumbnail-input" accept="image/jpeg,image/png" hidden>
+                  <button class="btn btn-line btn--sm thumbnail-upload__btn" type="button" id="thumbnail-pick-btn">
+                    <i class="icon icon-add"></i>
+                    <span class="text-caption-w4">クリックして画像を選択</span>
+                  </button>
+                  <p class="thumbnail-upload__hint text-overline-w4">JPG・PNG 形式、500KB以下、推薦：16:9比率</p>
+                  <div class="thumbnail-upload__preview-wrap">
+                    <img class="thumbnail-upload__preview" id="thumbnail-preview" alt="">
+                    <div class="thumbnail-upload__overlay">
+                      <div class="thumbnail-upload__file-info">
+                        <div class="thumbnail-upload__filename" id="thumb-filename"></div>
+                        <div class="thumbnail-upload__filesize" id="thumb-filesize"></div>
+                      </div>
+                      <button class="btn btn-soft-red btn--xs thumbnail-upload__delete" id="thumb-delete" type="button">
+                        <i class="icon icon-delete"></i>
+                        <span class="text-caption-w4">削除</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- タイトル -->
+              <div class="form-field">
+                <div class="form-field__label">
+                  <span class="form-field__title">タイトル</span>
+                  <span class="form-field__required" aria-hidden="true"></span>
+                </div>
+                <div class="form-input">
+                  <input class="form-input__field" type="text" placeholder="最大50文字" maxlength="50">
+                </div>
+              </div>
+
+              <!-- 説明文 -->
+              <div class="form-field">
+                <div class="form-field__label">
+                  <span class="form-field__title">説明文</span>
+                  <span class="form-field__required" aria-hidden="true"></span>
+                </div>
+                <div class="form-textarea form-textarea--with-counter">
+                  <textarea class="form-textarea__field" placeholder="最大300文字" maxlength="300" rows="5"></textarea>
+                  <span class="form-textarea__counter text-overline-w4" data-textarea-counter>0/300</span>
+                </div>
+              </div>
+
+              <!-- 読む方向 -->
+              <div class="form-field">
+                <div class="form-field__label">
+                  <span class="form-field__title">読む方向</span>
+                  <span class="form-field__required" aria-hidden="true"></span>
+                </div>
+                <p class="form-field__hint">登録後は変更できません</p>
+                <div class="series-register__choice-grid">
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="reading-direction" value="horizontal">
+                    <div class="radio-block__content">
+                      <span class="radio-block__title">ヨコ読み</span>
+                      <span class="radio-block__desc">左右にページをめくって読む形式</span>
+                    </div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="reading-direction" value="vertical">
+                    <div class="radio-block__content">
+                      <span class="radio-block__title">タテ読み</span>
+                      <span class="radio-block__desc">上から下にスクロールして読む形式</span>
+                    </div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="reading-direction" value="panel">
+                    <div class="radio-block__content">
+                      <span class="radio-block__title">コマ読み</span>
+                      <span class="radio-block__desc">1コマずつタップして読む形式</span>
+                    </div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                </div>
+              </div>
+
+              <!-- 作品の状態 -->
+              <div class="form-field">
+                <div class="form-field__label">
+                  <span class="form-field__title">作品の状態</span>
+                  <span class="form-field__required" aria-hidden="true"></span>
+                </div>
+                <div class="series-register__choice-grid">
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="series-status" value="ongoing">
+                    <div class="radio-block__content">
+                      <span class="radio-block__title">連載中</span>
+                    </div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="series-status" value="completed">
+                    <div class="radio-block__content">
+                      <span class="radio-block__title">完結</span>
+                    </div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="series-status" value="draft">
+                    <div class="radio-block__content">
+                      <span class="radio-block__title">準備中</span>
+                    </div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                </div>
+              </div>
+
+              <!-- ジャンル -->
+              <div class="form-field">
+                <div class="form-field__label">
+                  <span class="form-field__title">ジャンル</span>
+                  <span class="form-field__required" aria-hidden="true"></span>
+                </div>
+                <p class="form-field__hint">登録後は変更できません</p>
+                <div class="series-register__choice-grid">
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="genre" value="action">
+                    <div class="radio-block__content"><span class="radio-block__title">アクション・スポーツ</span></div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="genre" value="romance">
+                    <div class="radio-block__content"><span class="radio-block__title">恋愛・ラブコメ</span></div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="genre" value="fantasy">
+                    <div class="radio-block__content"><span class="radio-block__title">ファンタジー・異世界</span></div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="genre" value="drama">
+                    <div class="radio-block__content"><span class="radio-block__title">日常・ヒューマンドラマ</span></div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="genre" value="bl-gl">
+                    <div class="radio-block__content"><span class="radio-block__title">BL・GL</span></div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="genre" value="horror">
+                    <div class="radio-block__content"><span class="radio-block__title">ホラー・ミステリー</span></div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="genre" value="other">
+                    <div class="radio-block__content"><span class="radio-block__title">その他</span></div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- AI 활용 토글 + 경고 -->
+            <div class="series-register__ai-row">
+              <label class="series-register__ai-check checkbox-wrap">
+                <input type="checkbox" class="checkbox-input" id="ai-checkbox">
+                <div class="checkbox">
+                  <i class="icon icon-check-small checkbox-icon"></i>
+                </div>
+                <span class="series-register__ai-check-label text-caption-w4">AI生成を活用</span>
+              </label>
+              <div class="inline-alert inline-alert--error" id="ai-alert" hidden>
+                <i class="icon icon-error-filled"></i>
+                <span class="inline-alert__text text-overline-w4">AI活用の事実が後から確認された場合、作品が非公開になる可能性があります。</span>
+              </div>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="form-card__actions">
+              <button class="btn btn-line btn--sm" type="button">
+                <span class="text-caption-w4">下書き保存</span>
+              </button>
+              <button class="btn btn-filled-black btn--sm" type="button" id="submit-btn" disabled>
+                <span class="text-caption-w4">登録する</span>
+              </button>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Right Wrapper -->
+    <div id="ws-right-wrapper" class="right-panel-wrapper">
+
+    <button class="float-btn" id="ws-float-btn" type="button" aria-label="パネルを開く">
+      <i class="icon icon-horizontal-align-right"></i>
+    </button>
+
+    <div class="right-panel">
+
+      <div class="panel-header">
+        <i class="avatar avatar-02"></i>
+        <div class="panel-header__body">
+          <span class="panel-header__name">はな</span>
+          <div class="panel-header__meta">
+            <span class="panel-header__subtext">漫画鑑定士</span>
+            <a class="panel-header__link">
+              設定
+              <svg class="panel-header__link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.40016 8L5.3335 4.93333L6.26683 4L10.2668 8L6.26683 12L5.3335 11.0667L8.40016 8Z" fill="var(--color-black-100)"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-panel__chat">
+        <div class="chat-msg">
+          <div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>
+          <div class="chat-msg__body"><p class="chat-msg__text">こんにちは！作品登録についてなんでも聞いてください。</p></div>
+        </div>
+      </div>
+
+      <div class="right-panel__footer">
+        <div class="chat-input">
+          <div class="chat-input__field">
+            <textarea class="chat-input__textarea" aria-label="AIへのメッセージ" placeholder="はなに話しかけてみましょう..." rows="1"></textarea>
+          </div>
+          <div class="chat-input__actions">
+            <button class="icon-btn" type="button" aria-label="作品コンテキストを追加" data-modal-open="#modal-context">
+              <i class="icon icon-add"></i>
+            </button>
+            <button class="send-btn" type="button" aria-label="送信">
+              <i class="icon icon-arrow-upward-alt"></i>
+            </button>
+          </div>
+        </div>
+        <p class="right-panel__disclaimer">AIのため、誤りを含む可能性があります</p>
+      </div>
+
+    </div>
+
+    </div><!-- /#ws-right-wrapper -->
+
+  </div>
+
+  <script>
+    document.querySelector('.left-panel').addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+    document.querySelector('.right-panel').addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });
+
+    // Right panel toggle (workspace 패턴 동일)
+    (() => {
+      const floatBtn   = document.getElementById('ws-float-btn');
+      const wrapper    = document.getElementById('ws-right-wrapper');
+      const rightPanel = document.querySelector('.right-panel');
+      if (!floatBtn || !wrapper || !rightPanel) return;
+      const PANEL_KEY = 'rightPanelOpen';
+      let isOpen = localStorage.getItem(PANEL_KEY) !== 'false';
+
+      function applyState() {
+        wrapper.classList.toggle('is-panel-closed', !isOpen);
+        rightPanel.classList.toggle('right-panel--collapsed', !isOpen);
+        floatBtn.classList.toggle('is-panel-closed', !isOpen);
+        floatBtn.setAttribute('aria-label', isOpen ? 'パネルを閉じる' : 'パネルを開く');
+      }
+
+      wrapper.classList.add('right-panel-wrapper--instant');
+      applyState();
+      requestAnimationFrame(() => requestAnimationFrame(() => wrapper.classList.remove('right-panel-wrapper--instant')));
+
+      floatBtn.addEventListener('click', () => {
+        isOpen = !isOpen;
+        localStorage.setItem(PANEL_KEY, isOpen);
+        applyState();
+      });
+    })();
+
+    // Textarea counter
+    document.querySelectorAll('[data-textarea-counter]').forEach((counter) => {
+      const ta = counter.parentElement.querySelector('.form-textarea__field');
+      if (!ta) return;
+      const max = ta.getAttribute('maxlength') || 300;
+      const update = () => { counter.textContent = `${ta.value.length}/${max}`; };
+      ta.addEventListener('input', update);
+      update();
+    });
+
+    // 등록 버튼 활성화 — 필수 입력(썸네일/タイトル/説明文/読む方向/作品の状態/ジャンル) 모두 채워졌을 때만
+    const submitBtn = document.getElementById('submit-btn');
+    const titleInput = document.querySelector('.form-input__field');
+    const descTextarea = document.querySelector('.form-textarea__field');
+    function checkSubmitReady() {
+      if (!submitBtn) return;
+      const hasThumbnail = !!(document.getElementById('thumbnail-input')?.files?.length);
+      const hasTitle = !!(titleInput?.value.trim());
+      const hasDesc = !!(descTextarea?.value.trim());
+      const hasDirection = !!document.querySelector('input[name="reading-direction"]:checked');
+      const hasStatus = !!document.querySelector('input[name="series-status"]:checked');
+      const hasGenre = !!document.querySelector('input[name="genre"]:checked');
+      submitBtn.disabled = !(hasThumbnail && hasTitle && hasDesc && hasDirection && hasStatus && hasGenre);
+    }
+    titleInput?.addEventListener('input', checkSubmitReady);
+    descTextarea?.addEventListener('input', checkSubmitReady);
+    document.querySelectorAll('input[name="reading-direction"], input[name="series-status"], input[name="genre"]')
+      .forEach(el => el.addEventListener('change', checkSubmitReady));
+
+    // 썸네일 업로드 — 버튼/미리보기 클릭 시 파일 선택창, 선택 후 미리보기 표시
+    const thumbBtn = document.getElementById('thumbnail-pick-btn');
+    const thumbInput = document.getElementById('thumbnail-input');
+    const thumbWrap = document.getElementById('thumbnail-upload');
+    const thumbPreview = document.getElementById('thumbnail-preview');
+    const thumbFilename = document.getElementById('thumb-filename');
+    const thumbFilesize = document.getElementById('thumb-filesize');
+    const thumbDelete = document.getElementById('thumb-delete');
+    function formatFileSize(bytes) {
+      if (bytes < 1024) return bytes + 'B';
+      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + 'KB';
+      return (bytes / (1024 * 1024)).toFixed(1) + 'MB';
+    }
+    if (thumbBtn && thumbInput && thumbWrap && thumbPreview) {
+      const openPicker = () => thumbInput.click();
+      thumbBtn.addEventListener('click', openPicker);
+      thumbPreview.addEventListener('click', openPicker);
+      thumbInput.addEventListener('change', () => {
+        const file = thumbInput.files && thumbInput.files[0];
+        if (!file) return;
+        thumbPreview.src = URL.createObjectURL(file);
+        if (thumbFilename) thumbFilename.textContent = file.name;
+        if (thumbFilesize) thumbFilesize.textContent = formatFileSize(file.size);
+        thumbWrap.classList.add('thumbnail-upload--attached');
+        checkSubmitReady();
+      });
+      if (thumbDelete) {
+        thumbDelete.addEventListener('click', (e) => {
+          e.stopPropagation();
+          thumbInput.value = '';
+          thumbPreview.src = '';
+          thumbWrap.classList.remove('thumbnail-upload--attached');
+          checkSubmitReady();
+        });
+      }
+    }
+
+    // AI checkbox toggle — 체크 시에만 inline-alert 노출
+    const aiCheckbox = document.getElementById('ai-checkbox');
+    const aiAlert = document.getElementById('ai-alert');
+    if (aiCheckbox && aiAlert) {
+      aiCheckbox.addEventListener('change', () => {
+        aiAlert.hidden = !aiCheckbox.checked;
+      });
+    }
+  </script>
+
+  <div class="modal-backdrop" id="modal-context">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-context-title">
+      <h2 class="modal__title" id="modal-context-title">作品コンテキストを追加</h2>
+      <div class="modal__viewport">
+      <div class="modal__track" data-step="1">
+
+      <!-- ============ STEP 1: 작품 선택 ============ -->
+      <div class="modal__step">
+      <div class="modal__section">
+        <label class="modal__label">作品を選ぶ</label>
+        <div class="modal__list">
+          <label class="radio-card radio-card--nav">
+            <input type="radio" class="radio-card__input" name="modal-context-work" value="adventure">
+            <div class="radio-card__content">
+              <span class="radio-card__title">私の冒険</span>
+              <span class="radio-card__sub">連載中・3話公開・主人公ハルの設定あり</span>
+            </div>
+            <i class="icon icon-chevron-right radio-card__chevron"></i>
+          </label>
+          <label class="radio-card radio-card--nav">
+            <input type="radio" class="radio-card__input" name="modal-context-work" value="kitchen">
+            <div class="radio-card__content">
+              <span class="radio-card__title">夜明けのキッチン</span>
+              <span class="radio-card__sub">準備中・0話公開・ストーリーアーク未登録</span>
+            </div>
+            <i class="icon icon-chevron-right radio-card__chevron"></i>
+          </label>
+          <label class="radio-card radio-card--nav">
+            <input type="radio" class="radio-card__input" name="modal-context-work" value="moon">
+            <div class="radio-card__content">
+              <span class="radio-card__title">月の手紙</span>
+              <span class="radio-card__sub">下書き・1話作成中・サブキャラ設定を追加予定</span>
+            </div>
+            <i class="icon icon-chevron-right radio-card__chevron"></i>
+          </label>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn-line btn--sm" type="button" data-modal-close><span>閉じる</span></button>
+      </div>
+      </div><!-- /step 1 -->
+
+      <!-- ============ STEP 2: キャラクター情報 입력 ============ -->
+      <div class="modal__step">
+        <div class="modal__summary-card">
+          <div class="modal__summary-card__content">
+            <span class="modal__summary-card__title">私の冒険</span>
+            <span class="modal__summary-card__sub">連載中・3話公開・主人公ハルの設定あり</span>
+          </div>
+          <button class="btn btn-line btn--sm" type="button" data-modal-back><span>作品を選び直す</span></button>
+        </div>
+
+        <div class="modal__tabs">
+          <div class="tab-group">
+            <button class="tab tab--selected" type="button" data-tab-target="character">キャラクター情報</button>
+            <button class="tab" type="button" data-tab-target="story">ストーリーアーク</button>
+          </div>
+        </div>
+
+        <div class="modal__tab-panel" data-tab-panel="character">
+          <p class="modal__helper">選択した作品に紐づくキャラクターのみ管理します。</p>
+          <div class="modal__form">
+            <div class="modal__field-group">
+              <label class="modal__label">キャラクター情報</label>
+              <div class="modal__field-row">
+                <div class="form-input"><input class="form-input__field" type="text" placeholder="キャラクター名"></div>
+                <div class="form-input"><input class="form-input__field" type="text" placeholder="年齢/学年"></div>
+                <div class="form-input"><input class="form-input__field" type="text" placeholder="性別"></div>
+              </div>
+            </div>
+            <div class="form-textarea">
+              <textarea class="form-textarea__field" placeholder="性格"></textarea>
+            </div>
+            <div class="form-input"><input class="form-input__field" type="text" placeholder="役割"></div>
+          </div>
+        </div>
+
+        <div class="modal__tab-panel" data-tab-panel="story" hidden>
+          <p class="modal__helper">現在の完成話数：3話。保存後は以降の会話で参照されます。</p>
+          <div class="modal__form">
+            <div class="modal__field-group">
+              <label class="modal__label">ストーリー設定</label>
+              <div class="modal__field-row">
+                <div class="form-input"><input class="form-input__field" type="text" placeholder="テーマ・方向性"></div>
+                <div class="form-input form-input--narrow"><input class="form-input__field" type="text" placeholder="完結予定話数"></div>
+              </div>
+            </div>
+            <div class="form-textarea">
+              <textarea class="form-textarea__field" placeholder="あらすじ"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal__footer modal__footer--split">
+          <button class="btn btn-line btn--sm" type="button" data-modal-back><span>戻る</span></button>
+          <div class="modal__footer__group">
+            <button class="btn btn-line btn--sm" type="button" data-modal-close><span>閉じる</span></button>
+            <button class="btn btn-filled-nature btn--sm" type="button" data-modal-close><span>保存する</span></button>
+          </div>
+        </div>
+      </div><!-- /step 2 -->
+
+      </div><!-- /track -->
+      </div><!-- /viewport -->
+    </div>
+  </div>
+
+</body>
+</html>

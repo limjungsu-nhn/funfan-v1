@@ -41,7 +41,9 @@
   --color-red-100: rgba(255, 17, 0, 1);
   --color-red-50:  rgba(255, 17, 0, 0.5);
   --color-red-30:  rgba(255, 17, 0, 0.3);
+  --color-red-10:  #FFEAE8; /* Inline alert bg (Figma 고정 hex) */
   --color-red-0:   rgba(255, 17, 0, 0);
+  --color-red-text: #FB2C36; /* Inline alert text (Figma 고정 hex) */
 
   /* ---------- Nature ---------- */
   --color-nature-1: #244D01;

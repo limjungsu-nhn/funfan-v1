@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>シリーズホーム — FunFan</title>
+  <title>シリーズホーム（作家用）— FunFan</title>
 
   <!-- Design Tokens -->
   <link rel="stylesheet" href="css/tokens/typography.css">
@@ -34,6 +34,7 @@
 
   <!-- 페이지 전용 App Shell (v1.03까지 이 HTML <style> 블록에 있던 내용) -->
   <link rel="stylesheet" href="css/pages/series-home.css">
+  <link rel="stylesheet" href="css/pages/creator-series-home.css">
 </head>
 <body>
 
@@ -53,7 +54,7 @@
         <div class="series-card__body">
           <div class="series-card__content">
             <div class="series-card__top">
-              <p class="text-subtext-w4 series-card__meta">ファンタジー<span class="series-card__meta-sep">｜</span>連載中</p>
+              <p class="text-subtext-w4 series-card__meta">連載中</p>
               <h2 class="text-h1-w6 series-card__title">今週のかなでさん</h2>
               <div class="series-card__author">
                 <i class="avatar avatar-01 avatar--xs"></i>
@@ -65,10 +66,9 @@
                 <p class="text-subtext-w4 series-card__desc-text">月明かりだけが灯る静かな工房で、毎晩ひとり絵を描き続ける少女・かなで。ある夜、完成したばかりのキャンバスから見知らぬ青年が現れる。絵の世界に迷い込んだ彼との不思議な出会いが、かなでの閉ざされた日常と心の色を少しずつ塗り替えていく。ふたりの距離が縮まるにつれ、絵の世界と現実の境界が曖昧になっていく。これは絵筆と言葉が紡ぐ、ひとつの静かな奇跡の物語。</p>
                 <button class="series-card__more" type="button">もっと見る</button>
               </div>
-              <div class="series-card__badges">
-                <span class="badge"><span class="text-caption-w4">横読み</span></span>
-                <span class="badge"><span class="text-caption-w4">✦ AI活用作品</span></span>
-              </div>
+              <button class="btn btn-line" type="button">
+                <span class="text-assist-w4">作品情報を編集</span>
+              </button>
             </div>
           </div>
           <img class="series-card__poster" src="img/img_series01.png" alt="シリーズポスター">
@@ -146,71 +146,58 @@
               <span class="text-assist-w4 reaction-bar__meta">他2名が水やりしています</span>
             </div>
           </div>
-          <button class="btn btn-filled-sky reaction-bar__cta" type="button">
-            <span class="text-subtext-w6">水をあげて応援する</span>
+          <button class="btn btn-filled-wood reaction-bar__cta" type="button">
+            <span class="text-subtext-w6">応援コメントを見る</span>
           </button>
         </div>
       </div>
 
-      <!-- Episode Card — 헤더 + 리스트 -->
-      <section class="episode-card">
-        <div class="episode-header">
-          <div class="episode-header__title-group">
-            <p class="episode-header__title text-h4-w6">エピソード</p>
-            <p class="episode-header__meta text-subtext-w4">全109話</p>
+      <!-- Episode Manage — 작가용 에피소드 관리 -->
+      <section class="episode-card creator-episode-manage">
+        <div class="creator-episode-manage__header">
+          <div class="creator-episode-manage__title-group">
+            <p class="creator-episode-manage__title text-body-lg-w6">エピソード一覧</p>
+            <p class="creator-episode-manage__subtitle text-overline-w4">公開済み・下書きの状態をここで確認します</p>
           </div>
-          <button class="episode-header__sort" type="button" aria-label="並び替え">
-            <svg class="episode-header__sort-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8 13V5.825L5.425 8.4L4 7L9 2L14 7L12.575 8.4L10 5.825V13H8ZM15 22L10 17L11.425 15.6L14 18.175V11H16V18.175L18.575 15.6L20 17L15 22Z"/>
-            </svg>
-            <span class="episode-header__sort-label text-assist-w4">古い順</span>
+          <button class="btn btn-line" type="button">
+            <i class="icon icon-add" aria-hidden="true"></i>
+            <span class="text-assist-w4">エピソード追加</span>
           </button>
         </div>
-        <ul class="episode-card__list">
-          <li>
-            <a class="episode-item" href="#">
-              <div class="episode-item__thumb"><img src="img/img_episode01.png" alt=""></div>
-              <div class="episode-item__body">
-                <span class="episode-item__title text-subtext-w6">第1話「月明かりの工房」</span>
-                <span class="episode-item__date text-overline-w4">2026/3/10</span>
+        <ul class="creator-episode-manage__list">
+          <li class="creator-episode-row">
+            <div class="creator-episode-row__thumb"><img src="img/img_episode01.png" alt=""></div>
+            <div class="creator-episode-row__body">
+              <div class="creator-episode-row__title-line">
+                <span class="badge badge--status"><span class="text-overline-w4">公開中</span></span>
+                <span class="creator-episode-row__title text-subtext-w6">第1話 出発</span>
               </div>
-            </a>
+              <p class="creator-episode-row__meta text-caption-w4">
+                <span>画像4枚、あとがき下書きあり。途中から再開できます。</span>
+                <span class="creator-episode-row__meta-sep" aria-hidden="true"></span>
+                <span>最終更新 2026/3/21</span>
+              </p>
+            </div>
+            <button class="btn btn-line" type="button">
+              <span class="text-assist-w4">編集</span>
+            </button>
           </li>
-          <li>
-            <a class="episode-item" href="#">
-              <div class="episode-item__thumb"><img src="img/img_episode01.png" alt=""></div>
-              <div class="episode-item__body">
-                <span class="episode-item__title text-subtext-w6">第2話「はじめての依頼」</span>
-                <span class="episode-item__date text-overline-w4">2026/3/17</span>
+          <li class="creator-episode-row">
+            <div class="creator-episode-row__thumb"><img src="img/img_episode01.png" alt=""></div>
+            <div class="creator-episode-row__body">
+              <div class="creator-episode-row__title-line">
+                <span class="badge badge--status-wood"><span class="text-overline-w4">下書き</span></span>
+                <span class="creator-episode-row__title text-subtext-w6">第2話 途中</span>
               </div>
-            </a>
-          </li>
-          <li>
-            <a class="episode-item" href="#">
-              <div class="episode-item__thumb"><img src="img/img_episode01.png" alt=""></div>
-              <div class="episode-item__body">
-                <span class="episode-item__title text-subtext-w6">第3話「雨の日の訪問者」</span>
-                <span class="episode-item__date text-overline-w4">2026/3/24</span>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a class="episode-item" href="#">
-              <div class="episode-item__thumb"><img src="img/img_episode01.png" alt=""></div>
-              <div class="episode-item__body">
-                <span class="episode-item__title text-subtext-w6">第4話「キャンバスの向こう側」</span>
-                <span class="episode-item__date text-overline-w4">2026/3/31</span>
-              </div>
-            </a>
-          </li>
-          <li>
-            <a class="episode-item" href="#">
-              <div class="episode-item__thumb"><img src="img/img_episode01.png" alt=""></div>
-              <div class="episode-item__body">
-                <span class="episode-item__title text-subtext-w6">第5話「色を失くした夜」</span>
-                <span class="episode-item__date text-overline-w4">2026/4/7</span>
-              </div>
-            </a>
+              <p class="creator-episode-row__meta text-caption-w4">
+                <span>画像4枚、あとがき下書きあり。途中から再開できます。</span>
+                <span class="creator-episode-row__meta-sep" aria-hidden="true"></span>
+                <span>最終更新 2026/3/21</span>
+              </p>
+            </div>
+            <button class="btn btn-line" type="button">
+              <span class="text-assist-w4">編集</span>
+            </button>
           </li>
         </ul>
       </section>

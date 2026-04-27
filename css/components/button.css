@@ -45,6 +45,9 @@
 
 /* ---------- Size Variants ---------- */
 /* 기본(md): min-height 40px, padding 0 16px */
+.btn--xs { min-height: 28px; padding: 0 var(--space-2); border-radius: var(--radius-2xs); font-size: var(--font-size-caption); gap: var(--space-1_5); }
+.btn--xs span { font-size: var(--font-size-caption); }
+.btn--xs .icon { width: 14px; height: 14px; font-size: 14px; }
 .btn--sm { min-height: 36px; padding: 0 var(--space-3); border-radius: var(--radius-sm); font-size: var(--font-size-caption); }
 .btn--sm span { font-size: var(--font-size-caption); }
 .btn--lg { min-height: 48px; }
@@ -313,6 +316,81 @@
 .btn-filled-red--disabled .icon,
 .btn-filled-red:disabled .icon {
   color: var(--color-white-100);
+}
+
+/* ============================================
+   Soft Red — 연한 red 면 + red 텍스트(Default) → 인터랙션 시 solid red 로 전환
+
+   States:
+     .btn-soft-red               Default  — #FFEAE8 (하드코딩) 면, red-100 텍스트/아이콘
+     .btn-soft-red--hover         Hover    — solid red-100 + white 텍스트
+     .btn-soft-red--focus         Focus    — solid red-100 + 3px gray-5 ring
+     .btn-soft-red--pressed       Pressed  — solid red-100 + scale(0.97)
+     .btn-soft-red--disabled      Disabled — Gray-5 면, 30% black 텍스트
+   ============================================ */
+
+/* ---------- Default ---------- */
+.btn-soft-red {
+  background: #FFEAE8; /* 디폴트 면 컬러 — 하드코딩 */
+  color: var(--color-red-100);
+}
+.btn-soft-red .icon {
+  color: var(--color-red-100);
+}
+
+/* ---------- Hover ---------- */
+.btn-soft-red--hover,
+.btn-soft-red:hover:not(.btn-soft-red--disabled) {
+  background: var(--color-red-100);
+  color: var(--color-white-100);
+  box-shadow: 0px 1px 2px var(--color-shadow-light);
+}
+.btn-soft-red--hover .icon,
+.btn-soft-red:hover:not(.btn-soft-red--disabled) .icon {
+  color: var(--color-white-100);
+}
+
+/* ---------- Focus ---------- */
+.btn-soft-red--focus {
+  background: var(--color-red-100);
+  color: var(--color-white-100);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+.btn-soft-red--focus .icon { color: var(--color-white-100); }
+.btn-soft-red:focus-visible:not(.btn-soft-red--disabled) {
+  outline: none;
+  background: var(--color-red-100);
+  color: var(--color-white-100);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+.btn-soft-red:focus-visible:not(.btn-soft-red--disabled) .icon {
+  color: var(--color-white-100);
+}
+
+/* ---------- Pressed ---------- */
+.btn-soft-red--pressed,
+.btn-soft-red:active:not(.btn-soft-red--disabled) {
+  background: var(--color-red-100);
+  color: var(--color-white-100);
+  transform: scale(0.97);
+  box-shadow: 0px 1px 2px var(--color-shadow-light);
+}
+.btn-soft-red--pressed .icon,
+.btn-soft-red:active:not(.btn-soft-red--disabled) .icon {
+  color: var(--color-white-100);
+}
+
+/* ---------- Disabled ---------- */
+.btn-soft-red--disabled,
+.btn-soft-red:disabled {
+  background: var(--color-gray-5);
+  color: var(--color-font-primary-black-30);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.btn-soft-red--disabled .icon,
+.btn-soft-red:disabled .icon {
+  color: var(--color-font-primary-black-30);
 }
 
 /* ============================================

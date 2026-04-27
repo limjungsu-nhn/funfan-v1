@@ -46,7 +46,9 @@
       "100": "rgba(255, 17, 0, 1)",
       "50":  "rgba(255, 17, 0, 0.5)",
       "30":  "rgba(255, 17, 0, 0.3)",
-      "0":   "rgba(255, 17, 0, 0)"
+      "10":  "#FFEAE8",
+      "0":   "rgba(255, 17, 0, 0)",
+      "text": "#FB2C36"
     },
     "nature": {
       "1": "#244D01",
@@ -88,6 +90,7 @@
 
   "spacing": {
     "$description": "컴포넌트 내부 간격(padding, gap, margin)용 절대값 스케일. --p{n}와 구분해서 사용.",
+    "0_5": "2px",
     "1":   "4px",
     "1_5": "6px",
     "2":   "8px",
@@ -108,6 +111,7 @@
     "15":  "60px",
     "16":  "64px",
     "20":  "80px",
+    "45":  "180px",
     "50":  "200px"
   },
 
@@ -173,6 +177,7 @@
       "body-md":  { "fontSize": "16px", "lineHeight": "26px" },
       "body-lg":  { "fontSize": "18px", "lineHeight": "28px" },
       "body-xl":  { "fontSize": "20px", "lineHeight": "28px" },
+      "h4":       { "fontSize": "20px", "lineHeight": "30px" },
       "h3":       { "fontSize": "22px", "lineHeight": "32px" },
       "h2":       { "fontSize": "28px", "lineHeight": "38px" },
       "h1":       { "fontSize": "36px", "lineHeight": "48px" },

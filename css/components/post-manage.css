@@ -1,0 +1,129 @@
+/* ============================================
+   Post Manage Component — 작품(시리즈) 관리 카드 + 행
+
+   HTML 구조:
+     <section class="post-manage">
+       <div class="post-manage__header">
+         <h2 class="post-manage__title text-body-lg-w6">作品一覧</h2>
+         <button class="btn btn-filled-black btn--sm">
+           <i class="icon icon-add"></i>
+           <span class="text-caption-w4">作品を登録する</span>
+         </button>
+       </div>
+       <ul class="post-manage__list">
+         <li class="post-row">
+           <img class="post-row__thumb" src="..." alt="">
+           <div class="post-row__body">
+             <div class="post-row__title-line">
+               <span class="post-row__title text-body-md-w6">私の冒険</span>
+               <span class="badge badge--status"><span class="text-overline-w4">公開中</span></span>
+             </div>
+             <p class="post-row__meta text-caption-w4">
+               <span>ヨコ読み</span>
+               <span class="post-row__meta-sep" aria-hidden="true"></span>
+               <span>最終更新 2026/3/20</span>
+             </p>
+           </div>
+           <button class="btn btn-line btn--sm"><span class="text-caption-w4">編集・話を追加</span></button>
+         </li>
+       </ul>
+     </section>
+
+   Notes:
+     - 작품(시리즈) 리스트 관리. 한 행 = 한 시리즈
+     - 폭 720px(--p50) · padding 32 28 · radius-md · card shadow
+     - 썸네일 76×108 (세로 포스터) · radius-2xs
+     - badge variants: status(公開中) / status-gray(非公開) / status-wood(下書き)
+   ============================================ */
+
+/* ---------- Container ---------- */
+.post-manage {
+  width: var(--p50); /* 720 */
+  padding: var(--space-8) var(--space-7); /* 32 28 */
+  background: var(--color-white-100);
+  border-radius: var(--radius-md); /* 16 */
+  box-shadow: 0 4px 8px var(--color-shadow-subtle), 0 0 1px var(--color-shadow-mid);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6); /* 24 */
+  flex-shrink: 0;
+  margin-bottom: var(--space-45); /* 180 — 카드 하단 여백 */
+  box-sizing: border-box;
+}
+
+/* ---------- Header ---------- */
+.post-manage__header {
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.post-manage__title {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- List ---------- */
+.post-manage__list {
+  align-self: stretch;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4); /* 16 */
+}
+
+/* ---------- Row ---------- */
+.post-row {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4); /* 16 */
+}
+
+.post-row__thumb {
+  width: 76px;
+  height: 108px;
+  border-radius: var(--radius-2xs); /* 8 */
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.post-row__body {
+  flex: 1 1 0;
+  min-width: 0;
+  align-self: stretch;
+  padding: var(--space-3) 0 var(--space-4); /* 12 / 16 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-2); /* 8 */
+}
+
+.post-row__title-line {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3); /* 12 */
+}
+
+.post-row__title {
+  color: var(--color-font-primary-black-100);
+}
+
+.post-row__meta {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2); /* 8 */
+  color: var(--color-font-primary-black-50);
+}
+
+.post-row__meta-sep {
+  width: 1px;
+  height: 10px;
+  background: var(--color-black-30);
+  flex-shrink: 0;
+}

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>作品管理 — FunFan</title>
+  <title>作品管理（作品なし）— FunFan</title>
 
   <!-- Design Tokens -->
   <link rel="stylesheet" href="css/tokens/typography.css">
@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="css/components/float-btn.css">
   <link rel="stylesheet" href="css/components/badge.css">
   <link rel="stylesheet" href="css/components/post-manage.css">
+  <link rel="stylesheet" href="css/components/empty-state.css">
 
   <!-- 페이지 전용 App Shell (v1.03까지 이 HTML <style> 블록에 있던 내용) -->
   <link rel="stylesheet" href="css/pages/app-shell.css">
@@ -114,161 +115,13 @@
           <p class="series-post-management__desc text-caption-w4">ワークスペースで最初に表示される作品一覧です。公開・非公開・下書きの状態をここで確認できます。</p>
         </header>
 
-        <section class="post-manage">
-          <div class="post-manage__header">
-            <h2 class="post-manage__title text-body-lg-w6">作品一覧</h2>
-            <a class="btn btn-filled-black btn--sm" href="series-register.html">
-              <i class="icon icon-add"></i>
-              <span class="text-caption-w4">作品を登録する</span>
-            </a>
-          </div>
-
-          <ul class="post-manage__list">
-            <li class="post-row">
-              <img class="post-row__thumb" src="img/img_series01.png" alt="">
-              <div class="post-row__body">
-                <div class="post-row__title-line">
-                  <span class="post-row__title text-body-md-w6">私の冒険</span>
-                  <span class="badge badge--status"><span class="text-overline-w4">公開中</span></span>
-                </div>
-                <p class="post-row__meta text-caption-w4">
-                  <span>ヨコ読み</span>
-                  <span class="post-row__meta-sep" aria-hidden="true"></span>
-                  <span>最終更新 2026/3/20</span>
-                </p>
-              </div>
-              <button class="btn btn-line btn--sm" type="button"><span class="text-caption-w4">編集・話を追加</span></button>
-            </li>
-
-            <li class="post-row">
-              <img class="post-row__thumb" src="img/img_series01.png" alt="">
-              <div class="post-row__body">
-                <div class="post-row__title-line">
-                  <span class="post-row__title text-body-md-w6">夜明けのキッチン</span>
-                  <span class="badge badge--status-gray"><span class="text-overline-w4">非公開</span></span>
-                </div>
-                <p class="post-row__meta text-caption-w4">
-                  <span>タテ読み</span>
-                  <span class="post-row__meta-sep" aria-hidden="true"></span>
-                  <span>最終更新 2026/3/21</span>
-                </p>
-              </div>
-              <button class="btn btn-line btn--sm" type="button"><span class="text-caption-w4">編集・話を追加</span></button>
-            </li>
-
-            <li class="post-row">
-              <img class="post-row__thumb" src="img/img_series01.png" alt="">
-              <div class="post-row__body">
-                <div class="post-row__title-line">
-                  <span class="post-row__title text-body-md-w6">月の手紙</span>
-                  <span class="badge badge--status-wood"><span class="text-overline-w4">下書き</span></span>
-                </div>
-                <p class="post-row__meta text-caption-w4">
-                  <span>タテ読み</span>
-                  <span class="post-row__meta-sep" aria-hidden="true"></span>
-                  <span>最終更新 2026/3/21</span>
-                </p>
-              </div>
-              <button class="btn btn-line btn--sm" type="button"><span class="text-caption-w4">編集・話を追加</span></button>
-            </li>
-
-            <li class="post-row">
-              <img class="post-row__thumb" src="img/img_series01.png" alt="">
-              <div class="post-row__body">
-                <div class="post-row__title-line">
-                  <span class="post-row__title text-body-md-w6">星屑のレシピ</span>
-                  <span class="badge badge--status"><span class="text-overline-w4">公開中</span></span>
-                </div>
-                <p class="post-row__meta text-caption-w4">
-                  <span>コマ読み</span>
-                  <span class="post-row__meta-sep" aria-hidden="true"></span>
-                  <span>最終更新 2026/3/22</span>
-                </p>
-              </div>
-              <button class="btn btn-line btn--sm" type="button"><span class="text-caption-w4">編集・話を追加</span></button>
-            </li>
-
-            <li class="post-row">
-              <img class="post-row__thumb" src="img/img_series01.png" alt="">
-              <div class="post-row__body">
-                <div class="post-row__title-line">
-                  <span class="post-row__title text-body-md-w6">深海図書館</span>
-                  <span class="badge badge--status-gray"><span class="text-overline-w4">非公開</span></span>
-                </div>
-                <p class="post-row__meta text-caption-w4">
-                  <span>ヨコ読み</span>
-                  <span class="post-row__meta-sep" aria-hidden="true"></span>
-                  <span>最終更新 2026/3/23</span>
-                </p>
-              </div>
-              <button class="btn btn-line btn--sm" type="button"><span class="text-caption-w4">編集・話を追加</span></button>
-            </li>
-
-            <li class="post-row">
-              <img class="post-row__thumb" src="img/img_series01.png" alt="">
-              <div class="post-row__body">
-                <div class="post-row__title-line">
-                  <span class="post-row__title text-body-md-w6">サクラ通信</span>
-                  <span class="badge badge--status"><span class="text-overline-w4">公開中</span></span>
-                </div>
-                <p class="post-row__meta text-caption-w4">
-                  <span>タテ読み</span>
-                  <span class="post-row__meta-sep" aria-hidden="true"></span>
-                  <span>最終更新 2026/3/24</span>
-                </p>
-              </div>
-              <button class="btn btn-line btn--sm" type="button"><span class="text-caption-w4">編集・話を追加</span></button>
-            </li>
-
-            <li class="post-row">
-              <img class="post-row__thumb" src="img/img_series01.png" alt="">
-              <div class="post-row__body">
-                <div class="post-row__title-line">
-                  <span class="post-row__title text-body-md-w6">硝子の街角</span>
-                  <span class="badge badge--status-wood"><span class="text-overline-w4">下書き</span></span>
-                </div>
-                <p class="post-row__meta text-caption-w4">
-                  <span>コマ読み</span>
-                  <span class="post-row__meta-sep" aria-hidden="true"></span>
-                  <span>最終更新 2026/3/25</span>
-                </p>
-              </div>
-              <button class="btn btn-line btn--sm" type="button"><span class="text-caption-w4">編集・話を追加</span></button>
-            </li>
-
-            <li class="post-row">
-              <img class="post-row__thumb" src="img/img_series01.png" alt="">
-              <div class="post-row__body">
-                <div class="post-row__title-line">
-                  <span class="post-row__title text-body-md-w6">風と猫の駅</span>
-                  <span class="badge badge--status"><span class="text-overline-w4">公開中</span></span>
-                </div>
-                <p class="post-row__meta text-caption-w4">
-                  <span>ヨコ読み</span>
-                  <span class="post-row__meta-sep" aria-hidden="true"></span>
-                  <span>最終更新 2026/3/26</span>
-                </p>
-              </div>
-              <button class="btn btn-line btn--sm" type="button"><span class="text-caption-w4">編集・話を追加</span></button>
-            </li>
-
-            <li class="post-row">
-              <img class="post-row__thumb" src="img/img_series01.png" alt="">
-              <div class="post-row__body">
-                <div class="post-row__title-line">
-                  <span class="post-row__title text-body-md-w6">真夜中ラジオ</span>
-                  <span class="badge badge--status-gray"><span class="text-overline-w4">非公開</span></span>
-                </div>
-                <p class="post-row__meta text-caption-w4">
-                  <span>タテ読み</span>
-                  <span class="post-row__meta-sep" aria-hidden="true"></span>
-                  <span>最終更新 2026/3/27</span>
-                </p>
-              </div>
-              <button class="btn btn-line btn--sm" type="button"><span class="text-caption-w4">編集・話を追加</span></button>
-            </li>
-          </ul>
-        </section>
+        <div class="empty-state">
+          <a class="btn btn-filled-black btn--sm" href="series-register.html">
+            <i class="icon icon-add"></i>
+            <span class="text-caption-w4">作品を登録する</span>
+          </a>
+          <p class="empty-state__hint text-overline-w4">まだ作品がありません。最初の作品を登録しましょう！</p>
+        </div>
 
       </div>
     </div>
