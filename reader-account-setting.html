@@ -316,11 +316,17 @@
       const submitBtn = form.querySelector('button[type="submit"]');
       const cancelBtn = form.querySelector('.settings-form__actions .btn-line');
       if (!submitBtn) return;
-      const fields = form.querySelectorAll('input:not([readonly]), textarea');
+      const fields = form.querySelectorAll('input:not([readonly]):not([type="file"]), textarea');
       const initial = new Map();
       fields.forEach((f) => initial.set(f, f.value));
 
+      // 아바타 이미지 초기 src 저장 (파일 선택 시 dirty 판정용)
+      const avatarImg = form.querySelector('.avatar-upload__image');
+      const avatarInitialSrc = avatarImg ? avatarImg.getAttribute('src') : null;
+      let avatarChanged = false;
+
       const isDirty = () => {
+        if (avatarChanged) return true;
         for (const f of fields) {
           if (f.value !== initial.get(f)) return true;
         }
@@ -332,9 +338,29 @@
         f.addEventListener('input', sync);
         f.addEventListener('change', sync);
       });
+
+      // 아바타 업로드 — avatar-upload.js가 동적으로 주입한 file input의 change를 위임으로 잡음
+      if (avatarImg) {
+        form.addEventListener('change', (e) => {
+          const t = e.target;
+          if (t && t.classList && t.classList.contains('avatar-upload__input')) {
+            if (t.files && t.files[0]) {
+              avatarChanged = true;
+              sync();
+            }
+          }
+        });
+      }
+
       if (cancelBtn) {
         cancelBtn.addEventListener('click', () => {
           fields.forEach((f) => { f.value = initial.get(f); });
+          if (avatarImg && avatarInitialSrc !== null) {
+            avatarImg.src = avatarInitialSrc;
+            const fileInput = form.querySelector('.avatar-upload__input');
+            if (fileInput) fileInput.value = '';
+            avatarChanged = false;
+          }
           sync();
           const row = form.closest('[data-accordion]');
           if (row && row.classList.contains('accordion-row--active')) {
