@@ -14,6 +14,7 @@
 - [ ] 새 컴포넌트 생성 → `handoff/COMPONENTS.md`에 항목 추가했는가?
 - [ ] 새 기본 에셋(이미지/색상/아이콘/토큰) 추가 → styleguide.html 해당 Foundation 섹션에도 등록했는가?
 - [ ] 새 페이지(.html) 생성 → `index.html`의 페이지 리스트에 항목 추가했는가?
+- [ ] 새 페이지(.html) 생성 → `<script src="js/core/_global.js" defer></script>` 포함했는가? (키보드 포커스 + input 컨테이너 클릭 위임 공통 부트스트랩)
 
 ---
 

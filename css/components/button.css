@@ -379,7 +379,7 @@
    Soft Red — 연한 red 면 + red 텍스트(Default) → 인터랙션 시 solid red 로 전환
 
    States:
-     .btn-soft-red               Default  — #FFEAE8 (하드코딩) 면, red-100 텍스트/아이콘
+     .btn-soft-red               Default  — red-10 면, red-100 텍스트/아이콘
      .btn-soft-red--hover         Hover    — solid red-100 + white 텍스트
      .btn-soft-red--focus         Focus    — solid red-100 + 3px gray-5 ring
      .btn-soft-red--pressed       Pressed  — solid red-100 + scale(0.97)
@@ -388,7 +388,7 @@
 
 /* ---------- Default ---------- */
 .btn-soft-red {
-  background: #FFEAE8; /* 디폴트 면 컬러 — 하드코딩 */
+  background: var(--color-red-10);
   color: var(--color-red-100);
 }
 .btn-soft-red .icon {

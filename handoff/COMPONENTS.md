@@ -169,6 +169,28 @@ const buttonVariants = cva("...", {
 - 접근성: `role="dialog"` · `aria-modal="true"` · `aria-labelledby` 필수
 - TODO: 포커스 트랩 완전 구현 (현재는 첫 focusable 포커스만)
 
+#### `.seed-ceremony` (種を植える儀式 모달 콘텐츠) → 커스텀 풀스크린 일러스트레이티드 다이얼로그
+- **사용 페이지**: series-register.html — `#modal-series-register-confirm` 의 backdrop 자식으로 직접 배치 (`登録する` 버튼 클릭 시 오픈)
+- **목적**: 작품 등록 직전, "이 이야기에 담고 싶은 마음을 한마디" 입력 받는 의식 인터랙션 (씨앗을 심는 메타포)
+- **구조**: 애니메이션 시퀀스가 backdrop 전체를 캔버스로 사용하므로 표준 `.modal` 래퍼 미사용. 모든 자식이 `position: fixed` + viewport 좌표로 직접 배치
+- **로컬 토큰 (modal-backdrop 스코프)**: `--seed-ease` · `--seed-dur-slide: 900ms` · `--seed-dur-fade: 600ms` · `--seed-dur-fade-long: 700ms`
+- **Sub-elements** (z-order 순):
+  - `.seed-ceremony__scene` — 흙바닥 배경 단일 SVG (`img/img_seed_ceremony.svg`, 1920×1080)
+  - `.seed-ceremony__soil-hole` — 구덩이 SVG
+  - `.seed-ceremony__seed--01/02/03` — 씨앗 3종 (CSS keyframes 부유 → 의식 시작 시 WAAPI 낙하로 전환)
+  - `.seed-ceremony__soil-cover` (앞쪽 흙 더미) + `.seed-ceremony__soil-covered` (덮인 봉분, 페이드+스케일)
+  - `.seed-ceremony__shovel` — 토닥토닥 다지는 삽 (rotate keyframe)
+  - `.seed-ceremony__title` — 본문 안내 텍스트 (22px / 600 / `var(--color-wood-2)`)
+  - `.seed-ceremony__planting-status` (種を植えています) + `.seed-ceremony__planted-message` (創作のタネを植えました…) — 동일 wavy SVG 배지 배경 (`img_seed_status_border.svg`, `100% 100%` 가변 폭) 공유
+  - `.seed-ceremony__form` — 입력 카드(`img_seed_input_border.svg` 636×80 wavy 테두리 배경) + 植える 버튼(`img_seed_submit_border.svg` 117×80 wavy 테두리 배경)
+  - `.seed-ceremony__textarea` + `.seed-ceremony__counter` — maxlength 30 · `data-seed-counter` 로 N/30 카운터 갱신
+- **상태 클래스 체인 (modal-backdrop)**:
+  - `.is-planted` — 폼 퇴장 + 씨앗 낙하 시퀀스 시작
+  - `.is-covered` — soil-covered 페이드/스케일 + planted-message 슬라이드 인 + planting-status 퇴장
+  - `.is-tamped` — shovel 등장 + 토닥토닥 keyframe 재생
+- **닫기**: `data-modal-close` 미부착 — 植える 클릭 후 시퀀스 종료 시점에 `modal-backdrop--open` 제거 + `series-post-management.html` 자동 redirect (페이지 inline `<script>` 의 `SEED_TIMING.REDIRECT_DELAY` 후)
+- **React 이식**: `<SeedCeremony />` 단일 컴포넌트. 시퀀스는 `useEffect` 안 `await wait(SEED_TIMING.X)` 체인. WAAPI 3-phase(gather/fall/bounce) 각 `.finished` await 패턴 그대로 사용 가능
+
 #### `#modal-context` (作品コンテキスト 공통 모달) → shadcn `Dialog` (재사용 컴포넌트)
 - **단일 진실의 원천 (SSOT)**: `js/components/modal-context.js` 의 `MODAL_HTML` template literal
 - **목적**: 우측 채팅 패널의 "+" 버튼([data-modal-open="#modal-context"])이 있는 모든 페이지에서 공유 — 마크업 복제 없이 한 곳에서 관리

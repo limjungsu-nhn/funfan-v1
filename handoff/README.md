@@ -4,30 +4,30 @@
 
 ---
 
-## 📌 v1.05.8 요약 (2026-04-28, v1.05.7 후속) — 먼저 이것만 보세요
+## 📌 v1.05.9 요약 (2026-04-28, v1.05.8 후속) — 먼저 이것만 보세요
 
-**横読み 만화 뷰어 + 작품 수정 페이지 + 모달 SSOT 추출.** 2개 신규 페이지(`viewer-yoko` / `series-edit`) + `#modal-context` 공통 모달 단일 진실의 원천(SSOT) 정착. 신규 CSS 컴포넌트는 없음 — 대부분 페이지·인터랙션·구조 정비.
+**種を植える儀式 모달 인터랙션 완성 + 글로벌 부트스트랩 통합.** 신규 페이지·신규 CSS 컴포넌트 0개. 핵심은 (1) `series-register` 등록 시 풀스크린 씨앗 의식 시퀀스 완성 — gather→fall→bounce→cover→tamp→redirect, (2) 모든 페이지 공용 키보드/입력 부트스트랩이 `js/core/_global.js` 한 줄로 통합.
 
 | 분류 | 내용 | 개발 영향 |
 |---|---|---|
-| **신규 페이지 2종** | `viewer-yoko.html` (横読み 만화/노벨 뷰어, 새창 1920×1080 팝업) · `series-edit.html` (작품 수정 폼 — `series-register` 와 동일 컴포넌트 합성) | Next.js 라우팅 2개 추가. viewer-yoko 는 `target="viewer-yoko"` 새창 라우트 |
-| **viewer-yoko 인터랙션 4종** | (1) 진행 상태 단일 소스 — `[role=progressbar]` 의 aria-valuenow/min/max 가 progress-bar `--progress` 너비 + 페이지 인디케이터 + nav 버튼 disabled 를 동기화 (2) 좌/우 nav 클릭 → 페이지 ±1 + 슬라이드(퇴장 + 등장) 애니메이션 (3) 콘텐츠 영역 클릭 → 상하 chrome(progress/header/footer) 토글 — `viewer-yoko--chrome-hidden` 클래스 + `margin-block-start/end` 음수값 트랜지션으로 layout 자체에서 빠져 본문 면적 확장 (4) `container-type: size` + `cqw/cqh` 로 이미지 contain 사이징 + `mix-blend-mode: darken` inset stroke 오버레이 | React: `useState(currentPage)` 단일 상태 → progress·페이지·disabled 파생 |
-| **모달 SSOT 추출** | `#modal-context` (作品コンテキスト 공통 모달) — `js/components/modal-context.js` 의 `MODAL_HTML` template literal 이 단일 진실의 원천. DOMContentLoaded 시 `body` 끝에 innerHTML 주입(이미 존재하면 skip). 8개 페이지(workroom / workspace / workspace-onboarding / series-edit / series-register / series-post-management / series-post-management-empty / account-setting)에서 마크업 복제 없이 공유 | React: 공용 `<ContextModal />` 컴포넌트로 1회 정의, 트리거는 `data-modal-open="#modal-context"` 속성으로 통일 |
-| **모달 탭 동기화** | step 2 의 두 번째 탭 클릭 → step 이동 없이 step 3 의 동일 탭 콘텐츠를 그 자리에서 노출. `js/components/modal.js` 의 `selectTab()` 이 backdrop 안의 모든 `.tab-group` 을 동시 갱신해, step 3 에서 다른 탭으로 바꾸고 뒤로 가도 step 2 가 비어 보이지 않음 | shadcn `Tabs` 사용 시 동일 `value` 를 두 탭 그룹이 공유하도록 controlled state 로 |
-| **outset effects 패턴 정착** | focus ring·shadow 등 박스 밖으로 나가는 효과는 **"스크롤 컨테이너가 카드보다 넓고 카드는 padding-inline 으로 인셋"** 구조로 처리(account-setting / modal__list 기준). 음수 마진·카드 폭 축소·inset outline 금지. `CLAUDE.md` 규칙 13 으로 명문화 | React: 스크롤 컨테이너의 `padding-inline` 을 카드 ring-width(3px) 이상으로 두면 outset ring 이 자연스럽게 살아남음 |
-| **신규 에셋** | `img/img_viewer_page01.png` (viewer-yoko 데모 페이지) | public/ 으로 그대로 이관 |
-| **인덱스 갱신** | `index.html` 에 viewer-yoko 항목(팝업 새창 1920×1080) + main-home / series-edit / viewer-yoko 상태 ✅ 로 변경 + 버전 라벨 v1.05.8 | (개발 영향 없음, 디자인 인덱스용) |
+| **씨앗 의식 시퀀스 완성** | `series-register` 의 `登録する` 클릭 → `#modal-series-register-confirm` 오픈 → 植える 버튼 클릭 시 1) 씨앗 3개가 정중앙으로 모여 살짝 텐션 → 2) stagger 회전 낙하 → 3) 3-hit bounce 안착 → 4) 흙덮개 페이드인 → 5) 삽이 등장해 토닥토닥 → 6) 「種を植えています」 → 「創作のタネを植えました」 메시지 슬라이드 → 7) 모달 자동 닫힘 → 8) `series-post-management.html` 자동 redirect. 타이밍은 inline `<script>` 의 `SEED_TIMING` 상수 객체로 통합 관리 | React: 시퀀스 파이프라인을 `useEffect` 안에서 `await wait(SEED_TIMING.X)` 체인으로 그대로 이식. WAAPI(`element.animate().finished`) 사용 |
+| **공용 부트스트랩 통합** | `js/core/_global.js` (NEW) — 기존 `js/core/keyboard-focus.js` + `js/components/form-input.js` 두 모듈을 한 IIFE 묶음으로 통합. 모든 페이지 25개가 `<script src="js/core/_global.js" defer>` 한 줄로 키보드 포커스 + input 컨테이너 클릭 위임 부트스트랩. 구파일 2개 삭제 | React: `<RootLayout>` 의 client component 1개로 1회 mount. 컨테이너 클릭 위임은 구조 기반(SELECTORS 리스트 없음) — 단일 input·textarea 자식이 있는 컨테이너를 max-depth 3 으로 자동 감지 |
+| **씨앗 의식 자산** | 신규 SVG 11종 — `img_seed_01/02/03.svg` (씨앗 3종) · `img_seed_ceremony.svg` (1920×1080 배경) · `img_seed_cover.svg` (앞쪽 흙 더미) · `img_soil_hole.svg` (구덩이) · `img_soil_covered.svg` (덮인 봉분) · `img_shovel.svg` (다지는 삽) · `img_seed_input_border.svg` (입력카드 wavy 테두리, 636×80) · `img_seed_submit_border.svg` (버튼 wavy 테두리, 117×80) · `img_seed_status_border.svg` (메시지 배지 wavy 테두리, 가변 폭) · `img_seeds.svg` (참고용 그룹) | public/ 으로 그대로 이관. wavy 테두리 SVG 3종은 `100% 100%` 배경으로 늘여 사용 |
+| **신규 CSS 컴포넌트** | `css/components/seed-ceremony.css` (NEW) — 풀스크린 의식 일러스트 레이어 + 입력 폼 + 메시지 배지 + 시퀀스 트랜지션. 로컬 토큰 4종(`--seed-ease` / `--seed-dur-slide` / `--seed-dur-fade` / `--seed-dur-fade-long`) | React: `<SeedCeremony />` 단일 컴포넌트. 상태는 `is-planted` / `is-covered` / `is-tamped` 3개의 boolean 클래스 |
+| **버튼 토큰화** | `css/components/button.css` 의 `.btn-soft-red` 가 하드코딩 `#FFEAE8` 사용 → `var(--color-red-10)` 토큰 참조로 교체 | cva 정의 시 `bg-red-10` (Tailwind preset 의 동일 토큰) 그대로 매핑 |
+| **CLAUDE.md 체크리스트** | 신규 페이지 생성 시 `<script src="js/core/_global.js" defer></script>` 포함 항목 추가 | (개발 영향 없음, 프로토타입 작업 규칙) |
+| **인덱스 갱신** | `index.html` + `styleguide.html` 버전 라벨 v1.05.9 | (개발 영향 없음, 디자인 인덱스용) |
 
 **하위 호환**
 - 기존 토큰·클래스·BEM 구조 변경 없음
-- 신규 CSS 컴포넌트 0개 (`#modal-context` 는 기존 `modal` 컴포넌트의 SSOT 인스턴스로 추출만, cva 추가 불필요)
-- 모달이 들어가는 8개 페이지는 인라인 모달 마크업 → `<script src="js/components/modal-context.js" defer>` 로 교체됨 — 마크업 변화는 결과물 동일
+- 신규 CSS 컴포넌트 1개(`seed-ceremony`) — series-register 1페이지 전용
+- `_global.js` 통합 — 25개 HTML 의 `<script>` 한 줄 변경, 동작 동일
 
 **확인할 곳**
-1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05.8 항목 — **개발 액션 요약**
-2. `viewer-yoko.html` + `css/pages/viewer-yoko.css` + `js/pages/viewer-yoko.js` — aria 단일 소스 + 슬라이드 트랜지션 + chrome 토글 패턴
-3. `js/components/modal-context.js` — 공용 모달 SSOT 패턴
-4. `CLAUDE.md` 규칙 13 — outset effects 구조 패턴 (개발 시 동일 원칙 적용)
+1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05.9 항목 — **개발 액션 요약**
+2. `series-register.html` inline `<script>` — `SEED_TIMING` 상수 + async/await 시퀀스 + WAAPI gather/fall/bounce 패턴
+3. `css/components/seed-ceremony.css` — 풀스크린 일러스트 모달 레이어 구성
+4. `js/core/_global.js` — 키보드 포커스 + 구조기반 input 컨테이너 클릭 위임 패턴
 
 ---
 

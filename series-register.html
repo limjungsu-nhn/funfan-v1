@@ -42,7 +42,8 @@
   <link rel="stylesheet" href="css/pages/series-register.css">
   <link rel="stylesheet" href="css/components/radio-card.css">
   <link rel="stylesheet" href="css/components/modal.css">
-  <script src="js/core/keyboard-focus.js" defer></script>
+  <link rel="stylesheet" href="css/components/seed-ceremony.css">
+  <script src="js/core/_global.js" defer></script>
   <script src="js/components/chat.js" defer></script>
   <script src="js/components/modal.js" defer></script>
   <script src="js/components/modal-context.js" defer></script>
@@ -313,7 +314,7 @@
               <button class="btn btn-line btn--sm" type="button">
                 <span class="text-caption-w4">下書き保存</span>
               </button>
-              <button class="btn btn-filled-black btn--sm" type="button" id="submit-btn" disabled>
+              <button class="btn btn-filled-black btn--sm" type="button" id="submit-btn" data-modal-open="#modal-series-register-confirm" disabled>
                 <span class="text-caption-w4">登録する</span>
               </button>
             </div>
@@ -379,6 +380,29 @@
 
   </div>
 
+  <!-- Modal: 種を植える儀式 — 애니메이션 시퀀스가 backdrop 전체를 캔버스로 사용하므로
+       표준 .modal 래퍼를 두지 않고 backdrop 자식으로 직접 배치. 닫기는 자체 시퀀스 종료 시. -->
+  <div class="modal-backdrop" id="modal-series-register-confirm" role="dialog" aria-modal="true" aria-labelledby="seed-ceremony-title">
+    <h2 class="seed-ceremony__title" id="seed-ceremony-title">この物語に込めたい気持ちを、ひとこと書いてみましょうか。</h2>
+    <img class="seed-ceremony__scene" src="img/img_seed_ceremony.svg" alt="" aria-hidden="true">
+    <img class="seed-ceremony__soil-hole" src="img/img_soil_hole.svg" alt="" aria-hidden="true">
+    <img class="seed-ceremony__seed seed-ceremony__seed--01" src="img/img_seed_01.svg" alt="" aria-hidden="true">
+    <img class="seed-ceremony__seed seed-ceremony__seed--02" src="img/img_seed_02.svg" alt="" aria-hidden="true">
+    <img class="seed-ceremony__seed seed-ceremony__seed--03" src="img/img_seed_03.svg" alt="" aria-hidden="true">
+    <img class="seed-ceremony__soil-cover" src="img/img_seed_cover.svg" alt="" aria-hidden="true">
+    <img class="seed-ceremony__soil-covered" src="img/img_soil_covered.svg" alt="" aria-hidden="true">
+    <img class="seed-ceremony__shovel" src="img/img_shovel.svg" alt="" aria-hidden="true">
+    <div class="seed-ceremony__planting-status" aria-live="polite">種を植えています。</div>
+    <p class="seed-ceremony__planted-message" aria-live="polite">創作のタネを植えました。<br>ここからどんな物語が育っていくのか、楽しみですね。<br>あなたのペースで、一緒に育てていきましょう。</p>
+    <form class="seed-ceremony__form">
+      <label class="seed-ceremony__input">
+        <textarea class="seed-ceremony__textarea" rows="1" maxlength="30" placeholder="意気込みを入力してください" aria-label="意気込み"></textarea>
+        <span class="seed-ceremony__counter" data-seed-counter>0/30</span>
+      </label>
+      <button class="seed-ceremony__submit" type="submit" data-seed-plant>植える</button>
+    </form>
+  </div>
+
   <script>
     document.querySelector('.left-panel').addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
     document.querySelector('.right-panel').addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });
@@ -420,6 +444,105 @@
       update();
     });
 
+    // 씨앗 의식 — 植える 클릭 후 시퀀스: gather → fall → bounce → cover → tamp → close → redirect.
+    // 타이밍/회전 프로파일은 모두 아래 상수에서만 관리.
+    const SEED_TIMING = {
+      PLANT_DELAY:    900,   // 클릭 후 씨앗 모이기 시작 전 지연
+      GATHER_DUR:     800,   // Phase 1 — apex로 모이기
+      FALL_DUR:       700,   // Phase 2 — 회전 낙하
+      FALL_STAGGER:   250,   // 씨앗 간 낙하 시차
+      COVER_DELAY:    180,   // bounce 종료 후 soil-cover 페이드인까지
+      TAMP_DELAY:     500,   // is-covered 후 삽 등장(is-tamped)까지
+      MESSAGE_HOLD:  3500,   // is-covered → 모달 닫기까지(메시지 슬라이드 인 + 유지)
+      REDIRECT_DELAY: 400,   // 모달 닫힘 후 페이지 이동까지
+    };
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    document.querySelectorAll('[data-seed-plant]').forEach((btn) => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const backdrop = btn.closest('.modal-backdrop');
+        if (!backdrop) return;
+        backdrop.classList.add('is-planted');
+
+        const order = ['--02', '--03', '--01']; // 가운데 → 오른쪽 → 왼쪽
+        const APEX_TRANSLATE = '0 -8vh';
+        const FLOOR_TRANSLATE = '0 calc(30vh + 40px)';
+        // 회전 누적값(deg). apex(살짝 기울임) → floor(낙하 중 회전) → bounce → 최종(360 배수).
+        const profiles = {
+          '--02': { apexRot: -20, floorRot:  200, h1: '22vh', r1Mid:  380, r1End:  560, h2: '27vh', r2Mid:  660, rEnd:  720, dur: 1000 },
+          '--03': { apexRot:  25, floorRot: -200, h1: '24vh', r1Mid: -380, r1End: -560, h2: '28vh', r2Mid: -660, rEnd: -720, dur: 1100 },
+          '--01': { apexRot: -30, floorRot:  200, h1: '20vh', r1Mid:  380, r1End:  560, h2: '26vh', r2Mid:  660, rEnd:  720, dur:  950 },
+        };
+        const T = (rot) => `translate(-50%, -50%) rotate(${rot}deg)`;
+
+        // 씨앗 1개의 gather → fall → bounce 시퀀스. 종료 시 promise 해소.
+        async function animateSeed(seed) {
+          const variant = order.find((v) => seed.classList.contains(`seed-ceremony__seed${v}`));
+          if (!variant) return;
+          const cs = getComputedStyle(seed);
+          const startTransform = cs.transform;
+          const startTranslate = cs.translate;
+          // 현재 float 프레임 고정
+          seed.style.animation = 'none';
+          seed.style.transform = startTransform;
+          seed.style.translate = startTranslate;
+          void seed.offsetHeight;
+
+          const p = profiles[variant];
+          // Phase 1 — apex로 모임
+          await seed.animate([
+            { transform: startTransform, translate: startTranslate },
+            { transform: T(p.apexRot), translate: APEX_TRANSLATE },
+          ], { duration: SEED_TIMING.GATHER_DUR, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' }).finished;
+
+          // Phase 2 — 텐션 + 회전 낙하 (stagger)
+          await wait(order.indexOf(variant) * SEED_TIMING.FALL_STAGGER);
+          await seed.animate([
+            { transform: T(p.apexRot),  translate: APEX_TRANSLATE },
+            { transform: T(p.floorRot), translate: FLOOR_TRANSLATE },
+          ], { duration: SEED_TIMING.FALL_DUR, easing: 'cubic-bezier(0.55, 0, 0.85, 0.3)', fill: 'forwards' }).finished;
+
+          // Phase 3 — 3-hit bounce, 최종 360°의 배수(=0도)로 안착
+          await seed.animate([
+            { transform: T(p.floorRot), translate: FLOOR_TRANSLATE, offset: 0,    easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
+            { transform: T(p.r1Mid),    translate: `0 ${p.h1}`,     offset: 0.20, easing: 'cubic-bezier(0.55, 0, 0.85, 0.3)' },
+            { transform: T(p.r1End),    translate: FLOOR_TRANSLATE, offset: 0.40, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
+            { transform: T(p.r2Mid),    translate: `0 ${p.h2}`,     offset: 0.55, easing: 'cubic-bezier(0.55, 0, 0.85, 0.3)' },
+            { transform: T(p.rEnd),     translate: FLOOR_TRANSLATE, offset: 0.70 },
+            { transform: T(p.rEnd),     translate: FLOOR_TRANSLATE, offset: 1 },
+          ], { duration: p.dur, fill: 'forwards' }).finished;
+        }
+
+        await wait(SEED_TIMING.PLANT_DELAY);
+        await Promise.all([...backdrop.querySelectorAll('.seed-ceremony__seed')].map(animateSeed));
+
+        await wait(SEED_TIMING.COVER_DELAY);
+        backdrop.classList.add('is-covered');
+        await wait(SEED_TIMING.TAMP_DELAY);
+        backdrop.classList.add('is-tamped');
+        await wait(SEED_TIMING.MESSAGE_HOLD - SEED_TIMING.TAMP_DELAY);
+
+        backdrop.classList.remove('modal-backdrop--open');
+        if (!document.querySelector('.modal-backdrop--open')) {
+          document.body.style.overflow = '';
+        }
+        await wait(SEED_TIMING.REDIRECT_DELAY);
+        window.location.href = 'series-post-management.html';
+      });
+    });
+
+    // 씨앗 의식 모달 — textarea 카운터 + Enter 키 차단(줄바꿈 금지)
+    document.querySelectorAll('[data-seed-counter]').forEach((counter) => {
+      const ta = counter.parentElement.querySelector('.seed-ceremony__textarea');
+      if (!ta) return;
+      const max = ta.getAttribute('maxlength') || 30;
+      const update = () => { counter.textContent = `${ta.value.length}/${max}`; };
+      ta.addEventListener('input', update);
+      ta.addEventListener('keydown', (e) => { if (e.key === 'Enter') e.preventDefault(); });
+      update();
+    });
+
     // 등록 버튼 활성화 — 필수 입력(썸네일/タイトル/説明文/読む方向/作品の状態/ジャンル) 모두 채워졌을 때만
     const submitBtn = document.getElementById('submit-btn');
     const titleInput = document.querySelector('.form-input__field');
@@ -438,6 +561,8 @@
     descTextarea?.addEventListener('input', checkSubmitReady);
     document.querySelectorAll('input[name="reading-direction"], input[name="series-status"], input[name="genre"]')
       .forEach(el => el.addEventListener('change', checkSubmitReady));
+    // 새로고침/뒤로가기 등으로 라디오·input 상태가 미리 채워져 있을 수 있어 초기 1회 체크.
+    checkSubmitReady();
 
     // 썸네일 업로드 — 버튼/미리보기 클릭 시 파일 선택창, 선택 후 미리보기 표시
     const thumbBtn = document.getElementById('thumbnail-pick-btn');

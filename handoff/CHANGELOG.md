@@ -8,6 +8,76 @@
 
 ---
 
+## v1.05.9 (2026-04-28, v1.05.8 후속)
+
+**種を植える儀式 모달 인터랙션 완성 + 글로벌 부트스트랩 통합 + 토큰화 보정.** 신규 페이지 0개, 신규 CSS 컴포넌트 1개(`seed-ceremony`), 신규 JS 1개(`_global.js`). 기존 토큰·클래스·BEM 구조 변경 없음.
+
+### 신규 CSS 컴포넌트
+
+- **`css/components/seed-ceremony.css`** (NEW) — 種を植える儀式 풀스크린 일러스트 모달 레이어
+  - **로컬 토큰 4종**: `--seed-ease: cubic-bezier(0.22, 1, 0.36, 1)` / `--seed-dur-slide: 900ms` / `--seed-dur-fade: 600ms` / `--seed-dur-fade-long: 700ms` — `#modal-series-register-confirm` 스코프
+  - **레이어 구성** (z-order, 단일 modal-backdrop 자식):
+    - `.seed-ceremony__scene` — 흙바닥 + 씨앗3 + 픽셀 텍스처 단일 SVG (1920×1080 절대 배치)
+    - `.seed-ceremony__soil-hole` — 구덩이 SVG
+    - `.seed-ceremony__seed--01/02/03` — 씨앗 3종 (continuous float CSS 애니메이션 + WAAPI 낙하)
+    - `.seed-ceremony__soil-cover` (앞쪽 흙 더미) + `.seed-ceremony__soil-covered` (덮인 봉분)
+    - `.seed-ceremony__shovel` — 토닥토닥 다지는 삽
+    - `.seed-ceremony__planting-status` (種を植えています) + `.seed-ceremony__planted-message` (創作のタネを植えました…) — 동일 wavy SVG 배경 공유
+  - **상태 클래스 체인 (modal-backdrop)**:
+    - `.is-planted` — 폼 퇴장 + 씨앗 낙하 시작 트리거
+    - `.is-covered` — soil-covered 페이드/스케일 + planted-message 슬라이드 인 + planting-status 퇴장
+    - `.is-tamped` — shovel 등장 + 토닥토닥 keyframe 재생
+  - **입력 폼**: `.seed-ceremony__input` (636×80, `img_seed_input_border.svg` 100% 100% 배경) + `.seed-ceremony__submit` (117×80, `img_seed_submit_border.svg` 배경) — 손그림 wavy 테두리 SVG 를 background-image 로 사용
+
+### 신규 JS
+
+- **`js/core/_global.js`** (NEW) — 모든 페이지 공용 부트스트랩 (구 `js/core/keyboard-focus.js` + `js/components/form-input.js` 통합 후 두 파일 삭제)
+  - **모듈 1 — 키보드 포커스**: `body.using-mouse` 클래스 토글로 mousedown 시 ring 숨김, Tab 키 시 ring 표시
+  - **모듈 2 — input 컨테이너 클릭 위임**: 구조 기반(SELECTORS 화이트리스트 없음). mousedown 타깃에서 max-depth 3 으로 부모를 거슬러 올라가며 `input(text/textarea/...)` 자식이 **정확히 1개** 인 컨테이너를 발견하면 그 input 으로 focus 위임 + 캐럿을 끝으로. 패스스루 셀렉터(`input, textarea, button, a, label, ...`)에 닿으면 위임 안 함
+  - **사용 페이지 25개** — 모두 `<script src="js/core/_global.js" defer></script>` 한 줄 포함
+
+### 인라인 시퀀스 JS (series-register.html 페이지 스크립트)
+
+- `SEED_TIMING` 상수 객체로 8개 타이밍 통합: `PLANT_DELAY: 900` · `GATHER_DUR: 800` · `FALL_DUR: 700` · `FALL_STAGGER: 250` · `COVER_DELAY: 180` · `TAMP_DELAY: 500` · `MESSAGE_HOLD: 3500` · `REDIRECT_DELAY: 400`
+- 시퀀스: 클릭 → `await wait(PLANT_DELAY)` → `Promise.all(seeds.map(animateSeed))` → `await wait(COVER_DELAY)` → `is-covered` → `await wait(TAMP_DELAY)` → `is-tamped` → `await wait(MESSAGE_HOLD - TAMP_DELAY)` → 모달 close → `await wait(REDIRECT_DELAY)` → `window.location.href = 'series-post-management.html'`
+- `animateSeed()` 내부: WAAPI 3-phase(`gather` 800ms → `fall` 700ms + stagger → `bounce` 950~1100ms) 각 단계 `.finished` await
+- form 의 `onsubmit="return false;"` 인라인 핸들러 제거 — 식재 트리거는 button click 경로로만 동작
+
+### 신규 에셋 (img/) — 총 11종
+
+- `img_seed_01.svg` · `img_seed_02.svg` · `img_seed_03.svg` — 씨앗 3종
+- `img_seed_ceremony.svg` — 흙바닥 + 텍스처 배경 (1920×1080)
+- `img_seed_cover.svg` — 앞쪽 흙 더미
+- `img_soil_hole.svg` — 구덩이
+- `img_soil_covered.svg` — 덮인 봉분(완성 상태)
+- `img_shovel.svg` — 토닥토닥 다지는 삽
+- `img_seed_input_border.svg` (636×80) — 입력카드 wavy 테두리
+- `img_seed_submit_border.svg` (117×80) — 植える 버튼 wavy 테두리
+- `img_seed_status_border.svg` — 메시지 배지 wavy 테두리 (가변 폭, `100% 100%` 늘여 사용)
+- `img_seeds.svg` — 참고용 그룹
+
+### CSS 토큰화 보정
+
+- **`css/components/button.css`** — `.btn-soft-red` 가 하드코딩 `#FFEAE8` 사용 → `var(--color-red-10)` 토큰 참조. 토큰은 `css/tokens/color.css:44` 에 이미 정의 (`#FFEAE8` 동일 값)
+
+### 정리/제거
+
+- `js/core/keyboard-focus.js` (DELETED) → `_global.js` 에 통합
+- `js/components/form-input.js` (DELETED) → `_global.js` 에 통합
+- `series-register.html` h1 타이틀의 모달 트리거 링크 제거 (트리거는 `登録する` 버튼만)
+
+### 핸드오프 규칙 갱신 (CLAUDE.md)
+
+- **체크리스트 추가**: 새 `.html` 페이지 생성 시 `<script src="js/core/_global.js" defer></script>` 포함 필수 (키보드 포커스 + input 컨테이너 클릭 위임 부트스트랩)
+
+### 개발 액션 요약
+
+1. **`<SeedCeremony />` 컴포넌트**: state 머신은 `idle → planting → covered → tamped → done` 5단계. 각 단계 진입 후 `setTimeout` 대신 `await new Promise(r => setTimeout(r, SEED_TIMING.X))` 체인으로 이식. WAAPI 는 React 에서도 그대로 사용 가능 (`element.animate().finished`)
+2. **공용 부트스트랩**: client-side root layout 의 `<RootProvider>` 안에서 `useEffect` 1회 mount. 구조 기반 input 위임은 그대로 유지하면 컴포넌트 별로 `onClick` 핸들러 작성 불필요
+3. **wavy SVG 테두리 패턴**: `background: url(...) no-repeat center / 100% 100%` — preserveAspectRatio 가 SVG 에 설정돼 있으므로 element 비율과 무관하게 늘어남. 디자인 자산 그대로 가져가도 됨
+
+---
+
 ## v1.05.8 (2026-04-28, v1.05.7 후속)
 
 **横読み 만화 뷰어 + 작품 수정 페이지 + 모달 SSOT 추출 + outset effects 패턴 정착.** 2개 신규 페이지, 신규 CSS 컴포넌트 0개. 모달이 들어가는 8개 페이지의 인라인 마크업이 모두 단일 JS 모듈로 통합. **기존 구현 깨지는 변경 없음**.

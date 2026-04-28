@@ -1,0 +1,353 @@
+/* ============================================
+   Seed Ceremony Modal — 씨앗を植える儀式
+   series-register 페이지 전용 모달 콘텐츠.
+   modal-backdrop 자체에 role="dialog"가 부여되며,
+   하위 요소는 모두 position: fixed 로 viewport 기준 배치.
+   ============================================ */
+
+/* ---------- Local tokens — easing / duration --------------------- */
+#modal-series-register-confirm {
+  --seed-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --seed-dur-slide: 900ms;
+  --seed-dur-fade: 600ms;
+  --seed-dur-fade-long: 700ms;
+}
+
+/* ---------- Scene & Soil ----------------------------------------- */
+
+/* Scene — 흙바닥 + 씨앗 합본 SVG (img/img_seed_ceremony.svg)
+   SVG 박스: 고정 3008×846 (절대 변경 금지).
+   앵커: 이미지 최상단(top edge) = 뷰포트 높이 75% 지점. */
+.seed-ceremony__scene {
+  position: fixed;
+  left: 50%;
+  top: 75%;
+  width: 3008px;
+  height: 846px;
+  flex: none;
+  transform: translate(-50%, 0);
+  transform-origin: center top;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Soil hole / Soil covered / Soil cover — 흙 일러스트 3종 (모두 508×400).
+   앵커: 이미지 상단(top edge) = 뷰포트 높이 75% 지점. Y -60px 보정. */
+.seed-ceremony__soil-hole,
+.seed-ceremony__soil-covered,
+.seed-ceremony__soil-cover {
+  position: fixed;
+  left: 50%;
+  top: 75%;
+  width: 508px;
+  height: 400px;
+  transform: translate(-50%, -60px);
+  transform-origin: center top;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Soil covered — 씨앗 안착 후 등장. 기본은 숨김(opacity 0 + 약간 축소).
+   .is-covered 시 페이드 + 스케일 인으로 흙이 덮이는 느낌. */
+.seed-ceremony__soil-covered {
+  opacity: 0;
+  scale: 0.92;
+  transition: opacity var(--seed-dur-fade) ease,
+              scale var(--seed-dur-fade-long) var(--seed-ease),
+              transform var(--seed-dur-slide) var(--seed-ease);
+}
+
+.modal-backdrop.is-covered .seed-ceremony__soil-covered {
+  opacity: 1;
+  scale: 1;
+}
+
+/* ---------- Shovel — 흙을 톡톡 다지는 애니메이션 ----------------- */
+
+/* Shovel — 244×110. 흙 표면 중앙(top: 75%) 위에서 등장.
+   transform-origin: 214px 55px — 이전 위치(183)에서 우측 끝(244)까지의 절반만큼 오른쪽으로. */
+.seed-ceremony__shovel {
+  position: fixed;
+  left: 50%;
+  top: 75%;
+  width: 244px;
+  height: 110px;
+  translate: calc(-50% + 40px) -110%;
+  rotate: 10deg;
+  transform-origin: 220px 55px;
+  opacity: 0;
+  pointer-events: none;
+  user-select: none;
+  transition: translate var(--seed-dur-slide) var(--seed-ease);
+}
+
+/* is-planted 상태에서 흙과 함께 -15vh 이동 (translate 채널 사용). */
+.modal-backdrop.is-planted .seed-ceremony__shovel {
+  translate: calc(-50% + 40px) calc(-110% - 15vh);
+}
+
+/* Tamping — 회전축이 우하단(손잡이). 양수 회전 = 시계방향 = 날(좌측)이 아래로 스윙.
+   1) 우상에서 들고 등장 (음의 큰 각도) 2) 3회 스윙 다짐 (양수 → 음수 반복)
+   3) 우상으로 들어 올리며 퇴장. */
+@keyframes seed-ceremony-shovel-tamp {
+  0%   { transform: translate(80px, -60px) rotate(-55deg); opacity: 0; }
+  12%  { transform: translate(0, 0) rotate(-32deg);        opacity: 1; }
+
+  /* 1번째 다짐 — 가장 깊게 (날 끝이 흙을 강하게 누름) */
+  22%  { transform: rotate(-6deg);  opacity: 1; }
+  32%  { transform: rotate(-35deg); opacity: 1; }
+
+  /* 2번째 — 중간 강도 */
+  42%  { transform: rotate(-9deg);  opacity: 1; }
+  52%  { transform: rotate(-33deg); opacity: 1; }
+
+  /* 3번째 — 마무리 토닥 */
+  62%  { transform: rotate(-13deg); opacity: 1; }
+  74%  { transform: rotate(-32deg); opacity: 1; }
+
+  /* 퇴장 — 손잡이 들고 우상으로 빠짐 */
+  100% { transform: translate(80px, -70px) rotate(-60deg); opacity: 0; }
+}
+
+.modal-backdrop.is-tamped .seed-ceremony__shovel {
+  animation: seed-ceremony-shovel-tamp 2200ms cubic-bezier(0.5, 0, 0.5, 1) forwards;
+}
+
+.seed-ceremony__soil-hole[hidden],
+.seed-ceremony__soil-covered[hidden],
+.seed-ceremony__soil-cover[hidden] {
+  display: none;
+}
+
+/* ---------- Seeds ------------------------------------------------ */
+
+/* Seeds — 3종 씨앗. 뷰포트 상단 60% 영역의 정중앙(= 30%) 근처에
+   살짝 흩어진 좌표(--tx/--ty)로 배치되고 둥실둥실 떠 있는 애니메이션. */
+.seed-ceremony__seed {
+  position: fixed;
+  left: 50%;
+  top: 30%;
+  width: 88px;
+  height: 88px;
+  pointer-events: none;
+  user-select: none;
+  --tx: 0px;
+  --ty: 0px;
+  animation: seed-ceremony-float 4s ease-in-out infinite both;
+  will-change: transform;
+}
+
+.seed-ceremony__seed--01 { --tx: -68px; --ty: -72px; animation-duration: 4.2s; animation-delay: 0s; }
+.seed-ceremony__seed--02 { --tx:  -8px; --ty: 112px; animation-duration: 3.6s; animation-delay: 0.5s; }
+.seed-ceremony__seed--03 { --tx:  84px; --ty: -21px; animation-duration: 4.6s; animation-delay: 1.1s; }
+
+@keyframes seed-ceremony-float {
+  0%, 100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) rotate(-2deg); }
+  50%      { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty) - 14px)) rotate(2deg); }
+}
+
+/* ---------- Title ------------------------------------------------ */
+
+/* Title — 의식 메시지. 뷰포트 40~75% 구간의 정중앙(= 57.5%). 앵커 = 정중앙. */
+.seed-ceremony__title {
+  position: fixed;
+  left: 0;
+  top: 57.5%;
+  width: 100%;
+  margin: 0;
+  transform: translateY(-50%);
+  text-align: center;
+  color: var(--color-wood-1);
+  font-size: 22px;
+  font-family: var(--font-family-jp, "Hiragino Sans", sans-serif);
+  font-weight: 600;
+  line-height: 32px;
+}
+
+/* ---------- Form (input + submit) -------------------------------- */
+
+/* Form 위치: 앵커 = 요소 정중앙. 뷰포트 높이 하단 25%의 정중앙(= 87.5%). */
+.seed-ceremony__form {
+  position: fixed;
+  left: 50%;
+  top: 87.5%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 입력 카드: 손그림 wavy 테두리(img_seed_input_border.svg) 배경. */
+.seed-ceremony__input {
+  width: 636px;
+  height: 80px;
+  padding: 16px 20px;
+  background: url("../../img/img_seed_input_border.svg") no-repeat center / 100% 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.seed-ceremony__textarea {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  resize: none;
+  background: transparent;
+  color: var(--color-font-primary-black-100);
+  font-size: 14px;
+  font-family: var(--font-family-jp, "Hiragino Sans", sans-serif);
+  font-weight: 400;
+  line-height: 22px;
+  padding: 0;
+}
+
+.seed-ceremony__textarea::placeholder {
+  color: var(--color-font-primary-black-50);
+}
+
+.seed-ceremony__counter {
+  align-self: flex-end;
+  color: var(--color-gray-3);
+  font-size: 11px;
+  font-family: var(--font-family-jp, "Hiragino Sans", sans-serif);
+  font-weight: 400;
+  line-height: 16px;
+}
+
+/* 植える 버튼: 손그림 wavy 외곽 SVG(img_seed_submit_border.svg) 배경. */
+.seed-ceremony__submit {
+  width: 117px;
+  height: 80px;
+  padding: 0 16px;
+  background: url("../../img/img_seed_submit_border.svg") no-repeat center / 100% 100%;
+  color: var(--color-white-100);
+  border: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 18px;
+  font-family: var(--font-family-jp, "Hiragino Sans", sans-serif);
+  font-weight: 600;
+  line-height: 28px;
+  cursor: pointer;
+}
+
+.seed-ceremony__submit:hover {
+  filter: brightness(0.85);
+}
+
+/* ---------- Planting status / Planted message — wavy 배지 공통 ---- */
+
+/* 「種を植えています。」(is-planted)와 「創作のタネを植えました。」(is-covered)
+   배지가 동일한 wavy SVG 배경 + 타이포를 공유. 위치(top:87.5%)·트랜지션도 공통.
+   기본 상태: 화면 아래(+50vh) + opacity 0. */
+.seed-ceremony__planting-status,
+.seed-ceremony__planted-message {
+  position: fixed;
+  left: 50%;
+  top: 87.5%;
+  margin: 0;
+  transform: translate(-50%, calc(-50% + 50vh));
+  opacity: 0;
+  padding: 20px 36px;
+  background: url("../../img/img_seed_status_border.svg") no-repeat center / 100% 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-align: center;
+  color: var(--color-wood-2);
+  font-size: 22px;
+  font-family: var(--font-family-jp, "Hiragino Sans", sans-serif);
+  font-weight: 600;
+  line-height: 32px;
+  pointer-events: none;
+  transition: transform var(--seed-dur-slide) var(--seed-ease) 300ms,
+              opacity var(--seed-dur-fade) ease 300ms;
+}
+
+/* planted-message 는 등장 시 약간 더 빠르게 시작(200ms)하고 페이드는 700ms. */
+.seed-ceremony__planted-message {
+  transition: transform var(--seed-dur-slide) var(--seed-ease) 200ms,
+              opacity var(--seed-dur-fade-long) ease 200ms;
+}
+
+/* is-planted: planting-status 가 정중앙으로 슬라이드 인. */
+.modal-backdrop.is-planted .seed-ceremony__planting-status {
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+/* is-covered: planting-status 는 다시 아래로 빠지고 planted-message 가 등장. */
+.modal-backdrop.is-covered .seed-ceremony__planting-status {
+  transform: translate(-50%, calc(-50% + 50vh));
+  opacity: 0;
+  transition: transform var(--seed-dur-slide) var(--seed-ease),
+              opacity var(--seed-dur-fade) ease;
+}
+
+.modal-backdrop.is-covered .seed-ceremony__planted-message {
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+/* ---------- 植える interaction (.modal-backdrop.is-planted) ------
+   GPU 가속을 위해 top/left가 아닌 transform/translate로 이동.
+   1. 入力창+버튼 → translateY로 화면 아래로 빠지면서 페이드 아웃
+   2. 타이틀 → 페이드 아웃 + 위로 -7.5vh
+   3. 흙바닥(scene) + 흙더미(soil-hole) → -15vh 이동
+   4. 씨앗 → -10vh 이동 (translate 채널 사용, transform은 float 점유)
+------------------------------------------------------------------- */
+.seed-ceremony__scene,
+.seed-ceremony__soil-hole,
+.seed-ceremony__soil-covered,
+.seed-ceremony__soil-cover,
+.seed-ceremony__form {
+  transition: transform var(--seed-dur-slide) var(--seed-ease),
+              opacity var(--seed-dur-fade-long) ease;
+}
+
+.seed-ceremony__seed {
+  transition: translate var(--seed-dur-slide) var(--seed-ease),
+              transform var(--seed-dur-slide) var(--seed-ease);
+}
+
+.seed-ceremony__title {
+  transition: transform var(--seed-dur-slide) var(--seed-ease),
+              opacity var(--seed-dur-fade) ease;
+}
+
+.modal-backdrop.is-planted .seed-ceremony__scene {
+  transform: translate(-50%, -15vh);
+}
+
+.modal-backdrop.is-planted .seed-ceremony__soil-hole,
+.modal-backdrop.is-planted .seed-ceremony__soil-covered,
+.modal-backdrop.is-planted .seed-ceremony__soil-cover {
+  transform: translate(-50%, calc(-60px - 15vh));
+}
+
+.modal-backdrop.is-planted .seed-ceremony__form {
+  transform: translate(-50%, calc(-50% + 50vh));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.modal-backdrop.is-planted .seed-ceremony__title {
+  transform: translateY(calc(-50% - 7.5vh));
+  opacity: 0;
+}
+
+.modal-backdrop.is-planted .seed-ceremony__seed {
+  translate: 0 -10vh;
+}
+
+/* 2단계 — 씨앗이 60% 정중앙으로 곡선을 그리며 차례대로 낙하.
+   현재 위치(float 중)에서 끊김 없이 이어지도록 JS Web Animations API로 처리.
+   순서: 가운데(--02) → 오른쪽(--03) → 왼쪽(--01).
+   → series-register.html `data-seed-plant` 핸들러 참고. */
