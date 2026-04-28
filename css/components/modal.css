@@ -70,9 +70,10 @@
 
 /* ---------- Container ---------- */
 .modal {
+  position: relative;  /* .modal__close 의 absolute 기준 */
   width: var(--p35); /* 504 */
   height: 640px;
-  padding: var(--space-10) var(--space-7);  /* 40px 28px */
+  padding: var(--space-10) var(--space-7) 0;  /* 40px 28px 0 — 하단은 list/footer 의 자체 여백에 위임 */
   background: var(--color-white-100);
   border-radius: var(--radius-lg);  /* 20px */
   box-shadow: 0px 4px 8px var(--color-shadow-subtle), 0px 0px 1px var(--color-shadow-mid);
@@ -101,6 +102,39 @@
   color: var(--color-font-primary-black-100);
 }
 
+/* ---------- Close (top-right X) ----------
+   modal 우상단 24×24 절대 위치 — Figma 명세에 맞춤. footer 의 「閉じる」 버튼 대체. */
+.modal__close {
+  position: absolute;
+  top: var(--space-6);    /* 24 */
+  right: var(--space-6);  /* 24 */
+  width: var(--space-6);
+  height: var(--space-6);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-gray-3);
+  cursor: pointer;
+  transition: color 0.1s ease, transform 0.08s ease-in;
+}
+
+.modal__close:hover {
+  color: var(--color-font-primary-black-100);
+}
+
+.modal__close:focus-visible {
+  outline: none;
+  border-radius: var(--radius-full);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+
+.modal__close:active {
+  transform: scale(0.90);
+}
+
 /* ---------- Viewport / Track / Step (multi-step slide) ----------
    타이틀은 modal 루트에 남고, viewport 안쪽에서 step 1 ↔ step 2 가로 슬라이드.
    footer 도 각 step 안에 포함되어 함께 슬라이드된다.
@@ -120,24 +154,36 @@
   position: relative;
 }
 
+/* step 개수는 --modal-step-count 로 제어 (기본 2, [data-step-count="3"] 시 3).
+   width / translate / step width 모두 변수 기반으로 일반화. */
 .modal__track {
+  --modal-step-count: 2;
   display: flex;
-  width: 200%;
+  width: calc(100% * var(--modal-step-count));
   height: 100%;
   transform: translateX(0);
   transition: transform 0.6s var(--ease-standard);  /* right-panel / accordion과 동일 */
 }
 
+.modal__track[data-step-count="3"] { --modal-step-count: 3; }
+
 .modal__track[data-step="2"] {
-  transform: translateX(-50%);
+  transform: translateX(calc(-100% / var(--modal-step-count)));
+}
+
+.modal__track[data-step="3"] {
+  transform: translateX(calc(-200% / var(--modal-step-count)));
 }
 
 .modal__step {
-  width: 50%;
+  width: calc(100% / var(--modal-step-count));
   flex-shrink: 0;
-  /* 좌우 28px — 슬라이드는 edge-to-edge, 내부 컨텐츠만 인셋.
-     상하 shadow/ring 여유는 viewport 의 overflow-clip-margin 이 처리 */
-  padding: 0 var(--space-7);
+  /* 좌우 패딩 0 — 28px 인셋은 직접 자식별로 부여.
+     이유: account-setting 패턴(스크롤 컨테이너 폭 > 카드 폭)을 모달에 적용하려면
+     .modal__list 가 step 의 가로 끝까지 닿는 스크롤 컨테이너가 되어야 한다.
+     리스트가 edge-to-edge → 내부 카드는 padding-inline 으로 시각적 인셋,
+     ring(3px outset)이 스크롤 경계 안쪽에 머물러 잘리지 않음. */
+  padding: 0;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -149,23 +195,32 @@
 
 /* 현재 step 만 opacity 1 — translateX 와 함께 페이드 인/아웃 */
 .modal__track[data-step="1"] > .modal__step:nth-child(1),
-.modal__track[data-step="2"] > .modal__step:nth-child(2) {
+.modal__track[data-step="2"] > .modal__step:nth-child(2),
+.modal__track[data-step="3"] > .modal__step:nth-child(3) {
   opacity: 1;
 }
 
-/* ---------- Section (label + list 묶음) ---------- */
+/* ---------- Section (label + list 묶음) ----------
+   step 가로 패딩이 0 이므로 section 도 edge-to-edge.
+   label 만 28px 인셋, list 는 edge-to-edge 유지(스크롤 컨테이너 폭 확보). */
 .modal__section {
   align-self: stretch;
   flex: 1 1 0;
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--space-1_5);  /* 6px */
+  /* 6px - 3px(list 상단 padding-block) = 3px → label↔list 시각 간격 6px 유지 */
+  gap: calc(var(--space-1_5) - var(--ring-width));
+}
+
+.modal__section > .modal__label {
+  padding-inline: var(--space-7);
 }
 
 /* ---------- Summary card (step 2 상단 선택 작품 표시) ---------- */
 .modal__summary-card {
   align-self: stretch;
+  margin-inline: var(--space-7);
   display: flex;
   padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
   background: var(--color-bg-soft);
@@ -207,9 +262,57 @@
   max-width: 100%;
 }
 
+/* ---------- Entity row (캐릭터/스토리 등 항목 리스트의 한 줄) ----------
+   modal__list 안쪽에 들어가는 행. summary-card 와 시각적 결은 같지만
+   배경 white + 우측 「編集」 액션 버튼을 포함한다. */
+.modal__entity-row {
+  align-self: stretch;
+  display: flex;
+  padding: var(--space-3_5) var(--space-4) var(--space-3_5) var(--space-5); /* 14 16 14 20 */
+  background: var(--color-white-100);
+  border-radius: var(--radius-md);
+  outline: 1px solid var(--color-gray-6);
+  outline-offset: -1px;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  flex-shrink: 0;
+}
+
+.modal__entity-row__content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.modal__entity-row__title {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-assist);        /* 13 */
+  line-height: var(--line-height-assist);    /* 20 */
+  font-weight: var(--font-weight-w6);
+  color: var(--color-font-primary-black-100);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.modal__entity-row__sub {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-overline);      /* 11 */
+  line-height: var(--line-height-overline);  /* 16 */
+  font-weight: var(--font-weight-w4);
+  color: var(--color-black-50);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
 /* ---------- Tabs wrapper (step 2) ---------- */
 .modal__tabs {
   align-self: stretch;
+  margin-inline: var(--space-7);
   display: flex;
   justify-content: center;
 }
@@ -225,6 +328,12 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-6);  /* 24px */
+}
+
+/* panel 내부도 step 과 동일한 정책: helper/form 은 28px 인셋, list 는 edge-to-edge */
+.modal__tab-panel > .modal__helper,
+.modal__tab-panel > .modal__form {
+  margin-inline: var(--space-7);
 }
 
 .modal__tab-panel[hidden] {
@@ -302,13 +411,18 @@
 .modal__list {
   flex: 1 1 0;
   min-height: 0;
+  /* account-setting 패턴 정확 재현:
+       스크롤 컨테이너(=.modal__list) 폭이 카드 폭보다 28px 씩 넓다.
+       카드는 list 의 padding-inline 안쪽에 위치해 ring(3px outset)이
+       스크롤 경계 안에 머물러 잘리지 않는다.
+       (account-setting 에서 .workspace__content 가 .settings-page 보다 넓은 것과 동일 구조)
+     상하는 scroll-padding 으로 Tab auto-scroll 시 ring 가시 영역 확보. */
   overflow-y: auto;
-  overflow-x: clip;
-  overflow-clip-margin: var(--space-1);  /* 가로 ring/shadow 여유 */
-  /* 세로는 scroll 이라 clip-margin 미적용 → 내부 상하 4px padding 으로 ring 생존 공간 확보.
-     Tab 포커스 이동 시 auto-scroll 이 ring 을 edge 에 붙이지 않도록 scroll-padding 도 병행 */
-  padding-block: var(--space-1);
-  scroll-padding-block: var(--space-1);
+  /* 가로: 28px 인셋 (카드 시각 위치) — ring 좌우 escape 여유 충분
+     세로: ring 두께(3px)만큼만 — 시각 여백 최소화하면서 첫/마지막 카드 ring clip 방지
+     (규칙 #13: 스크롤 컨테이너 > 카드 폭/높이 패턴) */
+  padding: var(--ring-width) var(--space-7);
+  scroll-padding-block: var(--space-2);
   scrollbar-width: none;        /* Firefox */
   -ms-overflow-style: none;     /* IE/Edge legacy */
   display: flex;
@@ -319,6 +433,11 @@
 /* WebKit 계열 스크롤바 숨김 */
 .modal__list::-webkit-scrollbar {
   display: none;
+}
+
+/* tab-panel 안 list (entity-row) 는 ring 효과가 행 자체에 없으므로 상하 padding 불필요 */
+.modal__tab-panel > .modal__list {
+  padding-block: 0;
 }
 
 /* modal 내부 radio-card 는 full-width + 세로 축소 방지 */
@@ -335,6 +454,8 @@
 */
 .modal__footer {
   align-self: flex-end;
+  margin-inline: var(--space-7);
+  margin-bottom: var(--space-10);  /* 40px — modal padding-bottom 0 보정 */
   display: inline-grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(max-content, 1fr);
@@ -344,6 +465,8 @@
 /* Split variant — 왼쪽 단독 버튼(戻る) + 오른쪽 버튼 그룹 */
 .modal__footer--split {
   align-self: stretch;
+  margin-inline: var(--space-7);
+  margin-bottom: var(--space-10);  /* 40px — modal padding-bottom 0 보정 */
   display: flex;
   grid-auto-flow: unset;
   grid-auto-columns: unset;

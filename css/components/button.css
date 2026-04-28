@@ -12,6 +12,7 @@
      .btn-line                Line   — 테두리형
      .btn-ghost               Ghost  — 라인 없는 버튼
      .btn-filled-nature       Filled — 면 컬러 버튼 (nature)
+     .btn-filled-gray         Filled — 면 컬러 버튼 (gray, 보조 액션)
      .btn-filled-black        Filled — 면 컬러 버튼 (black)
      .btn-filled-red          Filled — 면 컬러 버튼 (red)
      .btn-filled-wood         Filled — 면 컬러 버튼 (wood)
@@ -204,6 +205,62 @@
 .btn-filled-nature--disabled .icon,
 .btn-filled-nature:disabled .icon {
   color: var(--color-white-100);
+}
+
+/* ============================================
+   Filled Gray — 밝은 그레이 면 컬러 버튼 (보조 액션용)
+
+   States:
+     .btn-filled-gray               Default  — Gray-6 배경, black-100 텍스트/아이콘
+     .btn-filled-gray--hover         Hover    — Gray-5 배경
+     .btn-filled-gray--focus         Focus    — Gray-5 배경 + 3px ring (Reference용)
+     .btn-filled-gray--pressed       Pressed  — Gray-5 배경 + scale(0.97)
+     .btn-filled-gray--disabled      Disabled — Gray-6 배경, 30% opacity 텍스트/아이콘
+   ============================================ */
+
+/* ---------- Default ---------- */
+.btn-filled-gray {
+  background: var(--color-gray-6);
+  color: var(--color-font-primary-black-100);
+}
+.btn-filled-gray .icon {
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Hover ---------- */
+.btn-filled-gray--hover,
+.btn-filled-gray:hover:not(.btn-filled-gray--disabled) {
+  background: var(--color-gray-5);
+}
+
+/* ---------- Focus ---------- */
+.btn-filled-gray--focus {
+  background: var(--color-gray-5);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+.btn-filled-gray:focus-visible:not(.btn-filled-gray--disabled) {
+  outline: none;
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+
+/* ---------- Pressed ---------- */
+.btn-filled-gray--pressed,
+.btn-filled-gray:active:not(.btn-filled-gray--disabled) {
+  background: var(--color-gray-5);
+  transform: scale(0.97);
+}
+
+/* ---------- Disabled ---------- */
+.btn-filled-gray--disabled,
+.btn-filled-gray:disabled {
+  background: var(--color-gray-6);
+  color: var(--color-font-primary-black-30);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+.btn-filled-gray--disabled .icon,
+.btn-filled-gray:disabled .icon {
+  color: var(--color-font-primary-black-30);
 }
 
 /* ============================================

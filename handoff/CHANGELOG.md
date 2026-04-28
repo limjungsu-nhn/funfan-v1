@@ -8,6 +8,67 @@
 
 ---
 
+## v1.05.8 (2026-04-28, v1.05.7 후속)
+
+**横読み 만화 뷰어 + 작품 수정 페이지 + 모달 SSOT 추출 + outset effects 패턴 정착.** 2개 신규 페이지, 신규 CSS 컴포넌트 0개. 모달이 들어가는 8개 페이지의 인라인 마크업이 모두 단일 JS 모듈로 통합. **기존 구현 깨지는 변경 없음**.
+
+### 신규 페이지 (2개)
+
+- **`viewer-yoko.html`** (NEW) — 横読み(가로) 비주얼 노벨/만화 뷰어. `index.html` 에서 `target="viewer-yoko"` + `screen.availLeft/Top` 기준 가운데 1920×1080 팝업으로 오픈. 1440 min-width 미적용(미니창 예외).
+  - **레이아웃**: progress(2px) · header(52) · main(flex 1) · footer(52) — 모두 토큰화(`var(--space-0_5)` / 로컬 `--chrome-height` 등)
+  - **읽기 방향**: 일본어 RTL — 좌측 nav = 次, 우측 nav = 前
+  - **이미지 contain**: `.viewer-yoko__content { container-type: size }` + `.viewer-yoko__image { max-width: 50cqw; max-height: 100cqh }` 로 비율 유지하며 가용 영역에 맞춤
+  - **inset stroke**: `.viewer-yoko__image-wrap::after` 가 `box-shadow: inset 0 0 0 1px var(--color-gray-6)` + `mix-blend-mode: darken` 으로 이미지에 정확히 hug
+  - **slide transition**: 듀레이션 0.4s · `var(--ease-standard)` (chrome 트랜지션과 동일 토큰 공유) · 이동량 50cqw · 퇴장은 50% 시점에 opacity 0 도달 → 100% 에 translateX 종료
+  - **chrome toggle**: 콘텐츠 클릭 시 progress/header/footer 가 `margin-block-start/end` 음수값 트랜지션으로 layout 에서 빠져 본문 면적이 확장 — `transform translateY` 와 달리 layout 도 함께 반응
+- **`series-edit.html`** (NEW) — 작품 수정 폼. `series-register` 와 동일한 `form-card` + `thumbnail-upload` + `radio-block` 합성 (등록 폼의 수정 모드)
+
+### 신규 JS
+
+- **`js/components/modal-context.js`** (NEW) — `#modal-context` (作品コンテキスト 공통 모달) 의 단일 진실의 원천(SSOT)
+  - `MODAL_HTML` template literal 이 마크업 정의
+  - DOMContentLoaded 시 `document.body` 끝에 innerHTML 주입 · 이미 `#modal-context` 가 존재하면 skip(이중 주입 방지)
+  - **사용 페이지 8개**: workroom / workspace / workspace-onboarding / series-edit / series-register / series-post-management / series-post-management-empty / account-setting — 각 페이지는 `<script src="js/components/modal-context.js" defer></script>` 한 줄 + 트리거에 `data-modal-open="#modal-context"` 만 가지면 됨
+- **`js/pages/viewer-yoko.js`** (NEW) — viewer-yoko 전용 인터랙션
+  - **단일 상태**: `.viewer-yoko__progress[role=progressbar]` 의 aria-valuenow/min/max 만 진실의 원천
+  - **`syncProgress()`**: aria 값 → progress-bar `--progress` 너비(%) + 페이지 인디케이터 텍스트 + nav 버튼 disabled 일괄 갱신
+  - **`setPage(±1)`**: aria-valuenow 갱신 후 syncProgress 재호출 → 변경 여부 boolean 반환
+  - **`slide(direction)`**: stage 안의 image-wrap 을 cloneNode → 원본은 exit, 클론은 enter 클래스 부여 → animationend 후 원본 제거. `animating` 플래그로 연타 차단
+
+### 기존 JS 변경
+
+- **`js/components/modal.js`** — `selectTab()` 이 단일 tab-group 만 갱신하던 것을 backdrop 안의 모든 `.tab-group` 을 동시 갱신하도록 변경. step 3 에서 두 번째 탭으로 바꾸고 뒤로 가면 step 2 도 같은 탭이 노출 — 사용자 멘탈 모델 일관성
+
+### CSS 구조 정비
+
+- **`css/components/modal.css`** — focus ring 잘림 이슈 해결. `.modal__step` 의 가로 패딩 제거 → 자식들(summary-card / tabs / footer / label / helper / form)이 개별 `margin-inline` 으로 인셋 → 스크롤 컨테이너(`.modal__list`) 가 카드보다 넓어 outset focus ring 이 살아남음. (account-setting 패턴과 동일 — `CLAUDE.md` 규칙 13 으로 명문화)
+- **`css/components/button.css`** — 변경분 미세(viewer-yoko 의 `.btn-ghost.btn--sm` 사용 시 영향 없음)
+- **`css/pages/viewer-yoko.css`** (NEW) — 페이지 전용 로컬 토큰 4종(`--chrome-height` / `--progress-height` / `--nav-icon-size` / `--transition-chrome`) 정의 후 모든 수치 토큰 참조
+
+### 신규 에셋
+
+- `img/img_viewer_page01.png` — viewer-yoko 데모 페이지(만화 1페이지)
+
+### 신규 핸드오프 규칙 (CLAUDE.md 규칙 13 = handoff 시 동일 원칙)
+
+- **outset effects 패턴**: focus ring·shadow 등 박스 밖으로 나가는 효과는 "스크롤 컨테이너가 카드보다 넓고, 카드는 padding-inline 으로 인셋" 구조로 처리. 금지: 음수 마진(`margin: -Npx`) · 카드 폭 축소(`width: calc(100% - …)`) · inset outline(`outline-offset: -Npx`) · `overflow-clip-margin` 단독 시도. 이유: clip-margin 은 스크롤 축에서 무효 — 본질은 "스크롤 컨테이너의 시각적 여유" 구조에 있음.
+
+### 개발 액션 요약
+
+1. **viewer-yoko 라우팅**: `target="viewer-yoko"` + `window.open(href, name, "popup=yes,width=1920,height=1080,…")` 패턴 그대로 이식 가능 — Next.js 의 `Link` 대신 `<a target>` + `onClick` 핸들러
+2. **공용 모달**: shadcn `Dialog` 한 곳에 `<ContextModal />` 정의 → 모든 트리거가 `data-modal-open` 속성으로 호출하는 패턴 유지(또는 컨텍스트로 open state 공유)
+3. **container query**: `container-type: size` + `cqw/cqh` 는 모던 브라우저 전제. 비지원 환경 fallback 이 필요하면 ResizeObserver 로 픽셀 계산 후 CSS var 주입
+4. **chrome toggle 트랜지션**: `transform translateY` 가 아닌 `margin-block-start/end` 음수값 — 본문 layout 이 함께 확장되어야 할 때 채택. transform 만으로는 layout 이 안 바뀜
+5. **outset effects**: 카드 ring 이 살아야 하는 스크롤 영역은 `padding-inline >= ring-width(3px)` 보장 — 부모/형제 폭은 padding 으로만 맞춤(margin-inline 인셋)
+
+### 하위 호환
+
+- 기존 토큰·클래스·BEM 구조 변경 없음
+- 신규 CSS 컴포넌트 0개 (`#modal-context` 는 기존 `modal` 의 SSOT 인스턴스로 추출만)
+- 8개 페이지의 인라인 모달 마크업 제거는 시각·동작 동일 (modal-context.js 가 동일 마크업 주입)
+
+---
+
 ## v1.05.7 (2026-04-28, v1.05.6 후속)
 
 **메인 디스커버리 + 작품 등록 + 작품 관리 페이지 배치.** 4개 신규 페이지 + 7개 신규 컴포넌트 + 무한 스크롤 JS + 20장 작품 표지 이미지. **기존 구현 깨지는 변경 없음**.

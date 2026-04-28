@@ -169,6 +169,14 @@ const buttonVariants = cva("...", {
 - 접근성: `role="dialog"` · `aria-modal="true"` · `aria-labelledby` 필수
 - TODO: 포커스 트랩 완전 구현 (현재는 첫 focusable 포커스만)
 
+#### `#modal-context` (作品コンテキスト 공통 모달) → shadcn `Dialog` (재사용 컴포넌트)
+- **단일 진실의 원천 (SSOT)**: `js/components/modal-context.js` 의 `MODAL_HTML` template literal
+- **목적**: 우측 채팅 패널의 "+" 버튼([data-modal-open="#modal-context"])이 있는 모든 페이지에서 공유 — 마크업 복제 없이 한 곳에서 관리
+- **주입 방식**: DOMContentLoaded 시 `body` 끝에 innerHTML 주입 · 이미 `#modal-context` 가 존재하면 skip (이중 주입 방지)
+- **사용 페이지**: workroom / workspace / workspace-onboarding / series-edit / series-register / series-post-management / series-post-management-empty / account-setting (8개)
+- **구조**: 3-step (작품 선택 → 캐릭터/스토리 리스트 → 입력 폼) · viewport+track 슬라이드 · tab-group 으로 character ↔ story 전환 (step 2/3 간 동기화)
+- **React 이식**: `<ModalContext />` 컴포넌트로 1:1 변환 — 마크업이 JS 안에 있어 props/state 매핑이 직관적
+
 #### `.chat-input` → shadcn `Textarea` + icon buttons
 - Container: `.chat-input__field` (textarea 감싸는 필드)
 - Actions: `.chat-input__actions` (첨부/전송)

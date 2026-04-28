@@ -1,0 +1,95 @@
+/* ============================================
+   series-edit.html 전용 레이아웃
+   공통 App Shell은 app-shell.css 참조 — 여기는 content 영역만 담당
+   series-register 와 거의 동일 구조 (form-card + 720px) — 차이점:
+     - 헤더 텍스트
+     - 「변경할 수 없는 항목」 disabled 그룹
+     - 액션 영역 (좌: 삭제, 우: 취소·저장)
+   ============================================ */
+
+.workspace__content {
+  /* 콘텐츠가 긴 폼 페이지라 자연 높이로 흘러야 자식 margin-bottom 이 스크롤 영역에 정상 포함됨 */
+  padding: var(--p5) 0 0; /* 72 / 0 / 0 — 하단 180은 .form-card margin-bottom 으로 처리 */
+  background: var(--color-bg-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-7); /* 28 */
+  border-left: 1px var(--color-gray-5) solid;
+  border-right: 1px var(--color-gray-5) solid;
+}
+
+/* ---------- Page Header ---------- */
+.series-edit__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.series-edit__title {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+}
+
+.series-edit__desc {
+  margin: 0;
+  color: var(--color-font-primary-black-50);
+  text-align: center;
+}
+
+/* ---------- Choice Grid (status — 3등분) ---------- */
+.series-edit__choice-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+/* ---------- Locked Group (변경할 수 없는 항목) ----------
+   세로 스택의 disabled radio-block — 등록 시 확정된 「読む方向」「ジャンル」 표시
+---------------------------------------- */
+.series-edit__locked-head {
+  display: inline-flex;
+  flex-direction: column;
+  align-self: flex-start;
+  gap: var(--space-1); /* 4 */
+}
+
+.series-edit__locked-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+/* ---------- AI Toggle Row ---------- */
+.series-edit__ai-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-4);
+}
+
+.series-edit__ai-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2_5); /* 10 */
+}
+
+.series-edit__ai-check-label {
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Footer Actions (삭제 ↔ 취소·저장) ---------- */
+.series-edit__actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.series-edit__actions-end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1_5); /* 6 */
+}

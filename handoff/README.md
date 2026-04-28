@@ -4,31 +4,30 @@
 
 ---
 
-## 📌 v1.05.7 요약 (2026-04-28, v1.05.6 후속) — 먼저 이것만 보세요
+## 📌 v1.05.8 요약 (2026-04-28, v1.05.7 후속) — 먼저 이것만 보세요
 
-**메인 디스커버리 + 작품 등록 + 작품 관리 페이지 배치.** 4개 신규 페이지 + 7개 신규 컴포넌트 + 무한 스크롤 JS + 20장 작품 표지. 기존 구현 깨지는 변경 없음.
+**横読み 만화 뷰어 + 작품 수정 페이지 + 모달 SSOT 추출.** 2개 신규 페이지(`viewer-yoko` / `series-edit`) + `#modal-context` 공통 모달 단일 진실의 원천(SSOT) 정착. 신규 CSS 컴포넌트는 없음 — 대부분 페이지·인터랙션·구조 정비.
 
 | 분류 | 내용 | 개발 영향 |
 |---|---|---|
-| **신규 페이지 4종** | `main-home.html` (디스커버리 피드 + 무한 스크롤) · `creator-series-home.html` (작가용 시리즈 홈) · `series-register.html` (작품 등록 폼) · `series-post-management-empty.html` (작품 관리 empty state) | Next.js 라우팅 4개 추가. 우선순위: main-home > series-register > 관리 페이지들 |
-| **신규 컴포넌트 7종** | `post-card` (322px Pinterest 카드) · `post-manage` (작품 관리 행 720px) · `empty-state` (720×360 플레이스홀더) · `form-card` (720px 폼 래퍼) · `thumbnail-upload` (100%×280 업로드 영역) · `inline-alert` (배너) · `radio-block` (큰 면적 라디오) | 신규 cva 정의 7개. 자세한 매핑은 [`COMPONENTS.md`](./COMPONENTS.md) |
-| **무한 스크롤 JS** | `js/pages/main-home.js` — IntersectionObserver + 4-column flex masonry + JS append-to-shortest. CSS columns 대신 JS 로 컬럼 분배(추가 시 기존 카드 재정렬 방지). 셔플 비복원 풀 + `RECENT_AVOID=8` 으로 viewport 내 중복 차단 | React: `useEffect(IO observer)` + `useState(columns[])` 패턴으로 이식 |
-| **신규 토큰** | color: `--color-red-10` (#FFEAE8), `--color-red-text` (#FB2C36) — inline alert 전용 · layout: `--space-0_5` (2px), `--space-45` (180px) | Tailwind preset 동기화 |
-| **신규 아이콘** | `icon-delete` (휴지통) | lucide-react `Trash2` 매핑 |
-| **신규 에셋** | `img/img_comic_01.png` ~ `img_comic_20.png` (가로 644px · 자연 비율) | public/ 으로 그대로 이관 |
-| **인라인 스타일 제거** | `creative-partner-onboarding-02~05.html` 의 `style="--progress-from/to"` 4건 → `__progress--step1~4` modifier 클래스로 대체 | Rule #1(인라인 스타일 금지) 전체 페이지 준수 상태 달성 |
-| **styleguide 정비** | `.sg-demo-canvas` → `.sg-type-table` 일괄 변환(6종) · 720px 컴포넌트용 preview modifier 추가 · nav 평탄화 | 디자인 시스템 문서 일관성 향상 (개발에 직접 영향 없음) |
+| **신규 페이지 2종** | `viewer-yoko.html` (横読み 만화/노벨 뷰어, 새창 1920×1080 팝업) · `series-edit.html` (작품 수정 폼 — `series-register` 와 동일 컴포넌트 합성) | Next.js 라우팅 2개 추가. viewer-yoko 는 `target="viewer-yoko"` 새창 라우트 |
+| **viewer-yoko 인터랙션 4종** | (1) 진행 상태 단일 소스 — `[role=progressbar]` 의 aria-valuenow/min/max 가 progress-bar `--progress` 너비 + 페이지 인디케이터 + nav 버튼 disabled 를 동기화 (2) 좌/우 nav 클릭 → 페이지 ±1 + 슬라이드(퇴장 + 등장) 애니메이션 (3) 콘텐츠 영역 클릭 → 상하 chrome(progress/header/footer) 토글 — `viewer-yoko--chrome-hidden` 클래스 + `margin-block-start/end` 음수값 트랜지션으로 layout 자체에서 빠져 본문 면적 확장 (4) `container-type: size` + `cqw/cqh` 로 이미지 contain 사이징 + `mix-blend-mode: darken` inset stroke 오버레이 | React: `useState(currentPage)` 단일 상태 → progress·페이지·disabled 파생 |
+| **모달 SSOT 추출** | `#modal-context` (作品コンテキスト 공통 모달) — `js/components/modal-context.js` 의 `MODAL_HTML` template literal 이 단일 진실의 원천. DOMContentLoaded 시 `body` 끝에 innerHTML 주입(이미 존재하면 skip). 8개 페이지(workroom / workspace / workspace-onboarding / series-edit / series-register / series-post-management / series-post-management-empty / account-setting)에서 마크업 복제 없이 공유 | React: 공용 `<ContextModal />` 컴포넌트로 1회 정의, 트리거는 `data-modal-open="#modal-context"` 속성으로 통일 |
+| **모달 탭 동기화** | step 2 의 두 번째 탭 클릭 → step 이동 없이 step 3 의 동일 탭 콘텐츠를 그 자리에서 노출. `js/components/modal.js` 의 `selectTab()` 이 backdrop 안의 모든 `.tab-group` 을 동시 갱신해, step 3 에서 다른 탭으로 바꾸고 뒤로 가도 step 2 가 비어 보이지 않음 | shadcn `Tabs` 사용 시 동일 `value` 를 두 탭 그룹이 공유하도록 controlled state 로 |
+| **outset effects 패턴 정착** | focus ring·shadow 등 박스 밖으로 나가는 효과는 **"스크롤 컨테이너가 카드보다 넓고 카드는 padding-inline 으로 인셋"** 구조로 처리(account-setting / modal__list 기준). 음수 마진·카드 폭 축소·inset outline 금지. `CLAUDE.md` 규칙 13 으로 명문화 | React: 스크롤 컨테이너의 `padding-inline` 을 카드 ring-width(3px) 이상으로 두면 outset ring 이 자연스럽게 살아남음 |
+| **신규 에셋** | `img/img_viewer_page01.png` (viewer-yoko 데모 페이지) | public/ 으로 그대로 이관 |
+| **인덱스 갱신** | `index.html` 에 viewer-yoko 항목(팝업 새창 1920×1080) + main-home / series-edit / viewer-yoko 상태 ✅ 로 변경 + 버전 라벨 v1.05.8 | (개발 영향 없음, 디자인 인덱스용) |
 
 **하위 호환**
 - 기존 토큰·클래스·BEM 구조 변경 없음
-- 신규 컴포넌트는 모두 추가만 (기존 컴포넌트 시그니처 유지)
-- `--episode-card-width` 가 하드코딩 1000px → `var(--p70)` (1008px) 로 8px 미세 변경 — 시각 영향 거의 없음
+- 신규 CSS 컴포넌트 0개 (`#modal-context` 는 기존 `modal` 컴포넌트의 SSOT 인스턴스로 추출만, cva 추가 불필요)
+- 모달이 들어가는 8개 페이지는 인라인 모달 마크업 → `<script src="js/components/modal-context.js" defer>` 로 교체됨 — 마크업 변화는 결과물 동일
 
 **확인할 곳**
-1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05.7 항목 — **개발 액션 요약** (특히 post-card mix-blend-mode border + 무한 스크롤 구현 노트)
-2. [`COMPONENTS.md`](./COMPONENTS.md) — 7개 신규 컴포넌트 shadcn 매핑
-3. `main-home.html` + `js/pages/main-home.js` — Pinterest masonry + 무한 스크롤 패턴
-4. `series-register.html` — `form-card` + `thumbnail-upload` + `inline-alert` + `radio-block` 합성 예시
+1. [`CHANGELOG.md`](./CHANGELOG.md) v1.05.8 항목 — **개발 액션 요약**
+2. `viewer-yoko.html` + `css/pages/viewer-yoko.css` + `js/pages/viewer-yoko.js` — aria 단일 소스 + 슬라이드 트랜지션 + chrome 토글 패턴
+3. `js/components/modal-context.js` — 공용 모달 SSOT 패턴
+4. `CLAUDE.md` 규칙 13 — outset effects 구조 패턴 (개발 시 동일 원칙 적용)
 
 ---
 
@@ -39,7 +38,7 @@
 |---|---|---|
 | [`design-tokens.json`](./design-tokens.json) | 모든 디자인 토큰 (color/spacing/typography/shadow/radius) | 참고용 원본 |
 | [`tailwind-preset.ts`](./tailwind-preset.ts) | Tailwind `theme.extend` 프리셋 | `tailwind.config.ts`에 직접 import |
-| [`COMPONENTS.md`](./COMPONENTS.md) | 52개 컴포넌트 → shadcn 매핑 + variant/size/state | cva 정의 작성 시 |
+| [`COMPONENTS.md`](./COMPONENTS.md) | 53개 컴포넌트 → shadcn 매핑 + variant/size/state | cva 정의 작성 시 |
 | [`ICONS.md`](./ICONS.md) | 51개 아이콘 → lucide-react 매핑 | 아이콘 치환 시 |
 
 ### 개발 문서

@@ -13,6 +13,7 @@
 - [ ] 새 컴포넌트 HTML 마크업 사용 → 해당 CSS 파일이 그 페이지에 링크되어 있는가?
 - [ ] 새 컴포넌트 생성 → `handoff/COMPONENTS.md`에 항목 추가했는가?
 - [ ] 새 기본 에셋(이미지/색상/아이콘/토큰) 추가 → styleguide.html 해당 Foundation 섹션에도 등록했는가?
+- [ ] 새 페이지(.html) 생성 → `index.html`의 페이지 리스트에 항목 추가했는가?
 
 ---
 
@@ -106,3 +107,16 @@
   2. **사용자 의도가 정반대로 갈릴 만큼 모호할 때**: 한쪽을 고르면 되돌리기 비싼 경우
   3. **스코프 확장**: 요청에 없던 리팩토링·구조 변경을 추가로 하려 할 때
 - 위 3가지 외에는 **판단 → 실행 → 보고** 순으로 진행
+
+### 13. 박스 밖으로 나가는 효과(focus ring, drop-shadow 등)는 "넓은 스크롤 컨테이너 + 카드 인셋" 패턴 사용
+- 스크롤/clip 컨테이너 안쪽 요소에 outset focus ring·box-shadow 등 박스 경계를 넘는 효과가 있을 때 → **스크롤 컨테이너 폭 > 카드 폭** 이 되도록 구조를 잡을 것
+- 기준 패턴(account-setting.html / modal__list):
+  1. 부모(step/section/wrapper)의 가로 패딩 제거 → 스크롤 컨테이너가 edge-to-edge
+  2. 카드와 형제인 다른 자식들(label/header/footer/summary 등)은 `margin-inline`으로 개별 인셋
+  3. 스크롤 컨테이너에 `padding-inline: <inset>` → 내부 카드 시각 위치 유지, ring은 padding 영역 안에서 살아남음
+- **금지**:
+  - 음수 마진(`margin: -Npx`)으로 박스 밖 효과 살리기
+  - 카드 폭 축소(`width: calc(100% - ...)`) — 다른 형제와 폭 불일치로 레이아웃 깨짐
+  - inset outline (`outline-offset: -Npx`) — outset 표현 유지가 원칙
+  - `overflow-clip-margin` 만으로 해결 시도 — 스크롤 축(`overflow: auto`)에서는 무효
+- 이유: account-setting이 잘 작동한 본질은 clip-margin이 아니라 "스크롤 컨테이너가 카드보다 넓어 ring이 자연스럽게 경계 안쪽에 머문다"는 구조적 여유 때문.

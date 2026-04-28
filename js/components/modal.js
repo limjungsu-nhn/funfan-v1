@@ -5,7 +5,8 @@
      - [data-modal-open="#modal-id"]   — 해당 modal 열기
      - [data-modal-close]              — 닫기 (유일한 닫기 경로, ESC·backdrop 클릭 없음)
      - [data-modal-next]               — step 2 로 전진 (track[data-step="2"])
-     - [data-modal-back]               — step 1 로 복귀 (track[data-step="1"])
+     - [data-modal-back]               — 직전 step 으로 -1 (현재 step - 1, 최소 1)
+     - [data-modal-goto="N"]           — 임의 step N 으로 이동
 
    동작:
      - 열림         : body scroll lock + 첫 열람 시 step 1 활성 + modal 컨테이너로 포커스
@@ -28,12 +29,16 @@
   }
 
   // 탭 전환 공통 로직 — click 핸들러 / resetModal 양쪽에서 재사용
+  // backdrop 안의 모든 tab-group 을 동일 target 으로 동기화 → step 간 탭 상태 연계
+  // (예: step 3 에서 "ストーリー" 로 바꾼 뒤 戻る → step 2 도 "ストーリー" 패널 표시)
   function selectTab(backdrop, tabEl) {
-    const group = tabEl.closest('.tab-group');
-    if (!group) return;
-    group.querySelectorAll('.tab').forEach((t) => t.classList.toggle('tab--selected', t === tabEl));
     const target = tabEl.getAttribute('data-tab-target');
     if (!target) return;
+    backdrop.querySelectorAll('.tab-group').forEach((group) => {
+      group.querySelectorAll('.tab').forEach((t) => {
+        t.classList.toggle('tab--selected', t.getAttribute('data-tab-target') === target);
+      });
+    });
     backdrop.querySelectorAll('[data-tab-panel]').forEach((panel) => {
       panel.hidden = panel.getAttribute('data-tab-panel') !== target;
     });
@@ -189,7 +194,19 @@
     const backBtn = e.target.closest('[data-modal-back]');
     if (backBtn) {
       const backdrop = backBtn.closest('.modal-backdrop');
-      if (backdrop) goToStep(backdrop, 1);
+      if (backdrop) {
+        const track = backdrop.querySelector('.modal__track');
+        const cur = parseInt(track?.getAttribute('data-step') || '1', 10);
+        goToStep(backdrop, Math.max(1, cur - 1));
+      }
+      return;
+    }
+
+    const gotoBtn = e.target.closest('[data-modal-goto]');
+    if (gotoBtn) {
+      const backdrop = gotoBtn.closest('.modal-backdrop');
+      const target = parseInt(gotoBtn.getAttribute('data-modal-goto'), 10);
+      if (backdrop && Number.isFinite(target)) goToStep(backdrop, target);
       return;
     }
 

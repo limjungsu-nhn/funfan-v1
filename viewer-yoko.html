@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1話「月明かりの工房」 — Viewer</title>
+
+  <!-- Tokens -->
+  <link rel="stylesheet" href="css/tokens/color.css">
+  <link rel="stylesheet" href="css/tokens/layout.css">
+  <link rel="stylesheet" href="css/tokens/typography.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/icon.css">
+  <link rel="stylesheet" href="css/components/button.css">
+
+  <!-- Page -->
+  <link rel="stylesheet" href="css/pages/viewer-yoko.css">
+  <script src="js/pages/viewer-yoko.js" defer></script>
+</head>
+<body class="viewer-yoko">
+
+  <!-- 진행 바 — aria-valuenow/valuemin/valuemax 가 단일 소스, JS 가 progress-bar width + 페이지 인디케이터 동기화 -->
+  <div class="viewer-yoko__progress" role="progressbar" aria-valuenow="1" aria-valuemin="1" aria-valuemax="60" aria-label="読書進捗">
+    <div class="viewer-yoko__progress-bar"></div>
+  </div>
+
+  <!-- 헤더: 닫기 + 화 제목 -->
+  <header class="viewer-yoko__header">
+    <button class="viewer-yoko__close" type="button" aria-label="閉じる" onclick="window.close()">
+      <i class="icon icon-chevron-left"></i>
+    </button>
+    <h1 class="viewer-yoko__title">第1話「月明かりの工房」</h1>
+  </header>
+
+  <!-- 메인: 좌(次へ) + 본문 + 우(前へ) — 버튼 disabled 는 JS 가 페이지 상태로 토글 -->
+  <main class="viewer-yoko__main">
+    <button class="viewer-yoko__nav viewer-yoko__nav--next" type="button" aria-label="次のページ">
+      <i class="icon icon-chevron-left"></i>
+    </button>
+    <div class="viewer-yoko__content" aria-label="ページ内容">
+      <div class="viewer-yoko__stage">
+        <div class="viewer-yoko__image-wrap">
+          <img class="viewer-yoko__image" src="img/img_viewer_page01.png" alt="">
+        </div>
+      </div>
+    </div>
+    <button class="viewer-yoko__nav viewer-yoko__nav--prev" type="button" aria-label="前のページ">
+      <i class="icon icon-chevron-right"></i>
+    </button>
+  </main>
+
+  <!-- 푸터: 次の話 | 페이지 인디케이터 | 前の話 -->
+  <footer class="viewer-yoko__footer">
+    <div class="viewer-yoko__footer-side">
+      <button class="btn btn-ghost btn--sm" type="button">
+        <i class="icon icon-chevron-left icon--sm"></i>
+        <span>次の話</span>
+      </button>
+    </div>
+    <div class="viewer-yoko__page" aria-label="現在のページ">
+      <span class="viewer-yoko__page-current">1</span><span class="viewer-yoko__page-total">/60</span>
+    </div>
+    <div class="viewer-yoko__footer-side viewer-yoko__footer-side--end">
+      <button class="btn btn-ghost btn--sm" type="button">
+        <span>前の話</span>
+        <i class="icon icon-chevron-right icon--sm"></i>
+      </button>
+    </div>
+  </footer>
+
+</body>
+</html>
