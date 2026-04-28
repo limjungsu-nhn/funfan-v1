@@ -4,7 +4,6 @@
    이식 단위: React <SeriesHomeLayout> — 중앙 정렬 컨테이너 + episode/garden 리스트
    ============================================ */
 
-*, *::before, *::after { box-sizing: border-box; }
 
 html, body {
   margin: 0;
@@ -13,7 +12,6 @@ html, body {
   height: 100%;
   overscroll-behavior: none;
   background: var(--color-bg-soft);
-  font-family: var(--font-family-base);
 }
 
 .navbar { min-width: var(--base); }

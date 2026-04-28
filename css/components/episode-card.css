@@ -26,7 +26,6 @@
   border-radius: var(--radius-xl);
   box-shadow: 0 4px 8px var(--color-shadow-subtle), 0 0 1px var(--color-shadow-mid);
   padding: var(--space-10) var(--space-9);
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

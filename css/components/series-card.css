@@ -43,7 +43,6 @@
     0px 4px 8px var(--color-shadow-subtle),
     0px 0px 1px var(--color-shadow-mid);
   border-radius: var(--radius-xl);
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;

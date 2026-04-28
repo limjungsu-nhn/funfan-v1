@@ -36,6 +36,7 @@
   <link rel="stylesheet" href="css/components/form-card.css">
   <link rel="stylesheet" href="css/components/thumbnail-upload.css">
   <link rel="stylesheet" href="css/components/inline-alert.css">
+  <link rel="stylesheet" href="css/components/floating-alert.css">
 
   <!-- 페이지 전용 App Shell -->
   <link rel="stylesheet" href="css/pages/app-shell.css">
@@ -403,6 +404,15 @@
     </form>
   </div>
 
+  <!-- Floating Alert (page-bottom) -->
+  <div class="floating-alert floating-alert--error series-register__floating-alert" role="alert" data-floating-alert>
+    <div class="floating-alert__content">
+      <i class="icon icon-error-filled floating-alert__icon"></i>
+      <p class="floating-alert__text text-assist-w4">この作品はすでに削除されています。作品管理画面に戻ってリストを更新してください。</p>
+    </div>
+    <button class="btn btn-filled-red btn--sm" type="button"><span class="text-caption-w4">再試行</span></button>
+  </div>
+
   <script>
     document.querySelector('.left-panel').addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
     document.querySelector('.right-panel').addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });
@@ -609,8 +619,19 @@
         aiAlert.hidden = !aiCheckbox.checked;
       });
     }
-  </script>
 
+    // Floating alert — CTA 클릭 시 페이드 아웃 후 제거
+    const floatingAlert = document.querySelector('[data-floating-alert]');
+    if (floatingAlert) {
+      const dismissBtn = floatingAlert.querySelector('button');
+      dismissBtn?.addEventListener('click', () => {
+        floatingAlert.classList.add('is-dismissing');
+        floatingAlert.addEventListener('transitionend', (e) => {
+          if (e.target === floatingAlert && e.propertyName === 'opacity') floatingAlert.remove();
+        });
+      });
+    }
+  </script>
 
 </body>
 </html>

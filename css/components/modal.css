@@ -80,7 +80,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-6);  /* 24px */
-  box-sizing: border-box;
   margin-bottom: var(--navbar-height);  /* 카드 하단 여백 — navbar 높이와 동일 */
   transform: translateY(40px);
   opacity: 0;
@@ -95,7 +94,6 @@
 /* ---------- Title ---------- */
 .modal__title {
   margin: 0;
-  font-family: var(--font-family-base);
   font-size: var(--font-size-body-lg);    /* 18px */
   line-height: var(--line-height-body-lg); /* 28px */
   font-weight: var(--font-weight-w6);
@@ -184,7 +182,6 @@
      리스트가 edge-to-edge → 내부 카드는 padding-inline 으로 시각적 인셋,
      ring(3px outset)이 스크롤 경계 안쪽에 머물러 잘리지 않음. */
   padding: 0;
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: var(--space-6);  /* 24px — modal 기본 gap과 동일 */
@@ -239,7 +236,6 @@
 }
 
 .modal__summary-card__title {
-  font-family: var(--font-family-base);
   font-size: var(--font-size-subtext);      /* 14 */
   line-height: var(--line-height-subtext);  /* 22 */
   font-weight: var(--font-weight-w6);
@@ -251,7 +247,6 @@
 }
 
 .modal__summary-card__sub {
-  font-family: var(--font-family-base);
   font-size: var(--font-size-overline);      /* 11 */
   line-height: var(--line-height-overline);  /* 16 */
   font-weight: var(--font-weight-w4);
@@ -286,7 +281,6 @@
 }
 
 .modal__entity-row__title {
-  font-family: var(--font-family-base);
   font-size: var(--font-size-assist);        /* 13 */
   line-height: var(--line-height-assist);    /* 20 */
   font-weight: var(--font-weight-w6);
@@ -298,7 +292,6 @@
 }
 
 .modal__entity-row__sub {
-  font-family: var(--font-family-base);
   font-size: var(--font-size-overline);      /* 11 */
   line-height: var(--line-height-overline);  /* 16 */
   font-weight: var(--font-weight-w4);
@@ -359,7 +352,6 @@
   margin: 0;
   align-self: stretch;
   text-align: center;
-  font-family: var(--font-family-base);
   font-size: var(--font-size-overline);      /* 11 */
   line-height: var(--line-height-overline);  /* 16 */
   font-weight: var(--font-weight-w4);
@@ -397,7 +389,6 @@
 
 /* ---------- Label ---------- */
 .modal__label {
-  font-family: var(--font-family-base);
   font-size: var(--font-size-caption);    /* 12px */
   line-height: var(--line-height-caption); /* 18px */
   font-weight: var(--font-weight-w6);
@@ -485,4 +476,45 @@
   grid-auto-flow: column;
   grid-auto-columns: minmax(max-content, 1fr);
   gap: var(--space-1_5);
+}
+
+/* ---------- Variant: water-support ----------
+   series-home 의 「水をあげて応援する」 모달.
+   step/track 없는 단일 step + 감정 픽커 + textarea 입력 구성.
+   modal 기본 padding(40 28 0)을 유지하되 footer 만 자체 margin-bottom 으로 40 확보. */
+.modal--water-support {
+  height: auto;
+  gap: var(--space-6);  /* 24 */
+}
+
+.modal-water-support__head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);  /* 4 */
+}
+
+.modal-water-support__helper {
+  text-align: left;
+}
+
+.modal-water-support__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);  /* 16 */
+}
+
+.modal-water-support__emotions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-7);  /* 28 */
+}
+
+.modal-water-support__textarea {
+  height: 140px;
+  min-height: 140px;
+}
+
+.modal--water-support .modal__footer {
+  margin-inline: 0;
 }

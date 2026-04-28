@@ -29,7 +29,6 @@
   outline-offset: -1px;
   cursor: pointer;
   overflow: hidden;
-  box-sizing: border-box;
   transition: background 0.15s ease, outline-color 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease-in;
 }
 
@@ -87,7 +86,6 @@ body:not(.using-mouse) .radio-list:focus-within:not(.radio-list--selected) {
   border-radius: var(--radius-full);
   background: var(--color-white-100);
   color: var(--color-font-primary-black-100);
-  font-family: var(--font-family-base);
   font-size: var(--font-size-caption);
   line-height: var(--line-height-caption);
   font-weight: var(--font-weight-w6);
@@ -107,7 +105,6 @@ body:not(.using-mouse) .radio-list:focus-within:not(.radio-list--selected) {
 .radio-list__text {
   flex: 1 1 0;
   min-width: 0;
-  font-family: var(--font-family-base);
   font-size: var(--font-size-assist);
   line-height: var(--line-height-assist);
   font-weight: var(--font-weight-w4);

@@ -16,14 +16,12 @@
    ============================================ */
 
 /* ---------- Base reset (app-shell 미사용 페이지 전용) ---------- */
-*, *::before, *::after { box-sizing: border-box; }
 
 html, body {
   margin: 0;
   padding: 0;
   min-width: var(--base);
   background: var(--color-bg-soft);
-  font-family: var(--font-family-base);
   overscroll-behavior: none;
 }
 
@@ -41,7 +39,6 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: var(--space-7);
-  box-sizing: border-box;
 }
 
 /* ---------- Inner (1008px stack) ---------- */

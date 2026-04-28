@@ -1,0 +1,100 @@
+/* ============================================
+   Emotion Pick — 水やり 모달의 감정 선택 라디오 (단일 선택)
+
+   HTML 구조:
+     <label class="emotion-pick">
+       <input type="radio" name="water-emotion" value="laugh" class="emotion-pick__input">
+       <i class="icon icon-sentiment-very-satisfied-filled emotion-pick__icon"></i>
+       <span class="emotion-pick__label text-caption-w4">笑った</span>
+     </label>
+
+   States (Figma 5상태):
+     Default        — icon gray-5, label gray-3 / w4
+     Hover          — icon gray-4, label black-100 / w4
+     Focus          — Hover + 3px gray-5 ring (키보드 전용)
+     Pressed        — icon gray-4, label black-100 / w4 (Hover 와 동일)
+     Selected       — icon sky-3, label black-100 / w6
+   ============================================ */
+
+.emotion-pick {
+  position: relative;
+  width: 80px;
+  padding: var(--space-3) 0;        /* 12 0 */
+  background: var(--color-white-100);
+  border: 0;
+  border-radius: var(--radius-md);  /* 16 */
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);              /* 4 */
+  cursor: pointer;
+  overflow: hidden;
+  transition: box-shadow 0.12s ease, transform 0.08s ease-in;
+}
+
+.emotion-pick:active {
+  transform: scale(0.94);
+}
+
+/* hidden native radio — 라벨이 클릭/포커스/선택 모두 처리 */
+.emotion-pick__input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  margin: 0;
+}
+
+.emotion-pick__icon {
+  width: 36px;
+  height: 36px;
+  color: var(--color-gray-5);
+  transition: color 0.12s ease;
+}
+
+.emotion-pick__label {
+  color: var(--color-gray-3);
+  transition: color 0.12s ease, font-weight 0.12s ease;
+}
+
+/* ---------- Hover ---------- */
+.emotion-pick:hover:not(:has(.emotion-pick__input:checked)) .emotion-pick__icon {
+  color: var(--color-gray-4);
+}
+
+.emotion-pick:hover:not(:has(.emotion-pick__input:checked)) .emotion-pick__label {
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Pressed (mousedown / 키보드 active) ---------- */
+.emotion-pick:active:not(:has(.emotion-pick__input:checked)) .emotion-pick__icon {
+  color: var(--color-gray-4);
+}
+
+.emotion-pick:active:not(:has(.emotion-pick__input:checked)) .emotion-pick__label {
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Focus (키보드 전용) ---------- */
+body:not(.using-mouse) .emotion-pick:has(.emotion-pick__input:focus-visible) {
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+
+body:not(.using-mouse) .emotion-pick:has(.emotion-pick__input:focus-visible):not(:has(.emotion-pick__input:checked)) .emotion-pick__icon {
+  color: var(--color-gray-4);
+}
+
+body:not(.using-mouse) .emotion-pick:has(.emotion-pick__input:focus-visible):not(:has(.emotion-pick__input:checked)) .emotion-pick__label {
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Selected ---------- */
+.emotion-pick:has(.emotion-pick__input:checked) .emotion-pick__icon {
+  color: var(--color-sky-3);
+}
+
+.emotion-pick:has(.emotion-pick__input:checked) .emotion-pick__label {
+  color: var(--color-font-primary-black-100);
+  font-weight: var(--font-weight-w6);
+}

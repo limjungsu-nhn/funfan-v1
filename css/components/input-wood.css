@@ -32,7 +32,6 @@
   outline: 1px solid var(--color-wood-5);
   outline-offset: -1px;
   overflow: hidden;
-  box-sizing: border-box;
   cursor: text;
   transition: background 0.1s, outline-color 0.1s;
 }
@@ -45,7 +44,6 @@
   outline: none;
   background: transparent;
   padding: 0;
-  font-family: var(--font-family-base);
   font-size: var(--font-size-caption);
   line-height: var(--line-height-assist);
   font-weight: var(--font-weight-w4);

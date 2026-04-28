@@ -18,7 +18,7 @@
    ============================================ */
 
 .empty-state {
-  width: var(--p50); /* 1440의 50% = 720 */
+  width: max(var(--p50), 50vw); /* 최소 720(=1440*50%), 뷰포트 1px 증가당 0.5px 확대 */
   height: var(--p25); /* 360 */
   background: var(--color-bg-soft);
   border-radius: var(--radius-md);
@@ -28,7 +28,6 @@
   justify-content: center;
   align-items: center;
   gap: var(--space-3); /* 12 */
-  box-sizing: border-box;
 }
 
 .empty-state__hint {

@@ -18,7 +18,6 @@
 .main-home__section {
   width: var(--base); /* 1440 */
   padding: 0 var(--space-10); /* 40 좌우 */
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -38,7 +38,7 @@
 
 /* ---------- Container ---------- */
 .post-manage {
-  width: var(--p50); /* 720 */
+  width: max(var(--p50), 50vw); /* 최소 720(=1440*50%), 뷰포트 1px 증가당 0.5px 확대 */
   padding: var(--space-8) var(--space-7); /* 32 28 */
   background: var(--color-white-100);
   border-radius: var(--radius-md); /* 16 */
@@ -48,7 +48,6 @@
   gap: var(--space-6); /* 24 */
   flex-shrink: 0;
   margin-bottom: var(--space-45); /* 180 — 카드 하단 여백 */
-  box-sizing: border-box;
 }
 
 /* ---------- Header ---------- */

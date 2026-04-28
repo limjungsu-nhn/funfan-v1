@@ -33,7 +33,6 @@
   display: inline-flex;
   justify-content: space-between;
   align-items: center;
-  box-sizing: border-box;
 }
 
 /* ---------- Left Column (반응 + 상태) ---------- */

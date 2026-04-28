@@ -155,6 +155,15 @@ const buttonVariants = cva("...", {
 - **Variants**: `inline-alert--error`(red-10 bg + red-30 outline + red-100 text · icon-error-filled)
 - 텍스트: `.inline-alert__text` (overline-w4 권장, flex:1, text-align:center)
 
+#### `.floating-alert` → shadcn `Alert` (action 슬롯 포함)
+- 페이지/모달 위에 떠있는 에러 배너. inline-alert 와 달리 액션 버튼(재시도 등) 포함
+- min-height 60 · padding `12 12 12 20` · radius 16 · gap 8 · bg white
+- shadow: `0 4px 8px shadow-subtle, 0 0 1px shadow-mid` (modal 과 동일)
+- 너비는 페이지에서 부여 (예: 834px)
+- 구조: `.floating-alert__content` (flex:1 · gap 10 · icon 20 + text) + 우측 액션 버튼 슬롯
+- **Variants**: `floating-alert--error`(outline 1px red-100 · icon = red-100 · text = red-text · CTA = btn-filled-red btn--sm)
+- 텍스트: `.floating-alert__text` (assist 13/20 w4 권장, flex:1, text-align:left)
+
 #### `.radio-list` → shadcn `RadioGroup` + 리스트 아이템
 **States**: default(bg-soft) / hover(gray-6) / focus(gray-6 + 3px gray-5 ring · 키보드 전용) / pressed(gray-6 · scale 0.98) / **selected**(white bg + nature-3 outline + shadow-subtle/mid · letter avatar black/white · 텍스트 w6 · 우측 check 표시)
 - 라디오 카드의 콤팩트 1줄 변형. min-height 48px · padding 12/20/16
@@ -366,6 +375,19 @@ const buttonVariants = cva("...", {
 - 아이콘 16×16 · 색 `--color-black-50` · 카운트 14px / w4 / lh 22px / `--color-font-primary-black-100`
 - 클릭·호버·포커스·selected 상태 없음 (스펙 변경: 2026-04)
 - 클래스명은 레거시 호환으로 유지 (`.emotion-btn`, `.emotion-btn__icon`, `.emotion-btn__count`)
+
+#### `.emotion-pick` → 커스텀 RadioGroup item
+- 水やり 모달의 감정 선택 라디오. `<label>` + 숨겨진 `<input type="radio">` 패턴 (radio-card와 동일 계열)
+- 같은 `name` 내에서 단일 선택. 부모는 `role="radiogroup"` + `aria-label`
+- 80×auto · padding `12 0` · radius 16 · gap 4 · 흰색 배경
+- 아이콘 36×36 (mask-image + currentColor), 라벨 12/18 (w4 → 선택 시 w6)
+- States (Figma 5상태):
+  - Default     : icon = `--color-gray-5`, label = `--color-gray-3` / w4
+  - Hover       : icon = `--color-gray-4`, label = `--color-font-primary-black-100` / w4
+  - Focus       : Hover + 3px gray-5 ring + 0 1px 2px shadow (키보드 전용, `body:not(.using-mouse)`)
+  - Pressed     : Hover와 동일
+  - Selected    : icon = `--color-sky-3`, label = black-100 / w6
+- TODO: 색상 토큰별 emotion 고유색 분리 여부 (현재 선택 시 모두 sky-3 단일 색)
 
 #### `.garden` → 커스텀
 - 834×241px 가든 씬. `img/bg_garden.png` 배경 위에 꽃+표지판 레이아웃

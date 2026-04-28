@@ -22,7 +22,7 @@
    ============================================ */
 
 .form-card {
-  width: var(--p50);
+  width: max(var(--p50), 50vw); /* 최소 720(=1440*50%), 뷰포트 1px 증가당 0.5px 확대 */
   background: var(--color-white-100);
   border-radius: var(--radius-md);
   box-shadow: 0 4px 8px var(--color-shadow-subtle), 0 0 1px var(--color-shadow-mid);
@@ -31,7 +31,6 @@
   flex-direction: column;
   flex-shrink: 0;
   margin-bottom: var(--space-45); /* 180 */
-  box-sizing: border-box;
 }
 
 .form-card__header {

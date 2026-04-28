@@ -17,7 +17,6 @@
 .section-label {
   padding: var(--space-6) var(--space-2) var(--space-1_5);
   color: var(--color-font-primary-black-100);
-  font-family: var(--font-family-base);
   font-size: var(--font-size-caption);
   line-height: var(--line-height-caption);
   font-weight: var(--font-weight-w6);

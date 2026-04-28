@@ -37,7 +37,6 @@
   align-items: flex-start;
   gap: var(--space-1_5); /* 6px */
   cursor: pointer;
-  box-sizing: border-box;
   overflow: hidden;
   transition: background 0.15s ease, outline-color 0.15s ease, transform 0.08s ease-in;
 }
@@ -105,7 +104,6 @@ body:not(.using-mouse) .radio-block:focus-within:not(.radio-block--selected):not
 
 /* ---------- Title ---------- */
 .radio-block__title {
-  font-family: var(--font-family-base);
   font-size: var(--font-size-caption);
   line-height: var(--line-height-caption);
   font-weight: var(--font-weight-w6);
@@ -114,7 +112,6 @@ body:not(.using-mouse) .radio-block:focus-within:not(.radio-block--selected):not
 
 /* ---------- Desc ---------- */
 .radio-block__desc {
-  font-family: var(--font-family-base);
   font-size: var(--font-size-overline);
   line-height: var(--line-height-overline);
   font-weight: var(--font-weight-w4);

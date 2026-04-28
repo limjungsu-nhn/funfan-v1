@@ -69,3 +69,21 @@
 .series-register__ai-check-label {
   color: var(--color-font-primary-black-100);
 }
+
+/* ---------- Floating Alert (page-bottom fixed) ---------- */
+.series-register__floating-alert {
+  position: fixed;
+  bottom: var(--space-5);
+  /* 뷰포트 1440 미만에서는 페이지 중앙(720px)에 고정 — 가로 스크롤과 함께 이동하지 않음 */
+  left: max(50%, var(--p50));
+  transform: translateX(-50%);
+  width: var(--p60);
+  z-index: 100;
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+
+.series-register__floating-alert.is-dismissing {
+  opacity: 0;
+  transform: translateX(-50%) translateY(8px);
+  pointer-events: none;
+}

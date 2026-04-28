@@ -67,10 +67,17 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* 폼 요소는 user-agent font를 강제로 쓰지 않고 body로부터 상속 */
+button, input, textarea, select {
+  font-family: inherit;
+}
+
 /* ============================================
-   Scrollbar — 시각적으로만 숨김 (스크롤 동작은 유지)
-   Firefox / IE-Edge legacy / Chrome-Safari 전부 커버
+   Universal — box-sizing 통일 + 스크롤바 시각적으로만 숨김
    ============================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
 * {
   scrollbar-width: none;        /* Firefox */
   -ms-overflow-style: none;     /* IE / 구 Edge */

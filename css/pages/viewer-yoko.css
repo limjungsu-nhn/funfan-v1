@@ -15,7 +15,6 @@
   margin: 0;
   background: var(--color-white-100);
   color: var(--color-font-primary-black-100);
-  font-family: var(--font-family-base);
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -247,7 +246,6 @@
 .viewer-yoko__page {
   display: flex;
   align-items: center;
-  font-family: var(--font-family-base);
   font-size: var(--font-size-caption);
   line-height: var(--line-height-caption);
   font-weight: var(--font-weight-w4);

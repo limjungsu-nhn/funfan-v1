@@ -313,7 +313,6 @@
   gap: var(--space-1);
   cursor: pointer;
   color: var(--color-font-primary-black-50);
-  font-family: var(--font-family-base);
   -webkit-tap-highlight-color: transparent;
 }
 

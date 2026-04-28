@@ -4,7 +4,6 @@
    카드 폭 432px (--p30) · 중앙 정렬
    ============================================ */
 
-*, *::before, *::after { box-sizing: border-box; }
 
 html, body {
   margin: 0;

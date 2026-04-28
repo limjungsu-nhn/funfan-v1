@@ -30,7 +30,6 @@
   display: inline-flex;
   justify-content: space-between;
   align-items: center;
-  box-sizing: border-box;
 }
 
 /* ---------- Title Group (left) ---------- */
@@ -61,7 +60,6 @@
   align-items: center;
   gap: var(--space-1);
   cursor: pointer;
-  font-family: var(--font-family-base);
   color: var(--color-font-primary-black-100);
   -webkit-tap-highlight-color: transparent;
 }

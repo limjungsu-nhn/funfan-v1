@@ -13,6 +13,14 @@
   --sg-accent:       #0066FF;
   --sg-tag-bg:       #EEF3FF;
   --sg-tag-color:    #0047CC;
+  --sg-row-hover:    #FAFAFA;
+  --sg-text-sub:     #666666;
+  --sg-border-dark:  #333333;
+  --sg-text-on-dark: #E5E5EA;
+  --sg-text-meta-dark: #8E8E93;
+  --sg-tag-bg-dark:  rgba(0, 102, 255, 0.15);
+  --sg-classname-dark-bg:    rgba(255, 255, 255, 0.08);
+  --sg-classname-dark-color: #7AABFF;
   --sg-nav-width:    220px;
   --sg-header-h:     56px;
 }
@@ -175,7 +183,7 @@ body {
   gap: 16px;
 }
 .sg-type-row:last-child { border-bottom: none; }
-.sg-type-row:hover { background: #FAFAFA; }
+.sg-type-row:hover { background: var(--sg-row-hover); }
 
 .sg-type-preview {
   padding: 16px 0;
@@ -294,8 +302,8 @@ body {
   margin-right: 4px;
   vertical-align: middle;
 }
-.sg-weight-w4 { background: #F0F0F2; color: #666; }
-.sg-weight-w6 { background: #E8F0FF; color: #0047CC; }
+.sg-weight-w4 { background: var(--sg-border-light); color: var(--sg-text-sub); }
+.sg-weight-w6 { background: var(--sg-tag-bg); color: var(--sg-tag-color); }
 
 /* ---------- Color Grid ---------- */
 .sg-color-grid {
@@ -310,8 +318,8 @@ body {
   overflow: hidden;
 }
 .sg-color-card--dark {
-  background: #1A1A1A;
-  border-color: #333;
+  background: var(--sg-text-primary);
+  border-color: var(--sg-border-dark);
 }
 .sg-color-swatch {
   height: 80px;
@@ -329,7 +337,7 @@ body {
   color: var(--sg-text-primary);
 }
 .sg-color-card--dark .sg-color-name {
-  color: #E5E5EA;
+  color: var(--sg-text-on-dark);
 }
 .sg-color-var {
   font-family: "SF Mono", "Fira Code", "Menlo", monospace;
@@ -341,14 +349,14 @@ body {
   width: fit-content;
 }
 .sg-color-card--dark .sg-color-var {
-  background: rgba(0, 102, 255, 0.15);
+  background: var(--sg-tag-bg-dark);
 }
 .sg-color-hex {
   font-size: 11px;
   color: var(--sg-text-meta);
 }
 .sg-color-card--dark .sg-color-hex {
-  color: #8E8E93;
+  color: var(--sg-text-meta-dark);
 }
 
 /* ---------- Icon Grid ---------- */
@@ -667,9 +675,9 @@ body {
 /* ---------- Dark Row (로고 White variant) ---------- */
 .sg-row-dark       { background: var(--color-font-primary-black-100); }
 .sg-row-dark:hover { background: var(--color-font-primary-black-100); }
-.sg-type-classname--dark { background: rgba(255,255,255,0.08); color: #7aabff; }
-.sg-type-meta--dark          { color: #8E8E93; }
-.sg-type-meta--dark strong   { color: #E5E5EA; }
+.sg-type-classname--dark { background: var(--sg-classname-dark-bg); color: var(--sg-classname-dark-color); }
+.sg-type-meta--dark          { color: var(--sg-text-meta-dark); }
+.sg-type-meta--dark strong   { color: var(--sg-text-on-dark); }
 
 /* ---------- Checkbox disabled wrap ---------- */
 .checkbox-wrap--disabled { cursor: not-allowed; }
@@ -719,3 +727,32 @@ body {
 
 /* ---------- 데모 전용 소형 버튼 ---------- */
 .sg-btn-demo { font-size: 12px; min-height: 32px; padding: 0 12px; }
+
+/* ---------- emotion-pick 상태 데모 (실제 :hover/:active/:focus 강제) ---------- */
+.emotion-pick--demo-hover .emotion-pick__icon,
+.emotion-pick--demo-pressed .emotion-pick__icon,
+.emotion-pick--demo-focus .emotion-pick__icon {
+  color: var(--color-gray-4);
+}
+.emotion-pick--demo-hover .emotion-pick__label,
+.emotion-pick--demo-pressed .emotion-pick__label,
+.emotion-pick--demo-focus .emotion-pick__label {
+  color: var(--color-font-primary-black-100);
+}
+.emotion-pick--demo-focus {
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+
+/* ---------- radio-list 그룹 데모 캔버스 ---------- */
+.sg-demo-canvas--radio-list-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+  max-width: var(--p50);
+}
+
+/* ---------- floating-alert 폭 (시리즈 페이지 폼카드 폭과 동일) ---------- */
+.sg-floating-alert--demo {
+  width: var(--p60);
+}

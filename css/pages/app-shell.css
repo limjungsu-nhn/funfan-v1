@@ -12,7 +12,6 @@
      - .workspace__main 오버라이드 (account-setting: overflow hidden 등)
    ============================================ */
 
-*, *::before, *::after { box-sizing: border-box; }
 
 html, body {
   margin: 0;
@@ -21,7 +20,6 @@ html, body {
   height: 100%;
   overscroll-behavior: none; /* 페이지 레벨 스크롤 차단 — overflow:hidden 없이 box-shadow 클리핑 방지 */
   background: var(--color-bg-soft);
-  font-family: var(--font-family-base);
 }
 
 /* navbar — 최소 너비 (fixed 요소는 body min-width 미적용) */

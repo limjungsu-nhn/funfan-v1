@@ -4,7 +4,6 @@
    이식 단위: 단순 진입점 페이지 — React 이식 불필요 (개발 편의용)
    ============================================ */
 
-*, *::before, *::after { box-sizing: border-box; }
 
 html, body {
   margin: 0;
@@ -12,7 +11,6 @@ html, body {
   min-width: var(--base);  /* 1440px — 축소 금지, 이하 뷰포트에서는 가로 스크롤 */
   min-height: 100vh;
   background: var(--color-bg-soft);
-  font-family: var(--font-family-base);
 }
 
 .index {

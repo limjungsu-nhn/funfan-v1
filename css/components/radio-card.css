@@ -30,7 +30,6 @@
   gap: var(--space-4);
   cursor: pointer;
   overflow: hidden;
-  box-sizing: border-box;
   outline: 1px solid var(--color-gray-6);
   outline-offset: -1px;
   transition: background 0.15s ease, outline-color 0.15s ease, transform 0.08s ease-in;
@@ -112,7 +111,6 @@ body:not(.using-mouse) .radio-card:focus-visible:not(.radio-card--selected) {
 
 /* ---------- Title ---------- */
 .radio-card__title {
-  font-family: var(--font-family-base);
   font-size: var(--font-size-subtext);
   line-height: var(--line-height-subtext);
   font-weight: var(--font-weight-w6);
@@ -127,7 +125,6 @@ body:not(.using-mouse) .radio-card:focus-visible:not(.radio-card--selected) {
 
 /* ---------- Sub ---------- */
 .radio-card__sub {
-  font-family: var(--font-family-base);
   font-size: var(--font-size-overline);
   line-height: var(--line-height-overline);
   font-weight: var(--font-weight-w4);
@@ -212,7 +209,6 @@ body:not(.using-mouse) .radio-card--nav:focus-within .radio-card__chevron {
   display: inline-flex;
   flex-direction: column;
   gap: var(--space-6);
-  box-sizing: border-box;
 }
 
 /* ---------- Header ---------- */
@@ -225,7 +221,6 @@ body:not(.using-mouse) .radio-card--nav:focus-within .radio-card__chevron {
 /* ---------- Title ---------- */
 .radio-group-card__title {
   margin: 0;
-  font-family: var(--font-family-base);
   font-size: var(--font-size-body-md);
   line-height: var(--line-height-body-md);
   font-weight: var(--font-weight-w6);
@@ -235,7 +230,6 @@ body:not(.using-mouse) .radio-card--nav:focus-within .radio-card__chevron {
 /* ---------- Desc ---------- */
 .radio-group-card__desc {
   margin: 0;
-  font-family: var(--font-family-base);
   font-size: var(--font-size-overline);
   line-height: var(--line-height-overline);
   font-weight: var(--font-weight-w4);

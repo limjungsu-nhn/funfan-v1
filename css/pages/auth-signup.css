@@ -4,7 +4,6 @@
    body 배경 화이트
    ============================================ */
 
-*, *::before, *::after { box-sizing: border-box; }
 
 html, body {
   margin: 0;

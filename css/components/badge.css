@@ -27,7 +27,6 @@
   justify-content: center;
   align-items: center;
   gap: var(--space-2_5);
-  box-sizing: border-box;
 }
 
 /* ---------- Variant: Nature ----------

@@ -59,7 +59,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  box-sizing: border-box;
   /* clip + margin — 내부 chat-input/컴포넌트의 focus ring·shadow 4px 여유 */
   overflow: clip;
   overflow-clip-margin: var(--space-1);
@@ -116,7 +115,6 @@
   justify-content: flex-start;
   align-items: center;
   gap: var(--space-3);
-  box-sizing: border-box;
 }
 
 /* ---------- Suggestion Chips ---------- */
@@ -211,7 +209,6 @@
   align-self: stretch;
   margin: 0;
   text-align: center;
-  font-family: var(--font-family-base);
   font-size: var(--font-size-overline);
   font-weight: var(--font-weight-w4);
   line-height: var(--line-height-overline);

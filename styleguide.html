@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="css/components/form-card.css">
   <link rel="stylesheet" href="css/components/thumbnail-upload.css">
   <link rel="stylesheet" href="css/components/inline-alert.css">
+  <link rel="stylesheet" href="css/components/floating-alert.css">
   <link rel="stylesheet" href="css/components/radio-list.css">
   <link rel="stylesheet" href="css/components/stat-card.css">
   <script src="js/components/stat-card.js" defer></script>
@@ -39,6 +40,7 @@
   <link rel="stylesheet" href="css/components/garden-sign.css">
   <link rel="stylesheet" href="css/components/garden.css">
   <link rel="stylesheet" href="css/components/emotion-btn.css">
+  <link rel="stylesheet" href="css/components/emotion-pick.css">
   <link rel="stylesheet" href="css/components/reaction-bar.css">
   <link rel="stylesheet" href="css/components/garden-card.css">
   <link rel="stylesheet" href="css/components/episode-header.css">
@@ -82,7 +84,7 @@
     <span class="sg-header-logo">FunFan</span>
     <span class="sg-header-sep"></span>
     <span class="sg-header-subtitle">Design System</span>
-    <span class="sg-header-badge">v1.05.9</span>
+    <span class="sg-header-badge">v1.06.0</span>
   </header>
 
   <div class="sg-layout">
@@ -126,6 +128,7 @@
         <a href="#garden-sign">Garden Sign</a>
         <a href="#garden">Garden</a>
         <a href="#emotion-btn">Emotion Display</a>
+        <a href="#emotion-pick">Emotion Pick</a>
         <a href="#reaction-bar">Reaction Bar</a>
         <a href="#garden-card">Garden Card</a>
         <a href="#episode-header">Episode Header</a>
@@ -142,6 +145,7 @@
         <a href="#form-card">Form Card</a>
         <a href="#thumbnail-upload">Thumbnail Upload</a>
         <a href="#inline-alert">Inline Alert</a>
+        <a href="#floating-alert">Floating Alert</a>
         <a href="#review-item">Review Item</a>
         <a href="#fan-feed">Fan Feed</a>
         <a href="#accordion-row">Accordion Row</a>
@@ -1493,6 +1497,16 @@
               <div class="sg-icon-info">
                 <span class="sg-icon-name">close</span>
                 <code class="sg-type-classname">.icon-close</code>
+              </div>
+            </div>
+
+            <div class="sg-icon-card">
+              <div class="sg-icon-preview">
+                <i class="icon icon-close-thin"></i>
+              </div>
+              <div class="sg-icon-info">
+                <span class="sg-icon-name">close-thin</span>
+                <code class="sg-type-classname">.icon-close-thin</code>
               </div>
             </div>
 
@@ -3940,7 +3954,7 @@
 
         <div class="sg-subsection">
           <p class="sg-subsection-title">Interactive (group)</p>
-          <div class="sg-demo-canvas" style="display: flex; flex-direction: column; gap: var(--space-2); width: 100%; max-width: 720px;">
+          <div class="sg-demo-canvas sg-demo-canvas--radio-list-group">
             <label class="radio-list">
               <input type="radio" class="radio-list__input" name="sg-rl-group" value="a">
               <span class="radio-list__avatar">A</span>
@@ -4485,6 +4499,98 @@
               </div>
               <code class="sg-type-classname">.emotion-btn<br>.emotion-btn__icon<br>.emotion-btn__count</code>
               <div class="sg-type-meta"><strong>inline-flex · gap 4</strong><br>아이콘 16×16 + 숫자 14/22<br>표시 전용 (클릭/호버/포커스 없음)<br>클래스명은 레거시 호환으로 유지</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Emotion Pick -->
+        <div class="sg-subsection" id="emotion-pick">
+          <h3 class="sg-subsection-title">emotion-pick.css · 水やり 모달 감정 선택 라디오 (단일 선택)</h3>
+          <div class="sg-type-table">
+            <div class="sg-type-thead">
+              <span>Preview</span><span>Class</span><span>Notes</span>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="emotion-pick">
+                  <input type="radio" name="sg-emotion-default" class="emotion-pick__input">
+                  <i class="icon icon-sentiment-very-satisfied-filled emotion-pick__icon"></i>
+                  <span class="emotion-pick__label text-caption-w4">笑った</span>
+                </label>
+              </div>
+              <code class="sg-type-classname">.emotion-pick (Default)</code>
+              <div class="sg-type-meta">icon = gray-5 · label = gray-3 / w4</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="emotion-pick emotion-pick--demo-hover">
+                  <input type="radio" name="sg-emotion-hover" class="emotion-pick__input">
+                  <i class="icon icon-sentiment-sad-filled emotion-pick__icon"></i>
+                  <span class="emotion-pick__label text-caption-w4">泣けた</span>
+                </label>
+              </div>
+              <code class="sg-type-classname">.emotion-pick:hover</code>
+              <div class="sg-type-meta">icon = gray-4 · label = black-100 / w4</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="emotion-pick emotion-pick--demo-focus">
+                  <input type="radio" name="sg-emotion-focus" class="emotion-pick__input">
+                  <i class="icon icon-favorite-filled emotion-pick__icon"></i>
+                  <span class="emotion-pick__label text-caption-w4">推せる</span>
+                </label>
+              </div>
+              <code class="sg-type-classname">.emotion-pick:has(:focus-visible)</code>
+              <div class="sg-type-meta">Hover + 3px gray-5 ring + 0 1px 2px shadow<br>키보드 전용 (body:not(.using-mouse))</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="emotion-pick emotion-pick--demo-pressed">
+                  <input type="radio" name="sg-emotion-pressed" class="emotion-pick__input">
+                  <i class="icon icon-fast-forward-filled emotion-pick__icon"></i>
+                  <span class="emotion-pick__label text-caption-w4">続き楽しみ</span>
+                </label>
+              </div>
+              <code class="sg-type-classname">.emotion-pick:active</code>
+              <div class="sg-type-meta">icon = gray-4 · label = black-100 / w4 (Hover와 동일)</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <label class="emotion-pick">
+                  <input type="radio" name="sg-emotion-selected" class="emotion-pick__input" checked>
+                  <i class="icon icon-sentiment-very-satisfied-filled emotion-pick__icon"></i>
+                  <span class="emotion-pick__label text-caption-w4">笑った</span>
+                </label>
+              </div>
+              <code class="sg-type-classname">.emotion-pick:has(:checked)</code>
+              <div class="sg-type-meta">icon = sky-3 · label = black-100 / w6</div>
+            </div>
+          </div>
+
+          <!-- Interactive Demo (radiogroup 단일 선택 동작) -->
+          <div class="sg-demo-canvas">
+            <p class="sg-demo-note">같은 name 내에서 단일 선택. 라벨 클릭/Tab + Space 로 선택, 화살표로 그룹 내 이동.</p>
+            <div role="radiogroup" aria-label="感情を選ぶ" style="display:flex; gap: var(--space-5);">
+              <label class="emotion-pick">
+                <input type="radio" name="sg-emotion-live" value="laugh" class="emotion-pick__input">
+                <i class="icon icon-sentiment-very-satisfied-filled emotion-pick__icon"></i>
+                <span class="emotion-pick__label text-caption-w4">笑った</span>
+              </label>
+              <label class="emotion-pick">
+                <input type="radio" name="sg-emotion-live" value="cry" class="emotion-pick__input">
+                <i class="icon icon-sentiment-sad-filled emotion-pick__icon"></i>
+                <span class="emotion-pick__label text-caption-w4">泣けた</span>
+              </label>
+              <label class="emotion-pick">
+                <input type="radio" name="sg-emotion-live" value="love" class="emotion-pick__input">
+                <i class="icon icon-favorite-filled emotion-pick__icon"></i>
+                <span class="emotion-pick__label text-caption-w4">推せる</span>
+              </label>
+              <label class="emotion-pick">
+                <input type="radio" name="sg-emotion-live" value="next" class="emotion-pick__input">
+                <i class="icon icon-fast-forward-filled emotion-pick__icon"></i>
+                <span class="emotion-pick__label text-caption-w4">続き楽しみ</span>
+              </label>
             </div>
           </div>
         </div>
@@ -5155,6 +5261,43 @@
           </div>
         </div>
 
+        <!-- Variant: water-support -->
+        <div class="sg-subsection" id="modal-water-support">
+          <p class="sg-subsection-title">Variant — water-support (series-home)</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="modal modal--water-support">
+                  <button class="modal__close" type="button" aria-label="閉じる"><i class="icon icon-close"></i></button>
+                  <div class="modal-water-support__head">
+                    <h2 class="modal__title">水をあげて応援する</h2>
+                    <p class="modal__helper modal-water-support__helper">タグもメッセージも未入力のままでも送信できます。</p>
+                  </div>
+                  <div class="modal-water-support__body">
+                    <div class="modal-water-support__emotions" role="radiogroup" aria-label="感情を選ぶ">
+                      <label class="emotion-pick"><input type="radio" name="sg-modal-water-emotion" value="laugh" class="emotion-pick__input"><i class="icon icon-sentiment-very-satisfied-filled emotion-pick__icon"></i><span class="emotion-pick__label text-caption-w4">笑った</span></label>
+                      <label class="emotion-pick"><input type="radio" name="sg-modal-water-emotion" value="cry" class="emotion-pick__input"><i class="icon icon-sentiment-sad-filled emotion-pick__icon"></i><span class="emotion-pick__label text-caption-w4">泣けた</span></label>
+                      <label class="emotion-pick"><input type="radio" name="sg-modal-water-emotion" value="love" class="emotion-pick__input"><i class="icon icon-favorite-filled emotion-pick__icon"></i><span class="emotion-pick__label text-caption-w4">推せる</span></label>
+                      <label class="emotion-pick"><input type="radio" name="sg-modal-water-emotion" value="next" class="emotion-pick__input"><i class="icon icon-fast-forward-filled emotion-pick__icon"></i><span class="emotion-pick__label text-caption-w4">続き楽しみ</span></label>
+                    </div>
+                    <div class="form-textarea form-textarea--with-counter modal-water-support__textarea">
+                      <textarea class="form-textarea__field" rows="5" maxlength="300" placeholder="作品へのひとこを入力してください"></textarea>
+                      <span class="form-textarea__counter text-overline-w4">0/300</span>
+                    </div>
+                  </div>
+                  <div class="modal__footer">
+                    <button class="btn btn-line btn--sm" type="button"><span class="text-caption-w4">閉じる</span></button>
+                    <button class="btn btn-filled-sky btn--sm" type="button" disabled><span class="text-caption-w4">水をあげて応援する</span></button>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.modal--water-support<br>.modal-water-support__head<br>.modal-water-support__body<br>.modal-water-support__emotions<br>.modal-water-support__textarea</code>
+              <div class="sg-type-meta"><strong>504 · padding 40 28 · gap 20</strong><br>head: title + helper · gap 4<br>emotions: 4× emotion-pick · gap 20 · 가운데 정렬<br>textarea: 140px 고정 + 0/300 카운터<br>footer: 閉じる(line) + 水やり CTA(filled-sky, 감정/입력 둘 다 비면 disabled)</div>
+            </div>
+          </div>
+        </div>
+
       </section>
 
       <!-- ========================
@@ -5529,6 +5672,36 @@
               </div>
               <code class="sg-type-classname">.inline-alert<br>.inline-alert--error<br>.inline-alert__text</code>
               <div class="sg-type-meta"><strong>Error variant</strong><br>padding 12/8 · radius-sm<br>icon-error-filled + 안내 텍스트</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================
+           FLOATING ALERT
+      ========================= -->
+      <section class="sg-section" id="floating-alert" data-section="floating-alert">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Floating Alert</h2>
+          <span class="sg-section-desc">floating-alert.css · 페이지/모달 위에 떠있는 에러 배너 (액션 버튼 포함) · padding 12 12 12 20 · radius 16 · variants: error</span>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Error</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="floating-alert floating-alert--error sg-floating-alert--demo" role="alert">
+                  <div class="floating-alert__content">
+                    <i class="icon icon-error-filled floating-alert__icon"></i>
+                    <p class="floating-alert__text text-assist-w4">この作品はすでに削除されています。作品管理画面に戻ってリストを更新してください。</p>
+                  </div>
+                  <button class="btn btn-filled-red btn--sm" type="button"><span class="text-caption-w4">再試行</span></button>
+                </div>
+              </div>
+              <code class="sg-type-classname">.floating-alert<br>.floating-alert--error<br>.floating-alert__content<br>.floating-alert__icon<br>.floating-alert__text</code>
+              <div class="sg-type-meta"><strong>Error variant</strong><br>min-height 60 · padding 12 12 12 20 · gap 8<br>radius 16 · outline 1px red-100 · shadow modal과 동일<br>content: icon 20×20 + text(assist 13/20) red-text · gap 10<br>action: btn-filled-red btn--sm (예: 再試行)<br>너비는 페이지에서 부여 (예: 834)</div>
             </div>
           </div>
         </div>

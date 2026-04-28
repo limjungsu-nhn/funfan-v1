@@ -26,9 +26,13 @@
   <link rel="stylesheet" href="css/components/episode-header.css">
   <link rel="stylesheet" href="css/components/episode-item.css">
   <link rel="stylesheet" href="css/components/episode-card.css">
+  <link rel="stylesheet" href="css/components/form-textarea.css">
+  <link rel="stylesheet" href="css/components/emotion-pick.css">
+  <link rel="stylesheet" href="css/components/modal.css">
   <script src="js/core/_global.js" defer></script>
   <script src="js/components/series-card.js" defer></script>
   <script src="js/components/episode-card.js" defer></script>
+  <script src="js/components/modal.js" defer></script>
 
   <!-- 페이지 전용 App Shell (v1.03까지 이 HTML <style> 블록에 있던 내용) -->
   <link rel="stylesheet" href="css/pages/series-home.css">
@@ -144,7 +148,7 @@
               <span class="text-assist-w4 reaction-bar__meta">他2名が水やりしています</span>
             </div>
           </div>
-          <button class="btn btn-filled-sky reaction-bar__cta" type="button">
+          <button class="btn btn-filled-sky reaction-bar__cta" type="button" data-modal-open="#modal-water-support">
             <span class="text-subtext-w6">水をあげて応援する</span>
           </button>
         </div>
@@ -215,6 +219,92 @@
 
     </div>
   </main>
+
+  <!-- Modal: 水をあげて応援する -->
+  <div class="modal-backdrop" id="modal-water-support">
+    <div class="modal modal--water-support" role="dialog" aria-modal="true" aria-labelledby="modal-water-support-title">
+      <button class="modal__close" type="button" data-modal-close aria-label="閉じる">
+        <i class="icon icon-close"></i>
+      </button>
+      <div class="modal-water-support__head">
+        <h2 class="modal__title" id="modal-water-support-title">水をあげて応援する</h2>
+        <p class="modal__helper modal-water-support__helper">タグもメッセージも未入力のままでも送信できます。</p>
+      </div>
+      <div class="modal-water-support__body">
+        <div class="modal-water-support__emotions" role="radiogroup" aria-label="感情を選ぶ">
+          <label class="emotion-pick">
+            <input type="radio" name="water-emotion" value="laugh" class="emotion-pick__input" checked data-water-emotion-default>
+            <i class="icon icon-sentiment-very-satisfied-filled emotion-pick__icon"></i>
+            <span class="emotion-pick__label text-caption-w4">笑った</span>
+          </label>
+          <label class="emotion-pick">
+            <input type="radio" name="water-emotion" value="cry" class="emotion-pick__input">
+            <i class="icon icon-sentiment-sad-filled emotion-pick__icon"></i>
+            <span class="emotion-pick__label text-caption-w4">泣けた</span>
+          </label>
+          <label class="emotion-pick">
+            <input type="radio" name="water-emotion" value="love" class="emotion-pick__input">
+            <i class="icon icon-favorite-filled emotion-pick__icon"></i>
+            <span class="emotion-pick__label text-caption-w4">推せる</span>
+          </label>
+          <label class="emotion-pick">
+            <input type="radio" name="water-emotion" value="next" class="emotion-pick__input">
+            <i class="icon icon-fast-forward-filled emotion-pick__icon"></i>
+            <span class="emotion-pick__label text-caption-w4">続き楽しみ</span>
+          </label>
+        </div>
+        <div class="form-textarea form-textarea--with-counter modal-water-support__textarea">
+          <textarea class="form-textarea__field" rows="5" maxlength="300" placeholder="作品へのひとこを入力してください" aria-label="作品へのひとこと"></textarea>
+          <span class="form-textarea__counter text-overline-w4" data-textarea-counter>0/300</span>
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn-line btn--sm" type="button" data-modal-close><span class="text-caption-w4">閉じる</span></button>
+        <button class="btn btn-filled-sky btn--sm" type="button" disabled data-water-submit><span class="text-caption-w4">水をあげて応援する</span></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 감정 라디오 + textarea 카운터 + 송신 버튼 활성화
+    (() => {
+      const backdrop = document.getElementById('modal-water-support');
+      if (!backdrop) return;
+
+      const submit = backdrop.querySelector('[data-water-submit]');
+      const radios = backdrop.querySelectorAll('input[name="water-emotion"]');
+      const ta = backdrop.querySelector('.form-textarea__field');
+      const counter = backdrop.querySelector('[data-textarea-counter]');
+
+      const update = () => {
+        const anyPicked = Array.from(radios).some((r) => r.checked);
+        const hasText = ta && ta.value.trim().length > 0;
+        if (submit) submit.disabled = !(anyPicked || hasText);
+      };
+
+      radios.forEach((r) => r.addEventListener('change', update));
+
+      // 모달이 닫힐 때 modal.js 의 resetModal 이 모든 radio 를 해제하므로,
+      // 트리거 클릭 시점에 기본 선택(笑った)을 복원
+      document.addEventListener('click', (e) => {
+        const opener = e.target.closest('[data-modal-open="#modal-water-support"]');
+        if (!opener) return;
+        const def = backdrop.querySelector('[data-water-emotion-default]');
+        if (def) def.checked = true;
+        update();
+      });
+
+      if (ta && counter) {
+        const max = ta.getAttribute('maxlength') || 300;
+        const tick = () => {
+          counter.textContent = `${ta.value.length}/${max}`;
+          update();
+        };
+        ta.addEventListener('input', tick);
+        tick();
+      }
+    })();
+  </script>
 
 </body>
 </html>

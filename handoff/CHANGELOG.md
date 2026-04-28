@@ -8,6 +8,68 @@
 
 ---
 
+## v1.06.0 (2026-04-29, v1.05.9 후속)
+
+**플로팅 알림 + 감정 선택 라디오 신규, 글로벌 base 룰 통합, fluid 너비 패턴 확장.** 신규 페이지 0개, 신규 CSS 컴포넌트 2개(`floating-alert`, `emotion-pick`). 기존 토큰·BEM 구조 변경 없음.
+
+### 신규 CSS 컴포넌트
+
+- **`css/components/floating-alert.css`** (NEW) — 페이지·모달 위에 떠있는 액션 포함 에러 배너
+  - inline-alert 와 달리 우측 액션 버튼 슬롯 포함 (재시도 등). `min-height 60` · `padding 12 12 12 20` · `radius 16` · `gap 8` · white bg
+  - shadow `0 4px 8px shadow-subtle, 0 0 1px shadow-mid` (modal 동일)
+  - 너비는 페이지에서 부여 (예: series-register 의 `--p60`)
+  - 구조: `__content` (flex:1 · gap 10 · icon 20 + text) + 우측 액션 버튼 슬롯
+  - **Variants**: `floating-alert--error` (1px red-100 outline · icon = red-100 · text = red-text · CTA = `btn-filled-red btn--sm`)
+  - dismiss 패턴 (`series-register.html` 기준): CTA 클릭 → `is-dismissing` 클래스 부여 → opacity/translateY transition 후 `transitionend` 에서 `remove()`. transitionend 는 `e.target === alertEl && e.propertyName === 'opacity'` 로 필터해 내부 버튼의 hover transition 버블링 무시
+- **`css/components/emotion-pick.css`** (NEW) — 水やり 모달의 감정 선택 라디오 카드
+  - `<label>` + 숨겨진 `<input type="radio">` 패턴 (radio-card 계열). 같은 `name` 내 단일 선택, 부모는 `role="radiogroup"` + `aria-label`
+  - `80×auto` · `padding 12 0` · `radius 16` · `gap 4` · white bg · 아이콘 36×36 (mask + currentColor) · 라벨 12/18 (w4 → 선택 시 w6)
+  - States 5종: default(gray-5/gray-3) / hover(gray-4/black-100) / focus(hover + 3px gray-5 ring + shadow, 키보드 전용) / pressed(=hover) / **selected**(sky-3 / black-100 / w6)
+
+### 글로벌 base 룰 통합 (`css/tokens/typography.css`)
+
+- **Universal box-sizing**: `*, *::before, *::after { box-sizing: border-box; }` 를 typography.css 에 단일 선언. 약 44개 컴포넌트/페이지 CSS 에 흩어져 있던 중복 규칙 제거
+- **폼 요소 폰트 상속**: `button, input, textarea, select { font-family: inherit; }` 추가 → user-agent 폰트 강제 회피. 약 46개 파일의 개별 `font-family: var(--font-family-base)` 선언 제거
+- 동작 변화 없음(시각/동작 동일), 모든 컴포넌트 CSS 가 더 짧고 단일 진실 원천을 갖게 됨
+
+### Fluid 너비 패턴 확장 — `width: max(var(--p50), 50vw)`
+
+- 1440 미만 뷰포트에서 720px 최소 너비, 1440 초과 시 뷰포트 1px 증가당 0.5px 확대되는 fluid 패턴을 다음 컨테이너에 일괄 적용:
+  - `css/components/form-card.css` · `post-manage.css` · `empty-state.css`
+  - `css/pages/account-setting.css`
+- **floating-alert 위치 락(sub-1440)**: `series-register.css` 의 `.series-register__floating-alert` 는 `left: max(50%, var(--p50))` + `translateX(-50%)` 로 1440 이하 뷰포트에선 페이지 중심(720)에 고정, 그 이상에선 뷰포트 중심을 따르게 처리
+- `creative-partner-onboarding.css` 는 의도적으로 제외 (`width: var(--p50)` 그대로 유지)
+
+### 토큰·spacing 미세 조정
+
+- **`form-field` gap**: `--space-1_5` (6px) → `--space-2` (8px) — 라벨↔body 간격 통일
+- **`my-msg__text`**: `white-space: pre-wrap` 추가 → 채팅창에서 shift+enter 개행이 말풍선에 보존되도록
+- **`styleguide.css` 토큰화**: 데모 영역 12건 하드코딩 색상을 `--sg-*` 토큰으로 교체. 신규 토큰 7종 추가(`--sg-row-hover`, `--sg-text-sub`, `--sg-border-dark`, `--sg-text-on-dark`, `--sg-text-meta-dark`, `--sg-tag-bg-dark`, `--sg-classname-dark-{bg,color}`)
+
+### 아이콘 추가 (`css/components/icon.css`)
+
+- **`.icon-close-thin`** (NEW) — 얇은 X (24×24) · modal close, dismiss 등 공통적으로 24px 사용. `.icon-close` 도 함께 `.icon-close,.icon-close-thin { width: 24px; height: 24px; }` 로 사이즈 override
+- **`.icon--lg`** (NEW) — 24px size modifier (sm/md 와 동일 패턴)
+- **`.icon-fast-forward-filled`** mask path 갱신 (시각적 라운드 보강)
+
+### 페이지 보정
+
+- **`workspace-onboarding.html`** — `my-msg.css` `<link>` 누락 → 추가 (오른쪽 채팅 패널 말풍선이 깨지던 회귀 수정)
+- **`viewer-yoko.html`** — `js/core/_global.js` 를 body 끝 → `<head>` 로 이동 (다른 페이지와 일관)
+
+### 인덱스 갱신
+
+- `index.html` + `styleguide.html` 버전 라벨 v1.06.0
+
+### 개발 액션 요약
+
+1. **`<FloatingAlert />` 컴포넌트**: action 슬롯 props (`children` 또는 `action`) + variant prop (`error` 등). dismiss 는 부모에서 상태 토글 + CSS transition + `onTransitionEnd` 에서 unmount. transitionend 필터링 패턴(`e.target === ref.current && e.propertyName === 'opacity'`) 그대로 이식
+2. **`<EmotionPick />` 컴포넌트**: shadcn `RadioGroupItem` 기반 + 커스텀 카드 레이아웃. 같은 RadioGroup 안에서 단일 선택, 선택 시 sky-3 톤 + 라벨 600 으로 전환
+3. **글로벌 reset**: Tailwind preflight 가 box-sizing 과 form font-family inheritance 를 이미 처리하므로, 이식 시 추가 작업 불필요
+4. **Fluid 너비**: `class="w-[max(var(--p50),50vw)]"` 또는 Tailwind preset 의 커스텀 width util 로 매핑
+
+---
+
 ## v1.05.9 (2026-04-28, v1.05.8 후속)
 
 **種を植える儀式 모달 인터랙션 완성 + 글로벌 부트스트랩 통합 + 토큰화 보정.** 신규 페이지 0개, 신규 CSS 컴포넌트 1개(`seed-ceremony`), 신규 JS 1개(`_global.js`). 기존 토큰·클래스·BEM 구조 변경 없음.

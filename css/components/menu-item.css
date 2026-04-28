@@ -26,7 +26,6 @@
   display: flex;
   align-items: center;
   gap: var(--space-4);
-  box-sizing: border-box;
   border: none;
   outline: none;
   text-align: left;
@@ -40,7 +39,6 @@
 /* ---------- Label ---------- */
 .menu-item__label {
   flex: 1;
-  font-family: var(--font-family-base);
   font-size: var(--font-size-subtext);
   line-height: var(--line-height-subtext);
   font-weight: var(--font-weight-w4);
