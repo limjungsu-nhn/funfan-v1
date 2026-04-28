@@ -77,7 +77,7 @@
   /* 뷰포트 1440 미만에서는 페이지 중앙(720px)에 고정 — 가로 스크롤과 함께 이동하지 않음 */
   left: max(50%, var(--p50));
   transform: translateX(-50%);
-  width: var(--p60);
+  width: max(var(--p50), 50vw); /* body 컨테이너와 동일 — 최소 720, 뷰포트 1px당 0.5px 확대 */
   z-index: 100;
   transition: opacity 240ms ease, transform 240ms ease;
 }
