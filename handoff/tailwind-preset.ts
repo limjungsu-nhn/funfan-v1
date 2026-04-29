@@ -111,8 +111,9 @@ const preset: Partial<Config> = {
          Usage: className="p-space-4 gap-space-2"
       ---------------------------------------------------------- */
       spacing: {
-        'space-0_5': '2px',
-        'space-1':   '4px',
+        'space-0_5':  '2px',
+        'space-0_75': '3px',
+        'space-1':    '4px',
         'space-1_5': '6px',
         'space-2':   '8px',
         'space-2_5': '10px',
@@ -240,6 +241,13 @@ const preset: Partial<Config> = {
       transitionDuration: {
         press: '80ms',
         collapse: '220ms',
+      },
+
+      /* ---------- Easing (custom curves) ---------- */
+      transitionTimingFunction: {
+        standard: 'cubic-bezier(.4, 0, .1, 1)',
+        'in':     'cubic-bezier(.4, 0, 1, 1)',
+        'out':    'cubic-bezier(0, 0, .2, 1)',
       },
     },
   },

@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="css/components/badge.css">
   <link rel="stylesheet" href="css/components/series-card.css">
   <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/tab.css">
   <link rel="stylesheet" href="css/components/garden-sign.css">
   <link rel="stylesheet" href="css/components/garden.css">
   <link rel="stylesheet" href="css/components/emotion-btn.css">
@@ -34,10 +35,26 @@
 </head>
 <body>
 
-  <!-- Navbar — 로고만 -->
+  <!-- Navbar — workspace-onboarding 동일 패턴 (로고 + 탭 + 마이페이지 + 워크스페이스) -->
   <header class="navbar">
     <div class="navbar-logo">
       <i class="logo logo-funfan"></i>
+    </div>
+    <div class="navbar-actions">
+      <div class="navbar-tabs">
+        <div class="tab-group">
+          <button class="tab tab--selected">公開</button>
+          <button class="tab">非公開</button>
+        </div>
+      </div>
+      <a class="btn btn-ghost" href="mypage.html">
+        <i class="icon icon-account-circle"></i>
+        <span class="text-assist-w4">マイページ</span>
+      </a>
+      <a class="btn btn-filled-nature" href="workspace.html">
+        <i class="icon icon-laptop-mac"></i>
+        <span class="text-assist-w4">ワークスペース</span>
+      </a>
     </div>
   </header>
 
@@ -54,7 +71,7 @@
               <h2 class="text-h2-w6 series-card__title">今週のかなでさん</h2>
               <div class="series-card__author">
                 <i class="avatar avatar-01 avatar--xs"></i>
-                <span class="text-subtext-w4 series-card__author-name">海野ハル</span>
+                <a class="text-subtext-w4 series-card__author-name text-link" href="author-profile.html">海野ハル</a>
               </div>
             </div>
             <div class="series-card__bottom">
@@ -80,7 +97,7 @@
               <div class="garden-sign">
                 <img class="garden-sign__bg" src="img/img_signs.png" alt="">
                 <div class="garden-sign__names">
-                  <p class="garden-sign__name">海野ハル</p>
+                  <a class="garden-sign__name text-link" href="author-profile.html">海野ハル</a>
                   <p class="garden-sign__name">さくら✿</p>
                   <p class="garden-sign__name">長い名前のユーザー</p>
                 </div>

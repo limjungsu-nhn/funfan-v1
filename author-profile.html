@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作家プロフィール — FunFan</title>
+
+  <!-- Design Tokens -->
+  <link rel="stylesheet" href="css/tokens/typography.css">
+  <link rel="stylesheet" href="css/tokens/layout.css">
+  <link rel="stylesheet" href="css/tokens/color.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/logo.css">
+  <link rel="stylesheet" href="css/components/icon.css">
+  <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/avatar.css">
+  <link rel="stylesheet" href="css/components/badge.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/tab.css">
+  <script src="js/core/_global.js" defer></script>
+
+  <!-- 페이지 전용 레이아웃 -->
+  <link rel="stylesheet" href="css/pages/series-home.css">
+  <link rel="stylesheet" href="css/pages/author-profile.css">
+</head>
+<body>
+
+  <!-- Navbar — workspace-onboarding 동일 패턴 (로고 + 탭 + 마이페이지 + 워크스페이스) -->
+  <header class="navbar">
+    <div class="navbar-logo">
+      <i class="logo logo-funfan"></i>
+    </div>
+    <div class="navbar-actions">
+      <div class="navbar-tabs">
+        <div class="tab-group">
+          <button class="tab tab--selected">公開</button>
+          <button class="tab">非公開</button>
+        </div>
+      </div>
+      <a class="btn btn-ghost" href="mypage.html">
+        <i class="icon icon-account-circle"></i>
+        <span class="text-assist-w4">マイページ</span>
+      </a>
+      <a class="btn btn-filled-nature" href="workspace.html">
+        <i class="icon icon-laptop-mac"></i>
+        <span class="text-assist-w4">ワークスペース</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="series-home author-profile">
+    <div class="series-home__inner author-profile__inner">
+
+      <!-- Profile Card -->
+      <section class="author-profile-card">
+        <i class="avatar avatar-01 author-profile-card__avatar" aria-hidden="true"></i>
+        <div class="author-profile-card__body">
+          <div class="author-profile-card__text">
+            <h1 class="author-profile-card__name text-h2-w6">つちだ かほ</h1>
+            <p class="author-profile-card__bio text-subtext-w4">日常の感情をやわらかくすくう漫画を描いています。最近は縦読みと横読みの両方で、<br>心の揺れを丁寧に見せる表現を模索中です。</p>
+          </div>
+          <div class="author-profile-card__socials">
+            <a class="author-profile-card__social" href="#">
+              <svg class="author-profile-card__social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+              </svg>
+              <span class="author-profile-card__social-handle">tsuchida_kaho</span>
+            </a>
+            <a class="author-profile-card__social" href="#">
+              <svg class="author-profile-card__social-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+              <span class="author-profile-card__social-handle">tsuchida_kaho</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Posted Works Card -->
+      <section class="author-profile-works">
+        <header class="author-profile-works__header">
+          <p class="author-profile-works__title text-body-lg-w6">投稿作品</p>
+          <p class="author-profile-works__subtitle text-overline-w4">公開作品を投稿日の降順で表示</p>
+        </header>
+        <ul class="author-profile-works__grid">
+          <li class="work-card">
+            <img class="work-card__cover" src="img/img_series01.png" alt="">
+            <div class="work-card__body">
+              <div class="work-card__meta-line">
+                <p class="work-card__tags text-caption-w4">
+                  <span>単行本</span>
+                  <span class="work-card__tag-sep" aria-hidden="true"></span>
+                  <span>12話</span>
+                </p>
+                <p class="work-card__title text-subtext-w6">夜明けのキッチン!</p>
+              </div>
+              <div class="work-card__stats">
+                <span class="work-card__stat">
+                  <i class="icon icon-filter-vintage work-card__stat-icon"></i>
+                  <span class="work-card__stat-value">8</span>
+                </span>
+                <span class="work-card__stat">
+                  <i class="icon icon-visibility work-card__stat-icon"></i>
+                  <span class="work-card__stat-value">1.2k</span>
+                </span>
+              </div>
+            </div>
+          </li>
+          <li class="work-card">
+            <img class="work-card__cover" src="img/img_series01.png" alt="">
+            <div class="work-card__body">
+              <div class="work-card__meta-line">
+                <p class="work-card__tags text-caption-w4">
+                  <span>単行本</span>
+                  <span class="work-card__tag-sep" aria-hidden="true"></span>
+                  <span>12話</span>
+                </p>
+                <p class="work-card__title text-subtext-w6">夜明けのキッチン!</p>
+              </div>
+              <div class="work-card__stats">
+                <span class="work-card__stat">
+                  <i class="icon icon-filter-vintage work-card__stat-icon"></i>
+                  <span class="work-card__stat-value">8</span>
+                </span>
+                <span class="work-card__stat">
+                  <i class="icon icon-visibility work-card__stat-icon"></i>
+                  <span class="work-card__stat-value">1.2k</span>
+                </span>
+              </div>
+            </div>
+          </li>
+          <li class="work-card">
+            <img class="work-card__cover" src="img/img_series01.png" alt="">
+            <div class="work-card__body">
+              <div class="work-card__meta-line">
+                <p class="work-card__tags text-caption-w4">
+                  <span>単行本</span>
+                  <span class="work-card__tag-sep" aria-hidden="true"></span>
+                  <span>12話</span>
+                </p>
+                <p class="work-card__title text-subtext-w6">夜明けのキッチン!</p>
+              </div>
+              <div class="work-card__stats">
+                <span class="work-card__stat">
+                  <i class="icon icon-filter-vintage work-card__stat-icon"></i>
+                  <span class="work-card__stat-value">8</span>
+                </span>
+                <span class="work-card__stat">
+                  <i class="icon icon-visibility work-card__stat-icon"></i>
+                  <span class="work-card__stat-value">1.2k</span>
+                </span>
+              </div>
+            </div>
+          </li>
+          <li class="work-card">
+            <img class="work-card__cover" src="img/img_series01.png" alt="">
+            <div class="work-card__body">
+              <div class="work-card__meta-line">
+                <p class="work-card__tags text-caption-w4">
+                  <span>単行本</span>
+                  <span class="work-card__tag-sep" aria-hidden="true"></span>
+                  <span>12話</span>
+                </p>
+                <p class="work-card__title text-subtext-w6">夜明けのキッチン!</p>
+              </div>
+              <div class="work-card__stats">
+                <span class="work-card__stat">
+                  <i class="icon icon-filter-vintage work-card__stat-icon"></i>
+                  <span class="work-card__stat-value">8</span>
+                </span>
+                <span class="work-card__stat">
+                  <i class="icon icon-visibility work-card__stat-icon"></i>
+                  <span class="work-card__stat-value">1.2k</span>
+                </span>
+              </div>
+            </div>
+          </li>
+          <li class="work-card">
+            <img class="work-card__cover" src="img/img_series01.png" alt="">
+            <div class="work-card__body">
+              <div class="work-card__meta-line">
+                <p class="work-card__tags text-caption-w4">
+                  <span>単行本</span>
+                  <span class="work-card__tag-sep" aria-hidden="true"></span>
+                  <span>12話</span>
+                </p>
+                <p class="work-card__title text-subtext-w6">夜明けのキッチン!</p>
+              </div>
+              <div class="work-card__stats">
+                <span class="work-card__stat">
+                  <i class="icon icon-filter-vintage work-card__stat-icon"></i>
+                  <span class="work-card__stat-value">8</span>
+                </span>
+                <span class="work-card__stat">
+                  <i class="icon icon-visibility work-card__stat-icon"></i>
+                  <span class="work-card__stat-value">1.2k</span>
+                </span>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+    </div>
+  </main>
+
+</body>
+</html>

@@ -551,6 +551,7 @@ instance.destroy();           // 정리
 - 우측 CTA 234×52: `btn btn-filled-sky` 재활용 + 커스텀 shadow `0 1px 2px rgba(0,0,0,0.05)`
 - 컨테이너 padding `16px 16px 16px 24px`, border-radius 14px
 - 참여자 텍스트 색: `--color-font-secondary` (#6E6E73)
+- **`.reaction-bar--compact`**: 664×65.6, padding `12 16 12 20`, radius 11.2; left col 283.2 + emotion gap 16; emotion icon 13×13 + count 11/18 w6; names/meta 10/16; CTA 40h, padding `0 32`, radius 12, font 11/16 w6 — series-manage-detail 페이지 전용
 
 #### `.emotion-btn` → 커스텀 (표시 전용)
 - 감정 카운트 표시 (icon + count, inline-flex, gap 4px) — **비-인터랙티브**, `<span>` 등 inline 요소로 사용
@@ -578,6 +579,7 @@ instance.destroy();           // 정리
 - Row 2: `.garden__item` × 6, gap 12px → 636px, `align-items: center`으로 자동 센터 정렬
 - `.garden__item--empty`: `visibility: hidden`으로 빈 슬롯 레이아웃 유지
 - 꽃 이미지: `img/img_flower_0N_before.png` / `img/img_flower_0N_after.png` (01~04)
+- **`.garden--compact`**: 633×207, item 68×76, padding `0 32`, gap 12 (그대로). 내부 `.garden-sign` 도 같이 축소 (68×76, 이름 폰트 9/11, names top 18) — `.garden-card--compact` 안에서만 사용
 
 #### `.garden-card` → 커스텀 Card (garden + reaction-bar 조합)
 - 1000×auto wood 카드. `.garden` + `.reaction-bar`를 하나의 컨테이너로 묶는 합성 컴포넌트
@@ -585,6 +587,7 @@ instance.destroy();           // 정리
 - padding `48px 36px 36px 36px`, flex-column gap 40px, 자식 중앙정렬 (`align-items: center`)
 - 자식 폭은 각자 유지 (garden 834 / reaction-bar 928) — 카드는 시각적 프레임만 제공
 - Figma: Frame2087333123
+- **`.garden-card--compact`**: 720×370 고정, padding `0 28`, gap 32, justify-center — series-manage-detail 페이지 전용. 내부 `.garden--compact` + `.reaction-bar--compact` 와 함께 사용
 
 #### `.episode-header` → 커스텀 (에피소드 리스트 헤더)
 - 1000×auto 흰색 헤더 (garden-card 폭과 일치). 좌측 타이틀 + 전체 수, 우측 정렬 토글
@@ -721,3 +724,32 @@ A. 모든 `<body>` 또는 최상위 컨테이너에 `min-w-base` (= 1440px).
 
 **Q. 다크모드는?**
 A. 현재 프로토타입 **미지원**. 추후 검토.
+
+---
+
+## 페이지 스코프 컴포넌트 (재사용 시 컴포넌트 승격 후보)
+
+#### `.author-profile-card` → 작가 프로필 카드 (author-profile.html 전용)
+- 1008×auto 흰 카드, padding 44/36, radius 24, shadow
+- 자식: `__avatar` (140×140 wood-6 배경) + `__body` (gap 32)
+- `__body` 내부: `__text` (gap 24, name + bio center) + `__socials` (X / Instagram pill 2개, gap 8)
+- `__social` pill: padding 6/14/6/16, radius 28, gray-5 outline, font 13/20 w4
+
+#### `.author-profile-works` → 투고 작품 그리드 (author-profile.html 전용)
+- 1008×auto 흰 카드, padding 40/36, radius 24, shadow, gap 24
+- `__header`: title 18/28 w6 + subtitle 11/16 w4, gap 2
+- `__grid`: flex `space-between` 5열 (work-card × 5)
+
+#### `.work-card` → 작품 카드 (author-profile-works 그리드 아이템)
+- flex column gap 16 (cover + body)
+- `__cover`: 160×228, radius 8, object-cover
+- `__body`: gap 16 (meta-line + stats)
+- `__meta-line`: gap 2 — `__tags` (단행본 | 12話, gap 6 + 1×10 divider, 12/18 w4 black-50) + `__title` (14/22 w6)
+- `__stats`: gap 8 — `__stat` × 2 (icon 16×16 + value 11/16 w6)
+- TODO: 컴포넌트 승격 시 `.series-thumb-card` 등으로 리네이밍 검토
+
+#### `.viewer-tate` / `.viewer-yoko` → 만화 뷰어 (popup window)
+- 縦読み(tate) — main 영역 세로 스크롤 + chrome 토글, 이미지 728px 고정
+- 横読み(yoko) — main 영역 좌/우 nav + 페이지 슬라이드(퇴장 50%에 입장), 이미지 spread 2장
+- 1440 min-width 미적용 (popup window)
+- 진행 상태 단일 소스: `.viewer-*__progress[role="progressbar"]` aria-valuenow/min/max

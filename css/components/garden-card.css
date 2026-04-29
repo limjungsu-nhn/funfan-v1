@@ -26,3 +26,15 @@
   align-items: center;
   gap: var(--space-10);
 }
+
+/* ---------- Compact Variant — 720px 페이지(series-manage-detail) 전용
+   - 카드 자체가 좁고 콘텐츠 시각 무게가 작은 페이지에 사용
+   - 720×370 고정 / 좌우 28 패딩 / 콘텐츠 중앙 정렬 / gap 32
+   - 내부 .garden, .reaction-bar 도 --compact 모디파이어와 함께 사용 ---------- */
+.garden-card--compact {
+  width: max(var(--p50), 50vw);  /* 720 최소, 뷰포트 1px 증가당 0.5px 확대 (form-card 동일 패턴) */
+  height: 370px;
+  padding: 0 var(--space-7);     /* 0 28 — 세로 정렬은 height + center 로 처리 */
+  justify-content: center;
+  gap: var(--space-8);           /* 32 */
+}

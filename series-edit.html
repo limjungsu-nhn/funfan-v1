@@ -113,8 +113,17 @@
       <div class="workspace__content">
 
         <header class="series-edit__header">
-          <h1 class="series-edit__title text-h2-w6">作品情報編集</h1>
-          <p class="series-edit__desc text-caption-w4">タイトル、説明、作品状態、AI利用表示を更新できます。読む方向とジャンルは登録後に変更できません。</p>
+          <div class="series-edit__header-side series-edit__header-side--start">
+            <a class="btn btn-line btn--sm" href="series-manage-detail.html">
+              <i class="icon icon-chevron-left"></i>
+              <span class="text-caption-w4">シリーズ管理へ戻る</span>
+            </a>
+          </div>
+          <div class="series-edit__header-center">
+            <h1 class="series-edit__title text-h2-w6">作品情報編集</h1>
+            <p class="series-edit__desc text-caption-w4">タイトル、説明、作品状態、AI利用表示を更新できます。読む方向とジャンルは登録後に変更できません。</p>
+          </div>
+          <div class="series-edit__header-side"></div>
         </header>
 
         <section class="form-card">
@@ -246,7 +255,7 @@
                 <span class="text-caption-w4">作品を削除する</span>
               </button>
               <div class="series-edit__actions-end">
-                <button class="btn btn-line btn--sm" type="button" onclick="location.href='series-post-management.html'">
+                <button class="btn btn-line btn--sm" type="button" onclick="location.href='series-manage-detail.html'">
                   <span class="text-caption-w4">キャンセル</span>
                 </button>
                 <button class="btn btn-filled-black btn--sm" type="button" id="save-btn" disabled>

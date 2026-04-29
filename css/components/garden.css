@@ -118,3 +118,56 @@
     animation: none;
   }
 }
+
+/* ---------- Compact Variant — series-manage-detail 720 카드 전용
+   - 컨테이너 633×207, item 68×76, gap 12, padding 0 (.garden-card 가 외곽 28 처리)
+   - 사인 위치/배너 사이즈는 base 와 같이 bg 이미지에 의존 ---------- */
+.garden--compact {
+  width: 633px;
+  height: 207px;
+}
+
+.garden--compact .garden__bg {
+  /* 원본 비율(834×241) 유지하며 폭 633에 맞춤 → 높이 자동 축소 */
+  width: 633px;
+  height: auto;
+  /* 컨테이너(207) 안에서 세로 중앙 정렬 — 원본 비율 유지된 상태로 ≈183 높이 */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.garden--compact .garden__content {
+  padding: var(--space-4) var(--space-8) 0;  /* 16 / 32 / 0 */
+  gap: var(--space-0_75);                    /* 3 — base 의 row overlap(-5) 대체 */
+}
+
+/* compact 에서는 row 간 overlap(-5) 사용하지 않음 — content gap 8 로 통일 */
+.garden--compact .garden__row + .garden__row {
+  margin-top: 0;
+}
+
+.garden--compact .garden__row {
+  gap: var(--space-3_5);  /* 14 — compact 전용 */
+}
+
+.garden--compact .garden__item {
+  width: 68px;
+  height: 76px;
+}
+
+.garden--compact .garden-sign,
+.garden--compact .garden-sign__bg {
+  width: 68px;
+  height: 76px;
+}
+
+.garden--compact .garden-sign__names {
+  top: 18px;
+  height: 34px;
+  padding: 0 11px;
+}
+
+.garden--compact .garden-sign__name {
+  font-size: 9px;
+  line-height: 11px;
+}

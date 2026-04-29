@@ -154,3 +154,15 @@ button, input, textarea, select {
 /* Display 1 */
 .text-display1-w4 { font-size: var(--font-size-display1);  line-height: var(--line-height-display1);  font-weight: var(--font-weight-w4); }
 .text-display1-w6 { font-size: var(--font-size-display1);  line-height: var(--line-height-display1);  font-weight: var(--font-weight-w6); }
+
+/* ---------- Text Link (단순 텍스트 링크) ----------
+   - 색·폰트는 부모 inherit (커스터마이즈 없음)
+   - 기본 상태: 밑줄 없음 / Hover 시에만 underline
+   - 사용 예: 작가 이름 → author-profile 링크 (series-home / creator-series-home / series-manage-detail) */
+.text-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+.text-link:hover { text-decoration: underline; }
+.text-link:focus-visible { text-decoration: underline; outline: none; }

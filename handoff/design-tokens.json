@@ -93,8 +93,9 @@
 
   "spacing": {
     "$description": "컴포넌트 내부 간격(padding, gap, margin)용 절대값 스케일. --p{n}와 구분해서 사용.",
-    "0_5": "2px",
-    "1":   "4px",
+    "0_5":  "2px",
+    "0_75": "3px",
+    "1":    "4px",
     "1_5": "6px",
     "2":   "8px",
     "2_5": "10px",
@@ -203,5 +204,12 @@
     "press":        "transform 0.08s ease-in",
     "hover":        "background 0.1s, outline-color 0.1s",
     "collapse":     "opacity 0.22s ease, transform 0.22s ease, max-width 0.22s ease, padding-left 0.22s ease, padding-right 0.22s ease"
+  },
+
+  "easing": {
+    "$description": "공용 가/감속 커브. accordion · right-panel · viewer-yoko slide 등에서 참조.",
+    "standard": "cubic-bezier(.4, 0, .1, 1)",
+    "in":       "cubic-bezier(.4, 0, 1, 1)",
+    "out":      "cubic-bezier(0, 0, .2, 1)"
   }
 }

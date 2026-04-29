@@ -1,0 +1,228 @@
+/* ============================================
+   author-profile.html 전용 레이아웃
+   - series-home.css 기반 (navbar + 중앙 컨테이너)
+   - 두 카드: 프로필(아바타 140 + 이름·소개·소셜) + 투고 작품(5열 그리드)
+   - 카드/내부 컴포넌트는 페이지 스코프(.author-profile-*, .work-card)로 정의 — 다른 페이지에서 재사용 시 컴포넌트로 승격
+   ============================================ */
+
+/* ---------- Page wrapper (workspace__content 스타일 패턴 — bg-soft + 좌우 보더 + 큰 상하 패딩) ---------- */
+.author-profile {
+  align-self: stretch;
+  /* series-home 기본의 padding-top: var(--navbar-height) 유지 (네비게이션과 겹치지 않도록) */
+  padding: var(--navbar-height) 0 0;
+  background: var(--color-bg-soft);
+  border-left: 1px solid var(--color-gray-5);
+  border-right: 1px solid var(--color-gray-5);
+  display: flex;
+  flex-direction: column;
+  /* series-home 의 justify-content:center (column 기준 세로 중앙) 무력화 — 콘텐츠 상단 정렬 */
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--space-7);  /* 28 */
+}
+
+.author-profile__inner {
+  width: var(--p70);  /* 1008 */
+  /* series-manage-detail 와 동일한 상하 여백 (navbar 64 + padding-top 36 / 하단 180) */
+  padding-top: var(--space-9);     /* 36 */
+  padding-bottom: var(--space-45); /* 180 */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);  /* 20 */
+}
+
+/* ---------- Profile Card ---------- */
+.author-profile-card {
+  width: 100%;
+  padding: var(--space-11) var(--space-9);  /* 44 / 36 */
+  background: var(--color-white-100);
+  box-shadow:
+    0 4px 8px var(--color-shadow-subtle),
+    0 0 1px var(--color-shadow-mid);
+  border-radius: var(--radius-xl);  /* 24 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);  /* 32 — 아바타 ↔ body */
+}
+
+.author-profile-card__avatar {
+  width: 140px;
+  height: 140px;
+  background-color: var(--color-wood-6);
+  flex-shrink: 0;
+}
+
+.author-profile-card__body {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-8);  /* 32 — text ↔ socials */
+}
+
+.author-profile-card__text {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);  /* 24 — name ↔ bio */
+}
+
+.author-profile-card__name {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+  text-align: center;
+}
+
+.author-profile-card__bio {
+  margin: 0;
+  color: var(--color-font-primary-black-50);
+  text-align: center;
+}
+
+/* ---------- Social Pills ---------- */
+.author-profile-card__socials {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);  /* 8 */
+}
+
+.author-profile-card__social {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);  /* 8 */
+  padding: var(--space-1_5) var(--space-3_5) var(--space-1_5) var(--space-4);  /* 6 14 6 16 */
+  border-radius: 28px;
+  outline: 1px solid var(--color-gray-5);
+  outline-offset: -1px;
+  background: var(--color-white-100);
+  color: var(--color-font-primary-black-100);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: var(--font-weight-w4);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.author-profile-card__social:hover {
+  background: var(--color-bg-soft);
+}
+
+.author-profile-card__social-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--color-gray-3);
+}
+
+/* ---------- Posted Works Card ---------- */
+.author-profile-works {
+  width: 100%;
+  padding: var(--space-10) var(--space-9);  /* 40 / 36 */
+  background: var(--color-white-100);
+  box-shadow:
+    0 4px 8px var(--color-shadow-subtle),
+    0 0 1px var(--color-shadow-mid);
+  border-radius: var(--radius-xl);  /* 24 */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);  /* 24 — header ↔ grid */
+}
+
+.author-profile-works__header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0_5);  /* 2 */
+}
+
+.author-profile-works__title {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+}
+
+.author-profile-works__subtitle {
+  margin: 0;
+  color: var(--color-font-primary-black-50);
+}
+
+.author-profile-works__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+/* ---------- Work Card (페이지 전용 — 추후 공통 컴포넌트 승격 가능) ---------- */
+.work-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);  /* 16 — cover ↔ body */
+}
+
+.work-card__cover {
+  width: 160px;
+  height: 228px;
+  border-radius: var(--radius-2xs);  /* 8 */
+  display: block;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.work-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);  /* 16 — meta ↔ stats */
+}
+
+.work-card__meta-line {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-0_5);  /* 2 */
+  margin: 0;
+}
+
+.work-card__tags {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1_5);  /* 6 */
+  color: var(--color-font-primary-black-50);
+}
+
+.work-card__tag-sep {
+  width: 1px;
+  height: 10px;
+  background: var(--color-black-30);
+  flex-shrink: 0;
+}
+
+.work-card__title {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+}
+
+.work-card__stats {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);  /* 8 */
+}
+
+.work-card__stat {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);  /* 4 */
+  font-size: var(--font-size-overline);   /* 11 */
+  line-height: var(--line-height-overline); /* 16 */
+  font-weight: var(--font-weight-w6);
+  color: var(--color-font-primary-black-100);
+}
+
+.work-card__stat-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  background-color: var(--color-gray-3);
+}

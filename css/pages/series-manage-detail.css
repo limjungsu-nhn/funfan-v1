@@ -1,0 +1,76 @@
+/* ============================================
+   series-manage-detail.html 전용 레이아웃
+   workspace shell(navbar + left-panel + right-panel) 안에서
+   creator-series-home 과 동일한 series/garden/episode 카드 묶음을 720px 폭으로 노출.
+   공통 App Shell은 app-shell.css, 카드 자체는 css/components/{series-card,garden-card,episode-card}.css 참조.
+   ============================================ */
+
+.workspace__content {
+  /* 페이지 전용 토큰 — series-card / garden-card / episode-card 폭 fluid
+     - 최소 720(=1440*50%) / 뷰포트 1px 증가당 0.5px 확대
+     - form-card.css 와 동일한 패턴 (max(var(--p50), 50vw)) */
+  --series-detail-card-width: max(var(--p50), 50vw);
+  --episode-card-width: var(--series-detail-card-width);
+
+  padding: var(--space-9) 0 var(--space-45); /* 36 / 0 / 180 — 하단 180 여백 */
+  background: var(--color-bg-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4); /* 16 */
+  border-left: 1px var(--color-gray-5) solid;
+  border-right: 1px var(--color-gray-5) solid;
+}
+
+/* ---------- Card width overrides — series-card / garden-card / episode-card 모두 fluid ---------- */
+.workspace__content .series-card,
+.workspace__content .garden-card {
+  width: var(--series-detail-card-width);
+  max-width: var(--series-detail-card-width);
+}
+
+/* ---------- Card radius overrides — 24 → 16 (페이지 전용) ---------- */
+.workspace__content .series-card,
+.workspace__content .garden-card,
+.workspace__content .episode-card {
+  border-radius: var(--radius-md);
+}
+
+/* ---------- Series card overrides — Figma 720 spec
+   - 패딩 32 28 / 포스터 190×270 / top-gap 16 / bottom-gap 32 / button btn--sm
+   - 본 컴포넌트 시리즈 카드(1000px 기준)와 다른 콤팩트 변형 ---------- */
+.workspace__content .series-card {
+  padding: var(--space-8) var(--space-7); /* 32 / 28 */
+}
+
+.workspace__content .series-card__body {
+  min-height: 270px; /* 신규 포스터 높이 */
+}
+
+.workspace__content .series-card__poster {
+  width: 190px;
+  height: 270px;
+}
+
+.workspace__content .series-card__top {
+  gap: var(--space-4); /* 20 → 16 */
+}
+
+.workspace__content .series-card__bottom {
+  gap: var(--space-8); /* 36 → 32 */
+}
+
+/* ---------- Episode card overrides — Figma 720 spec
+   - 패딩 32 28 (헤더-리스트 gap 32 는 base 와 동일) / row 내부 (썸 102×68, body gap 6) ---------- */
+.workspace__content .episode-card {
+  padding: var(--space-8) var(--space-7);  /* 32 / 28 — base 40 36 → 32 28 */
+}
+
+.workspace__content .creator-episode-row__thumb {
+  width: 102px;
+  height: 68px;
+}
+
+.workspace__content .creator-episode-row__body {
+  gap: var(--space-1_5); /* 8 → 6 */
+}

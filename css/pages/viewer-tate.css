@@ -1,0 +1,148 @@
+/* ============================================
+   viewer-tate.html — 縦読み(세로) 스크롤 뷰어
+   새 창(popup window)으로 열리는 페이지 → 1440 min-width 미적용 (미니창)
+   레이아웃: progress · header · main(scroll) · footer
+   읽기 방향: 縦読み는 위→아래 → 좌/우 nav 없음, 스크롤이 단일 입력
+   ============================================ */
+
+.viewer-tate {
+  /* 로컬 토큰 */
+  --chrome-height: 52px;
+  --progress-height: var(--space-0_5);
+  --transition-chrome: 0.4s var(--ease-standard);
+
+  margin: 0;
+  background: var(--color-white-100);
+  color: var(--color-font-primary-black-100);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ---------- Progress ---------- */
+.viewer-tate__progress {
+  align-self: stretch;
+  height: var(--progress-height);
+  background: var(--color-gray-6);
+  transition: margin-block-start var(--transition-chrome);
+}
+
+.viewer-tate--chrome-hidden .viewer-tate__progress {
+  margin-block-start: calc(var(--progress-height) * -1);
+}
+
+.viewer-tate__progress-bar {
+  height: 100%;
+  background: var(--color-nature-3);
+  width: var(--progress, 0%);
+}
+
+/* ---------- Header ---------- */
+.viewer-tate__header {
+  align-self: stretch;
+  height: var(--chrome-height);
+  flex-shrink: 0;
+  padding-inline: var(--space-5);
+  background: var(--color-white-100);
+  box-shadow: 0px 4px 8px var(--color-shadow-subtle), 0px 0px 1px var(--color-shadow-mid);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2_5);
+  position: relative;
+  z-index: 2;
+  transition: margin-block-start var(--transition-chrome);
+}
+
+.viewer-tate--chrome-hidden .viewer-tate__header {
+  margin-block-start: calc(var(--chrome-height) * -1);
+}
+
+.viewer-tate__close {
+  width: var(--space-6);
+  height: var(--space-6);
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewer-tate__close .icon {
+  width: var(--space-6);
+  height: var(--space-6);
+}
+
+.viewer-tate__title {
+  margin: 0;
+  font-size: var(--font-size-body-sm);
+  line-height: var(--line-height-body-sm);
+  font-weight: var(--font-weight-w6);
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Main (세로 스크롤) ---------- */
+.viewer-tate__main {
+  align-self: stretch;
+  flex: 1 1 0;
+  min-height: 0;
+  background: var(--color-white-100);
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.viewer-tate__stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-block: 0;
+  gap: 0;
+}
+
+.viewer-tate__image-wrap {
+  position: relative;
+  display: block;
+  width: 728px;
+  line-height: 0;
+}
+
+.viewer-tate__image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---------- Footer ---------- */
+.viewer-tate__footer {
+  align-self: stretch;
+  height: var(--chrome-height);
+  flex-shrink: 0;
+  background: var(--color-white-100);
+  border-top: 1px solid var(--color-gray-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+  transition: margin-block-end var(--transition-chrome);
+}
+
+.viewer-tate--chrome-hidden .viewer-tate__footer {
+  margin-block-end: calc(var(--chrome-height) * -1);
+}
+
+.viewer-tate__footer-side {
+  flex: 1 1 0;
+  align-self: stretch;
+  padding-inline: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-0_5);
+}
+
+.viewer-tate__footer-side--end {
+  justify-content: flex-end;
+}

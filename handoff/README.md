@@ -4,7 +4,32 @@
 
 ---
 
-## 📌 v1.06.3 요약 (2026-04-29, v1.06.2 후속) — 먼저 이것만 보세요
+## 📌 v1.06.4 요약 (2026-04-30, v1.06.3 후속) — 먼저 이것만 보세요
+
+**series-manage-detail / author-profile / viewer-tate 신규 페이지 3종 + compact 변형 3종(garden / garden-card / reaction-bar) + 토큰 추가(--space-0_75, --ease-in/--ease-out, .text-link 유틸) + viewer-yoko 슬라이드 개선 + 페이지 패턴 통일.** 핵심은 (1) 작품 관리 흐름 페이지(series-manage-detail) 신설로 series-post-management → series-manage-detail → episode-add-yoko 동선 완성, (2) 작가 프로필(author-profile) 신설 + series-card / garden-sign 의 작가명 텍스트 링크화, (3) 縦読み 뷰어(viewer-tate) + 横読み(viewer-yoko) spread 동시 슬라이드 개선.
+
+| 분류 | 내용 | 개발 영향 |
+|---|---|---|
+| **series-manage-detail.html (NEW)** | workspace shell 안에서 series-card / garden-card / episode-card 3카드를 fluid 720(`max(--p50, 50vw)`) 폭으로 노출. radius 16(페이지 전용 override). 12개 에피소드 행 | React: `<SeriesManageDetail>` — 3 카드 슬롯 합성 |
+| **author-profile.html (NEW)** | navbar-only 페이지. 1008 inner — 프로필 카드(avatar 140 + 이름·소개·SNS pill 2개) + 투고 작품 그리드(work-card × 5, cover 160×228 + 메타·통계). 海野ハル / つちだ かほ 클릭 시 진입 | React: `<AuthorProfile>` — 카드 2종 + work-card 컴포넌트로 분해. work-card 컴포넌트 승격 검토 |
+| **viewer-tate.html (NEW)** | 縦読み(세로 스크롤) 만화 뷰어. popup window. 728px 고정 폭 이미지 5장 세로 나열 + 스크롤 위치 → progress bar + 탭 시 chrome 토글 | React: `<ViewerTate>` — 이미지 배열 + scroll progress hook |
+| **compact 변형 3종 (NEW)** | `.garden-card--compact` 720×370, padding 0/28, justify-center / `.garden--compact` 633×207, item 68×76 (+ `.garden-sign` 동반 축소) / `.reaction-bar--compact` 664×65.6 (Figma 0.8× 환산) — series-manage-detail 페이지에서 사용 | React: size prop 분기 (`<GardenCard size="compact" />`) |
+| **신규 토큰** | `--space-0_75: 3px` (compact gap), `--ease-in: cubic-bezier(.4, 0, 1, 1)` (퇴장), `--ease-out: cubic-bezier(0, 0, .2, 1)` (등장) | Tailwind preset 동기화 필요 |
+| **.text-link 유틸리티** | `css/tokens/typography.css` — 색·폰트 부모 inherit + Hover/focus-visible 시 underline. 작가명 텍스트 링크용 | React: 단순 `<a>` + 동일 동작 |
+| **viewer-yoko 슬라이드 개선** | spread 동시 슬라이드, 퇴장 50% 시점에 입장 시작(0.6s, ease-in/out 분리), 페이지 패리티 따라 이미지 src 교체 | React: framer-motion `AnimatePresence` 로 단순화 가능 |
+| **페이지 패턴 통일** | mypage / reader-account-setting 의 `margin-top + calc(100vh - navbar)` → `padding-top: var(--navbar-height) + min-height: 100%` (series-home 패턴) | (개발 영향 없음) |
+| **랜딩 연동 추가** | series-post-management `編集・話を追加` → series-manage-detail / series-manage-detail `作品情報を編集` → series-edit / `エピソード追加` 및 행 `編集` → episode-add-yoko / 海野ハル 작가명 → author-profile | (개발 영향 없음) |
+
+**하위 호환** — 기존 `.garden-card` / `.garden` / `.reaction-bar` 시그니처 무변경(`--compact` 추가만), mypage / reader-account-setting 시각 무변화(구조만 통일).
+
+**확인할 곳**
+1. [`COMPONENTS.md`](./COMPONENTS.md) — compact 변형 메모, 페이지 스코프 컴포넌트(`.author-profile-card` / `.author-profile-works` / `.work-card` / 뷰어) 신규 섹션
+2. `series-manage-detail.html` / `author-profile.html` / `viewer-tate.html` — 3종 신규 페이지
+3. `styleguide.html` — `.text-link` (Typography), `--space-0_75` / `--ease-in` / `--ease-out` (Layout) 등록 확인
+
+---
+
+## 📌 v1.06.3 요약 (2026-04-29, v1.06.2 후속)
 
 **modal-context 모듈화 (정적 HTML → 데이터 기반 렌더) + workroom mini 모드 작업 종료 모달 추가 + 새 modal sub-elements (field/add-slot/entity-row).** 핵심은 (1) 모달 컨텍스트 마크업을 PageAttachment 와 동일한 패턴(JS 모듈 + init 옵션 + 콜백)으로 통합, (2) workroom 미니 팝업 종료 시 띄우는 축하 모달(`modal--work-end`) 신규 + 일러스트 3종 등록, (3) Step 2 의 빈/채워짐 상태를 데이터로 자동 분기하는 신규 sub-element 일습.
 

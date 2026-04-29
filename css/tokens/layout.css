@@ -16,6 +16,7 @@
      --p{n} (페이지 레벨 1440 퍼센트) 와 구분해서 사용
   ---------------------------------------- */
   --space-0_5:  2px;
+  --space-0_75: 3px;
   --space-1:    4px;
   --space-1_5:  6px;
   --space-2:    8px;
@@ -57,6 +58,8 @@
      개별 duration/delay는 각 컴포넌트에서 지정, 곡선만 여기서 통일.
   ---------------------------------------- */
   --ease-standard: cubic-bezier(.4, 0, .1, 1);
+  --ease-in:  cubic-bezier(.4, 0, 1, 1);   /* 점점 빠르게 — 퇴장(accelerate) */
+  --ease-out: cubic-bezier(0, 0, .2, 1);   /* 점점 느리게 — 등장(decelerate) */
 
   /* ---------- Component Widths ----------
      특정 컴포넌트 고정 폭 (1440 % 스케일 외 고정값)

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第1話「月明かりの工房」 — Viewer (縦)</title>
+
+  <!-- Tokens -->
+  <link rel="stylesheet" href="css/tokens/color.css">
+  <link rel="stylesheet" href="css/tokens/layout.css">
+  <link rel="stylesheet" href="css/tokens/typography.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/icon.css">
+  <link rel="stylesheet" href="css/components/button.css">
+
+  <!-- Page -->
+  <link rel="stylesheet" href="css/pages/viewer-tate.css">
+  <script src="js/core/_global.js" defer></script>
+  <script src="js/pages/viewer-tate.js" defer></script>
+</head>
+<body class="viewer-tate">
+
+  <!-- 진행 바 — 스크롤 위치로 width 동기화 -->
+  <div class="viewer-tate__progress" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="読書進捗">
+    <div class="viewer-tate__progress-bar"></div>
+  </div>
+
+  <!-- 헤더: 닫기 + 화 제목 -->
+  <header class="viewer-tate__header">
+    <button class="viewer-tate__close" type="button" aria-label="閉じる" onclick="window.close()">
+      <i class="icon icon-chevron-left"></i>
+    </button>
+    <h1 class="viewer-tate__title">第1話「月明かりの工房」</h1>
+  </header>
+
+  <!-- 메인: 세로 스크롤로 이미지 나열 -->
+  <main class="viewer-tate__main" aria-label="ページ内容">
+    <div class="viewer-tate__stage">
+      <div class="viewer-tate__image-wrap"><img class="viewer-tate__image" src="img/img_viewer_kurokage_01.jpg" alt=""></div>
+      <div class="viewer-tate__image-wrap"><img class="viewer-tate__image" src="img/img_viewer_kurokage_02.jpg" alt=""></div>
+      <div class="viewer-tate__image-wrap"><img class="viewer-tate__image" src="img/img_viewer_kurokage_03.jpg" alt=""></div>
+      <div class="viewer-tate__image-wrap"><img class="viewer-tate__image" src="img/img_viewer_kurokage_04.jpg" alt=""></div>
+    </div>
+  </main>
+
+  <!-- 푸터: 次の話 | 前の話 -->
+  <footer class="viewer-tate__footer">
+    <div class="viewer-tate__footer-side">
+      <button class="btn btn-ghost btn--sm" type="button">
+        <i class="icon icon-chevron-left icon--sm"></i>
+        <span>次の話</span>
+      </button>
+    </div>
+    <div class="viewer-tate__footer-side viewer-tate__footer-side--end">
+      <button class="btn btn-ghost btn--sm" type="button">
+        <span>前の話</span>
+        <i class="icon icon-chevron-right icon--sm"></i>
+      </button>
+    </div>
+  </footer>
+
+</body>
+</html>

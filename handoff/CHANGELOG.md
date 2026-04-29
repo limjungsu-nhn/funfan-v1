@@ -8,6 +8,58 @@
 
 ---
 
+## v1.06.4 (2026-04-30, v1.06.3 후속)
+
+**series-manage-detail / author-profile / viewer-tate 신규 페이지 3종 + compact 변형 3종 + 토큰 추가 + viewer-yoko 슬라이드 개선.** 신규 토큰 3종 (`--space-0_75`, `--ease-in`, `--ease-out`), 신규 유틸리티 1종 (`.text-link`), 컴포넌트 변형 3종 (`.garden-card--compact`, `.garden--compact`, `.reaction-bar--compact`). 페이지 패턴 통일 (mypage / reader-account-setting → series-home 패턴).
+
+### 신규 페이지
+
+- **`series-manage-detail.html`** — 작품 관리 상세. workspace shell 안 series-card / garden-card / episode-card 3카드를 `max(--p50, 50vw)` fluid 폭으로 노출. radius 페이지 전용 16. 12개 에피소드 행. 진입: series-post-management `編集・話を追加`. 출구: series-edit / episode-add-yoko / author-profile.
+- **`author-profile.html`** — 작가 프로필. navbar-only. 1008 inner — 프로필 카드(avatar 140 + 이름·소개·SNS pill 2개) + 투고 작품 그리드(work-card × 5, cover 160×228). 진입: 海野ハル / つちだ かほ 작가명 텍스트 링크 (3 페이지에서).
+- **`viewer-tate.html`** — 縦読み 뷰어. popup window. 728px 고정 폭 이미지 5장 세로 나열 + 스크롤 위치 → progress bar 동기화 + 탭 chrome 토글. 신규 JS `js/pages/viewer-tate.js`.
+
+### 신규 토큰 (디자인 시스템 영향)
+
+- `--space-0_75: 3px` (compact garden content gap 등 fine-grain spacing)
+- `--ease-in: cubic-bezier(.4, 0, 1, 1)` — 점점 빠르게 (퇴장)
+- `--ease-out: cubic-bezier(0, 0, .2, 1)` — 점점 느리게 (입장)
+- `handoff/design-tokens.json` + `handoff/tailwind-preset.ts` 동기화 완료
+
+### 신규 유틸리티
+
+- **`.text-link`** (`css/tokens/typography.css`) — 색·폰트 부모 inherit + Hover/focus-visible 시 underline. 작가명 텍스트 링크용. styleguide Typography 섹션 등록.
+
+### 컴포넌트 변형 (compact — series-manage-detail 페이지 전용)
+
+- **`.garden-card--compact`** — 720(fluid)×370 고정, padding 0/28, gap 32, justify-center
+- **`.garden--compact`** — 633×207, item 68×76, padding 16/32/0 + gap 3, row gap 14, base 의 overlap(-5) 제거. `.garden-sign` 동반 축소 (68×76, 이름 9/11)
+- **`.reaction-bar--compact`** — 100% 폭, height 65.6, padding 12 16 12 20, radius 11.2 (Figma 0.8× 환산). left col 283.2, emotion gap 16 / icon 13 / count 11/18, names/meta 10/16. CTA 40h padding 32 radius 12 font 11/16 w6.
+
+### viewer-yoko 슬라이드 개선
+
+- 두 이미지 spread 동시 슬라이드 (`.viewer-yoko__spread` 단위)
+- 듀레이션 분리: 퇴장 0.6s ease-in / 등장 0.6s ease-out
+- 입장 시작 시점: 퇴장 50% (JS `--transition-slide-out-ms` 참조)
+- 이동 거리: 퇴장 10cqw / 등장 2cqw
+- 페이지 패리티에 따른 이미지 src 자동 교체 (홀=kurokage_01·02 / 짝=03·04, 신규 이미지 4장 등록)
+
+### 페이지 패턴 통일
+
+- `mypage.html` / `reader-account-setting.html` — `margin-top + calc(100vh - navbar)` 트릭 → `padding-top: var(--navbar-height) + min-height: 100%` (series-home 패턴). html, body 에 `height: 100%` 추가. 시각 무변화.
+- `series-edit.html` 헤더 — episode-add 동일 3-column 패턴 (좌측 back link + 가운데 제목 + 우측 빈 칸).
+
+### 신규 이미지
+
+- `img/img_viewer_kurokage_01~04.jpg` — viewer-yoko / viewer-tate 데모용 만화 이미지 4장
+
+### 하위 호환
+
+- 기존 `.garden-card` / `.garden` / `.reaction-bar` 시그니처 무변경 — `--compact` 모디파이어 추가만
+- mypage / reader-account-setting 시각 무변화 (구조만 통일)
+- 기존 토큰·BEM 구조 변경 없음
+
+---
+
 ## v1.06.0 (2026-04-29, v1.05.9 후속)
 
 **플로팅 알림 + 감정 선택 라디오 신규, 글로벌 base 룰 통합, fluid 너비 패턴 확장.** 신규 페이지 0개, 신규 CSS 컴포넌트 2개(`floating-alert`, `emotion-pick`). 기존 토큰·BEM 구조 변경 없음.

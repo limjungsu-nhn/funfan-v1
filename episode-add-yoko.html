@@ -120,7 +120,7 @@
 
         <header class="episode-add__page-header">
           <div class="episode-add__page-header-side episode-add__page-header-side--start">
-            <a class="btn btn-line btn--sm" href="series-post-management.html">
+            <a class="btn btn-line btn--sm" href="series-manage-detail.html">
               <i class="icon icon-chevron-left"></i>
               <span class="text-caption-w4">シリーズ管理へ戻る</span>
             </a>
@@ -352,7 +352,7 @@
       afterwordInput?.addEventListener('input', validateForm);
       submitBtn?.addEventListener('click', () => {
         if (submitBtn.disabled) return;
-        window.location.href = 'series-post-management.html';
+        window.location.href = 'series-manage-detail.html';
       });
 
       const attachment = PageAttachment.init({
