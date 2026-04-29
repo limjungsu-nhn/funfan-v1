@@ -4,7 +4,33 @@
 
 ---
 
-## 📌 v1.06.2 요약 (2026-04-29, v1.06.1 후속) — 먼저 이것만 보세요
+## 📌 v1.06.3 요약 (2026-04-29, v1.06.2 후속) — 먼저 이것만 보세요
+
+**modal-context 모듈화 (정적 HTML → 데이터 기반 렌더) + workroom mini 모드 작업 종료 모달 추가 + 새 modal sub-elements (field/add-slot/entity-row).** 핵심은 (1) 모달 컨텍스트 마크업을 PageAttachment 와 동일한 패턴(JS 모듈 + init 옵션 + 콜백)으로 통합, (2) workroom 미니 팝업 종료 시 띄우는 축하 모달(`modal--work-end`) 신규 + 일러스트 3종 등록, (3) Step 2 의 빈/채워짐 상태를 데이터로 자동 분기하는 신규 sub-element 일습.
+
+| 분류 | 내용 | 개발 영향 |
+|---|---|---|
+| **modal-context 모듈 리팩토링** | `js/components/modal-context.js` (CHANGED) — 정적 HTML 주입 → `ModalContext.init({ works, selectedWorkId, story, characters, onSelectWork, onSaveStory, onSaveCharacter, onDeleteCharacter })` 데이터 기반 렌더. 빈/채워짐 상태 자동 분기 (story=null → add-slot / characters.length===0 → add-slot). 순수 함수 `_internal` (isStoryEmpty/hasCharacters/nextCharacterId/findWork/findCharacter) 노출. 자동 시동 시 빈 상태로 시작, 데모용 `kitchen` 작품 선택 시 채워진 sample state 표시 | React: `<ModalContext>` props 1:1 매핑. 콜백→상태 갱신 패턴 그대로 React state hook 으로 이식 |
+| **modal--work-end 신규 variant** | `css/components/modal.css` + `workroom.html` (CHANGED) — workroom mini 모드 우상단 「作業終了」 버튼이 `#modal-work-end` 트리거. 폭 400 / padding 48 28 32 / gap 36 / 가운데 정렬. 일러스트(240×146) + 제목(22/32 w6) + 서브 + 좌/우 1px gray-5 divider + 가운데 텍스트 + 액션 stack(filled-black + line). 두 액션 모두 `window.close()` (popup window 자체 닫음) | React: `<WorkEndDialog />` (modal--work-end, 정적). illustration prop 으로 variant a/b/c 선택 |
+| **새 modal sub-elements** | `css/components/modal.css` (CHANGED) — Step 2 의 단일/리스트 필드용 `.modal__field` / `.modal__field__list`, 항목 행 `.modal__entity-row` (+ `__heading` `__desc`), 빈 슬롯 `.modal__add-slot` (40h · gray-4 dashed outline · radius-btn · 18×18 gray-2 add icon · hover bg gray-6+black icon · pressed scale 0.97 · focus ring) · 마지막 field 자동 flex:1 + 내부 list overflow-y:auto + padding-bottom 40 + 하단 흰색 그라디언트(::after) | React: 각 sub 컴포넌트(`<EntityRow>` `<AddSlot>` 등)로 분리. fade-out 그라디언트 그대로 |
+| **modal.js goto 핸들러 확장** | `js/components/modal.js` (CHANGED) — `[data-modal-goto="N"]` 클릭 시 `data-tab-target` 동반되면 해당 panel 자동 노출 (탭 UI 없어도 panel `hidden` 토글). step 3 에서 character/story 패널 분기에 활용 | React: 단일 컴포넌트 안 if-else 분기로 단순화 |
+| **이미지 3종 추가** | `img/img_workroom_congrats_{a,b,c}@2x.png` (NEW · 480×292) — workroom 포모도로 완료 축하 일러스트. styleguide Images 섹션 등록 | React: `<img>` 그대로 또는 next/image. variant prop 노출 |
+| **episode-add 4종 페이지 보완** | `radio-card.css` 링크 누락 fix — 모달 step 1 작품 카드 정상 렌더 | (개발 영향 없음 — link 누락 보정) |
+| **버전 갱신** | v1.06.3 (`index.html` + `styleguide.html` 헤더 라벨) | (개발 영향 없음) |
+
+**하위 호환**
+- `#modal-context` 자동 시동 — 페이지에서 init() 호출 안 해도 빈 상태로 자동 시동, 9개 페이지 변경 없이 동작
+- 기존 modal sub-element (`modal__title`/`__list`/`__footer`/`__field-group`/`__field-row`) 시그니처 무변경
+- 새 sub-element 는 추가만, 기존 마크업 영향 없음
+
+**확인할 곳**
+1. [`COMPONENTS.md`](./COMPONENTS.md) `.modal` + `.modal--work-end` + `#modal-context` 섹션 — **API + sub-element 명세**
+2. `js/components/modal-context.js` — Public API + `_internal` 순수 함수 + React 청사진
+3. `workroom.html` mini 모드 (`?mode=mini`) — 우상단 「作業終了」 → `#modal-work-end`
+
+---
+
+## 📌 v1.06.2 요약 (2026-04-29, v1.06.1 후속)
 
 **episode-add 4 변형 페이지(yoko/koma/tate/episode-add) + PageAttachment JS 모듈 + page-koma-grid 컴포넌트.** 핵심은 (1) 페이지 이미지 첨부 + 드래그&드롭 재정렬 로직을 단일 JS 모듈로 추출, (2) 코마/타테 작품 전용 그리드(`page-koma-grid`)를 cols 옵션으로 분기, (3) 가상 백지 페이지(左始まり) + 박스 사이 boundary 핸들 + upload-zone drop 제외 등 인터랙션 정교화.
 
@@ -65,7 +91,7 @@
 |---|---|---|
 | [`design-tokens.json`](./design-tokens.json) | 모든 디자인 토큰 (color/spacing/typography/shadow/radius) | 참고용 원본 |
 | [`tailwind-preset.ts`](./tailwind-preset.ts) | Tailwind `theme.extend` 프리셋 | `tailwind.config.ts`에 직접 import |
-| [`COMPONENTS.md`](./COMPONENTS.md) | 60개 CSS 컴포넌트 + 1개 JS 모듈(PageAttachment) → shadcn 매핑 + variant/size/state | cva 정의 작성 시 |
+| [`COMPONENTS.md`](./COMPONENTS.md) | 60개 CSS 컴포넌트 + 2개 JS 모듈(PageAttachment, ModalContext) → shadcn 매핑 + variant/size/state | cva 정의 작성 시 |
 | [`ICONS.md`](./ICONS.md) | 57개 아이콘 → lucide-react 매핑 | 아이콘 치환 시 |
 
 ### 개발 문서

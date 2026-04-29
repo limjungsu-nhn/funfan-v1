@@ -72,7 +72,7 @@
 .modal {
   position: relative;  /* .modal__close 의 absolute 기준 */
   width: var(--p35); /* 504 */
-  height: 640px;
+  height: 644px;
   padding: var(--space-10) var(--space-7) 0;  /* 40px 28px 0 — 하단은 list/footer 의 자체 여백에 위임 */
   background: var(--color-white-100);
   border-radius: var(--radius-lg);  /* 20px */
@@ -206,8 +206,8 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
-  /* 6px - 3px(list 상단 padding-block) = 3px → label↔list 시각 간격 6px 유지 */
-  gap: calc(var(--space-1_5) - var(--ring-width));
+  /* 8px - 3px(list 상단 padding-block) = 5px → label↔list 시각 간격 8px 유지 */
+  gap: calc(var(--space-2) - var(--ring-width));
 }
 
 .modal__section > .modal__label {
@@ -221,7 +221,7 @@
   display: flex;
   padding: var(--space-4) var(--space-4) var(--space-4) var(--space-5);
   background: var(--color-bg-soft);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-btn); /* 12 */
   outline: 1px solid var(--color-gray-6);
   outline-offset: -1px;
   justify-content: space-between;
@@ -257,6 +257,58 @@
   max-width: 100%;
 }
 
+/* ---------- Field (label + slot 단순 세로 그룹) ---------- */
+.modal__field {
+  align-self: stretch;
+  margin-inline: var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2); /* 8 */
+}
+
+/* ---------- Add slot (ストーリーアーク / キャラクター情報 추가 진입) ----------
+   bg-soft + gray-4 outline + 가운데 + 아이콘. 클릭 → 입력 폼(step 3) 진입. */
+.modal__add-slot {
+  align-self: stretch;
+  height: 40px;
+  flex-shrink: 0; /* flex 부모(.modal__field__list)가 overflow 일 때 압축되지 않도록 */
+  padding: 0;
+  background: var(--color-bg-soft);
+  border: 0;
+  border-radius: var(--radius-btn); /* 12 */
+  outline: 1px dashed var(--color-gray-4);
+  outline-offset: -1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.08s ease-in; /* btn 과 동일 */
+}
+
+.modal__add-slot .icon {
+  width: 18px;
+  height: 18px;
+  background-color: var(--color-gray-2);
+}
+
+.modal__add-slot:hover {
+  background: var(--color-gray-6);
+}
+
+.modal__add-slot:hover .icon {
+  background-color: var(--color-black-100);
+}
+
+/* Focus — 다른 버튼들과 동일한 box-shadow ring (dashed outline 은 그대로 유지) */
+.modal__add-slot:focus-visible {
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+
+/* Pressed — 다른 버튼들과 동일한 scale(0.97) */
+.modal__add-slot:active {
+  transform: scale(0.97);
+}
+
 /* ---------- Entity row (캐릭터/스토리 등 항목 리스트의 한 줄) ----------
    modal__list 안쪽에 들어가는 행. summary-card 와 시각적 결은 같지만
    배경 white + 우측 「編集」 액션 버튼을 포함한다. */
@@ -265,12 +317,12 @@
   display: flex;
   padding: var(--space-3_5) var(--space-4) var(--space-3_5) var(--space-5); /* 14 16 14 20 */
   background: var(--color-white-100);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-btn); /* 12 */
   outline: 1px solid var(--color-gray-6);
   outline-offset: -1px;
   justify-content: space-between;
   align-items: center;
-  gap: var(--space-3);
+  gap: var(--space-5); /* 20 — 콘텐츠↔편집버튼 */
   flex-shrink: 0;
 }
 
@@ -300,6 +352,68 @@
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 100%;
+}
+
+/* heading: title + sub 가 한 묶음 (gap 4) — 그 아래 desc 가 옴 */
+.modal__entity-row__heading {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1); /* 4 */
+}
+
+/* desc: 한 줄 본문 텍스트 (초과 시 ellipsis) */
+.modal__entity-row__desc {
+  margin: 0;
+  font-size: var(--font-size-overline);      /* 11 */
+  line-height: var(--line-height-overline);  /* 16 */
+  font-weight: var(--font-weight-w4);
+  color: var(--color-black-50);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* desc 가 있을 때 entity-row 는 multi-line 콘텐츠가 들어오므로 align-items: flex-start 로 조정 */
+.modal__entity-row:has(.modal__entity-row__desc) {
+  align-items: flex-start;
+}
+
+/* desc 있는 row 의 content 는 column · gap 6 (heading↔desc) */
+.modal__entity-row:has(.modal__entity-row__desc) > .modal__entity-row__content {
+  flex: 1 1 0;
+  gap: var(--space-1_5); /* 6 */
+}
+
+/* ---------- Field list (modal__field 안의 다중 항목 묶음 — 캐릭터 리스트 + add-slot) ---------- */
+.modal__field__list {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1_5); /* 6 */
+  flex: 1 1 0;             /* field 의 남은 세로 영역 차지 */
+  min-height: 0;
+  overflow-y: auto;        /* 항목이 많으면 스크롤 */
+  padding-bottom: var(--space-10); /* 40 — 스크롤 끝까지 갔을 때 하단 여백 */
+}
+
+/* step 2 의 마지막 field 가 viewport 의 남은 세로를 차지 → 내부 list 가 스크롤 영역 확보 */
+.modal__step .modal__field:last-of-type {
+  position: relative; /* ::after 그라디언트 기준 */
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+/* 스크롤 영역 하단 — 흰색 그라디언트(40px) 로 컨텐츠가 자연스럽게 페이드 아웃 */
+.modal__step .modal__field:last-of-type::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--color-white-100));
+  pointer-events: none;
 }
 
 /* ---------- Tabs wrapper (step 2) ---------- */
@@ -374,7 +488,7 @@
 .modal__field-group {
   display: flex;
   flex-direction: column;
-  gap: var(--space-1_5);
+  gap: var(--space-2); /* 8 */
 }
 
 .modal__field-row {
@@ -517,4 +631,95 @@
 
 .modal--water-support .modal__footer {
   margin-inline: 0;
+}
+
+/* ============================================
+   modal--work-end (workroom 작업 종료 모달)
+     - 폭 400 (기본 504 보다 작음) · height auto · padding 48 28 32 · gap 36 · 가운데 정렬
+     - 내부 구성: 일러스트(240×146) + 제목/서브 + divider 텍스트 + 액션 버튼 2개 (stack)
+   ============================================ */
+.modal--work-end {
+  width: 400px;
+  height: auto;
+  padding: var(--space-12) var(--space-7) var(--space-8); /* 48 28 32 */
+  gap: var(--space-9); /* 36 */
+  align-items: center;
+}
+
+.modal-work-end__illustration {
+  width: 240px;
+  height: 146px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-work-end__illustration img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+}
+
+.modal-work-end__heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1_5); /* 6 */
+}
+
+.modal-work-end__title {
+  margin: 0;
+  font-size: 22px;
+  line-height: 32px;
+  font-weight: var(--font-weight-w6);
+  color: var(--color-font-primary-black-100);
+  text-align: center;
+}
+
+.modal-work-end__sub {
+  margin: 0;
+  font-size: var(--font-size-caption);     /* 12 */
+  line-height: var(--line-height-caption); /* 18 */
+  font-weight: var(--font-weight-w4);
+  color: var(--color-font-primary-black-100);
+  text-align: center;
+}
+
+.modal-work-end__body {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-7); /* 28 */
+}
+
+/* Divider with text — 양옆 1px gray-5 라인 + 가운데 텍스트 */
+.modal-work-end__divider {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3); /* 12 */
+}
+
+.modal-work-end__divider::before,
+.modal-work-end__divider::after {
+  content: "";
+  flex: 1 1 0;
+  height: 1px;
+  background: var(--color-gray-5);
+}
+
+.modal-work-end__divider-text {
+  font-size: var(--font-size-overline);     /* 11 */
+  line-height: var(--line-height-overline); /* 16 */
+  font-weight: var(--font-weight-w4);
+  color: var(--color-black-50);
+  white-space: nowrap;
+}
+
+.modal-work-end__actions {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1_5); /* 6 */
 }

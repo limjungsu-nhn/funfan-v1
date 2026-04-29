@@ -84,7 +84,7 @@
         </div>
       </div>
 
-      <button class="btn btn-ghost navbar-btn--work">
+      <button class="btn btn-ghost navbar-btn--work" type="button" data-modal-open="#modal-work-end">
         <i class="icon icon-exit-to-app"></i>
         <span class="text-assist-w4">作業終了</span>
       </button>
@@ -910,6 +910,38 @@
     })();
   </script>
 
+  <!-- Modal: 作業終了 (mini 모드 전용 — 우측 상단 「作業終了」 버튼이 [data-modal-open="#modal-work-end"] 로 트리거)
+       포모도로 완료 축하 + 작업 시간 표시 + 「エピソード投稿」 / 「終了」 액션. open/close 는 modal.js 공통 처리. -->
+  <div class="modal-backdrop" id="modal-work-end">
+    <div class="modal modal--work-end" role="dialog" aria-modal="true" aria-labelledby="modal-work-end-title">
+      <button class="modal__close" type="button" aria-label="閉じる" data-modal-close>
+        <i class="icon icon-close"></i>
+      </button>
+
+      <div class="modal-work-end__illustration">
+        <img src="img/img_workroom_congrats_a@2x.png" alt="" width="240" height="146">
+      </div>
+
+      <div class="modal-work-end__heading">
+        <h2 class="modal-work-end__title" id="modal-work-end-title">お疲れ様でした！</h2>
+        <p class="modal-work-end__sub">今日は <span>1時間23分</span> 創作に向き合いました！</p>
+      </div>
+
+      <div class="modal-work-end__body">
+        <div class="modal-work-end__divider">
+          <span class="modal-work-end__divider-text">今日の成果をエピソードに残しませんか？</span>
+        </div>
+        <div class="modal-work-end__actions">
+          <button class="btn btn-filled-black" type="button" onclick="window.close()">
+            <span>エピソードを投稿する</span>
+          </button>
+          <button class="btn btn-line" type="button" onclick="window.close()">
+            <span>終了する</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

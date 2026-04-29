@@ -206,7 +206,21 @@
     if (gotoBtn) {
       const backdrop = gotoBtn.closest('.modal-backdrop');
       const target = parseInt(gotoBtn.getAttribute('data-modal-goto'), 10);
-      if (backdrop && Number.isFinite(target)) goToStep(backdrop, target);
+      if (backdrop && Number.isFinite(target)) {
+        goToStep(backdrop, target);
+        // data-tab-target 동반 시 해당 패널로 자동 전환 (탭 UI 가 없어도 panel hidden 토글)
+        const tabTarget = gotoBtn.getAttribute('data-tab-target');
+        if (tabTarget) {
+          const tab = backdrop.querySelector('.tab[data-tab-target="' + tabTarget + '"]');
+          if (tab) {
+            selectTab(backdrop, tab);
+          } else {
+            backdrop.querySelectorAll('[data-tab-panel]').forEach((panel) => {
+              panel.hidden = panel.getAttribute('data-tab-panel') !== tabTarget;
+            });
+          }
+        }
+      }
       return;
     }
 

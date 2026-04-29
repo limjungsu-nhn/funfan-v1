@@ -89,7 +89,7 @@
     <span class="sg-header-logo">FunFan</span>
     <span class="sg-header-sep"></span>
     <span class="sg-header-subtitle">Design System</span>
-    <span class="sg-header-badge">v1.06.2</span>
+    <span class="sg-header-badge">v1.06.3</span>
   </header>
 
   <div class="sg-layout">
@@ -2193,6 +2193,35 @@
               </div>
               <code class="sg-type-classname">img/img_seed_cover.svg</code>
               <div class="sg-type-meta"><strong>Seed Cover</strong><br>씨앗 의식 — 씨앗을 가리는 흙 레이어 · 508×400</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Workroom Congrats (포모도로 모달팝업 일러스트) -->
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Workroom Congrats (ポモドーロ完了 축하)</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Path</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <img src="img/img_workroom_congrats_a@2x.png" alt="workroom congrats a" class="sg-img-thumb" width="240" height="146">
+              </div>
+              <code class="sg-type-classname">img/img_workroom_congrats_a@2x.png</code>
+              <div class="sg-type-meta"><strong>Congrats A</strong><br>480 × 292 (@2x)<br>workroom 포모도로 완료 모달 일러스트 (variant A)</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <img src="img/img_workroom_congrats_b@2x.png" alt="workroom congrats b" class="sg-img-thumb" width="240" height="146">
+              </div>
+              <code class="sg-type-classname">img/img_workroom_congrats_b@2x.png</code>
+              <div class="sg-type-meta"><strong>Congrats B</strong><br>480 × 292 (@2x)<br>workroom 포모도로 완료 모달 일러스트 (variant B)</div>
+            </div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <img src="img/img_workroom_congrats_c@2x.png" alt="workroom congrats c" class="sg-img-thumb" width="240" height="146">
+              </div>
+              <code class="sg-type-classname">img/img_workroom_congrats_c@2x.png</code>
+              <div class="sg-type-meta"><strong>Congrats C</strong><br>480 × 292 (@2x)<br>workroom 포모도로 완료 모달 일러스트 (variant C)</div>
             </div>
           </div>
         </div>
@@ -5285,10 +5314,17 @@
                 <code>.modal__tab-panel[data-tab-panel]</code> <code>[hidden]</code> 로 전환<br>
                 <code>.modal__helper</code> overline 400 (11/16) · center 정렬 보조 텍스트<br>
                 <code>.modal__form</code> 입력 영역 (flex column · textarea 가 남은 높이 흡수)<br>
-                <code>.modal__field-group</code> label + input 묶음 (gap 6)<br>
+                <code>.modal__field-group</code> label + input 묶음 (gap 8)<br>
                 <code>.modal__field-row</code> 가로 input 나열 (gap 6)<br>
                 <code>.form-input--narrow</code> 120px 고정 (field-row 내)<br>
-                <code>.modal__footer--split</code> + <code>.modal__footer__group</code> 좌측 戻る / 우측 액션 그룹
+                <code>.modal__footer--split</code> + <code>.modal__footer__group</code> 좌측 戻る / 우측 액션 그룹<br><br>
+                <strong>v1.06.2+ Step 2 확장 (modal-context)</strong><br>
+                <code>.modal__field</code> 단순 label + 단일 슬롯 묶음 (gap 8 · margin-inline 28)<br>
+                <code>.modal__field__list</code> 다중 항목(entity-row × N + add-slot) 컨테이너 · gap 6 · flex:1·overflow-y:auto · padding-bottom 40<br>
+                <code>.modal__entity-row</code> 흰 카드 행 · radius-btn(12) · gray-6 outline · padding 14 16 14 20 · 좌 콘텐츠 + 우 액션<br>
+                <code>.modal__entity-row__heading</code> title + sub 묶음 (gap 4)<br>
+                <code>.modal__entity-row__desc</code> 1줄 ellipsis 본문 (overline w4 · black-50)<br>
+                <code>.modal__add-slot</code> 빈 자리 「+」 버튼 · 40h · bg-soft · gray-4 dashed outline · radius-btn · 18×18 gray-2 icon · hover bg gray-6 + black icon · pressed scale(0.97)
               </div>
             </div>
 
@@ -5339,6 +5375,39 @@
               </div>
               <code class="sg-type-classname">.modal--water-support<br>.modal-water-support__head<br>.modal-water-support__body<br>.modal-water-support__emotions<br>.modal-water-support__textarea</code>
               <div class="sg-type-meta"><strong>504 · padding 40 28 · gap 20</strong><br>head: title + helper · gap 4<br>emotions: 4× emotion-pick · gap 20 · 가운데 정렬<br>textarea: 140px 고정 + 0/300 카운터<br>footer: 閉じる(line) + 水やり CTA(filled-sky, 감정/입력 둘 다 비면 disabled)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Variant: work-end (workroom mini 모드 작업 종료) -->
+        <div class="sg-subsection" id="modal-work-end">
+          <p class="sg-subsection-title">Variant — work-end (workroom mini)</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="modal modal--work-end">
+                  <button class="modal__close" type="button" aria-label="閉じる"><i class="icon icon-close"></i></button>
+                  <div class="modal-work-end__illustration">
+                    <img src="img/img_workroom_congrats_a@2x.png" alt="" width="240" height="146">
+                  </div>
+                  <div class="modal-work-end__heading">
+                    <h2 class="modal-work-end__title">お疲れ様でした！</h2>
+                    <p class="modal-work-end__sub">今日は <span>1時間23分</span> 創作に向き合いました！</p>
+                  </div>
+                  <div class="modal-work-end__body">
+                    <div class="modal-work-end__divider">
+                      <span class="modal-work-end__divider-text">今日の成果をエピソードに残しませんか？</span>
+                    </div>
+                    <div class="modal-work-end__actions">
+                      <button class="btn btn-filled-black" type="button"><span>エピソードを投稿する</span></button>
+                      <button class="btn btn-line" type="button"><span>終了する</span></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.modal--work-end<br>.modal-work-end__illustration<br>.modal-work-end__heading<br>.modal-work-end__title<br>.modal-work-end__sub<br>.modal-work-end__body<br>.modal-work-end__divider<br>.modal-work-end__divider-text<br>.modal-work-end__actions</code>
+              <div class="sg-type-meta"><strong>400 · padding 48 28 32 · gap 36 · 가운데 정렬</strong><br>illustration: 240×146 (img_workroom_congrats_*)<br>title: 22/32 w6 · sub: caption w4<br>divider: 좌/우 1px gray-5 + 가운데 텍스트(11/16 w4 black-50)<br>actions: 세로 stack · gap 6 · filled-black + line<br>workroom mini 모드 「作業終了」 트리거 — 두 액션 모두 popup window 닫음(`window.close()`)</div>
             </div>
           </div>
         </div>

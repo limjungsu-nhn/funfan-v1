@@ -313,11 +313,25 @@ attachment.destroy();           // ObjectURL 해제 + 이벤트 해제 + DOM 비
 
 #### `.modal` / `.modal-backdrop` → shadcn `Dialog`
 - **Backdrop**: `position: fixed` · `top: 64px` (navbar 제외 · navbar z-index 100 위에 오버레이) · `bg-soft 50%` · z-index 1000 · `.modal-backdrop--open`로 display flex 토글
-- **Container**: 504px · padding 40px 28px · `--radius-lg`(20px) · `shadow-subtle + shadow-mid` · gap 24px column
-- **Sub-elements**: `.modal__title` (body-lg 600) · `.modal__section` (label+list 묶음, gap 6px) · `.modal__label` (caption 600) · `.modal__list` (radio-card 등) · `.modal__footer` (우측 정렬 액션, gap 6px)
-- **동작 (`js/components/modal.js`)**: `[data-modal-open="#id"]` 트리거 / `[data-modal-close]` 내부 닫기 / ESC / backdrop 클릭 / body scroll lock / 열림 시 첫 focusable 자동 focus
+- **Container**: 504px · 644 height · padding 40px 28px · `--radius-lg`(20px) · `shadow-subtle + shadow-mid` · gap 24px column
+- **Sub-elements (공통)**: `.modal__title` (body-lg 600) · `.modal__section` (label+list 묶음, gap calc(8-3)=5) · `.modal__label` (caption 600) · `.modal__list` (radio-card 등 · flex:1 + overflow auto) · `.modal__footer` (우측 정렬 액션, gap 6px)
+- **Sub-elements (modal-context Step 2 — v1.06.2+)**:
+  - `.modal__summary-card` (선택 작품 요약 · bg-soft · radius-btn 12 · 좌 콘텐츠 + 우 sm 버튼)
+  - `.modal__field` (단순 label + 단일 슬롯 묶음 · gap 8 · margin-inline 28)
+  - `.modal__field__list` (다중 항목 컨테이너 · gap 6 · `flex:1; overflow-y:auto; padding-bottom:40` · 마지막 field 가 step 의 남은 세로 영역 차지하여 내부 스크롤)
+  - `.modal__entity-row` (흰 카드 행 · radius-btn 12 · gray-6 outline · padding 14 16 14 20 · 좌 콘텐츠 + 우 액션 · `__heading`(title + sub gap 4) + `__desc`(1줄 ellipsis · overline w4 · black-50))
+  - `.modal__add-slot` (빈 자리 「+」 버튼 · 40h · bg-soft · gray-4 dashed outline · radius-btn · 18×18 gray-2 add icon · hover bg gray-6 + black icon · pressed scale(0.97) · focus box-shadow ring)
+  - `.modal__field-group` (label + input 묶음 · gap 8) / `.modal__field-row` (가로 input 나열 · gap 6)
+  - 스크롤 영역 하단 — `.modal__step .modal__field:last-of-type::after` 흰색 그라디언트 (40px) 페이드 아웃
+- **동작 (`js/components/modal.js`)**: `[data-modal-open="#id"]` 트리거 / `[data-modal-close]` 내부 닫기 / ESC / backdrop 클릭 / body scroll lock / 열림 시 첫 focusable 자동 focus / `[data-modal-goto="N"]` step 이동 + `data-tab-target` 동반 시 panel hidden 토글까지 처리 / `[data-modal-back]` 직전 step
 - 접근성: `role="dialog"` · `aria-modal="true"` · `aria-labelledby` 필수
 - TODO: 포커스 트랩 완전 구현 (현재는 첫 focusable 포커스만)
+
+#### `.modal--work-end` → shadcn `Dialog` (workroom mini 모드 작업 종료 모달)
+- **사용**: workroom.html mini 모드 우측 상단 「作業終了」 버튼 (`data-modal-open="#modal-work-end"`)
+- **컨테이너 override**: 폭 400 · `height:auto` · padding 48 28 32 · gap 36 · `align-items:center`
+- **Sub-elements**: `.modal-work-end__illustration` (240×146 — `img_workroom_congrats_*@2x.png` 노출) · `.modal-work-end__heading` (title 22/32 w6 + sub caption w4) · `.modal-work-end__body` (gap 28) · `.modal-work-end__divider` (양옆 1px gray-5 + 가운데 텍스트, ::before/::after pseudo) · `.modal-work-end__divider-text` (overline w4 · black-50) · `.modal-work-end__actions` (세로 stack · gap 6 · filled-black 「エピソードを投稿する」 + line 「終了する」)
+- **동작**: 두 액션 모두 `onclick="window.close()"` — popup window 자체를 닫음 (mini 모드는 `window.open()` 으로 열린 popup 이라 동작)
 
 #### `.seed-ceremony` (種を植える儀式 모달 콘텐츠) → 커스텀 풀스크린 일러스트레이티드 다이얼로그
 - **사용 페이지**: series-register.html — `#modal-series-register-confirm` 의 backdrop 자식으로 직접 배치 (`登録する` 버튼 클릭 시 오픈)
@@ -342,12 +356,39 @@ attachment.destroy();           // ObjectURL 해제 + 이벤트 해제 + DOM 비
 - **React 이식**: `<SeedCeremony />` 단일 컴포넌트. 시퀀스는 `useEffect` 안 `await wait(SEED_TIMING.X)` 체인. WAAPI 3-phase(gather/fall/bounce) 각 `.finished` await 패턴 그대로 사용 가능
 
 #### `#modal-context` (作品コンテキスト 공통 모달) → shadcn `Dialog` (재사용 컴포넌트)
-- **단일 진실의 원천 (SSOT)**: `js/components/modal-context.js` 의 `MODAL_HTML` template literal
+- **SSOT JS 모듈 (v1.06.2+)**: `js/components/modal-context.js` — 데이터 기반 conditional render 모듈 (이전 정적 HTML 주입 방식에서 리팩토링)
 - **목적**: 우측 채팅 패널의 "+" 버튼([data-modal-open="#modal-context"])이 있는 모든 페이지에서 공유 — 마크업 복제 없이 한 곳에서 관리
-- **주입 방식**: DOMContentLoaded 시 `body` 끝에 innerHTML 주입 · 이미 `#modal-context` 가 존재하면 skip (이중 주입 방지)
-- **사용 페이지**: workroom / workspace / workspace-onboarding / series-edit / series-register / series-post-management / series-post-management-empty / account-setting (8개)
-- **구조**: 3-step (작품 선택 → 캐릭터/스토리 리스트 → 입력 폼) · viewport+track 슬라이드 · tab-group 으로 character ↔ story 전환 (step 2/3 간 동기화)
-- **React 이식**: `<ModalContext />` 컴포넌트로 1:1 변환 — 마크업이 JS 안에 있어 props/state 매핑이 직관적
+- **사용 페이지**: workroom / workspace / workspace-onboarding / series-edit / series-register / series-post-management / series-post-management-empty / account-setting / episode-add 4종 (~9개)
+- **구조**: 3-step (작품 선택 → ストーリー/キャラクター 진입 → 입력 폼) · viewport+track 슬라이드 · step 3 의 panel 은 `data-tab-target` 으로 토글 (탭 UI 없음 — modal.js 의 goto 핸들러가 자동 처리)
+- **데이터 분기**:
+  - `story === null` → ストーリー section 이 빈 add-slot
+  - `story` 객체 → entity-row (편집 가능)
+  - `characters.length === 0` → 빈 add-slot
+  - `characters.length > 0` → row × N + 끝 add-slot
+  - 캐릭터 편집(기존 id 클릭): step 3 footer 에 削除 노출 / 추가(add-slot 클릭): 削除 미노출
+
+**Public API**:
+```js
+const instance = ModalContext.init({
+  works: [{ id, title, sub }],
+  selectedWorkId: null,
+  story: null | { theme, episodes, summary },
+  characters: [{ id, name, age, gender, personality, role }],
+  onSelectWork:      (id)   => {},
+  onSaveStory:       (data) => {},
+  onSaveCharacter:   (data) => {},   // data.id 있으면 edit, 없으면 new
+  onDeleteCharacter: (id)   => {},
+});
+instance.getState();          // 현재 데이터 (얕은 복사)
+instance.setData(partial);    // 부분 갱신 + 즉시 re-render
+instance.destroy();           // 정리
+```
+
+**순수 함수 (`ModalContext._internal`)**: `isStoryEmpty(story)` · `hasCharacters(chars)` · `nextCharacterId(chars)` · `findWork(works, id)` · `findCharacter(chars, id)` — 단위 테스트 가능
+
+**자동 시동 (back-compat)**: 페이지가 `init()` 명시 호출 안 하면 빈 상태(story=null, characters=[])로 자동 시동 — 9개 페이지 변경 없이 동작. 데모 분기로 step 1 의 2번째 카드(`kitchen` = 夜明けのキッチン) 선택 시 채워진 sample state 표시
+
+**React 이식**: `<ModalContext>` 컴포넌트로 1:1 — props 가 init() 옵션과 동일 시그니처. 데이터 → 콜백 → 상태 갱신 패턴 그대로 React state hook 으로 매핑
 
 #### `.chat-input` → shadcn `Textarea` + icon buttons
 - Container: `.chat-input__field` (textarea 감싸는 필드)
