@@ -331,11 +331,8 @@
       update();
     });
 
-    // ── 페이지 이미지 첨부 + 폼 검증 ──────
-    // 첨부 영역 모든 로직(empty↔grid 토글 / spread 페어링 / drag&drop / 가상 백지 페이지) 은
-    // js/components/page-attachment.js 모듈이 담당. 페이지 단에서는 init() + 폼 단 검증만 수행.
-    // DOMContentLoaded 까지 기다리는 이유: 모듈이 <head> 의 defer 스크립트로 로드되므로
-    //   인라인 스크립트보다 늦게 실행됨 → window.PageAttachment 정의 후에 호출되어야 함
+    // ── 페이지 이미지 첨부 + 폼 검증 — episode-add.html 과 동일 ──
+    // DOMContentLoaded 대기 — defer 모듈 로드 후 init 보장
     document.addEventListener('DOMContentLoaded', () => {
       const submitBtn = document.querySelector('[data-submit-btn]');
       const titleInput = document.getElementById('episode-title');
@@ -369,7 +366,6 @@
         onError:  ({ code, message }) => console.warn('[page-attachment]', code, message),
       });
 
-      // 読み始め 라디오 → 가상 백지 페이지 토글
       document.querySelectorAll('input[name="reading-start"]').forEach((r) => {
         r.addEventListener('change', () => {
           attachment?.setLeftStart(r.value === 'left' && r.checked);
@@ -379,6 +375,7 @@
 
       validateForm();
     });
+
 
     document.querySelector('.left-panel').addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
     document.querySelector('.right-panel').addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });

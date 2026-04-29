@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>話を追加 — FunFan</title>
+  <title>話を追加（タテ読み） — FunFan</title>
 
   <!-- Design Tokens -->
   <link rel="stylesheet" href="css/tokens/typography.css">
@@ -42,6 +42,7 @@
   <link rel="stylesheet" href="css/components/page-spread-preview.css">
   <link rel="stylesheet" href="css/components/page-upload-zone.css">
   <link rel="stylesheet" href="css/components/page-spread-grid.css">
+  <link rel="stylesheet" href="css/components/page-koma-grid.css">
   <link rel="stylesheet" href="css/components/modal.css">
   <link rel="stylesheet" href="css/pages/episode-add.css">
   <script src="js/core/_global.js" defer></script>
@@ -125,8 +126,8 @@
             </a>
           </div>
           <div class="episode-add__page-header-center">
-            <h1 class="episode-add__title text-h2-w6">私の冒険</h1>
-            <p class="episode-add__desc text-caption-w4">エピソードの編集と追加ができます。</p>
+            <h1 class="episode-add__title text-h2-w6">夜明けのキッチン</h1>
+            <p class="episode-add__desc text-caption-w4">タテ読み作品のエピソードを追加します。</p>
           </div>
           <div class="episode-add__page-header-side"></div>
         </header>
@@ -171,34 +172,7 @@
                 </div>
 
                 <!-- Attached state — JS 가 동적으로 채움 (spread 페어링 + placeholder + 행 chunk) -->
-                <div class="page-spread-grid" data-page-attached hidden></div>
-              </div>
-
-              <!-- 読む方向 -->
-              <div class="form-field">
-                <div class="form-field__label">
-                  <span class="form-field__title">読む方向</span>
-                  <span class="form-field__required" aria-hidden="true"></span>
-                </div>
-                <div class="episode-add__choice-grid">
-                  <label class="radio-block radio-block--fluid">
-                    <input type="radio" class="radio-block__input" name="reading-start" value="right">
-                    <div class="radio-block__content">
-                      <span class="radio-block__title">右始まり</span>
-                      <span class="radio-block__desc">ヨコ読み作品の既定値。<br>ページ送りは左→右で表示</span>
-                    </div>
-                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
-                  </label>
-                  <label class="radio-block radio-block--fluid">
-                    <input type="radio" class="radio-block__input" name="reading-start" value="left">
-                    <div class="radio-block__content">
-                      <span class="radio-block__title">左始まり</span>
-                      <span class="radio-block__desc">作品の演出に応じて<br>開始位置を変更</span>
-                    </div>
-                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
-                  </label>
-                </div>
-                <p class="form-field__hint">左始まりを選ぶと、見開き合わせのため先頭に白いページが自動で追加されます。</p>
+                <div class="page-koma-grid" data-page-attached hidden></div>
               </div>
 
               <!-- あとがき -->
@@ -331,11 +305,8 @@
       update();
     });
 
-    // ── 페이지 이미지 첨부 + 폼 검증 ──────
-    // 첨부 영역 모든 로직(empty↔grid 토글 / spread 페어링 / drag&drop / 가상 백지 페이지) 은
-    // js/components/page-attachment.js 모듈이 담당. 페이지 단에서는 init() + 폼 단 검증만 수행.
-    // DOMContentLoaded 까지 기다리는 이유: 모듈이 <head> 의 defer 스크립트로 로드되므로
-    //   인라인 스크립트보다 늦게 실행됨 → window.PageAttachment 정의 후에 호출되어야 함
+    // ── 페이지 이미지 첨부 + 폼 검증 — タテ 모드는 読み始め 필드 없음(검증 3 필드) ──
+    // DOMContentLoaded 대기 — defer 모듈 로드 후 init 보장
     document.addEventListener('DOMContentLoaded', () => {
       const submitBtn = document.querySelector('[data-submit-btn]');
       const titleInput = document.getElementById('episode-title');
@@ -346,9 +317,8 @@
         if (!submitBtn) return;
         const titleOk = !!titleInput?.value.trim();
         const filesOk = fileCount > 0;
-        const dirOk = !!document.querySelector('input[name="reading-start"]:checked');
         const afterOk = !!afterwordInput?.value.trim();
-        submitBtn.disabled = !(titleOk && filesOk && dirOk && afterOk);
+        submitBtn.disabled = !(titleOk && filesOk && afterOk);
       }
       titleInput?.addEventListener('input', validateForm);
       afterwordInput?.addEventListener('input', validateForm);
@@ -357,24 +327,17 @@
         window.location.href = 'series-post-management.html';
       });
 
-      const attachment = PageAttachment.init({
+      PageAttachment.init({
         emptyEl:    document.querySelector('[data-page-empty]'),
         attachedEl: document.querySelector('[data-page-attached]'),
         inputEl:    document.getElementById('page-files'),
-        leftStart:  false,
+        layout:     'koma',                      // 1셀=1이미지 (タテ読み — spread 페어링 없음)
+        cols:       1,                           // 1-col — 세로로 한 줄씩 쌓임 (タテ読み 자연 흐름)
         maxFiles: 100,
         maxFileSizeMB: 0,                        // 프로토타이핑 — 사이즈 제한 비활성 (프로덕션 시 2)
         acceptedTypes: ['image/jpeg', 'image/png'],
         onChange: (files) => { fileCount = files.length; validateForm(); },
         onError:  ({ code, message }) => console.warn('[page-attachment]', code, message),
-      });
-
-      // 読み始め 라디오 → 가상 백지 페이지 토글
-      document.querySelectorAll('input[name="reading-start"]').forEach((r) => {
-        r.addEventListener('change', () => {
-          attachment?.setLeftStart(r.value === 'left' && r.checked);
-          validateForm();
-        });
       });
 
       validateForm();

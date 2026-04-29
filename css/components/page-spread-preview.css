@@ -35,36 +35,38 @@
 .page-spread-preview {
   position: relative;
   width: 224px;
-  aspect-ratio: 224 / 208; /* grid 안에서 width 가 늘어나면 height 도 비율 유지 */
-  height: auto;
+  height: auto; /* 박스 높이 = 콘텐츠(이미지) 높이 + padding — aspect-ratio 미사용 */
+  padding: var(--space-2) 0; /* 위/아래 8 고정 — __pages 의 좌/우 8 과 동일 */
   background: var(--color-white-100);
   outline: 1px solid var(--color-gray-5);
   outline-offset: -1px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  align-items: stretch; /* __pages 가 박스 폭을 다 차지 */
   gap: var(--space-2); /* 8 */
 }
 
-/* Drop indicator — 드래그 중 좌/중/우 인서트 위치 표시 (검정 4px 세로 라인 · 흰색 4px 아웃라인 · 이미지 세로 100%)
-   라인을 둥글려 이미지 라디우스(6)와 겹쳐도 자연스럽게 보이도록 border-radius + box-shadow 사용 */
+/* Drop indicator — 모든 zone(left/center/right) 을 __pages::before 단일 pseudo 로 통합.
+   __pages 는 이미지 영역만 차지(label/padding 제외) → top:0/height:100% 로 자동으로 이미지 높이/수직 위치 정렬.
+   ─ left zone   : 셀 좌측 가장자리(박스 사이 boundary 또는 행 좌측 끝)
+   ─ center zone : 페이지 사이 gap 가운데
+   ─ right zone  : 셀 우측 가장자리(박스 사이 boundary 또는 행 우측 끝) */
 .page-spread-preview[data-drop-zone] .page-spread-preview__pages::before {
   content: "";
   position: absolute;
   top: 0;
-  height: 100%;
+  height: 100%;  /* __pages 높이 = 이미지 영역 높이 */
   width: 4px;
   background: var(--color-black-100);
   border-radius: 2px;
   box-shadow: 0 0 0 3px var(--color-white-100);
-  z-index: 3; /* delete/icon(1) 위로 */
+  z-index: 3;
   pointer-events: none;
 }
 
-/* center: 페이지 사이 gap(4px) 정확히 채움. 좌/우도 동일하게 0 갭 — 이미지 외곽에 맞붙음 */
+/* 인접 셀과 1px outline 공유 → 라인 중심이 그 1px 영역의 정중앙(cell_edge - 0.5) 에 오도록 -1.5px */
 .page-spread-preview[data-drop-zone="left"] .page-spread-preview__pages::before {
-  left: var(--space-1); /* 4px = padding 8 - 라인폭 4 */
+  left: -1.5px;
 }
 
 .page-spread-preview[data-drop-zone="center"] .page-spread-preview__pages::before {
@@ -73,7 +75,7 @@
 }
 
 .page-spread-preview[data-drop-zone="right"] .page-spread-preview__pages::before {
-  right: var(--space-1);
+  right: -1.5px;
 }
 
 /* 드래그 중: ghost 는 숨기고(setDragImage 로 빈 요소 지정) 원본을 30% 로 노출 */
@@ -81,43 +83,67 @@
   opacity: 0.3;
 }
 
+/* 좌측 시작(左始まり) 자동 삽입 백지 페이지 — 첫 spread 의 page 1 자리에 위치
+   · 이미지 없음 · 점선 outline · "白紙ページ" 라벨 · drag/hover 비활성 */
+.page-spread-preview__page--blank {
+  pointer-events: none; /* hover overlay/icons 비활성 + 부모(.page-spread-preview) 의 dragover 는 계속 수신 */
+  background: var(--color-white-100);
+  outline: 1px dashed var(--color-gray-5);
+  outline-offset: -1px;
+  align-self: stretch; /* 형제 이미지의 실제 높이에 맞춰 자동 stretch — aspect-ratio 고정 X */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-spread-preview__page--blank::after {
+  content: none; /* 검정 30% 오버레이 비활성 */
+}
+
+.page-spread-preview__blank-label {
+  color: var(--color-font-secondary-black-50);
+  text-align: center;
+}
+
 .page-spread-preview__label {
   color: var(--color-font-primary-black-100);
-  text-align: right;
+  text-align: center;
 }
 
 .page-spread-preview__pages {
   position: relative; /* drop indicator(::before) 기준 */
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start; /* __page 들 위 정렬 — 다른 비율 이미지도 위쪽 정합 */
   width: 100%;
+  flex: 1; /* 셀 padding/label/gap 외 영역 전부 차지 → row stretch 시 모든 __pages 가 행 max 높이로 통일 → 핸들 높이가 행에서 가장 큰 이미지 기준으로 일치 */
+  min-height: 0;
   padding: 0 var(--space-2); /* 0 8 */
   gap: var(--space-1); /* 4 */
 }
 
-/* 한 장만 있는 spread (마지막 홀수 페이지) — RTL 읽기 시작 위치인 오른쪽으로 정렬 */
+/* 한 장만 있는 spread (마지막 홀수 페이지) — RTL 읽기 시작 위치인 오른쪽으로 정렬 + 셀 폭은 2-page 시와 동일하게 50% 유지 */
 .page-spread-preview__pages:has(.page-spread-preview__page:only-child) {
   justify-content: flex-end;
 }
 
 .page-spread-preview__pages:has(.page-spread-preview__page:only-child) > .page-spread-preview__page {
-  flex: 0 1 calc(50% - var(--space-1) / 2); /* 2-페이지일 때와 동일한 셀 폭 유지 */
+  flex: 0 1 calc(50% - var(--space-1) / 2);
 }
 
 .page-spread-preview__page {
   position: relative;
   flex: 1 1 0;
+  min-width: 0;
   width: auto;
-  height: auto;
+  height: auto; /* __page 도 이미지 높이에 shrink-wrap → 오버레이가 이미지와 정확히 일치 */
   border-radius: 6px;
   overflow: hidden;
-  /* 높이는 이미지 비율에 맞춰 자동 — 오버레이가 이미지 영역과 동일 크기/라디우스로 핏 */
 }
 
 .page-spread-preview__thumb {
   width: 100%;
-  height: auto;
+  height: auto; /* 이미지 자연 비율 — 폭 100% 기준으로 높이 자동 (박스/__page/__pages 모두 이 높이로 shrink-wrap) */
   display: block;
   pointer-events: none; /* drag 시 img 자체 drag 동작(파일 타입별 ghost) 차단 — 부모 __page drag 만 작동 */
   -webkit-user-drag: none;

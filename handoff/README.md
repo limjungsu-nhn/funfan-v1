@@ -4,7 +4,33 @@
 
 ---
 
-## 📌 v1.06.0 요약 (2026-04-29, v1.05.9 후속) — 먼저 이것만 보세요
+## 📌 v1.06.2 요약 (2026-04-29, v1.06.1 후속) — 먼저 이것만 보세요
+
+**episode-add 4 변형 페이지(yoko/koma/tate/episode-add) + PageAttachment JS 모듈 + page-koma-grid 컴포넌트.** 핵심은 (1) 페이지 이미지 첨부 + 드래그&드롭 재정렬 로직을 단일 JS 모듈로 추출, (2) 코마/타테 작품 전용 그리드(`page-koma-grid`)를 cols 옵션으로 분기, (3) 가상 백지 페이지(左始まり) + 박스 사이 boundary 핸들 + upload-zone drop 제외 등 인터랙션 정교화.
+
+| 분류 | 내용 | 개발 영향 |
+|---|---|---|
+| **PageAttachment JS 모듈** | `js/components/page-attachment.js` (NEW) — 페이지 이미지 첨부 영역의 모든 로직(empty↔grid 토글 / spread 페어링 / drag&drop / 가상 백지 / 파일 검증) 캡슐화. `init()` + `onChange/onError` 콜백 API. 4개 episode-add 변형 페이지에서 단일 init 호출로 사용 | React: `<PageAttachment files onChange leftStart maxFiles cols layout />` 컴포넌트로 이식. 순수 함수(`buildDisplayItems`/`buildSpreads`/`moveFile`/`validateFile`)는 그대로 reuse |
+| **page-koma-grid 컴포넌트** | `css/components/page-koma-grid.css` (NEW) — コマ(panel)/タテ읽기 작품용 그리드 래퍼. cols 옵션으로 5(コマ)/1(タテ)/9 등 자유 분기. 셀은 `page-spread-preview` 그대로 재사용 (1-page mode) | React: `<PageKomaGrid cols={5} />`. 셀 컴포넌트 재사용으로 매핑 단순 |
+| **신규 페이지 3종** | `episode-add-yoko.html` / `episode-add-koma.html` / `episode-add-tate.html` — 각각 가로/コマ/タテ 읽기 모드별 에피소드 등록 페이지. PageAttachment 모듈 + 폼 단 검증만 페이지에서 처리 | React 라우팅: `/episode/add/[mode]` 단일 컴포넌트 + mode prop 분기 가능 |
+| **인터랙션 정교화** | (1) 가상 백지 페이지(`__page--blank`) — 左始まり 모드 시 첫 spread 1번 자리에 점선 outline + "白紙ページ" 라벨 표시 (files[] 변경 없이 render 단 prepend). (2) 박스 사이 boundary 핸들 — drag indicator 가 인접 셀 outline 1px 영역 정중앙(-1.5px)에 위치. (3) upload-zone drop 제외 — 첨부 박스는 drag target 에서 무시 | React: 동일 구현. 가상 백지는 `displayItems.unshift({blank:true})` 패턴 |
+| **그리드 outline 정리** | `.page-spread-grid` / `.page-koma-grid` 의 wrapper 자체 outline/radius/overflow 제거. 셀끼리 `margin:-1px` 로 1px outline 공유 + 코너 셀의 자체 `border-radius` 로 외곽 라운딩 처리 | (개발 영향 미미 — 동일 시각, 더 단순한 CSS) |
+| **upload-zone min-height 240** | `.page-upload-zone { min-height: 240px }` — 단독/빈 행 케이스 보장. 그리드 안에서 형제 spread 가 더 크면 row stretch 로 그쪽에 자동 일치 | Tailwind: `min-h-[240px]` 직접 매핑 |
+| **인덱스 갱신** | `index.html` 4개 페이지 등록 + `styleguide.html` Page Koma Grid 섹션 추가 + 버전 v1.06.2 | (개발 영향 없음) |
+
+**하위 호환**
+- 기존 토큰·클래스·BEM 구조 변경 없음
+- v1.06.0/1 의 페이지(`page-spread-grid`, `page-spread-preview`, `page-upload-zone`) 시그니처 유지 — wrapper outline 제거 등 시각 무변화
+- PageAttachment 모듈은 추가만, 기존 페이지 인라인 IIFE 를 모듈 호출로 대체
+
+**확인할 곳**
+1. [`COMPONENTS.md`](./COMPONENTS.md) `page-koma-grid` + `### JS 모듈: PageAttachment` 섹션 — **API + React 청사진**
+2. `js/components/page-attachment.js` — 단일 진입점, 순수 함수 + init() 캡슐화
+3. `episode-add-{yoko,koma,tate}.html` — 페이지별 init 옵션 차이 (layout/cols/leftStart)
+
+---
+
+## 📌 v1.06.0 요약 (2026-04-29, v1.05.9 후속)
 
 **floating-alert / emotion-pick 신규 + 글로벌 base 룰 통합 + fluid 너비 패턴 확장.** 신규 페이지 0개, 신규 CSS 컴포넌트 2개. 핵심은 (1) 액션 포함 떠있는 에러 배너 컴포넌트 신규, (2) 水やり 모달용 감정 선택 라디오 신규, (3) box-sizing/font-family 를 typography.css 에 단일 선언으로 통합해 ~80개 중복 룰 제거.
 
@@ -39,7 +65,7 @@
 |---|---|---|
 | [`design-tokens.json`](./design-tokens.json) | 모든 디자인 토큰 (color/spacing/typography/shadow/radius) | 참고용 원본 |
 | [`tailwind-preset.ts`](./tailwind-preset.ts) | Tailwind `theme.extend` 프리셋 | `tailwind.config.ts`에 직접 import |
-| [`COMPONENTS.md`](./COMPONENTS.md) | 59개 컴포넌트 → shadcn 매핑 + variant/size/state | cva 정의 작성 시 |
+| [`COMPONENTS.md`](./COMPONENTS.md) | 60개 CSS 컴포넌트 + 1개 JS 모듈(PageAttachment) → shadcn 매핑 + variant/size/state | cva 정의 작성 시 |
 | [`ICONS.md`](./ICONS.md) | 57개 아이콘 → lucide-react 매핑 | 아이콘 치환 시 |
 
 ### 개발 문서

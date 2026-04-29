@@ -19,8 +19,8 @@
 
 .page-upload-zone {
   width: 224px;
-  aspect-ratio: 224 / 208; /* grid 안에서 width 가 늘어나면 height 도 비율 유지 */
   height: auto;
+  min-height: 240px; /* 기본 높이 — 단독 사용/빈 행 케이스 보장. 그리드 안에서 형제 spread 가 더 크면 row flex stretch 로 그쪽에 자동 일치 */
   background: var(--color-bg-soft);
   outline: 1px solid var(--color-gray-5);
   outline-offset: -1px;

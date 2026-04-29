@@ -1,0 +1,150 @@
+/* ============================================
+   Page Koma Grid — コマ読み 작품 전용 1박스=1이미지 그리드 래퍼
+
+   HTML 구조:
+     <div class="page-koma-grid">
+       <div class="page-koma-grid__row">
+         <!-- 박스 = .page-spread-preview 그대로 재사용 — 안에 1-page 만 -->
+         <div class="page-spread-preview" data-spread-start="0">
+           <div class="page-spread-preview__pages">
+             <div class="page-spread-preview__page" draggable="true" data-page-idx="0">
+               <img class="page-spread-preview__thumb" src="..." alt="">
+               <span class="page-spread-preview__num">1</span>
+               <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+               <button class="page-spread-preview__delete" type="button" aria-label="削除">
+                 <i class="icon icon-delete"></i>
+               </button>
+             </div>
+           </div>
+         </div>
+         <!-- … 4 boxes per row … -->
+       </div>
+     </div>
+
+   Notes:
+     - 박스 / 셀 / 업로드 셀 모두 yoko 와 동일 컴포넌트 재사용. 차이는 그리드 레이아웃과 1-page-only.
+     - yoko(`page-spread-grid`) = 3-col RTL · 박스당 2-page 페어링
+       koma(`page-koma-grid`)  = 4-col LTR · 박스당 1-page only
+     - 인접 박스끼리 1px outline 을 공유해 단일 연속 라인처럼 보이도록 -1px 오프셋
+       (yoko 와 동일 패턴 — 외곽 wrapper radius-sm + overflow:hidden)
+     - drop indicator 는 박스 사이 1px 라인에 정확히 겹치도록 표시 (left/right 2-zone)
+   ============================================ */
+
+.page-koma-grid {
+  width: 100%;
+  /* outline/border-radius/overflow 미사용 — 셀 자체 outline 들이 -1px 겹침으로 그리드 경계를 형성,
+     코너 셀의 border-radius 가 외곽 라운딩 처리. wrapper 의 별도 outline 은 redundant. */
+}
+
+.page-koma-grid__row {
+  display: flex;
+  /* align-items 기본값(stretch) — placeholder/upload-zone 이 spread 의 자연 높이에 맞춰 늘어나 행 outline 연속 */
+}
+
+/* 이미지(spread) 가 없는 빈 행 — 기본 240 높이로 표시. 이미지 첨부 시 spread 자연 높이로 자동 변경 */
+.page-koma-grid__row:not(:has(.page-spread-preview)) {
+  min-height: 240px;
+}
+
+.page-koma-grid__row > .page-spread-preview,
+.page-koma-grid__row > .page-upload-zone,
+.page-koma-grid__row > .page-koma-grid__placeholder {
+  flex: 1 1 0;
+  width: auto;
+}
+
+/* cols=1 (タテ読み 등 1열 레이아웃) — wrapper 를 폼 영역의 1/3 폭으로 hug + 가운데 정렬.
+   박스는 wrapper 안에서 100% 차지 → 결과적으로 박스 폭 = 폼 영역의 1/3, 가운데 위치. */
+.page-koma-grid[data-cols="1"] {
+  width: 33.333%;
+  margin-inline: auto;
+}
+
+/* cols=1 핸들 — 세로 적층이므로 가로 라인으로 표시.
+   base __pages::before 비활성 + cell(.page-spread-preview)::before 사용 → 박스 가장자리(boundary) 와 첫 박스 최상단 / 마지막 박스 최하단에 정확히 위치. */
+.page-koma-grid[data-cols="1"] .page-spread-preview[data-drop-zone] .page-spread-preview__pages::before {
+  display: none;
+}
+
+.page-koma-grid[data-cols="1"] .page-spread-preview[data-drop-zone="top"]::before,
+.page-koma-grid[data-cols="1"] .page-spread-preview[data-drop-zone="bottom"]::before {
+  content: "";
+  position: absolute;
+  left: var(--space-2);  /* 8 — __pages 좌우 padding 만큼 inset (yoko/koma 핸들 폭과 동일) */
+  right: var(--space-2);
+  height: 4px;
+  background: var(--color-black-100);
+  border-radius: 2px;
+  box-shadow: 0 0 0 3px var(--color-white-100);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* 인접 박스끼리 margin-top:-1px 로 1px 겹침 → 라인 중심을 그 1px 영역의 정중앙(cell_edge - 0.5) 에 오도록 -1.5px */
+.page-koma-grid[data-cols="1"] .page-spread-preview[data-drop-zone="top"]::before {
+  top: -1.5px;
+}
+
+.page-koma-grid[data-cols="1"] .page-spread-preview[data-drop-zone="bottom"]::before {
+  bottom: -1.5px;
+}
+
+/* 빈 자리 — 행을 항상 4열로 유지하기 위한 placeholder · yoko placeholder 와 동일 외형 */
+.page-koma-grid__placeholder {
+  background: var(--color-bg-soft);
+  outline: 1px solid var(--color-gray-5);
+  outline-offset: -1px;
+  /* aspect-ratio 미사용 — row flex stretch 로 형제 spread 의 자연 높이에 자동 일치 */
+}
+
+/* 1px outline 끼리 겹쳐 단일 라인으로 보이게 — 행/열 -1px 오프셋 */
+.page-koma-grid__row + .page-koma-grid__row {
+  margin-top: -1px;
+}
+
+.page-koma-grid__row > *:not(:first-child) {
+  margin-left: -1px;
+}
+
+/* 코마는 항상 1-page spread — 단일 페이지가 박스 전체 폭을 채우도록 only-child override */
+.page-koma-grid .page-spread-preview__pages:has(.page-spread-preview__page:only-child) {
+  justify-content: stretch;
+}
+.page-koma-grid .page-spread-preview__pages:has(.page-spread-preview__page:only-child) > .page-spread-preview__page {
+  flex: 1 1 auto;
+}
+
+/* (박스 내부 위/아래 8px 여백은 base .page-spread-preview 에서 처리 — koma 별도 override 불필요) */
+
+/* 코너 셀의 outline 을 wrapper(radius-sm = 10) 곡선에 정합시킴 — 직각 outline 이 wrapper 의
+   둥근 모서리를 침범해 보이는 시각적 불일치 제거. 4코너에 위치한 셀에 해당 코너 라디우스만 부여.
+   대상은 row 의 첫/마지막 자식(=물리적으로 좌/우 끝) — 어떤 컴포넌트(page-spread-preview /
+   page-upload-zone / placeholder)든 동일 적용. */
+.page-koma-grid__row:first-child > *:first-child { border-top-left-radius: var(--radius-sm); }
+.page-koma-grid__row:first-child > *:last-child  { border-top-right-radius: var(--radius-sm); }
+.page-koma-grid__row:last-child  > *:first-child { border-bottom-left-radius: var(--radius-sm); }
+.page-koma-grid__row:last-child  > *:last-child  { border-bottom-right-radius: var(--radius-sm); }
+
+/* Drop indicator — spread 셀은 base 의 .page-spread-preview__pages::before 그대로 사용 (자동으로 이미지 높이/수직 정합).
+   upload-zone 은 __pages 가 없으므로 자체 ::before — 코마는 spread 셀에 __label 이 없어 image 영역 inset 이
+   padding-top 8 / padding-bottom 8 만큼이라 핸들도 동일 offset 사용. */
+.page-koma-grid .page-upload-zone[data-drop-zone]::before {
+  content: "";
+  position: absolute;
+  top: var(--space-2); /* 8 — 코마 spread 의 image 영역 top inset 과 동일 */
+  bottom: var(--space-2); /* 8 */
+  width: 4px;
+  background: var(--color-black-100);
+  border-radius: 2px;
+  box-shadow: 0 0 0 3px var(--color-white-100);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.page-koma-grid .page-upload-zone[data-drop-zone="left"]::before {
+  left: -1.5px;
+}
+
+.page-koma-grid .page-upload-zone[data-drop-zone] {
+  position: relative;
+}

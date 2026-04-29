@@ -175,6 +175,7 @@ const buttonVariants = cva("...", {
   - reading-order index 매핑: right→`start`, center→`start+1`, left→`start+2` · 드롭 = insert-and-shift (이후 페이지들 한 칸씩 뒤로 밀림)
   - upload-zone 에 드롭 시 `files.length` 끝에 추가
 - `__pages:has(:only-child)`: 마지막 홀수 페이지 1장만 있는 spread → `justify-content: flex-end` 로 우측(RTL 읽기 시작점)에 정렬, 셀 폭은 2-페이지 시와 동일하게 50% 유지
+- `__page--blank`: 좌측 시작(左始まり) 모드에서 첫 spread 1번 자리에 자동 삽입되는 가상 백지 페이지. 점선 outline + "白紙ページ" 라벨 · `pointer-events: none` 으로 hover/drag 비활성. files[] 에는 들어가지 않고 render 단에서만 prepend (실제 이미지 인덱스는 그대로 유지, 시각 페이지 번호만 한 칸씩 밀림)
 
 #### `.page-upload-zone` → shadcn custom upload slot
 - `page-spread-preview` 그리드 옆/마지막에 놓이는 추가 업로드 슬롯. episode-add.html 페이지 추가 영역
@@ -195,6 +196,99 @@ const buttonVariants = cva("...", {
   3. cells = `[…spreads, uploadZone]` → 행이 3열 미만이면 `__placeholder` 로 `(3 - cells.length % 3) % 3` 개 채움 → 3개씩 row 로 chunk
   4. `ページ追加` 클릭 시 동일 input 재사용 → `files.push(...picked)` → re-render
   5. 페이지 셀 `__delete` 클릭 → `files.splice(idx, 1)` + `URL.revokeObjectURL` → re-render. 마지막 1장 삭제 시 자동으로 빈 상태 복귀
+- **episode-add-yoko.html / episode-add.html** 은 `layout: 'spread'` (기본) — 위 그리드 그대로 사용
+- **episode-add-koma.html / episode-add-tate.html** 은 `layout: 'koma'` — `page-koma-grid` 그리드 사용. cols 옵션으로 컬럼 수 분기 (코마=5, 타테=1)
+- 박스 사이즈는 콘텐츠(이미지) 높이에 shrink-wrap — `aspect-ratio` 미사용 (위/아래 8 padding 고정, 박스 높이 = 16 + label + gap + image 높이)
+- 행 정합: `align-items: stretch` 로 같은 행 셀들이 max 높이로 맞춰지고, `__pages flex:1` 로 핸들 높이가 가장 큰 이미지 기준으로 통일
+- 빈 행(spread 없음): 행 `min-height: 240px` + upload-zone `min-height: 240px` 로 기본 240 보장
+
+#### `.page-koma-grid` → shadcn custom panel grid
+- コマ読み(panel)/タテ읽기 작품 전용 그리드 래퍼. episode-add-koma.html / episode-add-tate.html 사용
+- 100% 폭 · column flex · `__row` 는 LTR flex (cols 별 컬럼 수: 코마=5, 타테=1, 9 등 자유 가변)
+- **셀은 `page-spread-preview` 그대로 재사용** — 1-page mode (`__pages` 안 1개 `__page` only-child) · 3-state, drag-pan, delete, num badge 동일
+- 업로드 셀(`page-upload-zone`) 동일 재사용 · `__placeholder`: 행이 모자랄 때 빈 셀 (bg-soft + 1px gray-5)
+- 인접 셀 `margin-left:-1px` / `margin-top:-1px` 로 1px outline 공유 → 단일 연속 라인. wrapper 자체 outline/radius 미사용 (코너 셀 자체 `border-radius: var(--radius-sm)` 로 외곽 라운딩)
+- **`data-cols="N"`** 으로 레이아웃 분기:
+  - `data-cols="5"` (기본 코마): 5-col LTR · 박스 가로 배치
+  - `data-cols="1"` (タテ): wrapper `width: 33.333%` + `margin-inline: auto` 로 hug + 가운데 정렬, 박스가 위→아래 stack
+- **Drag & Drop** (cols 별 분기):
+  - 가로 (코마, cols≥2): 셀 단위 left/right 2-zone (`data-drop-zone="left|right"`) · 핸들은 vertical 4px 라인이 박스 사이 boundary 에 표시
+  - 세로 (タテ, cols=1): 셀 단위 top/bottom 2-zone (`data-drop-zone="top|bottom"`) · 핸들은 horizontal 4px 라인이 위/아래 boundary 에 표시
+
+---
+
+### JS 모듈: `PageAttachment` (`js/components/page-attachment.js`)
+
+페이지 이미지 첨부 영역의 모든 로직(empty↔grid 토글 / spread 페어링 / drag&drop / 가상 백지 페이지 / 파일 검증)을 캡슐화한 모듈. 4개 episode-add 변형 페이지가 모두 단일 init() 호출로 사용.
+
+**Public API:**
+```js
+const attachment = PageAttachment.init({
+  emptyEl,    // [data-page-empty]    필수
+  attachedEl, // [data-page-attached] 필수 — 'spread' 시 .page-spread-grid / 'koma' 시 .page-koma-grid
+  inputEl,    // <input type=file>    필수
+  layout: 'spread',                   // 'spread'(yoko/episode-add, 2-page 페어링·3-col RTL) | 'koma'(1셀=1이미지·LTR)
+  cols: 5,                            // 'koma' layout 한정 — 컬럼 수 (기본 5). 1=タテ세로 적층, 9 등 자유 가변
+  leftStart: false,                   // 左始まり 모드 (spread 만 사용 — koma 에선 무시)
+  maxFiles: 100,
+  maxFileSizeMB: 0,                   // 0 = 비활성 (?? 사용으로 0 도 명시적으로 비활성 의도 보존). 프로덕션 시 2
+  acceptedTypes: ['image/jpeg', 'image/png'],
+  onChange: (files) => {...},         // 파일 변경 시 (얕은 복사본)
+  onError:  ({ code, message }) => {} // code: 'TYPE'|'SIZE'|'COUNT'
+});
+
+attachment.getFiles();          // 현재 파일 배열
+attachment.setLeftStart(true);  // 左始まり 토글 (즉시 re-render)
+attachment.destroy();           // ObjectURL 해제 + 이벤트 해제 + DOM 비우기
+```
+
+**드래그&드롭 동작**:
+- spread layout: 스프레드 단위 left/center/right 3-zone. 가상 백지(left-start) 가 있는 spread 는 `data-spread-real-count` 로 매핑 보정
+- koma layout (cols≥2): 셀 단위 left/right 2-zone (가로)
+- koma layout (cols=1): 셀 단위 top/bottom 2-zone (세로)
+- **upload-zone 은 drop target 에서 제외** — 드래그 중 첨부 박스(추가 슬롯) 위에서는 핸들 미표시 + 드롭 불가
+
+**순수 함수 (`PageAttachment._internal`)** — 단위 테스트/검증용:
+- `buildDisplayItems(files, { leftStart })` — 시각 표시용 displayItems 빌드 (백지 prepend 포함)
+- `buildSpreads(displayItems, totalFiles)` — 2장씩 spread 페어링, drop zone 매핑용 `start` 계산
+- `moveFile(files, srcIdx, targetIdx)` — insert-and-shift (인덱스 보정 캡슐화)
+- `validateFile(file, opts)` — type/size 검증
+
+**React 이식 청사진:**
+```tsx
+// shadcn/ui 기반 — 내부 컴포넌트는 page-spread-* CSS 그대로 + Tailwind 토큰 매핑
+<PageAttachment
+  files={files}
+  onChange={setFiles}
+  leftStart={direction === 'left'}
+  maxFiles={100}
+  maxFileSizeMB={2}
+  acceptedTypes={['image/jpeg', 'image/png']}
+  onError={(err) => toast.error(err.message)}
+/>
+
+// 내부 구조 (참고):
+//   <PageAttachmentEmpty />  — files.length === 0 시
+//   <PageSpreadGrid>
+//     {spreads.map(spread => <PageSpreadPreview {...spread} />)}
+//     <PageUploadZone onPick={...} />
+//     {placeholders}
+//   </PageSpreadGrid>
+//
+// 커스텀 훅:
+//   useDragReorder(files, onReorder)  — dragstart/over/drop 캡슐화
+//   useObjectUrls(files)              — useEffect cleanup 으로 revokeObjectURL
+```
+
+**검증 패턴**: 페이지 단에서 `onChange` 받아 폼 단 `validateForm()` 호출 → 投稿する 버튼 활성화 토글. yoko/episode-add: 4-field(title, files, dir, afterword) / koma·tate: 3-field(title, files, afterword).
+
+**페이지별 init 차이 (현행)**:
+| 페이지 | layout | cols | 読み始め 라디오 |
+|---|---|---|---|
+| episode-add.html | spread | — | O (4-field) |
+| episode-add-yoko.html | spread | — | O (4-field) |
+| episode-add-koma.html | koma | 5 | X (3-field) |
+| episode-add-tate.html | koma | 1 | X (3-field) |
 
 #### `.inline-alert` → shadcn `Alert` (variant=destructive 등)
 - 인라인 경고/안내 배너. 폼 내부 caution 표시용

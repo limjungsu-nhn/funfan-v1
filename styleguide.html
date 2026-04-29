@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="css/components/page-spread-preview.css">
   <link rel="stylesheet" href="css/components/page-upload-zone.css">
   <link rel="stylesheet" href="css/components/page-spread-grid.css">
+  <link rel="stylesheet" href="css/components/page-koma-grid.css">
   <link rel="stylesheet" href="css/components/inline-alert.css">
   <link rel="stylesheet" href="css/components/floating-alert.css">
   <link rel="stylesheet" href="css/components/radio-list.css">
@@ -88,7 +89,7 @@
     <span class="sg-header-logo">FunFan</span>
     <span class="sg-header-sep"></span>
     <span class="sg-header-subtitle">Design System</span>
-    <span class="sg-header-badge">v1.06.1</span>
+    <span class="sg-header-badge">v1.06.2</span>
   </header>
 
   <div class="sg-layout">
@@ -152,6 +153,7 @@
         <a href="#page-spread-preview">Page Spread Preview</a>
         <a href="#page-upload-zone">Page Upload Zone</a>
         <a href="#page-spread-grid">Page Spread Grid</a>
+        <a href="#page-koma-grid">Page Koma Grid</a>
         <a href="#inline-alert">Inline Alert</a>
         <a href="#floating-alert">Floating Alert</a>
         <a href="#review-item">Review Item</a>
@@ -5779,7 +5781,7 @@
                   </div>
                 </div>
               </div>
-              <code class="sg-type-classname">.page-spread-preview<br>.page-spread-preview__label<br>.page-spread-preview__pages<br>.page-spread-preview__page<br>.page-spread-preview__page--hover<br>.page-spread-preview__page--pressed<br>.page-spread-preview__thumb<br>.page-spread-preview__num<br>.page-spread-preview__icon<br>.page-spread-preview__delete</code>
+              <code class="sg-type-classname">.page-spread-preview<br>.page-spread-preview__label<br>.page-spread-preview__pages<br>.page-spread-preview__page<br>.page-spread-preview__page--hover<br>.page-spread-preview__page--pressed<br>.page-spread-preview__page--blank<br>.page-spread-preview__thumb<br>.page-spread-preview__num<br>.page-spread-preview__icon<br>.page-spread-preview__delete</code>
               <div class="sg-type-meta"><strong>224w · column · gap 8</strong><br>label: overline-w6<br>pages: 102×152 ×2 · gap 2<br>num: top/left 8 · 검정 · 10/16 w6 · 항시 노출<br><br><strong>Default</strong>: 오버레이/drag 없음<br><strong>Hover</strong>: 검정 30% + 중앙 drag-pan + delete<br><strong>Pressed</strong>: 검정 30% + drag-pan (delete 숨김)<br><br>--hover/--pressed 는 정적 데모용 강제 모디파이어 — 실제는 :hover/:active 로 작동</div>
             </div>
           </div>
@@ -5806,7 +5808,7 @@
                     <i class="icon icon-folder-open"></i>
                     <span class="text-caption-w4">ページ追加</span>
                   </button>
-                  <p class="page-upload-zone__hint text-overline-w4">JPG/PNG、各2MB以下、最大100枚。</p>
+                  <p class="page-upload-zone__hint text-overline-w4">JPG/PNG、各2MB以下、<br>最大100枚。</p>
                 </div>
               </div>
               <code class="sg-type-classname">.page-upload-zone<br>.page-upload-zone__btn<br>.page-upload-zone__hint</code>
@@ -5837,12 +5839,16 @@
                       <div class="page-spread-preview__label text-overline-w6">1</div>
                       <div class="page-spread-preview__pages">
                         <div class="page-spread-preview__page">
-                          <img class="page-spread-preview__thumb" src="https://placehold.co/102x152" alt="">
+                          <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
                           <span class="page-spread-preview__num">2</span>
+                          <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                          <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
                         </div>
                         <div class="page-spread-preview__page">
-                          <img class="page-spread-preview__thumb" src="https://placehold.co/102x152" alt="">
+                          <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
                           <span class="page-spread-preview__num">1</span>
+                          <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                          <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
                         </div>
                       </div>
                     </div>
@@ -5850,12 +5856,16 @@
                       <div class="page-spread-preview__label text-overline-w6">2</div>
                       <div class="page-spread-preview__pages">
                         <div class="page-spread-preview__page">
-                          <img class="page-spread-preview__thumb" src="https://placehold.co/102x152" alt="">
+                          <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
                           <span class="page-spread-preview__num">4</span>
+                          <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                          <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
                         </div>
                         <div class="page-spread-preview__page">
-                          <img class="page-spread-preview__thumb" src="https://placehold.co/102x152" alt="">
+                          <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
                           <span class="page-spread-preview__num">3</span>
+                          <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                          <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
                         </div>
                       </div>
                     </div>
@@ -5863,12 +5873,16 @@
                       <div class="page-spread-preview__label text-overline-w6">3</div>
                       <div class="page-spread-preview__pages">
                         <div class="page-spread-preview__page">
-                          <img class="page-spread-preview__thumb" src="https://placehold.co/102x152" alt="">
+                          <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
                           <span class="page-spread-preview__num">6</span>
+                          <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                          <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
                         </div>
                         <div class="page-spread-preview__page">
-                          <img class="page-spread-preview__thumb" src="https://placehold.co/102x152" alt="">
+                          <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
                           <span class="page-spread-preview__num">5</span>
+                          <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                          <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
                         </div>
                       </div>
                     </div>
@@ -5878,8 +5892,10 @@
                       <div class="page-spread-preview__label text-overline-w6">4</div>
                       <div class="page-spread-preview__pages">
                         <div class="page-spread-preview__page">
-                          <img class="page-spread-preview__thumb" src="https://placehold.co/102x152" alt="">
+                          <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
                           <span class="page-spread-preview__num">7</span>
+                          <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                          <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
                         </div>
                       </div>
                     </div>
@@ -5888,7 +5904,7 @@
                         <i class="icon icon-folder-open"></i>
                         <span class="text-caption-w4">ページ追加</span>
                       </button>
-                      <p class="page-upload-zone__hint text-overline-w4">JPG/PNG、各2MB以下、最大100枚。</p>
+                      <p class="page-upload-zone__hint text-overline-w4">JPG/PNG、各2MB以下、<br>最大100枚。</p>
                     </div>
                     <div class="page-spread-grid__placeholder" aria-hidden="true"></div>
                   </div>
@@ -5896,6 +5912,144 @@
               </div>
               <code class="sg-type-classname">.page-spread-grid<br>.page-spread-grid__row<br>.page-spread-grid__placeholder</code>
               <div class="sg-type-meta"><strong>100% 폭 · radius-sm</strong><br>1px gray-5 outline<br>row: flex · direction:rtl · 항상 3열<br>자식 flex:1 균등 분할<br>__placeholder: 행 모자랄 때 빈 셀(bg-soft)<br>JP — 마크업 순서 = 등록 순서</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================
+           PAGE KOMA GRID
+      ========================= -->
+      <section class="sg-section" id="page-koma-grid" data-section="page-koma-grid">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Page Koma Grid</h2>
+          <span class="sg-section-desc">page-koma-grid.css · コマ読み(panel)/タテ読み 작품 전용 · LTR · 1셀=1이미지 · cols 옵션으로 컬럼 수 가변 (5/9/1 등) · 셀은 page-spread-preview 그대로 재사용</span>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Default — 5 koma + 1 upload-zone (cols=5, コマ読み)</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview" style="--sg-preview-width: 672px;">
+                <div class="page-koma-grid" data-cols="5">
+                  <div class="page-koma-grid__row">
+                    <div class="page-spread-preview">
+                      <div class="page-spread-preview__pages">
+                        <div class="page-spread-preview__page">
+                          <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
+                          <span class="page-spread-preview__num">1</span>
+                          <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                          <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="page-spread-preview">
+                      <div class="page-spread-preview__pages">
+                        <div class="page-spread-preview__page">
+                          <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
+                          <span class="page-spread-preview__num">2</span>
+                          <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                          <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="page-spread-preview">
+                      <div class="page-spread-preview__pages">
+                        <div class="page-spread-preview__page">
+                          <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
+                          <span class="page-spread-preview__num">3</span>
+                          <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                          <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="page-spread-preview">
+                      <div class="page-spread-preview__pages">
+                        <div class="page-spread-preview__page">
+                          <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
+                          <span class="page-spread-preview__num">4</span>
+                          <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                          <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="page-spread-preview">
+                      <div class="page-spread-preview__pages">
+                        <div class="page-spread-preview__page">
+                          <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
+                          <span class="page-spread-preview__num">5</span>
+                          <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                          <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="page-koma-grid__row">
+                    <div class="page-upload-zone">
+                      <button class="btn btn-line btn--sm page-upload-zone__btn" type="button">
+                        <i class="icon icon-folder-open"></i>
+                        <span class="text-caption-w4">ページ追加</span>
+                      </button>
+                      <p class="page-upload-zone__hint text-overline-w4">JPG/PNG、各2MB以下、<br>最大100枚。</p>
+                    </div>
+                    <div class="page-koma-grid__placeholder" aria-hidden="true"></div>
+                    <div class="page-koma-grid__placeholder" aria-hidden="true"></div>
+                    <div class="page-koma-grid__placeholder" aria-hidden="true"></div>
+                    <div class="page-koma-grid__placeholder" aria-hidden="true"></div>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.page-koma-grid<br>.page-koma-grid[data-cols="N"]<br>.page-koma-grid__row<br>.page-koma-grid__placeholder<br>(셀 = page-spread-preview 재사용)</code>
+              <div class="sg-type-meta"><strong>LTR · 1셀=1이미지</strong><br>row: flex · 자식 flex:1 균등 분할<br>cols 별 컬럼 수: 5(コマ) / 9 / 1(タテ) 등<br>data-cols=1: wrapper 33% 폭 · margin-inline:auto · 세로 적층<br>__placeholder: 행 모자랄 때 빈 셀(bg-soft)<br>코너 셀 자체 border-radius 로 외곽 라운딩</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">cols=1 — 세로 적층 (タテ読み)</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview" style="--sg-preview-width: 672px;">
+                <div class="page-koma-grid" data-cols="1">
+                  <div class="page-koma-grid__row">
+                    <div class="page-spread-preview">
+                      <div class="page-spread-preview__pages">
+                        <div class="page-spread-preview__page">
+                          <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
+                          <span class="page-spread-preview__num">1</span>
+                          <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                          <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="page-koma-grid__row">
+                    <div class="page-spread-preview">
+                      <div class="page-spread-preview__pages">
+                        <div class="page-spread-preview__page">
+                          <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
+                          <span class="page-spread-preview__num">2</span>
+                          <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                          <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="page-koma-grid__row">
+                    <div class="page-upload-zone">
+                      <button class="btn btn-line btn--sm page-upload-zone__btn" type="button">
+                        <i class="icon icon-folder-open"></i>
+                        <span class="text-caption-w4">ページ追加</span>
+                      </button>
+                      <p class="page-upload-zone__hint text-overline-w4">JPG/PNG、各2MB以下、<br>最大100枚。</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.page-koma-grid[data-cols="1"]</code>
+              <div class="sg-type-meta"><strong>cols=1: タテ読み 1열 적층</strong><br>wrapper 폭 33.333% · margin-inline:auto<br>박스 1개씩 위→아래 stacking<br>드래그 zone: top/bottom 2-zone (가로 라인 핸들)</div>
             </div>
           </div>
         </div>
