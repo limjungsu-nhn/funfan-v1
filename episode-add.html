@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>話を追加 — FunFan</title>
+
+  <!-- Design Tokens -->
+  <link rel="stylesheet" href="css/tokens/typography.css">
+  <link rel="stylesheet" href="css/tokens/layout.css">
+  <link rel="stylesheet" href="css/tokens/color.css">
+
+  <!-- Components -->
+  <link rel="stylesheet" href="css/components/logo.css">
+  <link rel="stylesheet" href="css/components/icon.css">
+  <link rel="stylesheet" href="css/components/avatar.css">
+  <link rel="stylesheet" href="css/components/button.css">
+  <link rel="stylesheet" href="css/components/navbar.css">
+  <link rel="stylesheet" href="css/components/tab.css">
+  <link rel="stylesheet" href="css/components/panel-header.css">
+  <link rel="stylesheet" href="css/components/menu-item.css">
+  <link rel="stylesheet" href="css/components/left-panel.css">
+  <link rel="stylesheet" href="css/components/msg-bubble.css">
+  <link rel="stylesheet" href="css/components/chat-msg.css">
+  <link rel="stylesheet" href="css/components/my-msg.css">
+  <link rel="stylesheet" href="css/components/chat-input.css">
+  <link rel="stylesheet" href="css/components/icon-btn.css">
+  <link rel="stylesheet" href="css/components/send-btn.css">
+  <link rel="stylesheet" href="css/components/right-panel.css">
+  <link rel="stylesheet" href="css/components/float-btn.css">
+  <link rel="stylesheet" href="css/components/badge.css">
+
+  <!-- 페이지 전용 App Shell (v1.03까지 이 HTML <style> 블록에 있던 내용) -->
+  <link rel="stylesheet" href="css/pages/app-shell.css">
+  <link rel="stylesheet" href="css/components/form-field.css">
+  <link rel="stylesheet" href="css/components/form-input.css">
+  <link rel="stylesheet" href="css/components/form-textarea.css">
+  <link rel="stylesheet" href="css/components/radio-block.css">
+  <link rel="stylesheet" href="css/components/form-card.css">
+  <link rel="stylesheet" href="css/components/thumbnail-upload.css">
+  <link rel="stylesheet" href="css/components/page-preview-list.css">
+  <link rel="stylesheet" href="css/components/page-spread-preview.css">
+  <link rel="stylesheet" href="css/components/page-upload-zone.css">
+  <link rel="stylesheet" href="css/components/page-spread-grid.css">
+  <link rel="stylesheet" href="css/components/modal.css">
+  <link rel="stylesheet" href="css/pages/episode-add.css">
+  <script src="js/core/_global.js" defer></script>
+  <script src="js/components/chat.js" defer></script>
+  <script src="js/components/modal.js" defer></script>
+  <script src="js/components/modal-context.js" defer></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar-logo">
+      <i class="logo logo-funfan"></i>
+    </div>
+    <div class="navbar-actions">
+      <div class="navbar-tabs">
+        <div class="tab-group">
+          <button class="tab tab--selected">公開</button>
+          <button class="tab">非公開</button>
+        </div>
+      </div>
+      <a class="btn btn-ghost" href="mypage.html">
+        <i class="icon icon-account-circle"></i>
+        <span class="text-assist-w4">マイページ</span>
+      </a>
+      <a class="btn btn-filled-nature" href="workspace.html">
+        <i class="icon icon-laptop-mac"></i>
+        <span class="text-assist-w4">ワークスペース</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- App Shell -->
+  <div class="workspace">
+
+    <!-- Left Panel -->
+    <div class="left-panel">
+
+      <div class="panel-header">
+        <i class="avatar avatar-01"></i>
+        <div class="panel-header__body">
+          <span class="panel-header__name">つちだ さん</span>
+        </div>
+      </div>
+
+      <nav class="left-panel__menu">
+        <button class="menu-item" onclick="location.href='workspace.html'">
+          <i class="icon icon-bar-chart"></i>
+          <span class="menu-item__label">トップ</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+        <button class="menu-item" onclick="location.href='workroom.html'">
+          <i class="icon icon-edit"></i>
+          <span class="menu-item__label">作業室</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+        <button class="menu-item menu-item--selected" onclick="location.href='series-post-management.html'">
+          <i class="icon icon-folder"></i>
+          <span class="menu-item__label">作品管理</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+        <button class="menu-item" onclick="location.href='account-setting.html'">
+          <i class="icon icon-settings"></i>
+          <span class="menu-item__label">アカウント設定</span>
+          <i class="icon icon-chevron-right menu-item__chevron"></i>
+        </button>
+      </nav>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="workspace__main">
+      <div class="workspace__content">
+
+        <header class="episode-add__page-header">
+          <div class="episode-add__page-header-side episode-add__page-header-side--start">
+            <a class="btn btn-line btn--sm" href="series-post-management.html">
+              <i class="icon icon-chevron-left"></i>
+              <span class="text-caption-w4">シリーズ管理へ戻る</span>
+            </a>
+          </div>
+          <div class="episode-add__page-header-center">
+            <h1 class="episode-add__title text-h2-w6">私の冒険</h1>
+            <p class="episode-add__desc text-caption-w4">エピソードの編集と追加ができます。</p>
+          </div>
+          <div class="episode-add__page-header-side"></div>
+        </header>
+
+        <section class="form-card episode-add__form">
+          <header class="form-card__header">
+            <h2 class="form-card__title text-body-md-w6">エピソード追加</h2>
+          </header>
+
+          <div class="form-card__body">
+
+            <div class="form-card__fields">
+
+              <!-- エピソードタイトル -->
+              <div class="form-field">
+                <div class="form-field__label">
+                  <span class="form-field__title">エピソードタイトル</span>
+                  <span class="form-field__required" aria-hidden="true"></span>
+                </div>
+                <div class="form-input">
+                  <input class="form-input__field" type="text" placeholder="例：第一話 出発" maxlength="50" id="episode-title">
+                  <span class="episode-add__input-counter text-overline-w4" data-input-counter="episode-title">0/50</span>
+                </div>
+              </div>
+
+              <!-- ページ画像 -->
+              <div class="form-field">
+                <div class="form-field__label">
+                  <span class="form-field__title">ページ画像</span>
+                  <span class="form-field__required" aria-hidden="true"></span>
+                </div>
+                <!-- 단일 파일 input — 빈/첨부 양쪽에서 공유 -->
+                <input type="file" id="page-files" accept="image/jpeg,image/png" multiple hidden>
+
+                <!-- Empty state — 첨부 전 / 전체 삭제 후 -->
+                <div class="thumbnail-upload" data-page-empty>
+                  <button class="btn btn-line btn--sm" type="button" data-pick-files>
+                    <i class="icon icon-folder-open"></i>
+                    <span class="text-caption-w4">複数ページをアップロード</span>
+                  </button>
+                  <p class="thumbnail-upload__hint text-overline-w4">JPG/PNG、各2MB以下、最大100枚。</p>
+                </div>
+
+                <!-- Attached state — JS 가 동적으로 채움 (spread 페어링 + placeholder + 행 chunk) -->
+                <div class="page-spread-grid" data-page-attached hidden></div>
+              </div>
+
+              <!-- 読む方向 -->
+              <div class="form-field">
+                <div class="form-field__label">
+                  <span class="form-field__title">読む方向</span>
+                  <span class="form-field__required" aria-hidden="true"></span>
+                </div>
+                <div class="episode-add__choice-grid">
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="reading-start" value="right">
+                    <div class="radio-block__content">
+                      <span class="radio-block__title">右始まり</span>
+                      <span class="radio-block__desc">ヨコ読み作品の既定値。<br>ページ送りは左→右で表示</span>
+                    </div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                  <label class="radio-block radio-block--fluid">
+                    <input type="radio" class="radio-block__input" name="reading-start" value="left">
+                    <div class="radio-block__content">
+                      <span class="radio-block__title">左始まり</span>
+                      <span class="radio-block__desc">作品の演出に応じて<br>開始位置を変更</span>
+                    </div>
+                    <i class="icon icon-check-small radio-block__check" aria-hidden="true"></i>
+                  </label>
+                </div>
+                <p class="form-field__hint">左始まりを選ぶと、見開き合わせのため先頭に白いページが自動で追加されます。</p>
+              </div>
+
+              <!-- あとがき -->
+              <div class="form-field">
+                <div class="form-field__label">
+                  <span class="form-field__title">あとがき</span>
+                  <span class="form-field__required" aria-hidden="true"></span>
+                </div>
+                <div class="form-textarea form-textarea--with-counter">
+                  <textarea class="form-textarea__field" placeholder="更新コメントや読者へのひとこと" maxlength="150" rows="4"></textarea>
+                  <span class="form-textarea__counter text-overline-w4" data-textarea-counter>0/150</span>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="form-card__actions episode-add__actions">
+              <button class="btn btn-line btn--sm" type="button">
+                <span class="text-caption-w4">プレビュー</span>
+              </button>
+              <div class="episode-add__actions-right">
+                <button class="btn btn-line btn--sm" type="button">
+                  <span class="text-caption-w4">下書き保存</span>
+                </button>
+                <button class="btn btn-filled-black btn--sm" type="button" disabled>
+                  <span class="text-caption-w4">投稿する</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Right Wrapper -->
+    <div id="ws-right-wrapper" class="right-panel-wrapper">
+
+    <button class="float-btn" id="ws-float-btn" type="button" aria-label="パネルを開く">
+      <i class="icon icon-horizontal-align-right"></i>
+    </button>
+
+    <div class="right-panel">
+
+      <div class="panel-header">
+        <i class="avatar avatar-02"></i>
+        <div class="panel-header__body">
+          <span class="panel-header__name">はな</span>
+          <div class="panel-header__meta">
+            <span class="panel-header__subtext">漫画鑑定士</span>
+            <a class="panel-header__link">
+              設定
+              <svg class="panel-header__link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8.40016 8L5.3335 4.93333L6.26683 4L10.2668 8L6.26683 12L5.3335 11.0667L8.40016 8Z" fill="var(--color-black-100)"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-panel__chat">
+
+        <div class="chat-msg">
+          <div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>
+          <div class="chat-msg__body"><p class="chat-msg__text">こんにちは！漫画についてなんでも聞いてください。</p></div>
+        </div>
+
+      </div>
+
+      <div class="right-panel__footer">
+        <div class="chat-input">
+          <div class="chat-input__field">
+            <textarea class="chat-input__textarea" aria-label="AIへのメッセージ" placeholder="はなに話しかけてみましょう..." rows="1"></textarea>
+          </div>
+          <div class="chat-input__actions">
+            <button class="icon-btn" type="button" aria-label="作品コンテキストを追加" data-modal-open="#modal-context">
+              <i class="icon icon-add"></i>
+            </button>
+            <button class="send-btn" type="button" aria-label="送信">
+              <i class="icon icon-arrow-upward-alt"></i>
+            </button>
+          </div>
+        </div>
+        <p class="right-panel__disclaimer">AIのため、誤りを含む可能性があります</p>
+      </div>
+
+    </div>
+
+    </div><!-- /#ws-right-wrapper -->
+
+  </div>
+
+  <script>
+    const RESPONSES = [
+      { keywords: ['つまず', '悩', '困', 'うまく', 'できない', 'むずか', '難し'], reply: 'つまずくのはむしろ成長のサインです！どんな部分で詰まっていますか？\n\nよくあるのは「頭の中のイメージと手が追いつかない」パターン。そんなときは、描きたいものを一度シンプルな図形に分解してみると突破口が見えやすいですよ。' },
+      { keywords: ['練習', 'うまくなり', '上達', '描き方', 'スキル'], reply: 'おすすめの練習法は「模写→観察→オリジナル」の3ステップです。\n\n好きな作家のコマを模写→なぜそう描いているか観察→自分のキャラに応用。この繰り返しが一番早く上達できます。毎日15分でも続けることが大切です！' },
+      { keywords: ['キャラ', 'キャラクター', '人物', '顔', '表情'], reply: 'キャラクターで大事なのは「シルエットで誰かわかること」です。\n\nまず全身を描く前に、シルエットだけで個性が出るか確認してみて。髪型・体型・服装の組み合わせでキャラが立ちます。表情は目の形と眉の角度の2点で印象が大きく変わりますよ。' },
+      { keywords: ['構図', 'コマ', 'レイアウト', 'ページ', '配置'], reply: '構図で迷ったら「三分割法」から始めてみて。\n\nページを縦横3分割した交点にキャラや視線の focal point を置くと、自然とバランスよく見えます。コマ割りは「大→小→大」のリズムをつけると読者の目線が自然に流れます。' },
+      { keywords: ['ストーリー', 'プロット', '話', 'シナリオ', 'ネーム'], reply: 'ストーリーに詰まったときは「キャラが何を欲しているか・何を恐れているか」の2点を整理してみて。\n\nその2つが噛み合うシーンがドラマの核になります。ネームは完成度より「感情の流れ」を優先して、まず粗くラフを描き切ることが大事です。' },
+    ];
+    const DEFAULT_REPLY = 'なるほど、それは大切なテーマですね。\n\nもう少し具体的に教えてもらえると、より的確なアドバイスができます。どんな場面で困っているか、描いているジャンルや目標なども一緒に教えてみてください！';
+
+    function getReply(text) {
+      for (const item of RESPONSES) {
+        if (item.keywords.some(k => text.includes(k))) return item.reply;
+      }
+      return DEFAULT_REPLY;
+    }
+
+    // input counter
+    document.querySelectorAll('[data-input-counter]').forEach((counter) => {
+      const id = counter.getAttribute('data-input-counter');
+      const input = document.getElementById(id);
+      if (!input) return;
+      const max = input.getAttribute('maxlength') || 50;
+      const update = () => { counter.textContent = `${input.value.length}/${max}`; };
+      input.addEventListener('input', update);
+      update();
+    });
+
+    // textarea counter
+    document.querySelectorAll('[data-textarea-counter]').forEach((counter) => {
+      const ta = counter.parentElement.querySelector('.form-textarea__field');
+      if (!ta) return;
+      const max = ta.getAttribute('maxlength') || 150;
+      const update = () => { counter.textContent = `${ta.value.length}/${max}`; };
+      ta.addEventListener('input', update);
+      update();
+    });
+
+    // ── 페이지 이미지 첨부 — 단일 state(files[]) 기반 렌더 ──────
+    // 빈 상태 ↔ 그리드 상태 스위치 / spread 페어링 / placeholder 자동 채움 / 페이지 단위 삭제
+    (() => {
+      const empty = document.querySelector('[data-page-empty]');
+      const attached = document.querySelector('[data-page-attached]');
+      const input = document.getElementById('page-files');
+      if (!empty || !attached || !input) return;
+
+      /** @type {{file: File, url: string}[]} */
+      let files = [];
+      const COLS = 3;
+
+      function render() {
+        if (files.length === 0) {
+          empty.hidden = false;
+          attached.hidden = true;
+          attached.innerHTML = '';
+          return;
+        }
+        empty.hidden = true;
+        attached.hidden = false;
+
+        // 2장씩 spread 로 묶기
+        const spreads = [];
+        for (let i = 0; i < files.length; i += 2) {
+          spreads.push({ start: i, items: files.slice(i, i + 2) });
+        }
+
+        // cells = spread… + upload-zone + placeholder…(3열 채우기)
+        const cells = spreads.map((s, idx) => spreadCell(s, idx));
+        cells.push(uploadCell());
+        const padCount = (COLS - (cells.length % COLS)) % COLS;
+        for (let i = 0; i < padCount; i++) cells.push(placeholderCell());
+
+        // 3개씩 row 로 chunk
+        const rows = [];
+        for (let i = 0; i < cells.length; i += COLS) {
+          rows.push(`<div class="page-spread-grid__row">${cells.slice(i, i + COLS).join('')}</div>`);
+        }
+        attached.innerHTML = rows.join('');
+
+        // 이벤트 위임
+        attached.querySelectorAll('[data-delete-page]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const idx = Number(btn.dataset.deletePage);
+            const removed = files.splice(idx, 1)[0];
+            if (removed) URL.revokeObjectURL(removed.url);
+            render();
+          });
+        });
+        attached.querySelector('[data-upload-more]')?.addEventListener('click', () => input.click());
+      }
+
+      function spreadCell({ start, items }, idx) {
+        // 페이지 번호 = 1-based · 2-page spread 의 DOM 순서 = [큰 num, 작은 num] (default flex ltr → 시각상 left=큰, right=작은)
+        const pages = items.map((f, i) => ({ num: start + i + 1, url: f.url, idx: start + i }));
+        const order = pages.length === 2 ? [pages[1], pages[0]] : pages;
+        return `
+          <div class="page-spread-preview" data-spread-start="${start}">
+            <div class="page-spread-preview__label text-overline-w6">${idx + 1}</div>
+            <div class="page-spread-preview__pages">
+              ${order.map((p) => `
+                <div class="page-spread-preview__page" draggable="true" data-page-idx="${p.idx}">
+                  <img class="page-spread-preview__thumb" src="${p.url}" alt="">
+                  <span class="page-spread-preview__num">${p.num}</span>
+                  <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                  <button class="page-spread-preview__delete" type="button" data-delete-page="${p.idx}" aria-label="このページを削除">
+                    <i class="icon icon-delete"></i>
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      function uploadCell() {
+        return `
+          <div class="page-upload-zone" data-upload-cell>
+            <button class="btn btn-line btn--sm page-upload-zone__btn" type="button" data-upload-more>
+              <i class="icon icon-folder-open"></i>
+              <span class="text-caption-w4">ページ追加</span>
+            </button>
+            <p class="page-upload-zone__hint text-overline-w4">JPG/PNG、各2MB以下、最大100枚。</p>
+          </div>
+        `;
+      }
+
+      function placeholderCell() {
+        return `<div class="page-spread-grid__placeholder" aria-hidden="true"></div>`;
+      }
+
+      // 빈 상태 버튼 → input 트리거
+      empty.querySelector('[data-pick-files]')?.addEventListener('click', () => input.click());
+
+      // 파일 선택 → 기존 배열에 append (ページ追加 도 동일 input 사용)
+      input.addEventListener('change', (e) => {
+        const picked = Array.from(e.target.files || []);
+        picked.forEach((f) => files.push({ file: f, url: URL.createObjectURL(f) }));
+        e.target.value = ''; // 같은 파일 재선택 허용
+        if (picked.length) render();
+      });
+
+      // ── 드래그&드롭 — 페이지 순서 변경 (insert-and-shift, spread 단위 3-zone) ──
+      // zone 매핑(reading-order index 기준):
+      //   right zone  → start     (스프레드 시작에 끼워 넣기)
+      //   center zone → start+1   (두 페이지 사이)
+      //   left zone   → start+2   (스프레드 끝)
+      //   upload-zone → files.length (마지막에 추가)
+      let dragSrcIdx = null;
+
+      function clearDropZones() {
+        attached.querySelectorAll('[data-drop-zone]').forEach((el) => el.removeAttribute('data-drop-zone'));
+      }
+
+      attached.addEventListener('dragstart', (e) => {
+        const page = e.target.closest('.page-spread-preview__page');
+        if (!page) return;
+        dragSrcIdx = Number(page.dataset.pageIdx);
+        // ghost 숨김 — 빈 1×1 투명 요소를 drag image 로 지정 → 원본만 30% 로 노출
+        const empty = document.createElement('div');
+        empty.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;';
+        document.body.appendChild(empty);
+        e.dataTransfer.setDragImage(empty, 0, 0);
+        setTimeout(() => empty.remove(), 0);
+        page.setAttribute('data-dragging', 'true'); // CSS opacity 0.3
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', String(dragSrcIdx));
+      });
+
+      attached.addEventListener('dragend', (e) => {
+        const page = e.target.closest('.page-spread-preview__page');
+        page?.removeAttribute('data-dragging');
+        clearDropZones();
+        dragSrcIdx = null;
+      });
+
+      attached.addEventListener('dragover', (e) => {
+        if (dragSrcIdx === null) return;
+        const spread = e.target.closest('.page-spread-preview');
+        const upload = e.target.closest('[data-upload-cell]');
+        if (!spread && !upload) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        clearDropZones();
+        if (spread) {
+          const rect = spread.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const w = rect.width;
+          const zone = x < w / 3 ? 'left' : (x < (w * 2) / 3 ? 'center' : 'right');
+          spread.dataset.dropZone = zone;
+        } else {
+          // upload-zone: 마지막에 추가 — 시각 라인은 좌측에만
+          upload.dataset.dropZone = 'left';
+        }
+      });
+
+      attached.addEventListener('dragleave', (e) => {
+        // attached 컨테이너 밖으로 나갈 때만 클리어
+        if (!attached.contains(e.relatedTarget)) clearDropZones();
+      });
+
+      attached.addEventListener('drop', (e) => {
+        if (dragSrcIdx === null) return;
+        e.preventDefault();
+        const spread = e.target.closest('.page-spread-preview');
+        const upload = e.target.closest('[data-upload-cell]');
+        let target;
+        if (spread) {
+          const start = Number(spread.dataset.spreadStart);
+          const zone = spread.dataset.dropZone;
+          target = zone === 'left' ? start + 2 : (zone === 'center' ? start + 1 : start);
+        } else if (upload) {
+          target = files.length;
+        } else {
+          clearDropZones();
+          dragSrcIdx = null;
+          return;
+        }
+
+        // no-op: 같은 자리 (자기 자신 앞 = src, 자기 자신 뒤 = src+1)
+        if (target === dragSrcIdx || target === dragSrcIdx + 1) {
+          clearDropZones();
+          return;
+        }
+
+        const [moved] = files.splice(dragSrcIdx, 1);
+        // src 가 target 보다 앞이면 splice 후 target 인덱스가 1 줄어듦
+        const insertAt = dragSrcIdx < target ? target - 1 : target;
+        files.splice(insertAt, 0, moved);
+        dragSrcIdx = null;
+        render();
+      });
+
+      render();
+    })();
+
+    document.querySelector('.left-panel').addEventListener('wheel', (e) => e.preventDefault(), { passive: false });
+    document.querySelector('.right-panel').addEventListener('wheel', (e) => e.stopPropagation(), { passive: true });
+
+    // ── 채팅 인터랙션 ────────────────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      Chat.setup({
+        root: document.querySelector('.right-panel'),
+        getReply,
+      });
+    });
+
+    (() => {
+      const floatBtn   = document.getElementById('ws-float-btn');
+      const wrapper    = document.getElementById('ws-right-wrapper');
+      const rightPanel = document.querySelector('.right-panel');
+      if (!floatBtn || !wrapper || !rightPanel) return;
+      const PANEL_KEY = 'rightPanelOpen';
+      let isOpen = localStorage.getItem(PANEL_KEY) !== 'false';
+
+      function applyState() {
+        wrapper.classList.toggle('is-panel-closed', !isOpen);
+        rightPanel.classList.toggle('right-panel--collapsed', !isOpen);
+        floatBtn.classList.toggle('is-panel-closed', !isOpen);
+        floatBtn.setAttribute('aria-label', isOpen ? 'パネルを閉じる' : 'パネルを開く');
+      }
+
+      wrapper.classList.add('right-panel-wrapper--instant');
+      applyState();
+      requestAnimationFrame(() => requestAnimationFrame(() => wrapper.classList.remove('right-panel-wrapper--instant')));
+
+      floatBtn.addEventListener('click', () => {
+        isOpen = !isOpen;
+        localStorage.setItem(PANEL_KEY, isOpen);
+        applyState();
+      });
+    })();
+  </script>
+
+
+</body>
+</html>

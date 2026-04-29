@@ -1,0 +1,38 @@
+/* ============================================
+   Page Upload Zone — page-spread-preview 옆에 놓이는 추가 업로드 영역
+
+   HTML 구조:
+     <div class="page-upload-zone">
+       <input type="file" id="..." accept="image/jpeg,image/png" multiple hidden>
+       <button class="btn btn-line btn--sm page-upload-zone__btn" type="button">
+         <i class="icon icon-folder-open"></i>
+         <span class="text-caption-w4">ページ追加</span>
+       </button>
+       <p class="page-upload-zone__hint text-overline-w4">JPG/PNG、各2MB以下、最大100枚。</p>
+     </div>
+
+   Notes:
+     - container: 224×208 · bg-soft · outline 1px gray-5 (-1px offset) · 중앙 정렬
+     - 버튼(btn-line btn--sm) + 안내문(overline-w4 · secondary text) 세로 배치 · gap 10
+     - 사용처: episode-add.html — page-spread-preview 그리드의 마지막 슬롯
+   ============================================ */
+
+.page-upload-zone {
+  width: 224px;
+  aspect-ratio: 224 / 208; /* grid 안에서 width 가 늘어나면 height 도 비율 유지 */
+  height: auto;
+  background: var(--color-bg-soft);
+  outline: 1px solid var(--color-gray-5);
+  outline-offset: -1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2_5); /* 10 */
+}
+
+.page-upload-zone__hint {
+  margin: 0;
+  color: var(--color-font-secondary);
+  text-align: center;
+}

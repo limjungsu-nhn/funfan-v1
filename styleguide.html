@@ -29,6 +29,10 @@
   <link rel="stylesheet" href="css/components/empty-state.css">
   <link rel="stylesheet" href="css/components/form-card.css">
   <link rel="stylesheet" href="css/components/thumbnail-upload.css">
+  <link rel="stylesheet" href="css/components/page-preview-list.css">
+  <link rel="stylesheet" href="css/components/page-spread-preview.css">
+  <link rel="stylesheet" href="css/components/page-upload-zone.css">
+  <link rel="stylesheet" href="css/components/page-spread-grid.css">
   <link rel="stylesheet" href="css/components/inline-alert.css">
   <link rel="stylesheet" href="css/components/floating-alert.css">
   <link rel="stylesheet" href="css/components/radio-list.css">
@@ -84,7 +88,7 @@
     <span class="sg-header-logo">FunFan</span>
     <span class="sg-header-sep"></span>
     <span class="sg-header-subtitle">Design System</span>
-    <span class="sg-header-badge">v1.06.0</span>
+    <span class="sg-header-badge">v1.06.1</span>
   </header>
 
   <div class="sg-layout">
@@ -144,6 +148,10 @@
         <a href="#empty-state">Empty State</a>
         <a href="#form-card">Form Card</a>
         <a href="#thumbnail-upload">Thumbnail Upload</a>
+        <a href="#page-preview-list">Page Preview List</a>
+        <a href="#page-spread-preview">Page Spread Preview</a>
+        <a href="#page-upload-zone">Page Upload Zone</a>
+        <a href="#page-spread-grid">Page Spread Grid</a>
         <a href="#inline-alert">Inline Alert</a>
         <a href="#floating-alert">Floating Alert</a>
         <a href="#review-item">Review Item</a>
@@ -987,6 +995,21 @@
           </div>
         </div>
 
+        <!-- Purple (AI accent) -->
+        <div class="sg-subsection">
+          <h3 class="sg-subsection-title">Purple (AI accent)</h3>
+          <div class="sg-color-grid">
+            <div class="sg-color-card sg-color-card--dark">
+              <div class="sg-color-swatch" style="background:var(--color-purple-100)"></div>
+              <div class="sg-color-info">
+                <span class="sg-color-name">Purple 100</span>
+                <code class="sg-color-var">--color-purple-100</code>
+                <span class="sg-color-hex">#8A38F5</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </section>
 
       <!-- ========================
@@ -995,7 +1018,7 @@
       <section class="sg-section" id="icons" data-section="icons">
         <div class="sg-section-header">
           <h2 class="sg-section-title">Icons</h2>
-          <span class="sg-section-desc">icon.css · 32개 · mask-image 방식 · 기본 18px · color로 색상 제어</span>
+          <span class="sg-section-desc">icon.css · 57개 · mask-image 방식 · 기본 18px · color로 색상 제어</span>
         </div>
 
         <!-- Size variants -->
@@ -1137,6 +1160,26 @@
               <div class="sg-icon-info">
                 <span class="sg-icon-name">delete</span>
                 <code class="sg-type-classname">.icon-delete</code>
+              </div>
+            </div>
+
+            <div class="sg-icon-card">
+              <div class="sg-icon-preview">
+                <i class="icon icon-drag-handle"></i>
+              </div>
+              <div class="sg-icon-info">
+                <span class="sg-icon-name">drag-handle</span>
+                <code class="sg-type-classname">.icon-drag-handle</code>
+              </div>
+            </div>
+
+            <div class="sg-icon-card">
+              <div class="sg-icon-preview">
+                <i class="icon icon-drag-pan"></i>
+              </div>
+              <div class="sg-icon-info">
+                <span class="sg-icon-name">drag-pan</span>
+                <code class="sg-type-classname">.icon-drag-pan</code>
               </div>
             </div>
 
@@ -5651,6 +5694,214 @@
       </section>
 
       <!-- ========================
+           PAGE PREVIEW LIST
+      ========================= -->
+      <section class="sg-section" id="page-preview-list" data-section="page-preview-list">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Page Preview List</h2>
+          <span class="sg-section-desc">page-preview-list.css · 첨부된 페이지 이미지 미리보기 목록 · 142w · purple-100 1px border · padding 20 · gap 20 · item 102×152</span>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">States — Default / Hover / Pressed</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="page-preview-list">
+                  <button class="page-preview-list__item" type="button">
+                    <img class="page-preview-list__thumb" src="img/img_series01.png" alt="">
+                    <i class="icon icon-drag-pan page-preview-list__icon"></i>
+                    <span class="page-preview-list__delete" aria-label="削除"><i class="icon icon-delete"></i></span>
+                  </button>
+                  <button class="page-preview-list__item page-preview-list__item--hover" type="button">
+                    <img class="page-preview-list__thumb" src="img/img_series01.png" alt="">
+                    <i class="icon icon-drag-pan page-preview-list__icon"></i>
+                    <span class="page-preview-list__delete" aria-label="削除"><i class="icon icon-delete"></i></span>
+                  </button>
+                  <button class="page-preview-list__item page-preview-list__item--pressed" type="button">
+                    <img class="page-preview-list__thumb" src="img/img_series01.png" alt="">
+                    <i class="icon icon-drag-pan page-preview-list__icon"></i>
+                    <span class="page-preview-list__delete" aria-label="削除"><i class="icon icon-delete"></i></span>
+                  </button>
+                </div>
+              </div>
+              <code class="sg-type-classname">.page-preview-list<br>.page-preview-list__item<br>.page-preview-list__item--hover<br>.page-preview-list__item--pressed<br>.page-preview-list__thumb<br>.page-preview-list__icon<br>.page-preview-list__delete</code>
+              <div class="sg-type-meta"><strong>142w · padding 20 · gap 20</strong><br>border: 1px purple-100<br>item 102×152 · radius 6<br><br><strong>Default</strong>: 오버레이/아이콘 없음<br><strong>Hover</strong>: 검정 30% + 중앙 drag-pan + delete 배지<br><strong>Pressed</strong>: 검정 30% + 중앙 drag-pan (delete 숨김)<br><br>--hover/--pressed 는 정적 데모용 강제 모디파이어 — 실제 인터랙션은 :hover/:active 로 작동</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Interactive — 마우스 hover / press 시 상태 전환</p>
+          <div class="sg-demo-canvas">
+            <div class="page-preview-list" id="sg-ppl-demo">
+              <button class="page-preview-list__item" type="button">
+                <img class="page-preview-list__thumb" src="img/img_series01.png" alt="">
+                <i class="icon icon-drag-pan page-preview-list__icon"></i>
+                <span class="page-preview-list__delete" aria-label="削除"><i class="icon icon-delete"></i></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================
+           PAGE SPREAD PREVIEW
+      ========================= -->
+      <section class="sg-section" id="page-spread-preview" data-section="page-spread-preview">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Page Spread Preview</h2>
+          <span class="sg-section-desc">page-spread-preview.css · 좌·우 한 쌍 spread 미리보기 · 224w · column 정렬 · label(overline-w6) + 페이지 102×152 ×2 · num badge top-left</span>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">States — Default / Hover / Pressed (페이지 단위)</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="page-spread-preview">
+                  <div class="page-spread-preview__label text-overline-w6">1</div>
+                  <div class="page-spread-preview__pages">
+                    <div class="page-spread-preview__page">
+                      <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
+                      <span class="page-spread-preview__num">2</span>
+                      <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                      <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
+                    </div>
+                    <div class="page-spread-preview__page">
+                      <img class="page-spread-preview__thumb" src="img/img_series01.png" alt="">
+                      <span class="page-spread-preview__num">1</span>
+                      <i class="icon icon-drag-pan page-spread-preview__icon"></i>
+                      <button class="page-spread-preview__delete" type="button" aria-label="削除"><i class="icon icon-delete"></i></button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.page-spread-preview<br>.page-spread-preview__label<br>.page-spread-preview__pages<br>.page-spread-preview__page<br>.page-spread-preview__page--hover<br>.page-spread-preview__page--pressed<br>.page-spread-preview__thumb<br>.page-spread-preview__num<br>.page-spread-preview__icon<br>.page-spread-preview__delete</code>
+              <div class="sg-type-meta"><strong>224w · column · gap 8</strong><br>label: overline-w6<br>pages: 102×152 ×2 · gap 2<br>num: top/left 8 · 검정 · 10/16 w6 · 항시 노출<br><br><strong>Default</strong>: 오버레이/drag 없음<br><strong>Hover</strong>: 검정 30% + 중앙 drag-pan + delete<br><strong>Pressed</strong>: 검정 30% + drag-pan (delete 숨김)<br><br>--hover/--pressed 는 정적 데모용 강제 모디파이어 — 실제는 :hover/:active 로 작동</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================
+           PAGE UPLOAD ZONE
+      ========================= -->
+      <section class="sg-section" id="page-upload-zone" data-section="page-upload-zone">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Page Upload Zone</h2>
+          <span class="sg-section-desc">page-upload-zone.css · page-spread-preview 옆 추가 업로드 슬롯 · 224×208 · bg-soft + 1px gray-5 outline · 버튼 + 안내문 중앙 정렬</span>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Default — ページ追加 + hint</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <div class="page-upload-zone">
+                  <button class="btn btn-line btn--sm page-upload-zone__btn" type="button">
+                    <i class="icon icon-folder-open"></i>
+                    <span class="text-caption-w4">ページ追加</span>
+                  </button>
+                  <p class="page-upload-zone__hint text-overline-w4">JPG/PNG、各2MB以下、最大100枚。</p>
+                </div>
+              </div>
+              <code class="sg-type-classname">.page-upload-zone<br>.page-upload-zone__btn<br>.page-upload-zone__hint</code>
+              <div class="sg-type-meta"><strong>224×208 · bg-soft</strong><br>outline 1px gray-5 (-1px)<br>column · center · gap 10<br>버튼: btn-line btn--sm<br>hint: overline-w4 · secondary</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================
+           PAGE SPREAD GRID
+      ========================= -->
+      <section class="sg-section" id="page-spread-grid" data-section="page-spread-grid">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Page Spread Grid</h2>
+          <span class="sg-section-desc">page-spread-grid.css · spread/upload-zone 묶는 그리드 래퍼 · 100% 폭 · radius-sm + 1px gray-5 outline · row 단위로 RTL 흐름(일본 서비스 — 오른쪽부터 등록)</span>
+        </div>
+
+        <div class="sg-subsection">
+          <p class="sg-subsection-title">Default — 5 spreads + 1 upload-zone (RTL 흐름)</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview" style="--sg-preview-width: 672px;">
+                <div class="page-spread-grid">
+                  <div class="page-spread-grid__row">
+                    <div class="page-spread-preview">
+                      <div class="page-spread-preview__label text-overline-w6">1</div>
+                      <div class="page-spread-preview__pages">
+                        <div class="page-spread-preview__page">
+                          <img class="page-spread-preview__thumb" src="https://placehold.co/102x152" alt="">
+                          <span class="page-spread-preview__num">2</span>
+                        </div>
+                        <div class="page-spread-preview__page">
+                          <img class="page-spread-preview__thumb" src="https://placehold.co/102x152" alt="">
+                          <span class="page-spread-preview__num">1</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="page-spread-preview">
+                      <div class="page-spread-preview__label text-overline-w6">2</div>
+                      <div class="page-spread-preview__pages">
+                        <div class="page-spread-preview__page">
+                          <img class="page-spread-preview__thumb" src="https://placehold.co/102x152" alt="">
+                          <span class="page-spread-preview__num">4</span>
+                        </div>
+                        <div class="page-spread-preview__page">
+                          <img class="page-spread-preview__thumb" src="https://placehold.co/102x152" alt="">
+                          <span class="page-spread-preview__num">3</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="page-spread-preview">
+                      <div class="page-spread-preview__label text-overline-w6">3</div>
+                      <div class="page-spread-preview__pages">
+                        <div class="page-spread-preview__page">
+                          <img class="page-spread-preview__thumb" src="https://placehold.co/102x152" alt="">
+                          <span class="page-spread-preview__num">6</span>
+                        </div>
+                        <div class="page-spread-preview__page">
+                          <img class="page-spread-preview__thumb" src="https://placehold.co/102x152" alt="">
+                          <span class="page-spread-preview__num">5</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="page-spread-grid__row">
+                    <div class="page-spread-preview">
+                      <div class="page-spread-preview__label text-overline-w6">4</div>
+                      <div class="page-spread-preview__pages">
+                        <div class="page-spread-preview__page">
+                          <img class="page-spread-preview__thumb" src="https://placehold.co/102x152" alt="">
+                          <span class="page-spread-preview__num">7</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="page-upload-zone">
+                      <button class="btn btn-line btn--sm page-upload-zone__btn" type="button">
+                        <i class="icon icon-folder-open"></i>
+                        <span class="text-caption-w4">ページ追加</span>
+                      </button>
+                      <p class="page-upload-zone__hint text-overline-w4">JPG/PNG、各2MB以下、最大100枚。</p>
+                    </div>
+                    <div class="page-spread-grid__placeholder" aria-hidden="true"></div>
+                  </div>
+                </div>
+              </div>
+              <code class="sg-type-classname">.page-spread-grid<br>.page-spread-grid__row<br>.page-spread-grid__placeholder</code>
+              <div class="sg-type-meta"><strong>100% 폭 · radius-sm</strong><br>1px gray-5 outline<br>row: flex · direction:rtl · 항상 3열<br>자식 flex:1 균등 분할<br>__placeholder: 행 모자랄 때 빈 셀(bg-soft)<br>JP — 마크업 순서 = 등록 순서</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================
            INLINE ALERT
       ========================= -->
       <section class="sg-section" id="inline-alert" data-section="inline-alert">
@@ -7410,6 +7661,18 @@
           preview.src = '';
           wrap.classList.remove('thumbnail-upload--attached');
         });
+    })();
+
+    // Page Preview List — __delete 클릭 시 해당 아이템 제거 (hover/pressed 상태는 CSS :hover/:active 로 자동 처리)
+    (() => {
+      const list = document.getElementById('sg-ppl-demo');
+      if (!list) return;
+      list.addEventListener('click', (e) => {
+        const delBtn = e.target.closest('.page-preview-list__delete');
+        if (!delBtn) return;
+        e.stopPropagation();
+        delBtn.closest('.page-preview-list__item')?.remove();
+      });
     })();
   </script>
 

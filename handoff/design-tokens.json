@@ -75,6 +75,9 @@
       "6": "#E4F3FF"
     },
     "star": "#FFB800",
+    "purple": {
+      "100": "#8A38F5"
+    },
     "shadow": {
       "subtle": "rgba(0, 0, 0, 0.02)",
       "light":  "rgba(0, 0, 0, 0.05)",

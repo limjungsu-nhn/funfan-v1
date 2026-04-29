@@ -149,6 +149,53 @@ const buttonVariants = cva("...", {
 - bg-soft + gray-4 1px dashed border + radius-sm
 - 중앙 정렬: 액션 버튼(btn-line btn--sm `クリックして画像を選択`) + `.thumbnail-upload__hint`(overline-w4, black-50) — gap 12
 
+#### `.page-preview-list` → shadcn custom thumbnail list
+- 첨부된 페이지 이미지 미리보기 목록. episode-add.html 업로드 결과 리스트
+- 142w × 자동 높이 · white bg · 1px purple-100 (`#8A38F5`) border · radius-xs · padding 20 · gap 20 · column flex
+- 아이템(`.page-preview-list__item`): 102×152 · radius 6 · `<button>` 기반 · `__thumb` 가 `object-fit: cover`
+- **3-state 모델** — 실제 인터랙션은 `:hover`/`:active` 의사클래스로 작동, 정적 데모용 강제 모디파이어 `--hover`/`--pressed` 도 제공
+  - **Default**: 오버레이/아이콘 없음 — 썸네일만 노출
+  - **Hover**: 검정 30% 오버레이(`::after`) + 중앙 20×20 흰색 `icon-drag-pan` (`.page-preview-list__icon`) + 우측상단 `__delete` 배지
+  - **Pressed**: 검정 30% 오버레이 + 중앙 drag-pan 아이콘 (delete 숨김 — 드래그 중 표현)
+- `__delete`: 20×20 · top:4 right:4 · `red-10` bg · radius-xs(4) · 12×12 `red-100` icon-delete (휴지통)
+
+#### `.page-spread-preview` → shadcn custom spread tile
+- 좌·우 한 쌍 spread 미리보기. episode-add.html 업로드 결과의 spread 단위 표현
+- 224w · column 정렬 · gap 8 · 상단 `__label`(overline-w6) + 하단 `__pages`(row · gap 2)
+- `__page`: 102×152 · radius 6
+- **3-state 모델** (`__page` 단위) — 실제 인터랙션은 `:hover`/`:active` 의사클래스, 정적 데모용 강제 모디파이어 `--hover`/`--pressed` 도 제공
+  - **Default**: 오버레이/drag 아이콘 없음 — 썸네일 + num badge 만 노출
+  - **Hover**: 검정 30% 오버레이(`::after`) + 중앙 20×20 흰색 `icon-drag-pan` (`__icon`) + 우측상단 `__delete`
+  - **Pressed**: 검정 30% 오버레이 + 중앙 drag-pan (delete 숨김 — 드래그 중 표현)
+- `__num`: 페이지 번호 배지(top:8 left:8) · 검정 bg · radius 4 · padding 0/4 · 흰색 10/16 w6 · 항시 노출
+- `__delete`: 페이지 단일 삭제 버튼(top:4 right:4) · 20×20 · `red-10` bg · radius-xs(4) · 12×12 `red-100` icon-delete · Hover 에서만 노출 (page-preview-list 와 동일 디자인) · `:active` 시 배경 `red-100` / 아이콘 흰색
+- **Drag & Drop 순서 변경** (episode-add.html 한정 동작): 각 `__page` 가 `draggable="true"` · 드래그 중 ghost 는 빈 1×1 요소로 `setDragImage` 처리하여 숨김 · 원본은 `data-dragging="true"` (opacity 0.3) 로 자리에 남아 어디서 출발했는지 표시
+  - `__thumb` 에 `pointer-events: none` + `-webkit-user-drag: none` + `user-select: none` — 파일 확장자별 native img drag 동작 차단 (부모 `__page` drag 만 작동)
+  - 셀에 좌/중/우 3-zone 인서트 — `data-drop-zone="left|center|right"` 시 `__pages::before` 검정 4px 세로 라인(라인 둥근 처리 radius 2 + 흰색 3px box-shadow 아웃라인 · 이미지 100% 높이) 을 해당 위치(좌측 4 / 중앙 50% / 우측 4)에 표시
+  - reading-order index 매핑: right→`start`, center→`start+1`, left→`start+2` · 드롭 = insert-and-shift (이후 페이지들 한 칸씩 뒤로 밀림)
+  - upload-zone 에 드롭 시 `files.length` 끝에 추가
+- `__pages:has(:only-child)`: 마지막 홀수 페이지 1장만 있는 spread → `justify-content: flex-end` 로 우측(RTL 읽기 시작점)에 정렬, 셀 폭은 2-페이지 시와 동일하게 50% 유지
+
+#### `.page-upload-zone` → shadcn custom upload slot
+- `page-spread-preview` 그리드 옆/마지막에 놓이는 추가 업로드 슬롯. episode-add.html 페이지 추가 영역
+- 224×208 · bg-soft · outline 1px gray-5 (-1px offset) · column · center · gap 10
+- 구조: 액션 버튼(btn-line btn--sm `ページ追加` + icon-folder-open) + `__hint`(overline-w4 · secondary text)
+
+#### `.page-spread-grid` → shadcn custom grid wrapper
+- `page-spread-preview` / `page-upload-zone` 를 묶는 그리드 래퍼. episode-add.html 이미지 첨부 후 표시
+- 100% 폭 · radius-sm · 1px gray-5 outline (-1px offset) · overflow hidden
+- `__row`: flex · **`direction: rtl`** (일본 서비스 — 마크업 순서가 등록 순서, 시각적으론 오른쪽부터 흐름)
+- 자식(`page-spread-preview` / `page-upload-zone`)은 grid 내부에서 `flex:1` 로 균등 분할 (자체 폭 224 override) · 내부는 `direction: ltr` 로 복원
+- 행/열 셀 outline 은 `-1px` 오프셋으로 인접 셀과 1px 겹쳐 단일 라인처럼 보이게 처리 (`__row + __row { margin-top: -1px }` · `__row > *:not(:first-child) { margin-right: -1px }`)
+- `__placeholder`: 행이 3열에 모자랄 때 채우는 빈 셀. `aspect-ratio: 224/208` + `bg-soft` + 1px gray-5 outline (page-upload-zone 동일 외형) · 항상 3열 유지가 원칙
+- 셀 비율 유지: `page-spread-preview` / `page-upload-zone` / `__placeholder` 모두 `aspect-ratio: 224/208`, `page-spread-preview__page` 는 `aspect-ratio: 102/152` 로 그리드 폭 변화에 비례 스케일
+- **상태 모델 (episode-add.html JS 참고)**: `files: File[]` 단일 source of truth →
+  1. `files.length === 0` → `thumbnail-upload`(빈 상태) 노출, grid `[hidden]`
+  2. `files.length > 0` → grid 노출, `thumbnail-upload` `[hidden]`. 2장씩 spread 페어링 (1·2 / 3·4 / …) · 마지막 홀수면 1-page spread
+  3. cells = `[…spreads, uploadZone]` → 행이 3열 미만이면 `__placeholder` 로 `(3 - cells.length % 3) % 3` 개 채움 → 3개씩 row 로 chunk
+  4. `ページ追加` 클릭 시 동일 input 재사용 → `files.push(...picked)` → re-render
+  5. 페이지 셀 `__delete` 클릭 → `files.splice(idx, 1)` + `URL.revokeObjectURL` → re-render. 마지막 1장 삭제 시 자동으로 빈 상태 복귀
+
 #### `.inline-alert` → shadcn `Alert` (variant=destructive 등)
 - 인라인 경고/안내 배너. 폼 내부 caution 표시용
 - padding 12/8, radius-sm, gap 8 (icon + text)

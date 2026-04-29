@@ -1,0 +1,76 @@
+/* ============================================
+   episode-add.html — 話を追加
+   공통 App Shell은 app-shell.css 참조 — 여기는 content 영역만 담당
+   ============================================ */
+
+.workspace__content {
+  padding: var(--p5) 0 0; /* 72 / 0 / 0 — 하단 180은 .form-card margin-bottom 으로 처리 */
+  background: var(--color-bg-soft);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-7); /* 28 */
+  border-left: 1px var(--color-gray-5) solid;
+  border-right: 1px var(--color-gray-5) solid;
+}
+
+/* ---------- Page Header (3-column) ---------- */
+.episode-add__page-header {
+  width: max(var(--p50), 50vw);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.episode-add__page-header-side {
+  display: flex;
+  align-items: center;
+}
+
+.episode-add__page-header-side--start {
+  justify-content: flex-start;
+}
+
+.episode-add__page-header-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.episode-add__title {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+}
+
+.episode-add__desc {
+  margin: 0;
+  color: var(--color-font-primary-black-50);
+  text-align: center;
+}
+
+/* ---------- Reading-direction Choice Row (2 columns) ---------- */
+.episode-add__choice-grid {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+}
+
+/* ---------- Title Input Counter (right side, inside form-input) ---------- */
+.episode-add__input-counter {
+  flex-shrink: 0;
+  color: var(--color-font-primary-black-50);
+}
+
+/* ---------- Footer Actions (space-between override) ---------- */
+.episode-add__actions {
+  justify-content: space-between;
+}
+
+.episode-add__actions-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1_5); /* 6 */
+}

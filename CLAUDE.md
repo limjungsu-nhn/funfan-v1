@@ -121,3 +121,13 @@
   - inset outline (`outline-offset: -Npx`) — outset 표현 유지가 원칙
   - `overflow-clip-margin` 만으로 해결 시도 — 스크롤 축(`overflow: auto`)에서는 무효
 - 이유: account-setting이 잘 작동한 본질은 clip-margin이 아니라 "스크롤 컨테이너가 카드보다 넓어 ring이 자연스럽게 경계 안쪽에 머문다"는 구조적 여유 때문.
+
+### 14. "코드정리해줘" 명령 = 4-step 정리 루틴
+사용자가 **"코드정리해줘"** 라고 하면 다음 4가지를 순서대로 점검·수정:
+1. **CSS 동기화** — 최근 변경된 CSS 컴포넌트가 styleguide.html / workspace.html / 사용 페이지(.html)에 모두 반영되어 있는지 확인 (`<link>` 누락, 마크업 mismatch 등)
+2. **스타일 가이드 점검** — 새/변경 컴포넌트가 styleguide.html에 테이블 형식으로 등록되어 있는지, 인터랙티브 컴포넌트는 `.sg-demo-canvas` 데모가 있는지, Foundation 섹션 누락은 없는지
+3. **하드코딩 제거** — `style=""` 인라인, 색상/사이즈 리터럴(`#fff`, `288px` 등)을 토큰(`var(--color-*)`, `var(--p{n})`, `var(--space-*)`)으로 치환. 임시 클래스 → 공식 컴포넌트 클래스로 정리
+4. **코드 정리** — 죽은 코드/주석/콘솔로그 제거, 중복 셀렉터 통합, 들여쓰기/공백 일관성, BEM 네이밍 컨벤션 준수 확인
+
+- 4단계 모두 실행 후 변경사항을 한 메시지로 요약 보고
+- 각 step 에서 발견된 문제만 수정 — 문제 없으면 "OK" 로 표시

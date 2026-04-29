@@ -72,6 +72,9 @@
   /* ---------- Star ---------- */
   --color-star: #FFB800;
 
+  /* ---------- Purple (AI accent) ---------- */
+  --color-purple-100: #8A38F5;
+
   /* ---------- Shadow ---------- */
   --color-shadow-subtle: rgba(0, 0, 0, 0.02);
   --color-shadow-light:  rgba(0, 0, 0, 0.05);

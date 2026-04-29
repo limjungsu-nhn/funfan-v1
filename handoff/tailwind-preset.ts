@@ -96,6 +96,10 @@ const preset: Partial<Config> = {
         },
         // Star
         star: '#FFB800',
+        // Purple (AI accent)
+        purple: {
+          100: '#8A38F5',
+        },
         // Semantic — Background
         bg: {
           base: '#FFFFFF', // 순수 흰색 페이지 배경

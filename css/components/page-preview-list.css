@@ -1,0 +1,144 @@
+/* ============================================
+   Page Preview List — 첨부된 페이지 이미지 미리보기 목록
+
+   HTML 구조:
+     <div class="page-preview-list">
+       <button class="page-preview-list__item" type="button">
+         <img class="page-preview-list__thumb" src="..." alt="">
+         <i class="icon icon-drag-pan page-preview-list__icon"></i>
+         <span class="page-preview-list__delete" role="button" aria-label="削除">
+           <i class="icon icon-delete"></i>
+         </span>
+       </button>
+     </div>
+
+   States (3-state 모델):
+     - Default : 오버레이/아이콘 없음 — 썸네일만 노출
+     - Hover   : 검정 50% 오버레이 + 중앙 drag-pan 아이콘 + 우측상단 delete 배지(red-10 bg + red-100 icon)
+     - Pressed : 검정 50% 오버레이 + 중앙 drag-pan 아이콘 (delete 숨김)
+
+     · 실제 인터랙션은 :hover / :active 의사클래스로 작동
+     · styleguide 정적 데모용으로 --hover / --pressed 강제 모디파이어 제공
+
+   Notes:
+     - container: 142w / white bg / radius-xs / 1px purple-100 border / padding 20 / gap 20
+     - item: 102×152 / radius 6 / overlay layer
+     - 사용처: episode-add.html (업로드된 페이지 리스트)
+   ============================================ */
+
+.page-preview-list {
+  width: 142px;
+  background: var(--color-white-100);
+  border: 1px solid var(--color-purple-100);
+  border-radius: var(--radius-xs);
+  padding: var(--space-5); /* 20 */
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5); /* 20 */
+}
+
+.page-preview-list__item {
+  position: relative;
+  width: 102px;
+  height: auto; /* 이미지 비율 따라 — 잘림 없음 */
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.page-preview-list__thumb {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Overlay layer — Default 에선 숨김 */
+.page-preview-list__item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-black-30);
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* 중앙 drag-pan 아이콘 — Hover/Pressed 에서만 노출 */
+.page-preview-list__icon {
+  position: absolute;
+  z-index: 1; /* 오버레이(::after) 위로 */
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-white-100);
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* 우측 상단 삭제 배지 — Hover 에서만 노출 (Pressed 에서는 숨김) */
+.page-preview-list__delete {
+  position: absolute;
+  z-index: 1; /* 오버레이(::after) 위로 */
+  top: var(--space-1); /* 4 */
+  right: var(--space-1);
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xs); /* 4 */
+  background: var(--color-red-10);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.page-preview-list__delete .icon {
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-red-100);
+}
+
+/* 휴지통 클릭(pressed) — 배경 red-100 / 아이콘 흰색 */
+.page-preview-list__delete:active {
+  background: var(--color-red-100);
+}
+
+.page-preview-list__delete:active .icon {
+  background-color: var(--color-white-100);
+}
+
+/* ---------- Hover (실제 :hover + 정적 데모용 --hover) ---------- */
+.page-preview-list__item:hover::after,
+.page-preview-list__item--hover::after {
+  opacity: 1;
+}
+
+.page-preview-list__item:hover .page-preview-list__icon,
+.page-preview-list__item--hover .page-preview-list__icon,
+.page-preview-list__item:hover .page-preview-list__delete,
+.page-preview-list__item--hover .page-preview-list__delete {
+  opacity: 1;
+}
+
+/* ---------- Pressed (실제 :active + 정적 데모용 --pressed) ---------- */
+.page-preview-list__item:active::after,
+.page-preview-list__item--pressed::after {
+  opacity: 1;
+}
+
+.page-preview-list__item:active .page-preview-list__icon,
+.page-preview-list__item--pressed .page-preview-list__icon {
+  opacity: 1;
+}
+
+/* item:active 시 delete 숨김 — 단, delete 자체를 누르는 중이면 유지 (깜빡임 방지) */
+.page-preview-list__item:active:not(:has(.page-preview-list__delete:active)) .page-preview-list__delete,
+.page-preview-list__item--pressed .page-preview-list__delete {
+  opacity: 0;
+}

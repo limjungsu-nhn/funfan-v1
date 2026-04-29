@@ -1,0 +1,233 @@
+/* ============================================
+   Page Spread Preview — 양면(좌·우) 페이지 한 쌍 미리보기
+
+   HTML 구조:
+     <div class="page-spread-preview">
+       <div class="page-spread-preview__label text-overline-w6">5</div>
+       <div class="page-spread-preview__pages">
+         <div class="page-spread-preview__page page-spread-preview__page--active">
+           <img class="page-spread-preview__thumb" src="..." alt="">
+           <span class="page-spread-preview__num">4</span>
+         </div>
+         <div class="page-spread-preview__page page-spread-preview__page--active">
+           <img class="page-spread-preview__thumb" src="..." alt="">
+           <span class="page-spread-preview__num">5</span>
+         </div>
+       </div>
+     </div>
+
+   States (3-state 모델 — `__page` 단위):
+     - Default : 오버레이/drag 아이콘 없음 — 썸네일 + num badge 만 노출
+     - Hover   : 검정 30% 오버레이 + 중앙 drag-pan 아이콘 + 우측상단 `__delete` 배지
+     - Pressed : 검정 30% 오버레이 + 중앙 drag-pan 아이콘 (delete 숨김 — 드래그 중)
+
+     · 실제 인터랙션은 :hover / :active 의사클래스로 작동
+     · styleguide 정적 데모용으로 --hover / --pressed 강제 모디파이어 제공
+
+   Notes:
+     - container: 224w · column · gap 8 · 중앙 정렬
+     - label: 상단 spread 번호 (overline-w6)
+     - pages: 102×152 두 장 가로 배치 · gap 2
+     - num badge: top:8 left:8 · 검정 bg · radius 4 · padding 0 4 · 흰색 10/16 w6 · 항시 노출
+     - 사용처: episode-add.html (업로드된 페이지 리스트의 spread 표현)
+   ============================================ */
+
+.page-spread-preview {
+  position: relative;
+  width: 224px;
+  aspect-ratio: 224 / 208; /* grid 안에서 width 가 늘어나면 height 도 비율 유지 */
+  height: auto;
+  background: var(--color-white-100);
+  outline: 1px solid var(--color-gray-5);
+  outline-offset: -1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-2); /* 8 */
+}
+
+/* Drop indicator — 드래그 중 좌/중/우 인서트 위치 표시 (검정 4px 세로 라인 · 흰색 4px 아웃라인 · 이미지 세로 100%)
+   라인을 둥글려 이미지 라디우스(6)와 겹쳐도 자연스럽게 보이도록 border-radius + box-shadow 사용 */
+.page-spread-preview[data-drop-zone] .page-spread-preview__pages::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 4px;
+  background: var(--color-black-100);
+  border-radius: 2px;
+  box-shadow: 0 0 0 3px var(--color-white-100);
+  z-index: 3; /* delete/icon(1) 위로 */
+  pointer-events: none;
+}
+
+/* center: 페이지 사이 gap(4px) 정확히 채움. 좌/우도 동일하게 0 갭 — 이미지 외곽에 맞붙음 */
+.page-spread-preview[data-drop-zone="left"] .page-spread-preview__pages::before {
+  left: var(--space-1); /* 4px = padding 8 - 라인폭 4 */
+}
+
+.page-spread-preview[data-drop-zone="center"] .page-spread-preview__pages::before {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.page-spread-preview[data-drop-zone="right"] .page-spread-preview__pages::before {
+  right: var(--space-1);
+}
+
+/* 드래그 중: ghost 는 숨기고(setDragImage 로 빈 요소 지정) 원본을 30% 로 노출 */
+.page-spread-preview__page[data-dragging="true"] {
+  opacity: 0.3;
+}
+
+.page-spread-preview__label {
+  color: var(--color-font-primary-black-100);
+  text-align: right;
+}
+
+.page-spread-preview__pages {
+  position: relative; /* drop indicator(::before) 기준 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 0 var(--space-2); /* 0 8 */
+  gap: var(--space-1); /* 4 */
+}
+
+/* 한 장만 있는 spread (마지막 홀수 페이지) — RTL 읽기 시작 위치인 오른쪽으로 정렬 */
+.page-spread-preview__pages:has(.page-spread-preview__page:only-child) {
+  justify-content: flex-end;
+}
+
+.page-spread-preview__pages:has(.page-spread-preview__page:only-child) > .page-spread-preview__page {
+  flex: 0 1 calc(50% - var(--space-1) / 2); /* 2-페이지일 때와 동일한 셀 폭 유지 */
+}
+
+.page-spread-preview__page {
+  position: relative;
+  flex: 1 1 0;
+  width: auto;
+  height: auto;
+  border-radius: 6px;
+  overflow: hidden;
+  /* 높이는 이미지 비율에 맞춰 자동 — 오버레이가 이미지 영역과 동일 크기/라디우스로 핏 */
+}
+
+.page-spread-preview__thumb {
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none; /* drag 시 img 자체 drag 동작(파일 타입별 ghost) 차단 — 부모 __page drag 만 작동 */
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* Overlay layer — Default 에선 숨김 */
+.page-spread-preview__page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--color-black-30);
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* 중앙 drag-pan 아이콘 — Hover/Pressed 에서만 노출 */
+.page-spread-preview__icon {
+  position: absolute;
+  z-index: 1; /* 오버레이(::after) 위로 */
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-white-100);
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* 페이지 단일 삭제 버튼 — Hover 에서만 노출 (page-preview-list 와 동일 디자인) */
+.page-spread-preview__delete {
+  position: absolute;
+  z-index: 1; /* 오버레이 위로 */
+  top: var(--space-1); /* 4 */
+  right: var(--space-1);
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-xs); /* 4 */
+  background: var(--color-red-10);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.page-spread-preview__delete .icon {
+  width: 12px;
+  height: 12px;
+  background-color: var(--color-red-100);
+}
+
+/* 휴지통 클릭(pressed) — 배경 red-100 / 아이콘 흰색 */
+.page-spread-preview__delete:active {
+  background: var(--color-red-100);
+}
+
+.page-spread-preview__delete:active .icon {
+  background-color: var(--color-white-100);
+}
+
+/* ---------- Hover (실제 :hover + 정적 데모용 --hover) ---------- */
+.page-spread-preview__page:hover::after,
+.page-spread-preview__page--hover::after {
+  opacity: 1;
+}
+
+.page-spread-preview__page:hover .page-spread-preview__icon,
+.page-spread-preview__page--hover .page-spread-preview__icon,
+.page-spread-preview__page:hover .page-spread-preview__delete,
+.page-spread-preview__page--hover .page-spread-preview__delete,
+.page-spread-preview__delete:focus-visible {
+  opacity: 1;
+}
+
+/* ---------- Pressed (실제 :active + 정적 데모용 --pressed) ---------- */
+.page-spread-preview__page:active::after,
+.page-spread-preview__page--pressed::after {
+  opacity: 1;
+}
+
+.page-spread-preview__page:active .page-spread-preview__icon,
+.page-spread-preview__page--pressed .page-spread-preview__icon {
+  opacity: 1;
+}
+
+/* page:active 시 delete 숨김 — 단, delete 자체를 누르는 중이면 유지 (깜빡임 방지) */
+.page-spread-preview__page:active:not(:has(.page-spread-preview__delete:active)) .page-spread-preview__delete,
+.page-spread-preview__page--pressed .page-spread-preview__delete {
+  opacity: 0;
+}
+
+.page-spread-preview__num {
+  position: absolute;
+  z-index: 1; /* 오버레이(::after) 위로 — Hover 시 가려지지 않도록 */
+  top: var(--space-2); /* 8 */
+  left: var(--space-2); /* 8 */
+  height: 16px;
+  padding: 0 var(--space-1); /* 0 4 */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-black-100);
+  color: var(--color-white-100);
+  border-radius: 4px;
+  font-size: 10px; /* spec: 10/16 w6 — overline(11) 보다 한 단계 작은 badge 전용 사이즈 */
+  line-height: 16px;
+  font-weight: var(--font-weight-w6);
+}

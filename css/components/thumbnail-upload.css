@@ -18,6 +18,10 @@
      - 사용처: series-register.html
    ============================================ */
 
+.thumbnail-upload[hidden] {
+  display: none;
+}
+
 .thumbnail-upload {
   width: 100%;
   height: 280px;
