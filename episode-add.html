@@ -207,7 +207,7 @@
                   <span class="form-field__required" aria-hidden="true"></span>
                 </div>
                 <div class="form-textarea form-textarea--with-counter">
-                  <textarea class="form-textarea__field" placeholder="更新コメントや読者へのひとこと" maxlength="150" rows="4"></textarea>
+                  <textarea class="form-textarea__field" placeholder="更新コメントや読者へのひとこと" maxlength="150" rows="4" id="episode-afterword"></textarea>
                   <span class="form-textarea__counter text-overline-w4" data-textarea-counter>0/150</span>
                 </div>
               </div>
@@ -223,7 +223,7 @@
                 <button class="btn btn-line btn--sm" type="button">
                   <span class="text-caption-w4">下書き保存</span>
                 </button>
-                <button class="btn btn-filled-black btn--sm" type="button" disabled>
+                <button class="btn btn-filled-black btn--sm" type="button" disabled data-submit-btn>
                   <span class="text-caption-w4">投稿する</span>
                 </button>
               </div>
@@ -342,7 +342,28 @@
       let files = [];
       const COLS = 3;
 
+      // ── 投稿する 버튼 활성화 — 4개 필수 필드(タイトル / 페이지 / 読み始め / あとがき) 모두 입력 시 ──
+      const submitBtn = document.querySelector('[data-submit-btn]');
+      const titleInput = document.getElementById('episode-title');
+      const afterwordInput = document.getElementById('episode-afterword');
+      function validateForm() {
+        if (!submitBtn) return;
+        const titleOk = !!titleInput?.value.trim();
+        const filesOk = files.length > 0;
+        const dirOk = !!document.querySelector('input[name="reading-start"]:checked');
+        const afterOk = !!afterwordInput?.value.trim();
+        submitBtn.disabled = !(titleOk && filesOk && dirOk && afterOk);
+      }
+      titleInput?.addEventListener('input', validateForm);
+      afterwordInput?.addEventListener('input', validateForm);
+      document.querySelectorAll('input[name="reading-start"]').forEach((r) => r.addEventListener('change', validateForm));
+      submitBtn?.addEventListener('click', () => {
+        if (submitBtn.disabled) return;
+        window.location.href = 'series-post-management.html';
+      });
+
       function render() {
+        validateForm();
         if (files.length === 0) {
           empty.hidden = false;
           attached.hidden = true;
