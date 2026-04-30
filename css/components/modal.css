@@ -79,6 +79,193 @@
     -webkit-backdrop-filter 0.24s ease;
 }
 
+/* ---------- Multi-modal backdrop (한 백드롭 안에 modal 박스 여러 개) ----------
+   .modal-backdrop--multi : 자식 modal 들을 grid 1×1 셀에 겹쳐 배치 → 위치 동일
+   .modal--inactive       : 비활성 모달 (opacity 0 + translateY 40 + pointer-events 차단)
+   사용처: water-support 폼 → thanks (감사 화면) 단계 이동 시 backdrop 은 그대로 유지 */
+.modal-backdrop--multi {
+  display: grid;
+  place-items: center;
+}
+
+.modal-backdrop--multi > .modal {
+  grid-area: 1 / 1;
+}
+
+.modal-backdrop--open .modal.modal--inactive {
+  opacity: 0;
+  transform: translateY(40px);
+  pointer-events: none;
+}
+
+/* ---------- Water-Thanks (water-support submit 후 단계 모달) ----------
+   배경 이미지: 모달 vertical 중앙(50%)에 이미지 상단을 앵커로 배치, 모달 폭 채움.
+   modal overflow: hidden 으로 모달 경계 밖 자동 마스크. */
+.modal--water-thanks {
+  overflow: hidden;
+}
+
+.modal-water-thanks__image {
+  position: absolute;
+  top: 50%;          /* 모달 vertical center 에 이미지 상단 */
+  left: 0;
+  width: 100%;       /* 모달 폭(504) 채움 */
+  height: auto;      /* 비율 유지 */
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 스폿 일러스트 (196×196) — 모달 상단에서 124 떨어진 위치, 가로 중앙
+   centering 은 transform 대신 left: calc 으로 — transform 은 sway 애니메이션용으로 비워둠 */
+.modal-water-thanks__illust {
+  position: absolute;
+  top: 124px;
+  left: calc(50% - 98px); /* 196 / 2 = 98 */
+  width: 196px;
+  height: 196px;
+  pointer-events: none;
+  user-select: none;
+  transform-origin: bottom center;
+  animation: modal-water-thanks-sway 2.6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* 일러스트 위에 겹쳐지는 오버레이 (꽃잎 등). 기본 숨김, JS 가 .--visible 토글 */
+.modal-water-thanks__illust-overlay {
+  position: absolute;
+  top: 124px;
+  left: calc(50% - 98px);
+  width: 196px;
+  height: 196px;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+  /* sway 애니메이션 미적용 — 정적 표시 */
+}
+
+.modal-water-thanks__illust-overlay--visible {
+  opacity: 1;
+}
+
+/* garden__item 의 sway 와 동일한 keyframes (-1.8 ↔ 1.8deg). 모달 단위로 독립 정의 — viewer 페이지에서도 garden.css 의존성 없이 동작 */
+@keyframes modal-water-thanks-sway {
+  0%, 100% { transform: rotate(-1.8deg); }
+  50%      { transform: rotate(1.8deg); }
+}
+
+/* 물방울 — 화면(모달) 밖에서 출발해 안착. 기본은 식물 케이스(상단 25% 지점, top 173).
+   --ground modifier 시 땅 케이스로 전환(목표 Y 더 아래).
+   앵커는 이미지 하단(bottom-center) → translate(-50%, -100%) 으로 이미지 하단이 목표 좌표에 일치 */
+.modal-water-thanks__drop {
+  position: absolute;
+  top: 173px;          /* 식물(top 124) + 식물 height 196 * 25% = 173 */
+  left: 50%;           /* 모달 가로 정중앙 */
+  width: 43.2px;       /* 54 * 0.8 */
+  height: 43.2px;
+  pointer-events: none;
+  user-select: none;
+  transform: translate(-50%, -100%);
+  opacity: 0;
+}
+
+.modal--water-thanks:not(.modal--inactive) .modal-water-thanks__drop {
+  animation: water-drop-fall 1s ease-in forwards;
+}
+
+/* 땅 케이스 — 새싹 이미지 하단(top 124 + 196 = 320). JS 가 매 사이클 --y-jitter (±40px) 를 inline 으로 set */
+.modal-water-thanks__drop--ground {
+  top: calc(320px + var(--y-jitter, 0px));
+}
+
+/* 착지 후 — splash 이미지(97×45) 로 교체. 앵커 동일(bottom-center) 유지
+   교체 직후 scale 1 → 1.2 → 1 의 pop 애니메이션. transform-origin 을 bottom center 로 두어
+   하단 앵커 유지(목표 좌표 173 에 splash 밑변이 고정된 채 위/좌우로만 부풀어오름)
+   ※ 부모 스코프로 끌어올려 water-drop-fall 보다 높은 specificity 확보 — 안 그러면 drop-fall 이 그대로 적용돼 pop 이 무시됨 */
+.modal--water-thanks:not(.modal--inactive) .modal-water-thanks__drop--landed {
+  width: 97px;
+  height: 45px;
+  transform-origin: 50% 100%;
+  animation: water-splash-pop 0.2s ease-in forwards;
+}
+
+@keyframes water-splash-pop {
+  0%   { transform: translate(-50%, -100%); opacity: 1; }
+  50%  { transform: translate(-50%, -100%); opacity: 1; } /* 0~50%: opacity 1 유지 */
+  100% { transform: translate(-50%, -100%); opacity: 0; } /* 50~100%: opacity 1→0 페이드아웃 */
+}
+
+/* 물 자국(wet spot) — ground drop 이 땅에 닿는 순간 #875B48 타원이 짙어졌다가 사라짐
+   JS 가 drop 의 animationend 시점에 같은 X / top 좌표로 동적으로 생성·삽입, 0.8s 후 제거.
+   앵커는 중앙(translate(-50%, -50%)) — 이미지 하단(=목표 좌표)에 타원 중앙이 일치.
+   ground 전용이라 top 은 .--ground modifier 에서만 정의 */
+.modal-water-thanks__wet-spot {
+  position: absolute;
+  left: 50%;
+  width: 60px;
+  height: 12px;
+  background: #875B48;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+  animation: water-wet-spot 0.8s ease-out forwards;
+}
+
+.modal-water-thanks__wet-spot--ground {
+  top: calc(320px + var(--y-jitter, 0px));
+}
+
+@keyframes water-wet-spot {
+  0%   { transform: translate(-50%, -50%) scale(0);    opacity: 0; }
+  25%  { transform: translate(-50%, -50%) scale(1);    opacity: 0.7; } /* 짙게 */
+  100% { transform: translate(-50%, -50%) scale(1.95); opacity: 0; }   /* 마르며 옅어짐 + 퍼짐 */
+}
+
+@keyframes water-drop-fall {
+  0%   { transform: translate(-50%, -500px); opacity: 0; } /* 모달 상단 밖(overflow:hidden 으로 마스킹) — 식물·땅 케이스 모두 모달 밖에서 시작하도록 충분히 음수 */
+  20%  { opacity: 1; }
+  100% { transform: translate(-50%, -100%); opacity: 1; }   /* 목표 좌표(이미지 하단이 top 좌표에 일치) */
+}
+
+/* prefers-reduced-motion — 모든 애니메이션 정지 */
+@media (prefers-reduced-motion: reduce) {
+  .modal-water-thanks__illust,
+  .modal-water-thanks__drop {
+    animation: none;
+  }
+}
+
+/* 본문 텍스트 — 일러스트 하단에서 32 간격 (= top 124 + height 196 + 32 = 352)
+   element 가 텍스트 폭 만큼만 차지하도록 left:50% + translate(-50%) 로 가로 중앙 배치 → clip-path 가 텍스트 영역에 정확히 일치 */
+.modal-water-thanks__title {
+  position: absolute;
+  top: 352px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  white-space: nowrap;
+  font-size: var(--font-size-h3);          /* 22 */
+  line-height: var(--line-height-h3);      /* 32 */
+  font-weight: var(--font-weight-w6);
+  color: var(--color-white-100);
+  /* 기본 상태: 전부 가림. modal 이 active 가 되면 typewriter 애니메이션으로 점진 노출 */
+  clip-path: inset(0 100% 0 0);
+}
+
+/* 자동 트리거 제거 — JS 가 3단계 텍스트 swap 마다 typewriter 를 inline animation 으로 재적용 */
+
+@keyframes water-thanks-typewriter {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+
+/* 지우개 — 우→좌 (backspace 처럼 마지막 글자부터 사라짐) */
+@keyframes water-thanks-eraser {
+  from { clip-path: inset(0 0 0 0); }
+  to   { clip-path: inset(0 100% 0 0); }
+}
+
 /* ---------- Container ---------- */
 .modal {
   position: relative;  /* .modal__close 의 absolute 기준 */
