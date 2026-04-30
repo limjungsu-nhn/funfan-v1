@@ -390,6 +390,19 @@ instance.destroy();           // 정리
 
 **React 이식**: `<ModalContext>` 컴포넌트로 1:1 — props 가 init() 옵션과 동일 시그니처. 데이터 → 콜백 → 상태 갱신 패턴 그대로 React state hook 으로 매핑
 
+#### `.modal--water-thanks` (水をあげて応援する Step 2 시퀀스) → shadcn `Dialog` (재사용 모듈)
+- **SSOT JS 모듈**: `js/components/modal-water-thanks.js` — `WaterThanks.start(thanksModal)` / `WaterThanks.reset(backdrop)` / `WaterThanks.cancel()` 3 함수 노출
+- **사용 페이지**: series-home / viewer-yoko / viewer-koma / viewer-tate (4 페이지 동일 시퀀스)
+- **시퀀스 (8s 총 재생, 모달 오픈 = t=0)**:
+  - **plant drop** 5회 착지 (modal+2 / 3.5 / 5 / 6.5 / 8s) — 새싹 위 1.5s 간격 splash
+  - **ground drop** 20개 — 모달 가로 전체에 taper 분배(t=1~8s, idx 순 stopTime), X 좌표 중심 편향(3개 uniform 평균) + 활성 X 회피 (`MIN_X_DIST=12%`)
+  - **새싹 + 오버레이 일러스트** 단계 전환 (t=2/3.5/5s): 184/186/187 + 185/188/189
+  - **타이틀 typewriter** 3단계 type-in/erase (t=0/2.667/5.333s, 각 0.5s · 마지막은 erase 없음)
+  - **wet-spot** ground drop 착지 시 #875B48 타원 (scale 0→1.95 + fade-out, 0.8s)
+  - **t=9s**: thanks 모달 `[data-modal-close]` 자동 클릭 → 닫힘
+- **DOM 재사용 패턴**: 매 사이클 `cloneNode-replaceWith` 대신 단일 element 에 `style.animation = 'none'` → reflow → inline animation 재할당으로 재시작 (DOM 생성/제거 비용 제거). wet-spot 만 동적 생성
+- **cancel 흐름**: `dropCycleCancels` 배열로 모든 setTimeout / animationend 리스너 일괄 정리. 모달 reset 시 illust/overlay/title/drop 인라인 state 초기화
+
 #### `.chat-input` → shadcn `Textarea` + icon buttons
 - Container: `.chat-input__field` (textarea 감싸는 필드)
 - Actions: `.chat-input__actions` (첨부/전송)

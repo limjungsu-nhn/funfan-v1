@@ -34,6 +34,7 @@
   <script src="js/components/series-card.js" defer></script>
   <script src="js/components/episode-card.js" defer></script>
   <script src="js/components/modal.js" defer></script>
+  <script src="js/components/modal-water-thanks.js" defer></script>
 
   <!-- 페이지 전용 App Shell (v1.03까지 이 HTML <style> 블록에 있던 내용) -->
   <link rel="stylesheet" href="css/pages/series-home.css">
@@ -337,21 +338,14 @@
       radios.forEach((r) => r.addEventListener('change', update));
 
       // 모달이 닫힐 때 modal.js 의 resetModal 이 모든 radio 를 해제하므로,
-      // 트리거 클릭 시점에 기본 선택(笑った) 복원 + form/thanks step 1 로 리셋
+      // 트리거 클릭 시점에 기본 선택(笑った) 복원 + form/thanks step 1 로 리셋. 시퀀스/비주얼 초기화는 WaterThanks 담당.
       function resetSteps() {
-        dropCycleCancels.forEach((c) => c()); dropCycleCancels = [];
-        const illustReset = backdrop.querySelector(".modal-water-thanks__illust");
-        if (illustReset) illustReset.src = "img/img_illust_183.svg"; // 새싹 일러스트 원본 복귀
-        const overlayReset = backdrop.querySelector(".modal-water-thanks__illust-overlay");
-        if (overlayReset) overlayReset.classList.remove("modal-water-thanks__illust-overlay--visible");
-        const titleReset = backdrop.querySelector(".modal-water-thanks__title");
-        if (titleReset) { titleReset.textContent = "花壇に水を届けています"; titleReset.style.animation = "none"; }
+        if (window.WaterThanks) WaterThanks.reset(backdrop);
         const formModal = backdrop.querySelector('[data-step="form"]');
         const thanksModal = backdrop.querySelector('[data-step="thanks"]');
         if (formModal) formModal.classList.remove('modal--inactive');
         if (thanksModal) {
           thanksModal.classList.add('modal--inactive');
-          // form 의 실제 렌더 높이를 thanks 에 적용 — 두 modal 크기 동일 유지
           if (formModal) thanksModal.style.height = formModal.offsetHeight + 'px';
         }
       }
@@ -373,160 +367,10 @@
         ta.addEventListener('input', tick);
         tick();
       }
-      // 물방울 — drops(식물·땅) 각각 독립 사이클로 반복.
-      // plant: 1.5s 주기, 모달 중앙 ±40px / ground: 3s 주기, 가로 전체 랜덤 + Y ±40px
-      // 첫 사이클의 stagger 는 setTimeout 이 아닌 inline animation-delay 로 처리 — 안 그러면 CSS 애니메이션이
-      // 먼저 시작돼 animationend 리스너 부착 전에 끝나면서 splash 단계를 놓침.
-      let dropCycleCancels = [];
-      function startDropCycle(thanksModal) {
-        dropCycleCancels.forEach((c) => c());
-        dropCycleCancels = [];
-        const drops = thanksModal.querySelectorAll(".modal-water-thanks__drop");
-        const grounds = Array.from(drops).filter((d) => d.classList.contains("modal-water-thanks__drop--ground"));
-        const groundCount = grounds.length || 1;
-        const PRE_DELAY = 1000;
-        const ANIM_DURATION = 8000;
-        const TAPER_START = 3200;
-        const startTime = performance.now() + PRE_DELAY;
-        // 모달 오픈 기준 2s/3.5s/5s 에 새싹+오버레이 동시 단계 전환
-        //   t=2000: sprout 184 + overlay 185
-        //   t=3500: sprout 186 + overlay 188
-        //   t=5000: sprout 187 + overlay 189
-        const illust = thanksModal.querySelector(".modal-water-thanks__illust");
-        const illustOverlay = thanksModal.querySelector(".modal-water-thanks__illust-overlay");
-        const illustTimers = [
-          setTimeout(() => {
-            if (illust) illust.src = "img/img_illust_184.svg";
-            if (illustOverlay) {
-              illustOverlay.src = "img/img_illust_185.svg";
-              illustOverlay.classList.add("modal-water-thanks__illust-overlay--visible");
-            }
-          }, 2000),
-          setTimeout(() => {
-            if (illust) illust.src = "img/img_illust_186.svg";
-            if (illustOverlay) illustOverlay.src = "img/img_illust_188.svg";
-          }, 3500),
-          setTimeout(() => {
-            if (illust) illust.src = "img/img_illust_187.svg";
-            if (illustOverlay) illustOverlay.src = "img/img_illust_189.svg";
-          }, 5000),
-        ];
-        dropCycleCancels.push(() => illustTimers.forEach(clearTimeout));
-        const titleEl = thanksModal.querySelector(".modal-water-thanks__title");
-        const TYPE_DUR = 500;
-        const titleStages = [
-          { at: 0,    text: "花壇に水を届けています" },
-          { at: 2667, text: "水滴がつぼみに向かっています" },
-          { at: 5333, text: "花壇に変化が反映されました" },
-        ];
-        const setTitle = (text) => {
-          if (!titleEl) return;
-          titleEl.textContent = text;
-          titleEl.style.animation = "none";
-          void titleEl.offsetWidth;
-          titleEl.style.animation = "water-thanks-typewriter " + TYPE_DUR + "ms steps(" + text.length + ") forwards";
-        };
-        const eraseTitle = () => {
-          if (!titleEl) return;
-          const len = titleEl.textContent.length || 1;
-          titleEl.style.animation = "none";
-          void titleEl.offsetWidth;
-          titleEl.style.animation = "water-thanks-eraser " + TYPE_DUR + "ms steps(" + len + ") forwards";
-        };
-        const titleTimers = [];
-        titleStages.forEach(({ at, text }, i) => {
-          titleTimers.push(setTimeout(() => setTitle(text), at));
-          if (i < titleStages.length - 1) {
-            const nextAt = titleStages[i + 1].at;
-            titleTimers.push(setTimeout(eraseTitle, nextAt - TYPE_DUR));
-          }
-        });
-        dropCycleCancels.push(() => titleTimers.forEach(clearTimeout));
-        // 재생 시간 종료 후 모달 자동 닫기 (마지막 drop 착지 + 1s 여유)
-        const autoCloseTimer = setTimeout(() => {
-          const closeBtn = thanksModal.querySelector("[data-modal-close]");
-          if (closeBtn) closeBtn.click();
-        }, 9000);
-        dropCycleCancels.push(() => clearTimeout(autoCloseTimer));
-        const activeXs = [];
-        const MIN_X_DIST = 12;
-        const pickGroundX = () => {
-          let best = null;
-          let bestMinD = -Infinity;
-          for (let i = 0; i < 12; i++) {
-            const x = (((Math.random() + Math.random() + Math.random()) / 3) * 100);
-            const minD = activeXs.length ? Math.min.apply(null, activeXs.map((v) => Math.abs(v - x))) : Infinity;
-            if (minD >= MIN_X_DIST) return x;
-            if (minD > bestMinD) { best = x; bestMinD = minD; }
-          }
-          return best != null ? best : 50;
-        };
-        drops.forEach((initial) => {
-          let current = initial;
-          let timer = null;
-          let cancelled = false;
-          const isGround = initial.classList.contains("modal-water-thanks__drop--ground");
-          // plant: 1s 간격으로 정확히 3번 착지 (modal+3s/4s/5s — illust swap 시점과 동기화)
-          const cycleInterval = isGround ? 3000 : 1500; // plant 1.5s 간격으로 5개 (modal+2/3.5/5/6.5/8s) // plant 1.5s 간격으로 splash-pop 안전 + 균등 분배
-          const groundIdx = isGround ? grounds.indexOf(initial) : -1;
-          const stopTime = isGround
-            ? TAPER_START + ((ANIM_DURATION - TAPER_START) * (groundIdx / Math.max(1, groundCount - 1))) + (Math.random() * 400 - 200)
-            : 7000; // plant 6번째 cycle 차단 (5번째까지 허용) // plant 4번째 cycle 차단
-          const playOne = (firstDelay) => {
-            if (cancelled) return;
-            if (performance.now() - startTime >= stopTime) return;
-            const fresh = current.cloneNode(true);
-            fresh.src = "img/img_water_drop_176.svg";
-            fresh.classList.remove("modal-water-thanks__drop--landed");
-            let chosenX = null;
-            if (isGround) {
-              chosenX = pickGroundX();
-              fresh.style.left = chosenX.toFixed(1) + "%";
-              activeXs.push(chosenX);
-              const offsetY = (Math.random() * 80 - 40).toFixed(1);
-              fresh.style.setProperty("--y-jitter", offsetY + "px");
-            } else {
-              const offsetX = (Math.random() * 80 - 40).toFixed(1);
-              fresh.style.left = "calc(50% + " + offsetX + "px)";
-            }
-            fresh.style.animationDelay = (firstDelay || 0) + "ms";
-            fresh.addEventListener("animationend", (e) => {
-              if (e.animationName !== "water-drop-fall") return;
-              fresh.style.animationDelay = "0ms";
-              fresh.src = "img/img_water_splash.svg";
-              fresh.classList.add("modal-water-thanks__drop--landed");
-              // 땅이 짙어졌다 마르는 효과 — ground 케이스에만 적용 (식물 drop 은 제외)
-              if (isGround) {
-                const wetSpot = document.createElement("div");
-                wetSpot.className = "modal-water-thanks__wet-spot modal-water-thanks__wet-spot--ground";
-                wetSpot.style.left = fresh.style.left;
-                wetSpot.style.setProperty("--y-jitter", fresh.style.getPropertyValue("--y-jitter"));
-                fresh.parentNode.insertBefore(wetSpot, fresh); // drop/splash 보다 아래 z 로 렌더
-                setTimeout(() => wetSpot.remove(), 800);
-              }
-              if (chosenX != null) {
-                setTimeout(() => {
-                  const idx = activeXs.indexOf(chosenX);
-                  if (idx >= 0) activeXs.splice(idx, 1);
-                }, 200);
-              }
-            });
-            current.replaceWith(fresh);
-            current = fresh;
-            timer = setTimeout(() => playOne(0), (firstDelay || 0) + cycleInterval);
-          };
-          const initialDelay = isGround
-            ? PRE_DELAY + Math.max(0, (cycleInterval / groundCount) * groundIdx + (Math.random() * 300 - 150))
-            : PRE_DELAY;
-          playOne(initialDelay);
-          dropCycleCancels.push(() => { cancelled = true; if (timer) clearTimeout(timer); });
-        });
-      }
-
-
-      // 「水をあげて応援する」 클릭 → 같은 backdrop 안에서 form → thanks modal 박스만 swap
+      // 「水をあげて応援する」 클릭 → 같은 backdrop 안에서 form → thanks modal 박스만 swap.
       // form: --inactive 추가 (close 트랜지션) → transitionend → thanks: --inactive 제거 (open 트랜지션)
       // backdrop 은 한 번도 변하지 않음 (깜빡임 / 알파 합성 / blur 스택 모두 발생 불가)
+      // 시퀀스(물방울/일러스트/타이틀/자동 닫기)는 WaterThanks 모듈이 담당.
       if (submit) {
         submit.addEventListener('click', () => {
           if (submit.disabled) return;
@@ -538,7 +382,7 @@
           formModal.addEventListener('transitionend', function onClose(e) {
             if (e.propertyName !== 'opacity' && e.propertyName !== 'transform') return;
             formModal.removeEventListener('transitionend', onClose);
-            startDropCycle(thanksModal);
+            if (window.WaterThanks) WaterThanks.start(thanksModal);
             thanksModal.classList.remove('modal--inactive');
           });
         });
