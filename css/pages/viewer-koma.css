@@ -1,0 +1,278 @@
+/* ============================================
+   viewer-koma.html — コマ 単位 가로 카루셀 뷰어
+   새 창(popup window)으로 열리는 페이지 → 1440 min-width 미적용 (미니창)
+   레이아웃: progress · header · main(stage[card-row + bottom]) · footer
+     - card-row : [prev nav | 카드(track + image) | next nav] 가로 정렬
+     - bottom   : [dots indicator + caption] 세로 그룹 (gap 12)
+   읽기 방향: コマ는 왼→오른쪽 → 좌측 nav = 前, 우측 nav = 次
+   슬라이드: 두 이미지가 카드 안 트랙에 붙어 함께 이동 (마스크: card overflow:hidden) — 단일 transition, fade 없음
+   ============================================ */
+
+.viewer-koma {
+  /* 로컬 토큰 */
+  --chrome-height: 52px;
+  --progress-height: var(--space-0_5);  /* 2px */
+  --nav-icon-size: var(--space-9);      /* 36px */
+  --transition-chrome: 0.4s var(--ease-standard);
+  --transition-slide: 0.6s var(--ease-standard); /* 연결 슬라이드 — 단일 곡선, 전역 --ease-standard 토큰 */
+  --transition-slide-ms: 600;                    /* JS 가 transition 종료 타이밍 산출용 참조 (ms) */
+
+  margin: 0;
+  background: var(--color-white-100);
+  color: var(--color-font-primary-black-100);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ---------- Progress (상단 진행 바) ---------- */
+.viewer-koma__progress {
+  align-self: stretch;
+  height: var(--progress-height);
+  background: var(--color-gray-6);
+  transition: margin-block-start var(--transition-chrome);
+}
+
+.viewer-koma--chrome-hidden .viewer-koma__progress {
+  margin-block-start: calc(var(--progress-height) * -1);
+}
+
+.viewer-koma__progress-bar {
+  height: 100%;
+  background: var(--color-nature-3);
+  width: var(--progress, 0%);
+}
+
+/* ---------- Header ---------- */
+.viewer-koma__header {
+  align-self: stretch;
+  height: var(--chrome-height);
+  flex-shrink: 0;
+  padding-inline: var(--space-5);
+  background: var(--color-white-100);
+  box-shadow: 0px 4px 8px var(--color-shadow-subtle), 0px 0px 1px var(--color-shadow-mid);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2_5);
+  position: relative;
+  z-index: 2;
+  transition: margin-block-start var(--transition-chrome);
+}
+
+.viewer-koma--chrome-hidden .viewer-koma__header {
+  margin-block-start: calc(var(--chrome-height) * -1);
+}
+
+.viewer-koma__close {
+  width: var(--space-6);
+  height: var(--space-6);
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.viewer-koma__close .icon {
+  width: var(--space-6);
+  height: var(--space-6);
+}
+
+.viewer-koma__title {
+  margin: 0;
+  font-size: var(--font-size-body-sm);
+  line-height: var(--line-height-body-sm);
+  font-weight: var(--font-weight-w6);
+  color: var(--color-font-primary-black-100);
+}
+
+/* ---------- Main (flex 1, stage 중앙 정렬) ---------- */
+.viewer-koma__main {
+  align-self: stretch;
+  flex: 1 1 0;
+  min-height: 0;
+  background: var(--color-white-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: var(--space-5);
+  position: relative;
+}
+
+/* ---------- Card Row — 좌 nav | 카드 | 우 nav 가 이미지 좌우에 붙어 정렬 ---------- */
+.viewer-koma__card-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+/* 좌/우 네비 버튼 — 배경 없이 chevron 아이콘만 (viewer-yoko 패턴 동일) */
+.viewer-koma__nav {
+  width: var(--space-20);   /* 80 */
+  align-self: stretch;       /* 카드 row 높이(=이미지 높이)에 자동 맞춤 */
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 0.3;
+  transition: opacity var(--transition-chrome);
+}
+
+.viewer-koma__nav .icon {
+  width: var(--nav-icon-size);
+  height: var(--nav-icon-size);
+}
+
+.viewer-koma__nav:hover:not(:disabled),
+.viewer-koma__nav:focus-visible:not(:disabled) {
+  opacity: 1;
+}
+
+.viewer-koma__nav:disabled {
+  cursor: default;
+  opacity: 1;  /* 아이콘 자체에서 30% 처리 */
+}
+
+.viewer-koma__nav:disabled .icon {
+  background-color: var(--color-font-primary-black-30);
+}
+
+/* ---------- Stage (단일 코마 카드 + dots + caption 세로 스택) ---------- */
+.viewer-koma__stage {
+  flex: 1 1 0;
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-6); /* 24 — 카드 ↔ bottom(indicator+caption) 여백 */
+}
+
+.viewer-koma__card {
+  width: var(--p70);                 /* 1008 고정 */
+  background: var(--color-bg-soft);
+  box-shadow:
+    0px 4px 8px var(--color-shadow-subtle),
+    0px 0px 1px var(--color-shadow-mid);
+  overflow: hidden;                  /* 트랙 슬라이드 시 카드 경계 마스크 */
+  flex-shrink: 0;
+}
+
+/* ---------- Card Track (현재 + 다음 이미지를 가로로 붙여 한 번에 슬라이드) ----------
+   - card 의 overflow: hidden 이 마스크 역할
+   - 슬라이드 중 두 이미지가 서로 붙은 상태로 함께 이동 (gap·fade 없음) */
+.viewer-koma__card-track {
+  display: flex;
+  width: 100%;
+  will-change: transform;
+}
+
+.viewer-koma__card-image {
+  display: block;
+  flex: 0 0 100%;    /* 카드 폭 100% (1008) */
+  width: 100%;
+  height: auto;      /* 이미지 자체 비율 */
+}
+
+/* JS 가 transform 인라인 + animating 클래스 토글로 트랙 이동을 실행
+   (next: 0 → -100%, prev: -100% → 0). transitionend 후 클래스 제거 + transform 초기화 */
+.viewer-koma__card-track--animating { transition: transform var(--transition-slide); }
+
+/* ---------- Bottom group (indicator + caption 묶음, 내부 gap 12) ---------- */
+.viewer-koma__bottom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3); /* 12 */
+}
+
+/* ---------- Dots Indicator (bottom 그룹 첫 줄) ---------- */
+.viewer-koma__indicator {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2); /* 8 */
+}
+
+.viewer-koma__dot {
+  width: var(--space-1_5);  /* 6 */
+  height: var(--space-1_5);
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--color-gray-5);
+  cursor: pointer;
+  transition: background var(--transition-chrome), transform var(--transition-chrome);
+}
+
+.viewer-koma__dot:hover { background: var(--color-gray-4); }
+
+.viewer-koma__dot.is-active {
+  background: var(--color-font-primary-black-100);
+  transform: scale(1.4);
+}
+
+/* ---------- Caption (bottom 그룹 둘째 줄 — dots 와 12 간격) ---------- */
+.viewer-koma__caption {
+  flex-shrink: 0;
+  margin: 0;
+  text-align: center;
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  font-weight: var(--font-weight-w4);
+  color: var(--color-font-primary-black-50);
+}
+
+/* ---------- Footer ---------- */
+.viewer-koma__footer {
+  align-self: stretch;
+  height: var(--chrome-height);
+  flex-shrink: 0;
+  background: var(--color-white-100);
+  border-top: 1px solid var(--color-gray-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  z-index: 2;
+  transition: margin-block-end var(--transition-chrome);
+}
+
+.viewer-koma--chrome-hidden .viewer-koma__footer {
+  margin-block-end: calc(var(--chrome-height) * -1);
+}
+
+.viewer-koma__footer-side {
+  flex: 1 1 0;
+  align-self: stretch;
+  padding-inline: var(--space-2);
+  display: flex;
+  align-items: center;
+  gap: var(--space-0_5);
+}
+
+.viewer-koma__footer-side--end { justify-content: flex-end; }
+
+.viewer-koma__page {
+  display: flex;
+  align-items: center;
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  font-weight: var(--font-weight-w4);
+}
+
+.viewer-koma__page-current,
+.viewer-koma__page-total {
+  color: var(--color-font-primary-black-100);
+  font-weight: var(--font-weight-w6);
+}

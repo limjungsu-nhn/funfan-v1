@@ -748,8 +748,28 @@ A. 현재 프로토타입 **미지원**. 추후 검토.
 - `__stats`: gap 8 — `__stat` × 2 (icon 16×16 + value 11/16 w6)
 - TODO: 컴포넌트 승격 시 `.series-thumb-card` 등으로 리네이밍 검토
 
-#### `.viewer-tate` / `.viewer-yoko` → 만화 뷰어 (popup window)
-- 縦読み(tate) — main 영역 세로 스크롤 + chrome 토글, 이미지 728px 고정
-- 横読み(yoko) — main 영역 좌/우 nav + 페이지 슬라이드(퇴장 50%에 입장), 이미지 spread 2장
+#### `.viewer-tate` / `.viewer-yoko` / `.viewer-koma` → 만화 뷰어 (popup window)
+- 縦読み(tate) — main 영역 세로 스크롤 + chrome 토글, 이미지 728px 고정. 마지막 50vh padding-bottom + 스크롤 끝 도달 시 `#modal-water-support` 자동 오픈 (재오픈 조건: 모달 닫은 뒤 50vh 이상 위로 스크롤 후 다시 끝 도달)
+- 横読み(yoko) — main 영역 좌/우 nav + 페이지 슬라이드(퇴장 50%에 입장 0.3s), 이미지 spread 2장. 마지막 장에서 next 클릭 시 `#modal-water-support` 오픈
+- コマ(koma) — 단일 카드 가로 카루셀 (트랙 transform 으로 두 이미지가 붙어 함께 슬라이드, 0.6s ease-standard, fade·delay 없음). 12 dot 인디케이터 + 캡션. 마지막 코마에서 next 클릭 시 `#modal-water-support` 오픈
 - 1440 min-width 미적용 (popup window)
 - 진행 상태 단일 소스: `.viewer-*__progress[role="progressbar"]` aria-valuenow/min/max
+- 모든 뷰어 공통: 마지막 페이지/스크롤 끝 도달 시 `#modal-water-support` 모달 (감정 라디오 4개 + textarea + 풋터 「次の話を読む」/「水をあげて応援する」)
+
+#### `.support-comment` / `.support-comment-list` → 응원 댓글 모달 리스트 (creator-series-home / series-manage-detail)
+- 모달 안 스크롤 리스트 — 댓글 행(thumb 65×48 + body) 세로 스택
+- 행 구성: thumb · text(13/20 w4) · meta(name 11/16 w6 · sep 12/18 · date 11/16, 50% 반투명) · reactions(pill 2개)
+- pill: 28h, padding 12, radius 100, gray-5 outline + shadow, font 11/16 w4
+- 리스트 padding-bottom 40 + `.modal:has(.support-comment-list)::after` 그라디언트 페이드 아웃(40h, modal 하단 radius 보존)
+- 가로 28 인셋(좌측은 modal padding, 우측은 행 padding-right 12)
+
+#### `.modal-backdrop` 변수 (일괄 제어)
+- `--modal-backdrop-base` (기본 `var(--color-bg-soft)` #F8F8FB) — 베이스 색
+- `--modal-backdrop-alpha` (기본 50%) — 색상 투명도
+- `--modal-backdrop-blur` (기본 20px) — backdrop-filter 블러 강도
+- `:root` 또는 페이지 CSS 에서 위 3개만 재정의하면 모든 모달 백드롭 일괄 변경
+
+#### `.modal__step:has(.modal__list)::after` → Step 1 스크롤 페이드 아웃 그라디언트
+- modal-context Step 1(작품 선택 리스트)의 스크롤 끝에 흰색 그라디언트(40h)
+- Step 2 의 `.modal__field:last-of-type::after` 와 동일 패턴
+- 양쪽 모두 `border-radius: 0 0 var(--radius-lg) var(--radius-lg)` 로 모달 하단 라운드 코너 보존

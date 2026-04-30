@@ -25,9 +25,12 @@
   <link rel="stylesheet" href="css/components/reaction-bar.css">
   <link rel="stylesheet" href="css/components/garden-card.css">
   <link rel="stylesheet" href="css/components/episode-card.css">
+  <link rel="stylesheet" href="css/components/modal.css">
+  <link rel="stylesheet" href="css/components/support-comment.css">
   <script src="js/core/_global.js" defer></script>
   <script src="js/components/series-card.js" defer></script>
   <script src="js/components/episode-card.js" defer></script>
+  <script src="js/components/modal.js" defer></script>
 
   <!-- 페이지 전용 레이아웃 -->
   <link rel="stylesheet" href="css/pages/series-home.css">
@@ -159,7 +162,7 @@
               <span class="text-assist-w4 reaction-bar__meta">他2名が水やりしています</span>
             </div>
           </div>
-          <button class="btn btn-filled-wood reaction-bar__cta" type="button">
+          <button class="btn btn-filled-wood reaction-bar__cta" type="button" data-modal-open="#modal-support-comments">
             <span class="text-subtext-w6">応援コメントを見る</span>
           </button>
         </div>
@@ -217,6 +220,243 @@
 
     </div>
   </main>
+
+  <!-- Modal: 応援コメント — 504×644 / 작품 응원 댓글 7개 리스트(스크롤) -->
+  <div class="modal-backdrop" id="modal-support-comments">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-support-comments-title">
+      <button class="modal__close" type="button" data-modal-close aria-label="閉じる">
+        <i class="icon icon-close"></i>
+      </button>
+      <h2 class="modal__title" id="modal-support-comments-title">応援コメント</h2>
+      <ul class="support-comment-list">
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">続きが楽しみすぎる！</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">さくら✿</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/29 21:10</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">月明かりの工房という舞台設定が好みすぎて、開いた瞬間から世界観に持っていかれました。描き込みの繊細さと余白の使い方のバランスが絶妙で、ページをめくるたびに新しい発見があります。次の話も絶対に追います、応援しています！</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">haru</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/28 18:42</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">セリフの間がたまらないです。今日も読み返しました。</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">haru</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/27 09:15</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">神回でした。</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">mio</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/26 22:03</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">静かなコマほど刺さるってこういうことなんですね。何度でも読み返したくなる作品です。</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">yuki</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/26 11:20</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">何でもない一コマに胸を掴まれました。物語が動かない瞬間こそ作家性が出るというのを、改めて感じさせてくれた回でした。これからも追いかけていきます。</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">taro</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/25 15:48</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">ジャケ買い、大正解でした。</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">hana</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/24 23:55</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">泣いた。</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">ren</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/24 12:03</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">ストーリーのテンポが心地よく、初見でも置いていかれない丁寧な構成に感動しました。背景や小物の作り込みからも作品愛が伝わってきます。次回も楽しみにしています。</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">sou</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/23 19:47</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">背景の小物まで世界観に統一感があって素敵です。</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">mei</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/22 14:30</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">続編希望です…！</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">kei</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/21 22:10</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">主人公の所作ひとつひとつから、職人らしさと不器用さの両方が伝わってきて切ない気持ちになります。月明かりというモチーフの使い方が本当に好きで、毎話ゆっくり読み返しています。</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">nao</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/20 16:55</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">表情のバリエーションが豊かで、推しが推せました。</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">riko</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/19 10:12</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">涙腺崩壊…</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">sho</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/18 21:33</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+        <li class="support-comment">
+          <img class="support-comment__thumb" src="img/img_episode01.png" alt="">
+          <div class="support-comment__body">
+            <p class="support-comment__text">コーヒーを片手に何度も読み返しました。じわじわ来るタイプの良作です。</p>
+            <div class="support-comment__meta">
+              <span class="support-comment__name">akira</span>
+              <span class="support-comment__sep" aria-hidden="true">·</span>
+              <time class="support-comment__date">2026/3/17 09:08</time>
+            </div>
+            <div class="support-comment__reactions">
+              <span class="support-comment__pill">💧 水やり</span>
+              <span class="support-comment__pill">😂 楽しい</span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
 
 </body>
 </html>

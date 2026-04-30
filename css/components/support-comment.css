@@ -1,0 +1,145 @@
+/* ============================================
+   Support Comment — 応援コメント 모달용 댓글 행
+   사용처: creator-series-home / series-manage-detail 의 #modal-support-comments
+   Figma: Frame 504×644 — 응원 댓글 리스트
+
+   HTML 구조:
+     <h2 class="modal__title">応援コメント</h2>
+     <ul class="support-comment-list">
+       <li class="support-comment">
+         <img class="support-comment__thumb" src="..." alt="">
+         <div class="support-comment__body">
+           <p class="support-comment__text">댓글 본문</p>
+           <div class="support-comment__meta">
+             <span class="support-comment__name">유저명</span>
+             <span class="support-comment__sep" aria-hidden="true">·</span>
+             <time class="support-comment__date">2026/3/29 21:10</time>
+           </div>
+           <div class="support-comment__reactions">
+             <span class="support-comment__pill">💧 水やり</span>
+             <span class="support-comment__pill">😂 楽しい</span>
+           </div>
+         </div>
+       </li>
+     </ul>
+
+   Notes:
+     - 모달 내부 list 자체가 스크롤 영역 (flex: 1 + overflow-y: auto)
+     - 행은 padding 12 0 / gap 20 / thumb 65×48 / body flex column gap 4
+     - reaction pill: 28h, radius 100, gray-5 outline, shadow
+   ============================================ */
+
+.support-comment-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 var(--space-10) 0; /* 하단 40 — 끝까지 스크롤 시 마지막 행 아래 여백 확보 */
+  flex: 1 1 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ---------- 스크롤 영역 하단 페이드 아웃 그라디언트 (modal-context Step 2 와 동일 패턴)
+   ─ support-comment-list 가 들어 있는 모달에만 적용. modal 의 position: relative 를 기준으로
+     하단 40px 흰색 그라디언트로 자연스러운 컷오프 + 라운드 코너 보존(border-radius) */
+.modal:has(.support-comment-list)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--color-white-100));
+  pointer-events: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg); /* modal 하단 radius 20 일치 */
+}
+
+/* ---------- Row ---------- */
+.support-comment {
+  width: 100%;
+  padding: var(--space-3) var(--space-3) var(--space-3) 0; /* 12 / 12 / 12 / 0 — 우측만 12 추가 */
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-5); /* 20 */
+}
+
+.support-comment__thumb {
+  width: 65px;
+  height: var(--space-12); /* 48 */
+  border-radius: var(--radius-2xs); /* 8 */
+  flex-shrink: 0;
+  object-fit: cover;
+  display: block;
+}
+
+.support-comment__body {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1); /* 4 */
+}
+
+/* ---------- Text ---------- */
+.support-comment__text {
+  margin: 0;
+  align-self: stretch;
+  font-size: 13px;       /* Figma 명세 — 토큰 스케일(11/12/14/15/16) 외 단일값 */
+  line-height: 20px;
+  font-weight: var(--font-weight-w4);
+  color: var(--color-black-100);
+  word-break: break-word;
+}
+
+/* ---------- Meta (이름 · 날짜) — 50% 반투명 ---------- */
+.support-comment__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1_5); /* 6 */
+  color: var(--color-font-primary-black-50);
+}
+
+.support-comment__name {
+  font-size: var(--font-size-overline);       /* 11 */
+  line-height: var(--line-height-overline);   /* 16 */
+  font-weight: var(--font-weight-w6);
+}
+
+.support-comment__sep {
+  font-size: var(--font-size-caption);        /* 12 */
+  line-height: var(--line-height-caption);    /* 18 */
+  font-weight: var(--font-weight-w4);
+}
+
+.support-comment__date {
+  font-size: var(--font-size-overline);
+  line-height: var(--line-height-overline);
+  font-weight: var(--font-weight-w4);
+}
+
+/* ---------- Reactions (Pill 2개) ---------- */
+.support-comment__reactions {
+  padding-top: var(--space-2); /* 8 */
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-1); /* 4 */
+}
+
+.support-comment__pill {
+  min-height: 28px;
+  padding: 0 var(--space-3);  /* 12 */
+  background: var(--color-white-100);
+  box-shadow: 0 1px 2px var(--color-shadow-light);
+  border-radius: var(--radius-full); /* 100 */
+  outline: 1px solid var(--color-gray-5);
+  outline-offset: -1px;
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--font-size-overline);
+  line-height: var(--line-height-overline);
+  font-weight: var(--font-weight-w4);
+  color: var(--color-font-primary-black-100);
+  white-space: nowrap;
+}

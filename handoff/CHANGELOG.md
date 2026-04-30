@@ -8,6 +8,72 @@
 
 ---
 
+## v1.06.5 (2026-04-30, v1.06.4 후속)
+
+**viewer-koma 신규 + viewer 3종 종료 모달 통합 + 응원 댓글 모달 + 모달 백드롭 변수 추출 + ease-standard 곡선 변경.** 신규 페이지 1개(viewer-koma), 신규 컴포넌트 1개(support-comment), 모달 백드롭 CSS 변수 3종, ease-standard 곡선 변경.
+
+### 신규 페이지
+
+- **`viewer-koma.html`** — コマ 단위 가로 카루셀 뷰어. popup window. 1008 고정 폭 카드 안에서 두 이미지가 트랙에 붙어 함께 슬라이드(0.6s `--ease-standard`, fade·delay 없음). 6 dot 인디케이터 + 캡션. 좌/우 nav 80px 폭 + 카드 높이 자동 매칭(`align-self: stretch`). 마지막 코마에서 next 클릭 시 `#modal-water-support` 자동 오픈. 신규 JS `js/pages/viewer-koma.js`, CSS `css/pages/viewer-koma.css`.
+
+### viewer 3종 종료 모달 통합
+
+- **`#modal-water-support`** 동일 마크업을 viewer-yoko / viewer-koma / viewer-tate 모두에 임베드. 감정 라디오 4개(笑った/泣けた/推せる/続き楽しみ) + textarea(maxlength 300) + 풋터 「次の話を読む」/「水をあげて応援する」. textarea placeholder 두 줄(`応援メッセージを入力せずに水やりをすると、\nランダムメッセージが届きます。`).
+- 트리거:
+  - viewer-yoko — 마지막 장(6/6) 에서 next 클릭 시 오픈. nextBtn 은 마지막 장에서도 disabled 시키지 않음
+  - viewer-koma — 마지막 코마(6/6) 에서 next 클릭 시 오픈
+  - viewer-tate — 스크롤 끝 도달 시 자동 오픈. 닫은 뒤 50vh 이상 위로 스크롤하여 하단 50vh 여백이 시야에서 사라진 뒤 다시 끝 도달해야 재오픈 (MutationObserver 로 backdrop class 감시)
+- 인라인 스크립트 3중복 (감정 라디오 default 복원 + textarea counter + submit 활성화) — 후속 작업으로 공통 모듈 추출 예정
+
+### viewer 듀레이션·동작 미세 조정
+
+- viewer-yoko 슬라이드: 0.5s → **0.3s** (퇴장 ease-in / 입장 ease-out, 입장 시작 = 퇴장 50% 시점)
+- viewer-koma 트랙 슬라이드: **0.6s** `--ease-standard` (단일 트랜지션, 두 이미지 붙어 이동)
+- viewer-yoko nextBtn 마지막 장에서도 활성 — Hover 시각 유지 + 클릭은 `animating` 가드
+- viewer-tate 마지막 이미지 하단 50vh padding — 끝까지 스크롤 시 마지막 이미지 하단이 뷰포트 50% 위치에 머묾
+
+### 신규 컴포넌트
+
+- **`css/components/support-comment.css`** — 응원 댓글 모달용 행. `.support-comment-list` (스크롤 컨테이너) + `.support-comment` (행) + `__thumb` 65×48 / `__body` (text 13/20 w4 + meta 50% 반투명 + reactions pill 2개). pill: 28h / padding 12 / radius 100 / gray-5 outline + shadow / font 11/16 w4. `.modal:has(.support-comment-list)::after` 로 모달 하단 40h 흰색 그라디언트 페이드 아웃 (radius 보존).
+
+### 신규 모달
+
+- **`#modal-support-comments`** — 504×644. creator-series-home / series-manage-detail 의 「応援コメントを見る」 버튼이 트리거. 댓글 15개(짧음/중간/긴 문장 + 다양한 닉네임). 행 padding 우측 12 추가.
+
+### 신규 토큰 / 변수
+
+- **`.modal-backdrop` CSS 변수** (모달 백드롭 일괄 제어):
+  - `--modal-backdrop-base` (기본 `var(--color-bg-soft)` #F8F8FB)
+  - `--modal-backdrop-alpha` (기본 50%)
+  - `--modal-backdrop-blur` (기본 **20px**, 이전 8px 에서 변경)
+- **`--ease-standard`** 곡선 변경: `cubic-bezier(.4, 0, .1, 1)` → **`cubic-bezier(.5, 0, 0, 1)`**. 더 부드러운 진입 + 강조된 마무리. accordion / right-panel / workspace-onboarding chrome / viewer-koma 슬라이드 등 모든 사용처 자동 반영. handoff/design-tokens.json + handoff/tailwind-preset.ts 동기화 완료.
+
+### modal-context Step 1 그라디언트
+
+- modal-context Step 1(작품 선택 리스트)도 Step 2 와 동일한 하단 40h 페이드 아웃 그라디언트 추가
+- `.modal__step:has(.modal__list)::after` (descendant `:has()` 사용 — `.modal__list` 가 `.modal__section` 안에 있어 직계자식 selector 불가)
+- `.modal__list` 의 padding-bottom 40 추가
+- 두 그라디언트(Step 1 / Step 2) 모두 `border-radius: 0 0 var(--radius-lg) var(--radius-lg)` 로 모달 하단 라운드 코너 보존
+
+### 신규 이미지
+
+- `img/img_viewer_koma_01.png`, `img/img_viewer_koma_02.png` — viewer-koma 데모 이미지 2장 (페이지 패리티에 따라 번갈아 노출)
+
+### 페이지·CSS 미세 변경
+
+- viewer-yoko / viewer-tate / viewer-koma 모두 페이지 6장으로 통일 (이전 60장 / 5장)
+- viewer-koma 카드: width 1008 고정, height auto (이미지 자체 비율), border-radius 0
+- viewer-koma stage gap 24, bottom 그룹 (indicator + caption) 내부 gap 12
+- creator-series-home navbar — workspace-onboarding 동일 패턴 (탭 + 마이페이지 + 워크스페이스)
+
+### 하위 호환
+
+- 기존 `.modal-backdrop` 사용처 무변경 — 변수 미정의 시 기본값으로 동작
+- 기존 `.modal__step` / `.modal__field` 시그니처 무변경
+- `--ease-standard` 곡선만 변경, 다른 토큰 변경 없음
+
+---
+
 ## v1.06.4 (2026-04-30, v1.06.3 후속)
 
 **series-manage-detail / author-profile / viewer-tate 신규 페이지 3종 + compact 변형 3종 + 토큰 추가 + viewer-yoko 슬라이드 개선.** 신규 토큰 3종 (`--space-0_75`, `--ease-in`, `--ease-out`), 신규 유틸리티 1종 (`.text-link`), 컴포넌트 변형 3종 (`.garden-card--compact`, `.garden--compact`, `.reaction-bar--compact`). 페이지 패턴 통일 (mypage / reader-account-setting → series-home 패턴).

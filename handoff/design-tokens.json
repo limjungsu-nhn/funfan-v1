@@ -208,7 +208,7 @@
 
   "easing": {
     "$description": "공용 가/감속 커브. accordion · right-panel · viewer-yoko slide 등에서 참조.",
-    "standard": "cubic-bezier(.4, 0, .1, 1)",
+    "standard": "cubic-bezier(.5, 0, 0, 1)",
     "in":       "cubic-bezier(.4, 0, 1, 1)",
     "out":      "cubic-bezier(0, 0, .2, 1)"
   }

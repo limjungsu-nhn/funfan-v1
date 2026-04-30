@@ -31,7 +31,8 @@
     progress.style.setProperty('--progress', (ratio * 100) + '%');
     if (currentEl) currentEl.textContent = String(now);
     if (totalEl) totalEl.textContent = '/' + String(max);
-    if (nextBtn) nextBtn.disabled = now >= max;
+    // next 는 마지막 장에서도 활성 — 클릭 시 종료 모달이 열림 (bindNav 참조)
+    if (nextBtn) nextBtn.disabled = false;
     if (prevBtn) prevBtn.disabled = now <= min;
   }
 
@@ -69,6 +70,7 @@
     const enterCls = 'viewer-yoko__spread--enter-from-' + (direction === 'next' ? 'left' : 'right');
 
     animating = true;
+    // disabled 는 토글하지 않음 — Hover 시각 유지 + 클릭은 animating 플래그로 차단
     current.classList.add(exitCls);
 
     // 퇴장 50% 시점에 입장 시작 — 퇴장 듀레이션의 절반만큼 지연
@@ -94,14 +96,31 @@
     });
   }
 
+  function openEndModal() {
+    const backdrop = document.querySelector('#modal-water-support');
+    if (!backdrop) return;
+    backdrop.classList.add('modal-backdrop--open');
+    document.body.style.overflow = 'hidden';
+    // 인라인 스크립트가 듣고 있는 이벤트 — 기본 라디오 복원 + submit 상태 갱신
+    window.dispatchEvent(new Event('viewer-yoko:open-water-support'));
+  }
+
   function bindNav() {
     if (nextBtn) {
       nextBtn.addEventListener('click', () => {
-        if (!nextBtn.disabled && setPage(1)) slide('next');
+        if (animating) return;             // 애니메이션 중 차단 (Hover 시각은 유지)
+        if (nextBtn.disabled) return;
+        const { now, max } = readState();
+        if (now >= max) {                  // 마지막 장에서 next → 종료 모달
+          openEndModal();
+          return;
+        }
+        if (setPage(1)) slide('next');
       });
     }
     if (prevBtn) {
       prevBtn.addEventListener('click', () => {
+        if (animating) return;             // 애니메이션 중 차단
         if (!prevBtn.disabled && setPage(-1)) slide('prev');
       });
     }

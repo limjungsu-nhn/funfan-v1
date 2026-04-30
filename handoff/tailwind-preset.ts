@@ -245,7 +245,7 @@ const preset: Partial<Config> = {
 
       /* ---------- Easing (custom curves) ---------- */
       transitionTimingFunction: {
-        standard: 'cubic-bezier(.4, 0, .1, 1)',
+        standard: 'cubic-bezier(.5, 0, 0, 1)',
         'in':     'cubic-bezier(.4, 0, 1, 1)',
         'out':    'cubic-bezier(0, 0, .2, 1)',
       },

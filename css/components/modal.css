@@ -27,8 +27,19 @@
      - z-index: 1000 (navbar z-index: 100 위)
    ============================================ */
 
-/* ---------- Backdrop ---------- */
+/* ---------- Backdrop ----------
+   배경 색상·투명도·블러는 아래 CSS 변수로 일괄 제어:
+     --modal-backdrop-base    — 베이스 색상(기본 --color-bg-soft #F8F8FB)
+     --modal-backdrop-alpha   — 투명도(0~100%, 기본 50%)
+     --modal-backdrop-blur    — 블러 강도(기본 20px)
+   변경하려면 :root 또는 페이지 단위에서 위 변수만 오버라이드.
+*/
 .modal-backdrop {
+  /* 컴포넌트 기본값 */
+  --modal-backdrop-base:  var(--color-bg-soft);
+  --modal-backdrop-alpha: 50%;
+  --modal-backdrop-blur:  20px;
+
   display: flex;
   position: fixed;
   top: 0;                        /* navbar 포함 전체 영역 오버레이 */
@@ -57,9 +68,9 @@
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  background: color-mix(in srgb, var(--color-bg-soft) 50%, transparent);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: color-mix(in srgb, var(--modal-backdrop-base) var(--modal-backdrop-alpha), transparent);
+  backdrop-filter: blur(var(--modal-backdrop-blur));
+  -webkit-backdrop-filter: blur(var(--modal-backdrop-blur));
   transition:
     opacity 0.24s ease,
     visibility 0s linear 0s,
@@ -414,6 +425,24 @@
   height: 40px;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--color-white-100));
   pointer-events: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg); /* 모달 하단 radius 20 보존 */
+}
+
+/* Step 1 — modal__list 를 가진 step 도 동일 패턴 (스크롤 하단 페이드 아웃) */
+.modal__step:has(.modal__list) {
+  position: relative;
+}
+
+.modal__step:has(.modal__list)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--color-white-100));
+  pointer-events: none;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg); /* 모달 하단 radius 20 보존 */
 }
 
 /* ---------- Tabs wrapper (step 2) ---------- */
@@ -524,9 +553,9 @@
      상하는 scroll-padding 으로 Tab auto-scroll 시 ring 가시 영역 확보. */
   overflow-y: auto;
   /* 가로: 28px 인셋 (카드 시각 위치) — ring 좌우 escape 여유 충분
-     세로: ring 두께(3px)만큼만 — 시각 여백 최소화하면서 첫/마지막 카드 ring clip 방지
-     (규칙 #13: 스크롤 컨테이너 > 카드 폭/높이 패턴) */
-  padding: var(--ring-width) var(--space-7);
+     상: ring 두께(3px)만큼 — 첫 카드 ring clip 방지
+     하: 40 — 끝까지 스크롤 시 마지막 카드 아래 여백 + 그라디언트 페이드 영역 확보 */
+  padding: var(--ring-width) var(--space-7) var(--space-10);
   scroll-padding-block: var(--space-2);
   scrollbar-width: none;        /* Firefox */
   -ms-overflow-style: none;     /* IE/Edge legacy */

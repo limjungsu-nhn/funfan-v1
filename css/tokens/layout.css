@@ -57,7 +57,7 @@
      모든 공통 전환(accordion, right-panel, onboarding 랜딩 등)이 참조하는 표준 커브.
      개별 duration/delay는 각 컴포넌트에서 지정, 곡선만 여기서 통일.
   ---------------------------------------- */
-  --ease-standard: cubic-bezier(.4, 0, .1, 1);
+  --ease-standard: cubic-bezier(.5, 0, 0, 1);
   --ease-in:  cubic-bezier(.4, 0, 1, 1);   /* 점점 빠르게 — 퇴장(accelerate) */
   --ease-out: cubic-bezier(0, 0, .2, 1);   /* 점점 느리게 — 등장(decelerate) */
 

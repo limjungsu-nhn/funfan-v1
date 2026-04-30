@@ -11,9 +11,9 @@
   --progress-height: var(--space-0_5); /* 2px */
   --nav-icon-size: var(--space-9); /* 36px */
   --transition-chrome: 0.4s var(--ease-standard);   /* progress · header · footer 토글 */
-  --transition-slide-out: 0.6s var(--ease-in);      /* 퇴장 — 점점 빠르게 */
-  --transition-slide-in:  0.6s var(--ease-out);     /* 등장 — 점점 느리게 */
-  --transition-slide-out-ms: 600;                   /* JS 입장 타이밍 산출용 참조 (ms) */
+  --transition-slide-out: 0.3s var(--ease-in);      /* 퇴장 — 점점 빠르게 */
+  --transition-slide-in:  0.3s var(--ease-out);     /* 등장 — 점점 느리게 */
+  --transition-slide-out-ms: 300;                   /* JS 입장 타이밍 산출용 참조 (ms) */
 
   margin: 0;
   background: var(--color-white-100);
