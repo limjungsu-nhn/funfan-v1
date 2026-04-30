@@ -4,15 +4,39 @@
 
 ---
 
-## 📌 v1.06.5 요약 (2026-04-30, v1.06.4 후속) — 먼저 이것만 보세요
+## 📌 v1.06.6 요약 (2026-04-30, v1.06.5 후속) — 먼저 이것만 보세요
+
+**`#modal-water-support` Step 2(thanks) 비주얼 시퀀스 + JS 모듈화 + 자산 정리.** 핵심은 (1) 8s 동안 plant drop 5 + ground drop 20 + 새싹·오버레이 단계 전환 + 타이틀 typewriter type-in/erase + 자동 닫기로 구성된 시퀀스를 `js/components/modal-water-thanks.js` 단일 모듈로 추출, (2) 4 페이지(series-home / viewer-{yoko,koma,tate})의 inline JS ~150줄 × 4 외부화 + DOM 재사용 패턴(cloneNode-replaceWith 제거)으로 메모리·런타임 비용 감소, (3) 미참조 SVG 17개 디스크 삭제 + styleguide 카탈로그 동기화.
+
+| 분류 | 내용 | 개발 영향 |
+|---|---|---|
+| **modal-water-thanks.js 모듈 (NEW)** | `WaterThanks.start(thanksModal)` / `WaterThanks.reset(backdrop)` / `WaterThanks.cancel()` 3 함수 노출 IIFE. dropCycleCancels 배열로 모든 setTimeout / animationend 일괄 정리. 4 페이지의 inline 시퀀스 코드 외부화 | React: `<WaterThanksSequence>` — useEffect 안 setTimeout 체인 + 단일 ref array 로 drop/illust/title 제어 |
+| **8s 비주얼 시퀀스** | t=0/2/3.5/5/6.5/8s 마다 정렬된 plant drop 착지 + 새싹·오버레이 일러스트 swap (183→184→186→187 + overlay 185→188→189) + 타이틀 typewriter 3단계 + ground drop 20개 taper 분배(t=1~8s) + wet-spot 갈색 타원 + t=9.5s 자동 모달 닫기 | (목업 데이터) — 단계 타임라인 React `useEffect` 로 1:1 재현 가능 |
+| **DOM 재사용 패턴** | 매 사이클 `cloneNode-replaceWith` 제거 → 단일 element 에 `style.animation = 'none'` → reflow → inline animation 재할당으로 재시작. 8s 동안 100+ 노드 생성/제거 → 0 (wet-spot 동적 div 만 예외) | React: ref 로 element 보관 + animationName 변경으로 재시작. WAAPI 의 `el.animate(keyframes, opts)` 도 1:1 매핑 가능 |
+| **modal.css thanks 키프레임** | `water-drop-fall` 1s ease-in (낙하), `water-splash-pop` 0.2s ease-in (착지 후 src swap + 페이드), `water-wet-spot` 0.8s ease-out (땅 자국 짙어졌다 마름), `water-thanks-typewriter` / `water-thanks-eraser` (clip-path inset 좌→우 / 우→좌) | Tailwind keyframes / animations 등록 |
+| **자산 정리** | 미참조 SVG 17개 디스크 삭제: `img_illust_181`, `img_water_drop_177~180`, `img_water_splash_{left,right}` 단일 + a~e 12종. styleguide Spot Illustrations 카탈로그를 새싹 4단계 + 오버레이 3단계 실 사용 자산만 등록. Water Drops 5종 → 1종(176)으로 간소화 | React: 사용 자산 직접 import + Tailwind/SVG 컴포넌트 변환 |
+
+**하위 호환**
+- `#modal-water-support` 시그니처(form step) 무변경 — Step 2 진입 동선만 모듈화
+- 4 페이지 HTML 마크업 변경 없음(thanks 모달 내부에 `.modal-water-thanks__illust-overlay` 한 줄만 추가)
+- modal.css `.modal--water-thanks*` 셀렉터 BEM 구조 유지, `--y-jitter` CSS 변수만 신규
+
+**확인할 곳**
+1. `js/components/modal-water-thanks.js` — 시퀀스 SSOT 단일 파일
+2. [`COMPONENTS.md`](./COMPONENTS.md) — `.modal--water-thanks` 컴포넌트 항목 (시퀀스·DOM 재사용 패턴·cancel 흐름 명세)
+3. `series-home.html` / `viewer-{tate,koma,yoko}.html` — inline JS 가 `WaterThanks.start/reset` 호출 2줄로 축소된 형태
+4. `styleguide.html` Spot Illustrations / Water Drop / Water Splash 카탈로그 — 실 사용 자산만 노출
+
+---
+
+## 📌 v1.06.5 요약 (2026-04-30, v1.06.4 후속)
 
 **viewer-koma 신규 + viewer 3종 모두에 「水をあげて応援する」 모달 통합 + 응원 댓글 모달(`#modal-support-comments`) 신규 + 모달 백드롭 CSS 변수 추출 + ease-standard 곡선 변경.** 핵심은 (1) 縦/横/コマ 3개 뷰어가 마지막 페이지·스크롤 끝에서 동일 모달을 트리거하는 종료 플로우 완성, (2) creator-series-home / series-manage-detail 의 「応援コメントを見る」 버튼 → 댓글 리스트 모달, (3) 모든 모달 백드롭의 색·투명도·블러를 3개 변수로 일괄 제어.
 
 | 분류 | 내용 | 개발 영향 |
 |---|---|---|
 | **viewer-koma.html (NEW)** | コマ 単위 가로 카루셀 뷰어. popup window. 1008 고정 폭 카드 안에서 두 이미지가 트랙에 붙어 함께 슬라이드(0.6s ease-standard, fade·delay 없음). 6 dot 인디케이터 + 캡션. 좌/우 nav 80px 폭 + 카드 높이 자동 매칭. 마지막 코마 next 클릭 → `#modal-water-support`. 신규 JS `js/pages/viewer-koma.js`, CSS `css/pages/viewer-koma.css` | React: `<ViewerKoma>` — 트랙 transform pattern (clone + insertBefore/append) |
-| **viewer 3종 종료 모달 통합** | yoko / koma / tate 모두에 `#modal-water-support` 모달(감정 라디오 4 + textarea + 풋터 「次の話を読む」/「水をあげて応援する」). yoko/koma 는 마지막 페이지 next 클릭, tate 는 스크롤 끝 도달 시 자동 오픈. textarea placeholder 두 줄 (`応援メッセージを入力せずに水やりをすると、\nランダムメッセージが届きます。`) | React: `<WaterSupportModal>` 단일 컴포넌트 + 트리거 위치만 페이지별 분기 |
-| **modal-water-thanks.js 모듈 (NEW)** | `WaterThanks.start/reset/cancel` 노출. 8s 비주얼 시퀀스(plant drop 5 + ground drop 20 + 새싹/오버레이 일러스트 단계 전환 + 타이틀 typewriter + 9s 자동 닫기). 4 페이지(series-home / viewer-{yoko,koma,tate}) 의 inline JS ~150줄 × 4 외부화 + DOM 재사용 패턴(cloneNode/replaceWith 제거) | React: `<WaterThanksSequence>` — useEffect 안 setTimeout 체인 + 단일 ref array 로 drop/illust/title 제어 |
+| **viewer 3종 종료 모달 통합** | yoko / koma / tate 모두에 `#modal-water-support` 모달(감정 라디오 4 + textarea + 풋터 「次の話を読む」/「水をあげて応援する」). yoko/koma 는 마지막 페이지 next 클릭, tate 는 스크롤 끝 도달 시 자동 오픈. textarea placeholder 두 줄 (`応援メッセージを入力せずに水やりをすると、\nランダムメッセージが届きます。`) | React: `<WaterSupportModal>` 단일 컴포넌트 + 트리거 위치만 페이지별 분기 (현재 inline script 가 3중복 — 후속 작업으로 모듈 추출 예정 → v1.06.6 에서 처리 완료) |
 | **viewer-tate 재오픈 로직** | 스크롤 끝 1차 도달 시 자동 오픈. 모달 닫은 뒤 끝에서 50vh 이상 위로 스크롤 후 다시 끝 도달해야만 재오픈. MutationObserver 로 backdrop class 감시 | React: scroll observer hook + 50vh threshold flag |
 | **viewer-tate 마지막 50vh 패딩** | `.viewer-tate__stage` 하단 패딩 50vh — 마지막 이미지의 하단이 뷰포트 50% 위치에 머물도록 | (단순 padding) |
 | **viewer-yoko / koma 듀레이션 통일** | yoko 슬라이드 0.3s (퇴장 50% 시점에 입장 시작) / koma 트랙 슬라이드 0.6s | 토큰 변경 |

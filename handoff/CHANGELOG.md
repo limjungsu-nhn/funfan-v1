@@ -8,6 +8,90 @@
 
 ---
 
+## v1.06.6 (2026-04-30, v1.06.5 후속)
+
+**`#modal-water-support` Step 2(thanks) 8s 비주얼 시퀀스 + JS 모듈화 + DOM 재사용 패턴 + 미참조 자산 정리.** 신규 JS 모듈 1개(modal-water-thanks), 신규 SVG 자산 8종(illust 184/185/186/187/188/189 + water_drop_176 단일화 + water_splash 단일화), 미참조 SVG 17개 디스크 삭제, 4 페이지 inline JS 외부화.
+
+### 신규 JS 모듈
+
+- **`js/components/modal-water-thanks.js`** — `#modal-water-support` Step 2(thanks) 의 8s 시퀀스를 단일 모듈로 추출. IIFE 로 `window.WaterThanks` 노출.
+  - `WaterThanks.start(thanksModal)` — 시퀀스 시작 (모달 active 직전 호출)
+  - `WaterThanks.reset(backdrop)` — cancel + illust / overlay / title / drop 인라인 state 초기 상태 복귀
+  - `WaterThanks.cancel()` — 진행 중인 모든 setTimeout / animationend 정리
+- 4 페이지(series-home / viewer-{yoko,koma,tate})의 inline 시퀀스 코드 ~150줄 × 4 외부화. 각 페이지는 submit click 핸들러 안에서 `WaterThanks.start()` 호출 한 줄, resetSteps 안에서 `WaterThanks.reset()` 한 줄로 축소
+
+### thanks 모달 비주얼 시퀀스 (8s, 모달 오픈 = t=0)
+
+- **plant drop** 5회 착지 — t=2 / 3.5 / 5 / 6.5 / 8s. 단일 element 에 inline animation 재할당으로 매 사이클 재시작. 모달 가운데 ±40px 랜덤 X
+- **ground drop** 20개 — taper 분배(t=1~8s, idx 순 stopTime ramp). X 좌표 중심 편향(3개 uniform 평균) + 활성 X 회피(`MIN_X_DIST = 12%` ≈ 60px). Y ±40px jitter (`--y-jitter` CSS 변수). 착지 시 #875B48 wet-spot 갈색 타원(scale 0→1.95 + fade-out, 0.8s)
+- **새싹 일러스트** 단계 전환 — t=2/3.5/5s 에 `.modal-water-thanks__illust` src 를 183 → 184 → 186 → 187 로 swap (sway 애니메이션 유지)
+- **오버레이 일러스트** — t=2s 에 `.modal-water-thanks__illust-overlay` 표시 + 185 → 188 → 189 swap (sway 미적용, 정적)
+- **타이틀** typewriter — t=0/2.667/5.333s 에 type-in (clip-path inset 좌→우, 0.5s steps(n)) → hold → erase (우→좌, 0.5s). 마지막 단계는 erase 없이 stay
+  - 텍스트: 「花壇に水を届けています」 → 「水滴がつぼみに向かっています」 → 「花壇に変化が反映されました」
+- **t=9.5s** — 시퀀스 종료 1.5s 후 thanks 모달 `[data-modal-close]` 자동 클릭 → 닫힘
+
+### DOM 재사용 패턴 (성능 최적화)
+
+- 매 사이클 `cloneNode-replaceWith` 제거 → 단일 element 에 `style.animation = 'none'` → reflow(`void el.offsetWidth`) → inline animation 재할당으로 재시작. 8s 동안 100+ 노드 생성/제거 → 0 (wet-spot 동적 div 만 예외, 0.8s 후 self-remove)
+- 모든 timer cleanup 은 `dropCycleCancels` 배열로 통합 — `WaterThanks.cancel()` 한 번에 setTimeout / animationend 리스너 일괄 정리
+
+### 신규 CSS
+
+- **`@keyframes water-drop-fall`** — 1s ease-in 낙하 (`translate(-50%, -500px) → translate(-50%, -100%)`, 모달 overflow 마스킹)
+- **`@keyframes water-splash-pop`** — 0.2s ease-in (착지 후 src swap → splash 이미지 페이드 아웃)
+- **`@keyframes water-wet-spot`** — 0.8s ease-out (scale 0 → 1 → 1.95 + opacity 0 → 0.7 → 0)
+- **`@keyframes water-thanks-typewriter`** / **`@keyframes water-thanks-eraser`** — clip-path inset 좌→우 / 우→좌 (글자 수에 맞춘 `steps(n)` 으로 한 글자씩 출현/소멸)
+- **`.modal-water-thanks__illust-overlay[--visible]`** — 새싹 위에 겹쳐지는 오버레이 (top 124 + width 196 동기화, opacity 트랜지션 0.3s, sway 미적용)
+- **`.modal-water-thanks__drop--ground`** modifier — `top: calc(320px + var(--y-jitter, 0px))` 로 새싹 하단 = top 320 ± 40 에 안착
+- **`.modal-water-thanks__drop--landed`** — splash 사이즈(97×45) 적용 + water-splash-pop 트리거
+- **`.modal-water-thanks__wet-spot[--ground]`** — 60×12 #875B48 타원, transform-origin bottom-center, water-wet-spot 애니메이션 자동 트리거
+
+### 신규 자산
+
+- **`img/img_illust_184.svg`** — 새싹 Stage 1 (t=2s 시점)
+- **`img/img_illust_185.svg`** — 오버레이 Stage 1 (꽃잎 등, t=2s 표시)
+- **`img/img_illust_186.svg`** — 새싹 Stage 2 (t=3.5s)
+- **`img/img_illust_187.svg`** — 새싹 Stage 3 / final (t=5s, 만개)
+- **`img/img_illust_188.svg`** — 오버레이 Stage 2 (t=3.5s swap)
+- **`img/img_illust_189.svg`** — 오버레이 Stage 3 / final (t=5s)
+- **`img/img_water_drop_176.svg`** — 단일 drop SVG 54×54 (plant 1 + ground 20 모두 재사용)
+- **`img/img_water_splash.svg`** — 단일 splash SVG 97×45 (drop 착지 시 src swap)
+- **`img/img_water_thanks.svg`** — thanks 모달 배경 504×300 (이미 v1.06.5 에 존재)
+- **`img/img_illust_183.svg`** — 새싹 Stage 0 / initial (이미 v1.06.5 에 존재)
+
+### 자산 정리 (디스크 삭제)
+
+미참조 SVG 17개 삭제:
+
+- `img/img_illust_181.svg` (이전 단계 도중 사용 후 제거)
+- `img/img_water_drop_177.svg` ~ `180.svg` (4종 — 단일 자산으로 단순화)
+- `img/img_water_splash_left.svg` / `right.svg` (좌/우 방향성 splash 단일화)
+- `img/img_water_splash_left_a.svg` ~ `e.svg` (5종) / `right_a.svg` ~ `e.svg` (5종) — 이전 5-variant 랜덤 splash 시도의 잔재
+
+### styleguide 카탈로그 동기화
+
+- **Spot Illustrations** 새싹 4단계(183/184/186/187) + 오버레이 3단계(185/188/189) 7개 항목으로 갱신 — 단계·시점·역할 명시
+- **Water Drop** 5종 → 1종(176) 으로 간소화 — "plant 1 + ground 20 모두 단일 자산을 재사용" 노트
+- 미참조 SVG 가리키던 항목 제거
+
+### 동작 변경
+
+- `#modal-water-support` Step 2 진입 시 form modal 의 transitionend 이후 `WaterThanks.start()` 호출 → 시퀀스 자동 재생
+- 모달 reset (form 화면 복귀) 시 `WaterThanks.reset()` 호출 → 누적된 wet-spot 일괄 제거 + drop 인라인 state 초기화
+- 모달 자동 닫기: 시퀀스 종료(8s) + 1.5s 후 (= t=9.5s) `[data-modal-close]` 자동 클릭
+
+### 하위 호환
+
+- `#modal-water-support` 의 form step 시그니처 무변경 — Step 2 진입 동선만 모듈화
+- 4 페이지 HTML 마크업 변경 없음 (thanks 모달에 `.modal-water-thanks__illust-overlay` 한 줄과 ground drop 20개 `<img>` 만 추가)
+- 기존 `.modal-water-thanks` BEM 셀렉터 유지, `--y-jitter` CSS 변수만 신규 등록
+
+### 영향 페이지
+
+- `series-home.html` / `viewer-yoko.html` / `viewer-koma.html` / `viewer-tate.html` — 모두 동일하게 thanks 시퀀스 모듈 적용
+
+---
+
 ## v1.06.5 (2026-04-30, v1.06.4 후속)
 
 **viewer-koma 신규 + viewer 3종 종료 모달 통합 + 응원 댓글 모달 + 모달 백드롭 변수 추출 + ease-standard 곡선 변경.** 신규 페이지 1개(viewer-koma), 신규 컴포넌트 1개(support-comment), 모달 백드롭 CSS 변수 3종, ease-standard 곡선 변경.
