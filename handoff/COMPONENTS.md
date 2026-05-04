@@ -42,6 +42,7 @@
 |---|---|---|---|---|---|
 | Line | `.btn-line` | white | gray-2 outline | scale(.97) | 3px gray-5 |
 | Ghost | `.btn-ghost` | transparent | gray-6 bg | scale(.97) | 3px gray-5 |
+| Ghost Dark | `.btn-ghost-dark` | transparent | black 50% | scale(.97) | 3px gray-5 |
 | Filled Nature | `.btn-filled-nature` | nature-3 | nature-2 | nature-2 + scale(.97) | 3px gray-5 |
 | Filled Black | `.btn-filled-black` | black-100 | black-100 | black-100 + scale(.97) | 3px gray-5 |
 | Filled Red | `.btn-filled-red` | red-100 | red-100 | red-100 + scale(.97) | 3px gray-5 |
@@ -505,6 +506,10 @@ instance.destroy();           // 정리
 - 좌: 로고 / 우: 버튼 그룹
 - Work Mode 변형: 탭 + 작업종료 버튼 (`.navbar--work-mode`)
 - Transparent 변형: 로고만 · 배경/그림자/버튼 없음 (`.navbar--transparent`) — 레이아웃 점유 동일
+- On-Dark 변형 (`.navbar--on-dark`): 어두운 hero 배경 위 노출용. 배경/그림자/border 모두 transparent (none 이 아닌 — default 와 transition 시 라인 갑자기 등장 방지). 안쪽 요소는 명시적으로 어두운 배경용 변형 클래스 사용:
+  - 로고: `<i class="logo-funfan logo--white">`
+  - ghost 버튼: `.btn.btn-ghost-dark` (button.css)
+  - filled: `.btn-filled-nature` 기본값 그대로 — nature-3 bg + nature-4 icon + white text
 
 #### `.left-panel` → 커스텀
 - width 288px (`--p20`)
@@ -752,6 +757,23 @@ A. 현재 프로토타입 **미지원**. 추후 검토.
 ---
 
 ## 페이지 스코프 컴포넌트 (재사용 시 컴포넌트 승격 후보)
+
+#### `.main-home__hero` → 메인 홈 hero 섹션 (main-home.html 전용)
+- 1920(전폭) × 800px, navbar(64) 뒤에 깔리는 풀-블리드 hero
+- **레이어 구조**:
+  - `.main-home__hero-bg` (배경 video 컨테이너): hero 안 absolute, `top: -50%; height: 150%` 로 확장 → parallax translateY 적용 시 hero 영역 항상 덮음
+  - `.main-home__hero-image`: 배경 `<video autoplay muted loop playsinline>` (`video/hero_main.mp4`). object-fit: cover + `transform: translateZ(0)` GPU 레이어 강제 (sub-pixel jitter 방지)
+  - `.main-home__hero-overlay`: hero **직접 자식** (hero-bg 와 형제) — inset:0 로 hero 박스(800)에 정확히 매핑. 검정 그라디언트 (180deg, Y=0 rgba(0,0,0,0.8) → Y=800 rgba(0,0,0,0)) + 추가 darken 레이어 `background-color: rgba(0,0,0,var(--hero-darken,0))`
+  - `.main-home__hero-content`: 텍스트 + 버튼. position relative, `padding-top: var(--navbar-height)`. 자식 `.btn-glass` 의 backdrop-filter 보존을 위해 transform/opacity 미사용 (top 으로만 parallax)
+- **시차 스크롤** (JS, requestAnimationFrame + 픽셀 라운딩):
+  - hero-bg(video): `translate3d(0, scrollY * 0.5, 0)` — 0.5x 속도, 깊이감
+  - content: `top: scrollY * 0.3` — 0.3x 속도, 더 천천히 (오래 머무름)
+  - overlay 는 hero 자식이라 hero 와 함께 스크롤 (parallax 없음 — 그라디언트가 viewport-bound 한 듯한 안정감)
+  - overlay `--hero-darken`: `progress * 0.8` (0~0.80, 0.01 단위 양자화) — 스크롤할수록 점진적 어두워짐
+- **Navbar 모드 토글** (IntersectionObserver, rootMargin: -64px 0 0 0):
+  - hero 가 viewport 와 겹침 → `.navbar--on-dark` + `logo--white` + `btn-ghost-dark`
+  - hero 완전히 통과 → 기본 흰 배경 navbar
+- **CTA**: 「作業室へ」 (btn-glass btn--lg, 147px 고정 폭, glass morphism backdrop-filter blur 20px) + 「作品を登録する」 (btn-filled-black btn--lg + icon-add)
 
 #### `.author-profile-card` → 작가 프로필 카드 (author-profile.html 전용)
 - 1008×auto 흰 카드, padding 44/36, radius 24, shadow

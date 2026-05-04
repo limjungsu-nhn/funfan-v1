@@ -28,9 +28,9 @@
 <body>
 
   <!-- Navbar -->
-  <header class="navbar">
+  <header class="navbar navbar--on-dark">
     <div class="navbar-logo">
-      <i class="logo logo-funfan"></i>
+      <i class="logo logo-funfan logo--white"></i>
     </div>
     <div class="navbar-actions">
       <div class="navbar-tabs">
@@ -39,7 +39,7 @@
           <button class="tab">非公開</button>
         </div>
       </div>
-      <a class="btn btn-ghost" href="mypage.html">
+      <a class="btn btn-ghost-dark" href="mypage.html">
         <i class="icon icon-account-circle"></i>
         <span class="text-assist-w4">マイページ</span>
       </a>
@@ -52,6 +52,29 @@
 
   <!-- Main -->
   <main class="main-home">
+
+    <!-- Hero — 신규 작가용 진입 유도 섹션 (1920×800, 어두운 그라디언트 오버레이 + 배경 이미지) -->
+    <section class="main-home__hero" aria-label="진입 유도">
+      <div class="main-home__hero-bg" aria-hidden="true">
+        <video class="main-home__hero-image" src="video/hero_main.mp4" autoplay muted loop playsinline preload="auto"></video>
+      </div>
+      <div class="main-home__hero-overlay" aria-hidden="true"></div>
+      <div class="main-home__hero-content">
+        <div class="main-home__hero-text">
+          <h1 class="main-home__hero-title">最初の作品を投稿しよう</h1>
+          <p class="main-home__hero-desc">公開エピソードがまだない作家向けの誘導セクションです。作業室から始めても、<br>作品登録から始めても大丈夫です。</p>
+        </div>
+        <div class="main-home__hero-actions">
+          <a class="btn btn-glass btn--lg" href="workspace.html">
+            <span class="text-caption-w4">作業室へ</span>
+          </a>
+          <a class="btn btn-filled-black btn--lg" href="series-register.html">
+            <i class="icon icon-add"></i>
+            <span class="text-caption-w4">作品を登録する</span>
+          </a>
+        </div>
+      </div>
+    </section>
 
     <!-- Section: 最新の投稿作品 -->
     <section class="main-home__section">

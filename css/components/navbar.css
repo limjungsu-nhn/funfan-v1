@@ -15,6 +15,10 @@
            </div>
          </div>
          <!-- 탭 없는 경우: btn-ghost(マイページ) + btn-filled-nature(ワークスペース) -->
+   변형:
+     .navbar--transparent      배경 투명, 로고만
+     .navbar--on-dark          어두운 hero 배경 위, 로고 흰색 + ghost 흰색 텍스트
+     .navbar--work-mode        탭 활성 (workspace/series-edit 등)
          <!-- 탭 있는 경우: btn-ghost(作業終了 + icon-exit-to-app) only -->
          <button class="btn btn-ghost">…</button>
          <button class="btn btn-filled-nature">…</button>  <!-- 탭 활성 시 제거 -->
@@ -38,6 +42,8 @@
   align-items: center;
   justify-content: space-between;
   z-index: 100; /* 모달(1000+) 제외 최상위 고정 */
+  /* on-dark ↔ default 모드 전환 부드럽게 */
+  transition: background-color 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 /* ---------- Logo ---------- */
@@ -72,5 +78,17 @@
   background: transparent;
   box-shadow: none;
   border-bottom: none;
+}
+
+/* ---------- On-Dark (어두운 hero 배경 위, 1920 기준 랜딩·프로모 페이지)
+   배경 투명 + shadow/border 는 transparent 로 유지(none 이 아닌) — default 모드와의 transition 시
+   border 가 갑자기 등장하지 않도록 동일 box 모델 유지. 안쪽 요소는 명시적으로 어두운 배경용 변형:
+     로고: <i class="logo-funfan logo--white">
+     ghost 버튼: .btn.btn-ghost-dark (button.css)
+     filled: .btn-filled-nature 기본값 그대로 — nature-3 bg + nature-4 icon + white text */
+.navbar--on-dark {
+  background: transparent;
+  box-shadow: 0px 1px 2px transparent;
+  border-bottom-color: transparent;
 }
 

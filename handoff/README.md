@@ -6,7 +6,7 @@
 
 ## 📌 v1.06.7 요약 (2026-04-30, v1.06.6 후속) — 먼저 이것만 보세요
 
-**뷰어 3종 종료 화면(`.viewer-end`) 신규 + 페이지 헤더 패턴 통일(nav + header 분리, top padding 36).** 핵심은 (1) viewer-yoko / viewer-koma / viewer-tate 의 마지막 페이지 다음에 「次の話を読む」 / 「水をあげて応援する」 두 버튼이 있는 종료 화면이 노출, (2) 기존 viewer-tate 의 스크롤 끝 자동 모달 오픈 제거 — 종료 화면 버튼 클릭으로만 모달 트리거, (3) series-register / series-manage-detail / episode-add 4종 페이지의 헤더를 nav(back link 단독 행) + header(제목·설명 가운데) 두 영역으로 분리 + 상단 패딩 72 → 36 통일.
+**뷰어 3종 종료 화면(`.viewer-end`) 신규 + 페이지 헤더 패턴 통일 + main-home hero 신규 + 어두운 배경용 navbar/button 변형 + glass morphism + water-thanks 타이밍 조정.** 핵심은 (1) viewer-yoko / viewer-koma / viewer-tate 의 종료 화면 노출 + 페이지 헤더(series-register / series-manage-detail / episode-add 4종) nav+header 두 영역 분리, (2) main-home 상단에 1920×800 풀-블리드 video hero(시차 스크롤 + 동적 darken + IntersectionObserver navbar 모드 토글), (3) `.navbar--on-dark` / `.btn-ghost-dark` 신규 변형 + `.btn-glass` / `.btn-ghost-dark` 에 `backdrop-filter: blur(20px)` glass morphism 적용, (4) water-thanks 시퀀스의 낙하·splash 시간 조정.
 
 | 분류 | 내용 | 개발 영향 |
 |---|---|---|
@@ -18,17 +18,28 @@
 | **헤더 상단 패딩 통일** | series-register / episode-add 4종의 `.workspace__content` top padding 72 → 36 (`var(--space-9)`) | (토큰 변경) |
 | **back button 동선** | series-register → workspace.html / series-manage-detail → series-post-management.html / episode-add 4종 → series-post-management.html | (페이지별 hardcoded href) |
 | **chrome 토글 예외** | viewer 3종 모두 종료 화면 버튼 (`.viewer-end__actions button`) 클릭은 chrome(progress/header/footer) 토글에서 제외 — 텍스트·여백 클릭은 일반 토글 동작 유지 | React: stopPropagation on button only |
+| **main-home hero (NEW)** | 1920×800 풀-블리드 hero. video 배경(`video/hero_main.mp4`, autoplay muted loop playsinline) + 검정 그라디언트 오버레이(Y=0 alpha 0.8 → Y=800 alpha 0) + 동적 darken (`--hero-darken` 0~0.8, 스크롤 진행도에 비례). 텍스트 「最初の作品を投稿しよう」 + 안내 + CTA 2개(btn-glass / btn-filled-black). hero-bg(video) `translate3d(0, scrollY * 0.5, 0)` (0.5x) + content `top: scrollY * 0.3` (0.3x) 시차 스크롤 | React: `<MainHomeHero videoSrc onWorkroom onRegister />`, parallax 는 useEffect + rAF |
+| **navbar 모드 토글** | main-home: IntersectionObserver(rootMargin -64px) 로 hero 가시성 감시. hero in viewport → `.navbar--on-dark` + `logo--white` + `btn-ghost-dark` 적용. hero 통과 → 기본 흰 배경. navbar 에 0.25s ease 트랜지션 | React: scroll-based theme switcher |
+| **`.navbar--on-dark` (NEW)** | 어두운 hero/landing 배경 위 navbar 변형. 배경/그림자/border 모두 transparent (none 이 아닌 — default 와 transition 시 라인 갑자기 등장 방지). 안쪽 요소는 명시적 변형 사용: `logo--white` / `btn-ghost-dark` / `btn-filled-nature` 기본값 | (CSS variant) |
+| **`.btn-ghost-dark` (NEW)** | 어두운 배경용 ghost 버튼. 5 state — Default 투명+흰 텍스트/아이콘, Hover/Focus/Pressed `rgba(0,0,0,0.5)` + glass blur, Disabled 흰색 30%. `btn--sm` / `btn--lg` 사이즈 호환 | React: variant prop |
+| **`.btn-glass` glass morphism** | 기존 반투명 흰색(`var(--color-white-50)`) 위에 `backdrop-filter: blur(20px)` 추가. frosted-glass 효과. `.btn-ghost-dark` 도 동일 blur 적용 | Tailwind: `backdrop-blur-xl` 등 |
+| **water-thanks 타이밍 조정** | `water-drop-fall` 1s → 0.8s (낙하 20% 빠름), `water-splash-pop` 0.2s → 0.1s (splash 절반 길이). modal.css fallback rule + js/components/modal-water-thanks.js 의 inline animation 양쪽 동기화. 시퀀스 전체 8s / 자동 닫기 9.5s 등 다른 시간은 무변경 | (애니메이션 도메인 고유값) |
+| **신규 자산** | `video/hero_main.mp4` (6.4MB, hero 비디오 배경) | 향후 mp4 외 webm 등 확장자 후속 추가 검토 |
 
 **하위 호환**
 - `#modal-water-support` 시그니처 무변경 — 트리거 진입점만 변경(스크롤 자동 → 종료 화면 버튼)
 - 페이지 헤더 BEM 셀렉터 — 옛 `__page-header-side` / `__page-header-center` 제거됨. 4 episode-add 페이지 inline 마크업 변경 필요
 - viewer-tate `.viewer-tate__stage` 의 `padding-bottom: 50vh` 제거 — 종료 화면 1뷰포트 자동 노출이 대체
+- 기존 `.navbar` / `.btn-glass` / `.btn-ghost` 사용처 무변경 — 새 변형은 별도 클래스로 추가
+- `.btn-glass` 기본 동작에 `backdrop-filter` 추가됨 — 기존 사용처는 자연스럽게 frosted 강화
 
 **확인할 곳**
 1. `js/pages/viewer-{yoko,koma,tate}.js` — 종료 화면 토글 + 버튼 바인딩
 2. `css/components/viewer-end.css` — 컴포넌트 단일 파일
-3. `styleguide.html` — Patterns > Viewer End 섹션 (인터랙티브 데모)
-4. [`COMPONENTS.md`](./COMPONENTS.md) — `.viewer-end` 항목
+3. `main-home.html` + `css/pages/main-home.css` + `js/pages/main-home.js` — hero 섹션 + parallax + navbar 토글
+4. `styleguide.html` — Patterns > Viewer End / Buttons > Ghost Dark / Navbar > On-Dark 데모
+5. [`COMPONENTS.md`](./COMPONENTS.md) — `.viewer-end` / `.main-home__hero` / `.navbar--on-dark` / `.btn-ghost-dark`
+6. `video/hero_main.mp4` — 신규 자산
 
 ---
 

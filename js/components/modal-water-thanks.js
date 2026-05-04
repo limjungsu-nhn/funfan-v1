@@ -74,7 +74,7 @@
       if (e.animationName !== 'water-drop-fall') return;
       const xCaptured = lastChosenX;
       lastChosenX = null;
-      // inline animation 클리어 — CSS --landed 규칙의 water-splash-pop 0.2s 가 발동
+      // inline animation 클리어 — CSS --landed 규칙의 water-splash-pop 0.1s 가 발동
       initial.style.animation = '';
       initial.src = SPLASH_SRC;
       initial.classList.add('modal-water-thanks__drop--landed');
@@ -88,7 +88,7 @@
         const t = setTimeout(() => wetSpot.remove(), 800);
         cleanupTimers.push(t);
       }
-      // splash-pop 0.2s 후 X 회피 목록에서 제거
+      // 착지 후 200ms (splash-pop 0.1s 종료 + 약간의 버퍼) 뒤 X 회피 목록에서 제거
       if (xCaptured != null) {
         const t = setTimeout(() => {
           const idx = activeXs.indexOf(xCaptured);
@@ -120,7 +120,7 @@
       }
       // reflow 강제 후 inline animation 재할당 → 매 사이클 재시작
       void initial.offsetWidth;
-      initial.style.animation = 'water-drop-fall 1s ease-in ' + (firstDelay || 0) + 'ms forwards';
+      initial.style.animation = 'water-drop-fall 0.8s ease-in ' + (firstDelay || 0) + 'ms forwards';
       timer = setTimeout(() => playOne(0), (firstDelay || 0) + cycleInterval);
     };
 

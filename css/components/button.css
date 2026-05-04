@@ -11,6 +11,7 @@
    Variants:
      .btn-line                Line   — 테두리형
      .btn-ghost               Ghost  — 라인 없는 버튼
+     .btn-ghost-dark          Ghost  — 어두운 배경(navbar--on-dark / hero) 위 흰색 텍스트·아이콘
      .btn-filled-nature       Filled — 면 컬러 버튼 (nature)
      .btn-filled-gray         Filled — 면 컬러 버튼 (gray, 보조 액션)
      .btn-filled-black        Filled — 면 컬러 버튼 (black)
@@ -144,6 +145,62 @@
   color: var(--color-font-primary-black-30);
   cursor: not-allowed;
   pointer-events: none;
+}
+
+
+/* ============================================
+   Ghost Dark — 어두운 배경(navbar--on-dark / hero / 모달 백드롭 등) 위 ghost 버튼
+
+   Default  : 투명 배경 + 흰색 텍스트·아이콘
+   Hover    : 검정 50% 반투명 배경
+   Focus    : 검정 50% + 3px gray-5 ring + shadow
+   Pressed  : 검정 50% (Hover 와 동일 배경 + scale)
+   Disabled : 투명 배경 + 흰색 30% 텍스트·아이콘
+   ============================================ */
+
+.btn-ghost-dark {
+  background: transparent;
+  color: var(--color-font-primary-white-100);
+}
+
+.btn-ghost-dark .icon {
+  background-color: var(--color-font-primary-white-100);
+}
+
+.btn-ghost-dark--hover,
+.btn-ghost-dark:hover:not(.btn-ghost-dark--disabled) {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.btn-ghost-dark--focus {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+.btn-ghost-dark:focus-visible:not(.btn-ghost-dark--disabled) {
+  outline: none;
+  box-shadow: 0px 0px 0px var(--ring-width) var(--color-gray-5), 0px 1px 2px var(--color-shadow-light);
+}
+
+.btn-ghost-dark--pressed,
+.btn-ghost-dark:active:not(.btn-ghost-dark--disabled) {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  transform: scale(0.97);
+}
+
+.btn-ghost-dark--disabled {
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-ghost-dark--disabled .icon {
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 
@@ -575,6 +632,8 @@
 /* ---------- Default ---------- */
 .btn-glass {
   background: var(--color-white-50);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   box-shadow: 0px 1px 2px var(--color-shadow-light);
   color: var(--color-font-primary-black-100);
 }

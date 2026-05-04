@@ -170,7 +170,7 @@
 }
 
 .modal--water-thanks:not(.modal--inactive) .modal-water-thanks__drop {
-  animation: water-drop-fall 1s ease-in forwards;
+  animation: water-drop-fall 0.8s ease-in forwards;
 }
 
 /* 땅 케이스 — 새싹 이미지 하단(top 124 + 196 = 320). JS 가 매 사이클 --y-jitter (±40px) 를 inline 으로 set */
@@ -186,7 +186,7 @@
   width: 97px;
   height: 45px;
   transform-origin: 50% 100%;
-  animation: water-splash-pop 0.2s ease-in forwards;
+  animation: water-splash-pop 0.1s ease-in forwards;
 }
 
 @keyframes water-splash-pop {

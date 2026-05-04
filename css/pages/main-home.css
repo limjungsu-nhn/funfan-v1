@@ -7,12 +7,12 @@
 .main-home {
   min-width: var(--base); /* 1440 */
   background: var(--color-white-100);
-  margin-top: var(--navbar-height); /* 64 — 고정 navbar 만큼 본문 내림 */
-  padding: var(--space-20) 0 var(--space-45) 0; /* 80 / 0 / 180 / 0 */
+  /* hero 가 navbar 뒤로 깔리도록 — main 자체는 top margin 없이 0 부터 시작 */
+  padding: 0 0 var(--space-45) 0; /* 0 / 0 / 180 / 0 */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-12); /* 48 — section 간 간격 */
+  gap: var(--space-15); /* 60 — section 간 간격 (hero 와 다음 섹션) */
 }
 
 .main-home__section {
@@ -52,4 +52,104 @@
 .main-home__sentinel {
   width: 100%;
   height: 1px;
+}
+
+/* ============================================
+   Hero — 1920×800 어두운 그라디언트 오버레이 + 배경 이미지 + CTA 2개
+   navbar(64) 뒤에 깔려서 hero 상단부터 배경 이미지가 보이는 구조
+   ============================================ */
+.main-home__hero {
+  position: relative;
+  width: 100%;
+  height: 800px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* 이미지 + 그라디언트 묶음 — hero 안에서 같이 parallax 이동.
+   hero 높이의 150% (top -50%) 로 확장 → translate +0.5y (스크롤 0~heroH) 시에도 hero 영역 항상 덮음 */
+.main-home__hero-bg {
+  position: absolute;
+  top: -50%;
+  left: 0;
+  right: 0;
+  height: 150%;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.main-home__hero-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  /* GPU 레이어 강제 — 부모 transform 과 같은 합성 평면에 묶어 sub-pixel jitter 방지 */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* 어두운 그라디언트 + 스크롤에 따라 점진적으로 짙어지는 검정 색 레이어
+   hero 의 직접 자식으로 inset:0 → 그라디언트가 hero 박스(800) 에 정확히 매핑됨.
+   Y=0 (hero 상단) alpha 1 → Y=800 (hero 하단) alpha 0
+   --hero-darken: JS 가 0 ~ 0.8 사이로 설정. 스크롤 0 = 0(투명), heroH 도달 = 0.8 */
+.main-home__hero-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(180deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0)   100%
+  );
+  background-color: rgba(0, 0, 0, var(--hero-darken, 0));
+}
+
+.main-home__hero-content {
+  position: relative;
+  z-index: 1;
+  padding-top: var(--navbar-height); /* 64 — 고정 navbar 높이만큼 보정 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-12); /* 48 — text ↔ buttons */
+}
+
+.main-home__hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-7); /* 28 — title ↔ desc */
+}
+
+.main-home__hero-title {
+  margin: 0;
+  /* 44/52 w6 — hero 전용 사이즈 (글로벌 토큰 미정의) */
+  font-size: 44px;
+  line-height: 52px;
+  font-weight: var(--font-weight-w6);
+  color: var(--color-font-primary-white-100);
+  text-align: center;
+}
+
+.main-home__hero-desc {
+  margin: 0;
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: var(--font-weight-w4);
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+}
+
+.main-home__hero-actions {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-3); /* 12 */
+}
+
+/* 「作業室へ」 btn-glass 는 147px 고정 폭 */
+.main-home__hero-actions .btn-glass {
+  width: 147px;
 }

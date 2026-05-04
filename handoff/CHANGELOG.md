@@ -10,7 +10,7 @@
 
 ## v1.06.7 (2026-04-30, v1.06.6 후속)
 
-**뷰어 3종 종료 화면(`.viewer-end`) 신규 + 페이지 헤더 패턴 통일(nav 분리 + top padding 36) + viewer-tate 자동 모달 트리거 제거.** 신규 컴포넌트 1개(viewer-end), 신규 아이콘 1개(icon-water-drop-filled), 페이지 5종 헤더 구조 정리(series-register / series-manage-detail / episode-add 4종).
+**뷰어 3종 종료 화면(`.viewer-end`) 신규 + 페이지 헤더 패턴 통일 + main-home hero 신규 + 어두운 배경용 navbar/button 변형 + glass morphism + water-thanks 타이밍 조정.** 신규 컴포넌트 1개(viewer-end), 신규 변형 2개(navbar/button), 신규 아이콘 1개(icon-water-drop-filled), 페이지 5종 헤더 구조 정리, main-home hero 섹션 추가, 신규 자산 1개(hero_main.mp4).
 
 ### 신규 컴포넌트
 
@@ -24,9 +24,46 @@
   - viewer-tate: stage 마지막에 자동 노출 (스크롤로 진입), 별도 토글 불필요
   - `[data-viewer-end-water]` → 모달 오픈 / `[data-viewer-end-next]` → `window.close()`
 
+### 신규 변형
+
+- **`.navbar--on-dark`** — 어두운 hero/landing 배경 위 navbar 변형:
+  - `background: transparent` + `box-shadow: 0px 1px 2px transparent` + `border-bottom-color: transparent` (none 이 아닌 — default 와 transition 시 라인 갑자기 등장 방지)
+  - 안쪽 요소는 명시적 변형 클래스 사용: `<i class="logo logo-funfan logo--white">` + `<a class="btn btn-ghost-dark">` + `<a class="btn btn-filled-nature">`(기본값 그대로)
+  - navbar 에 `transition: background-color 0.25s ease` 추가로 default ↔ on-dark 모드 부드러운 전환
+- **`.btn-ghost-dark`** — 어두운 배경용 ghost 버튼. 5 state:
+  - Default: 투명 bg + 흰 텍스트/아이콘
+  - Hover: `rgba(0, 0, 0, 0.5)` + glass blur 20px
+  - Focus: 위 + 3px gray-5 ring
+  - Pressed: 위 + scale(0.97)
+  - Disabled: `rgba(255, 255, 255, 0.3)` 텍스트/아이콘
+  - `btn--sm` / `btn--lg` 사이즈 modifier 호환
+
 ### 신규 아이콘
 
 - **`.icon-water-drop-filled`** — Material `water_drop` (filled) 변형. 단순 teardrop SVG path (24×24 viewBox). viewer-end 「水をあげて応援する」 버튼에 사용. handoff/ICONS.md 등록.
+
+### main-home hero 섹션 신규
+
+- `<main class="main-home">` 상단에 풀-블리드 hero 추가. 1920(전폭) × 800px, navbar(64) 뒤에 깔리는 구조.
+- **레이어 구조**:
+  - `.main-home__hero-bg`: 배경 video 컨테이너. hero 안 absolute, `top: -50%; height: 150%` 로 확장 → parallax 시 hero 영역 항상 덮음
+  - `.main-home__hero-image`: `<video autoplay muted loop playsinline>` (`video/hero_main.mp4`). object-fit: cover + `transform: translateZ(0)` GPU 레이어 강제
+  - `.main-home__hero-overlay`: hero **직접 자식** (hero-bg 형제) — inset:0 로 hero 박스(800)에 정확히 매핑. 검정 그라디언트(180deg, Y=0 alpha 0.8 → Y=800 alpha 0) + 추가 darken 레이어 `background-color: rgba(0,0,0,var(--hero-darken,0))`
+  - `.main-home__hero-content`: 텍스트 + 버튼. position relative, `padding-top: var(--navbar-height)`. 자식 `.btn-glass` 의 backdrop-filter 보존을 위해 transform/opacity 미사용 (top 으로만 parallax)
+- **시차 스크롤** (JS, requestAnimationFrame + 픽셀 라운딩 + ticking guard):
+  - hero-bg(video): `translate3d(0, scrollY * 0.5, 0)` — 0.5x 속도, 깊이감
+  - content: `top: scrollY * 0.3` — 0.3x 속도, 더 천천히 (오래 머무름)
+  - overlay: parallax 없음 (hero 와 함께 스크롤 — viewport-bound 한 듯한 안정감)
+  - overlay `--hero-darken`: `progress * 0.8` (0~0.80, 0.01 단위 양자화 + 변경 시에만 setProperty) — 스크롤할수록 점진적 어두워짐
+- **CTA**: 「作業室へ」 (btn-glass btn--lg, 147px 고정 폭, glass morphism backdrop-filter blur 20px) + 「作品を登録する」 (btn-filled-black btn--lg + icon-add)
+- **Navbar 모드 토글** (IntersectionObserver, `rootMargin: -64px 0 0 0`):
+  - hero 가 viewport 와 겹침 → `.navbar--on-dark` + `logo--white` + `btn-ghost-dark` 적용
+  - hero 완전히 통과 → 기본 흰 배경 navbar
+
+### `.btn-glass` glass morphism 강화
+
+- 기존 `.btn-glass` 기본 배경 `var(--color-white-50)` 위에 `backdrop-filter: blur(20px) + -webkit-backdrop-filter` 추가 → 진정한 frosted-glass 룩
+- `.btn-ghost-dark` 의 hover/focus/pressed 상태에도 동일한 blur 적용 — 어두운 배경 위 검정 50% 오버레이가 frosted-glass 로 변환
 
 ### viewer 동작 변경
 
@@ -34,6 +71,13 @@
 - **viewer-koma**: 마지막 코마(6/6)에서 next 클릭 시 종료 모달 자동 오픈 → **종료 화면 토글**로 변경. 종료 화면에서 card / dots 는 `visibility: hidden` 으로 자리만 보존(prev/next nav 버튼 흔들림 없이 그대로 동작 — 마지막 코마로 되돌아가기 가능).
 - **viewer-tate**: 스크롤 끝(>=99%) 도달 시 모달 자동 오픈 + MutationObserver 재오픈 로직 **모두 제거**. stage 의 `padding-bottom: 50vh` 도 제거. stage 마지막에 종료 화면이 1뷰포트 차지하며 자동 노출 → 사용자가 「水をあげて応援する」 버튼 클릭으로만 모달 트리거.
 - **chrome 토글 예외**: viewer 3종 공통 — 종료 화면 버튼(`.viewer-end__actions button`) 클릭은 chrome(progress/header/footer) 토글 대상에서 제외. 텍스트·여백 클릭은 일반 토글 유지.
+
+### water-thanks 애니메이션 타이밍 조정
+
+- `@keyframes water-drop-fall` 적용 시간: **1s → 0.8s** (낙하 20% 빠름)
+- `@keyframes water-splash-pop` 적용 시간: **0.2s → 0.1s** (splash 절반 길이)
+- modal.css fallback rule + js/components/modal-water-thanks.js 의 inline animation 모두 동기화
+- 시퀀스 전체 timing(8s) / illust schedule (2s/3.5s/5s) / title typewriter / 자동 닫기(9.5s) 등 다른 시간은 무변경
 
 ### 페이지 헤더 패턴 통일 (5 페이지)
 
@@ -48,23 +92,39 @@
   - episode-add 4종 → `series-post-management.html` 「シリーズ管理へ戻る」 (기존 유지)
 - **CSS 정리**: 옛 `__page-header-side` / `__page-header-side--start` / `__page-header-center` BEM 변형 제거 → 더 단순한 nav + header 두 블록
 
+### main-home 레이아웃 조정
+
+- `.main-home` padding: `var(--space-20) 0 var(--space-45) 0` → `0 0 var(--space-45) 0` 으로 변경 (hero 가 navbar 뒤로 깔리도록 top padding 제거)
+- main-home section gap: `var(--space-12)` → `var(--space-15)` (60)
+
+### 신규 자산
+
+- **`video/hero_main.mp4`** (6.4MB) — main-home hero 배경 비디오
+
 ### styleguide 동기화
 
 - 새 link `<link rel="stylesheet" href="css/components/viewer-end.css">` 추가
 - icons 섹션에 `icon-water-drop-filled` 카드 등록
 - `Patterns` 카테고리에 **Viewer End** 섹션 신설 — 인터랙티브 데모(.viewer-end 마크업) + 사용 페이지별 동작 / 이벤트 명세
+- buttons 섹션에 **Ghost Dark md** Interactive + States Reference (lg/md/sm × 5 state) 등록
+- navbar 섹션에 **On-Dark** 데모 등록 (어두운 배경 컨테이너)
 - 사이드바 nav 에 「Viewer End」 링크 추가
 
 ### 하위 호환
 
-- `#modal-water-support` 시그니처 무변경 — 트리거 진입점만 변경
+- `#modal-water-support` 시그니처 무변경 — 트리거 진입점만 변경(스크롤 자동 → 종료 화면 버튼)
 - 페이지 헤더 옛 BEM 변형(`__page-header-side*`)은 제거됨 — React 이식 시 새 nav + header 두 영역으로 분해
 - viewer-tate `.viewer-tate__stage` 의 `padding-bottom: 50vh` 제거됨 — 종료 화면 1뷰포트 자동 노출이 대체
+- 기존 `.navbar` / `.btn-glass` / `.btn-ghost` 사용처 무변경 — 새 변형은 별도 클래스로 추가
+- `.btn-glass` 기본 동작에 `backdrop-filter` 추가됨 — 기존 사용처는 자연스럽게 frosted 강화
+- water-thanks 시퀀스 전체 길이(8s) / 자동 닫기 시점(9.5s) / illust schedule 무변경
 
 ### 영향 페이지
 
-- `viewer-yoko.html` / `viewer-koma.html` / `viewer-tate.html` — 종료 화면 신규
+- `viewer-yoko.html` / `viewer-koma.html` / `viewer-tate.html` — 종료 화면 신규 + water-thanks 타이밍 적용
+- `series-home.html` — water-thanks 타이밍 적용
 - `series-register.html` / `series-manage-detail.html` / `episode-add.html` / `episode-add-koma.html` / `episode-add-tate.html` / `episode-add-yoko.html` — 헤더 구조 변경
+- `main-home.html` — hero 섹션 신규 + navbar 변형 적용
 
 ---
 

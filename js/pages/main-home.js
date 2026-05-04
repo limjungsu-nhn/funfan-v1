@@ -133,3 +133,81 @@
 
   observer.observe(sentinel);
 })();
+
+/* ============================================
+   Hero ↔ Navbar 모드 전환
+
+   스크롤이 hero 영역을 완전히 통과하면(.navbar 가 hero 밖으로 나옴) navbar 를
+   navbar--on-dark(투명·흰색 텍스트) → 기본(흰 배경·어두운 텍스트) 로 전환.
+   IntersectionObserver 로 hero 의 마지막 픽셀이 viewport 에서 벗어나는 시점 감지.
+   ============================================ */
+(function () {
+  const navbar = document.querySelector('.navbar');
+  const hero = document.querySelector('.main-home__hero');
+  if (!navbar || !hero) return;
+
+  // hero 가 viewport 와 겹치면 on-dark, 완전히 위로 사라지면 일반 모드.
+  // rootMargin top: -<navbar 높이>px → navbar 가 가린 영역까지 덮인 것으로 간주
+  const navbarH = navbar.offsetHeight || 64;
+  const ghostBtn = navbar.querySelector('.btn-ghost-dark');
+  const logo = navbar.querySelector('.logo-funfan');
+  const setOnDark = (onDark) => {
+    navbar.classList.toggle('navbar--on-dark', onDark);
+    if (logo) logo.classList.toggle('logo--white', onDark);
+    if (ghostBtn) {
+      ghostBtn.classList.toggle('btn-ghost-dark', onDark);
+      ghostBtn.classList.toggle('btn-ghost', !onDark);
+    }
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => setOnDark(entry.isIntersecting));
+  }, {
+    rootMargin: `-${navbarH}px 0px 0px 0px`,
+    threshold: 0,
+  });
+  observer.observe(hero);
+})();
+
+/* ============================================
+   Hero Parallax — 두 레이어 시차 스크롤
+   - hero-bg (이미지 + 그라디언트 묶음): 0.5x 속도 (페이지보다 천천히 — 깊이감)
+   - 콘텐츠(텍스트 + 버튼): 0.3x 속도 (더 천천히 — viewport 에 오래 머무름)
+   * 콘텐츠는 transform 대신 top 으로 이동 — ancestor transform 이 자식 .btn-glass 의
+     backdrop-filter 를 깨뜨리는 것을 방지
+   ============================================ */
+(function () {
+  const hero = document.querySelector('.main-home__hero');
+  if (!hero) return;
+  const heroBg = hero.querySelector('.main-home__hero-bg');
+  const overlay = hero.querySelector('.main-home__hero-overlay');
+  const content = hero.querySelector('.main-home__hero-content');
+  if (!heroBg && !content) return;
+
+  let ticking = false;
+  let lastDarken = -1;
+  const update = () => {
+    const y = window.scrollY;
+    const heroH = hero.offsetHeight || 800;
+    /* 픽셀 단위로 라운딩 — sub-pixel 보간으로 인한 떨림(jitter) 방지 */
+    if (heroBg) heroBg.style.transform = `translate3d(0, ${Math.round(y * 0.5)}px, 0)`;
+    if (content) content.style.top = `${Math.round(y * 0.3)}px`;
+    /* 그라디언트 darken — heroH 도달 시 0.80. 0.01 단위로 양자화 + 변경 시에만 set (overlay 매 프레임 repaint 방지) */
+    if (overlay) {
+      const progress = Math.min(1, y / heroH);
+      const darken = Math.round(progress * 80) / 100; // 0 ~ 0.80, 0.01 step
+      if (darken !== lastDarken) {
+        overlay.style.setProperty('--hero-darken', String(darken));
+        lastDarken = darken;
+      }
+    }
+    ticking = false;
+  };
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  update();
+})();
