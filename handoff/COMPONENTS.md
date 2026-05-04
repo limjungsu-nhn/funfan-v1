@@ -390,6 +390,17 @@ instance.destroy();           // 정리
 
 **React 이식**: `<ModalContext>` 컴포넌트로 1:1 — props 가 init() 옵션과 동일 시그니처. 데이터 → 콜백 → 상태 갱신 패턴 그대로 React state hook 으로 매핑
 
+#### `.viewer-end` (뷰어 종료 화면) → shadcn 단일 컴포넌트
+- **사용 페이지**: viewer-yoko / viewer-koma / viewer-tate (3 viewer 모두)
+- **노출 시점**:
+  - viewer-yoko / viewer-koma: 마지막 페이지에서 next 버튼 클릭 → root 에 `.viewer-{yoko,koma}--end` 토글, spread / card-row 숨기고 종료 화면 노출. prev 버튼 클릭으로 마지막 페이지 복귀
+  - viewer-tate: 스테이지 마지막(이미지 다음) 에 1뷰포트 차지하며 자동 노출 (스크롤만으로 진입)
+- **구조**: `.viewer-end__text` (h2 28/38 w6 + p 12/18 w4 50% opacity) + `.viewer-end__actions` (버튼 2개, gap 6)
+  - 좌측: `btn-line btn--sm` 「次の話を読む」 (173px 고정 폭)
+  - 우측: `btn-filled-sky btn--sm` + `icon-water-drop-filled` 「水をあげて応援する」 — `#modal-water-support` 트리거
+- **신규 아이콘**: `.icon-water-drop-filled` 단순 teardrop SVG path (24×24 viewBox)
+- **JS 통합**: 각 viewer 페이지의 `data-viewer-end-water` / `data-viewer-end-next` 버튼에 클릭 핸들러 바인딩 (water → openEndModal, next → window.close)
+
 #### `.modal--water-thanks` (水をあげて応援する Step 2 시퀀스) → shadcn `Dialog` (재사용 모듈)
 - **SSOT JS 모듈**: `js/components/modal-water-thanks.js` — `WaterThanks.start(thanksModal)` / `WaterThanks.reset(backdrop)` / `WaterThanks.cancel()` 3 함수 노출
 - **사용 페이지**: series-home / viewer-yoko / viewer-koma / viewer-tate (4 페이지 동일 시퀀스)

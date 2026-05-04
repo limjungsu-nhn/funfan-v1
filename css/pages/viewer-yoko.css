@@ -257,3 +257,16 @@
   color: var(--color-font-primary-black-100);
   font-weight: var(--font-weight-w6);
 }
+
+/* ---------- 종료 화면 (.viewer-yoko--end 토글 시) ---------- */
+.viewer-yoko .viewer-end { display: none; }
+.viewer-yoko__stage:has(.viewer-end) { /* stage 가 viewer-end 컨테이너 — 가로/세로 중앙 정렬 컨텍스트 유지 */ }
+.viewer-yoko--end .viewer-yoko__spread { display: none; }
+.viewer-yoko--end .viewer-end {
+  display: inline-flex;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  height: fit-content;
+  width: fit-content;
+}

@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="css/components/modal.css">
   <link rel="stylesheet" href="css/components/form-textarea.css">
   <link rel="stylesheet" href="css/components/emotion-pick.css">
+  <link rel="stylesheet" href="css/components/viewer-end.css">
 
   <!-- Page -->
   <link rel="stylesheet" href="css/pages/viewer-yoko.css">
@@ -52,6 +53,22 @@
           </div>
           <div class="viewer-yoko__image-wrap">
             <img class="viewer-yoko__image" src="img/img_viewer_kurokage_02.jpg" alt="">
+          </div>
+        </div>
+        <!-- 종료 화면 — root 에 .viewer-yoko--end 클래스 토글로 spread 숨기고 노출 -->
+        <div class="viewer-end" data-viewer-end>
+          <div class="viewer-end__text">
+            <h2 class="viewer-end__title text-h2-w6">今話を読み終えました</h2>
+            <p class="viewer-end__subtext text-caption-w4">作家の夢と希望に水をあげて、応援メッセージを残してみてください。</p>
+          </div>
+          <div class="viewer-end__actions">
+            <button class="btn btn-line btn--sm" type="button" data-viewer-end-next>
+              <span class="text-caption-w4">次の話を読む</span>
+            </button>
+            <button class="btn btn-filled-sky btn--sm" type="button" data-viewer-end-water>
+              <i class="icon icon-water-drop-filled"></i>
+              <span class="text-caption-w4">水をあげて応援する</span>
+            </button>
           </div>
         </div>
       </div>

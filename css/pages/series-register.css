@@ -6,7 +6,7 @@
 .workspace__content {
   /* flex:1 + min-height:0 을 쓰지 않음 — 콘텐츠가 긴 폼 페이지라 자연 높이로 흘러야
      자식의 margin-bottom 이 스크롤 영역에 정상 포함됨 */
-  padding: var(--p5) 0 0; /* 72 / 0 / 0 — 하단 180은 .form-card margin-bottom 으로 처리 */
+  padding: var(--space-9) 0 0; /* 36 / 0 / 0 — 하단 180은 .form-card margin-bottom 으로 처리 */
   background: var(--color-bg-soft);
   display: flex;
   flex-direction: column;
@@ -16,7 +16,14 @@
   border-right: 1px var(--color-gray-5) solid;
 }
 
-/* ---------- Page Header ---------- */
+/* ---------- Page Nav (back link 단독 행, 좌측 정렬, form-card 와 동일 fluid 폭) ---------- */
+.series-register__nav {
+  width: max(var(--p50), 50vw);
+  display: flex;
+  align-items: center;
+}
+
+/* ---------- Page Header (제목 + 설명, 가로 중앙 정렬) ---------- */
 .series-register__header {
   display: flex;
   flex-direction: column;

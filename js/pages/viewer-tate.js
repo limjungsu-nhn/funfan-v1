@@ -1,8 +1,8 @@
 /* viewer-tate.html — 縦読み 스크롤 뷰어
    책임:
      1. main 스크롤 위치 → progress-bar width(--progress) + aria-valuenow 동기화
-     2. 스크롤 끝(>=99%) 도달 시 #modal-water-support 자동 오픈 (viewer-koma 와 동일 모달)
-     3. main 콘텐츠 클릭(non-scroll tap) → chrome(progress/header/footer) 토글
+     2. main 콘텐츠 클릭(non-scroll tap) → chrome(progress/header/footer) 토글
+     3. 스크롤 끝의 .viewer-end 종료 화면에서 「水をあげて応援する」 버튼 클릭 시 #modal-water-support 모달 오픈
 */
 (function () {
   const root = document.querySelector('.viewer-tate');
@@ -12,12 +12,7 @@
   const main = root.querySelector('.viewer-tate__main');
   if (!progress || !main) return;
 
-  // ─── 스크롤 끝 도달 시 모달 자동 오픈 ───
-  // 최초: 끝(max) 도달 시 자동 오픈
-  // 재오픈: 모달 닫힌 뒤, 끝에서 50vh 이상 위로 올라갔다가(=하단 50vh 여백이 시야에서 사라질 만큼) 다시 끝에 도달했을 때만
-  let canOpen     = true;   // 다음 끝 도달 시 오픈 자격
-  let modalIsOpen = false;  // 모달 표시 중
-
+  // ─── 종료 화면 「水をあげて応援する」 버튼 → 모달 오픈 ───
   function openEndModal() {
     const backdrop = document.querySelector('#modal-water-support');
     if (!backdrop) return;
@@ -25,34 +20,10 @@
     document.body.style.overflow = 'hidden';
     window.dispatchEvent(new Event('viewer-tate:open-water-support'));
   }
-
-  // 모달 백드롭 class 변화 — 닫히면 modalIsOpen=false 로 되돌림 (canOpen 은 그대로 false 유지)
-  const endBackdrop = document.querySelector('#modal-water-support');
-  if (endBackdrop) {
-    new MutationObserver(() => {
-      modalIsOpen = endBackdrop.classList.contains('modal-backdrop--open');
-    }).observe(endBackdrop, { attributes: true, attributeFilter: ['class'] });
-  }
-
-  function checkScrollEnd() {
-    if (modalIsOpen) return;  // 표시 중에는 아무것도 하지 않음
-    const max = main.scrollHeight - main.clientHeight;
-    if (max <= 0) return;
-    const halfVh = main.clientHeight * 0.5;
-    const distFromBottom = max - main.scrollTop;
-
-    // 닫힘 상태 + 50vh 이상 위로 스크롤 → 재오픈 자격 회복
-    if (!canOpen && distFromBottom >= halfVh) {
-      canOpen = true;
-    }
-
-    // 끝 도달 + 자격 있음 → 오픈
-    if (canOpen && distFromBottom <= 1) {
-      canOpen     = false;
-      modalIsOpen = true;
-      openEndModal();
-    }
-  }
+  const waterBtn = root.querySelector('[data-viewer-end-water]');
+  if (waterBtn) waterBtn.addEventListener('click', openEndModal);
+  const nextBtn = root.querySelector('[data-viewer-end-next]');
+  if (nextBtn) nextBtn.addEventListener('click', () => window.close());
 
   function syncProgress() {
     const max = main.scrollHeight - main.clientHeight;
@@ -60,7 +31,6 @@
     const pct = Math.max(0, Math.min(1, ratio)) * 100;
     progress.style.setProperty('--progress', pct + '%');
     progress.setAttribute('aria-valuenow', String(Math.round(pct)));
-    checkScrollEnd();
   }
 
   main.addEventListener('scroll', syncProgress, { passive: true });
@@ -80,6 +50,8 @@
     const dx = Math.abs(e.clientX - downX);
     downY = downX = null;
     if (dy > 6 || dx > 6) return; // 스크롤로 간주
+    // 종료 화면 버튼 클릭만 chrome 토글 대상에서 제외 (텍스트·빈 영역은 일반 토글 동작)
+    if (e.target.closest('.viewer-end__actions button')) return;
     root.classList.toggle('viewer-tate--chrome-hidden');
   });
 })();

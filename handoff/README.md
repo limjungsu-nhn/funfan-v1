@@ -4,7 +4,35 @@
 
 ---
 
-## 📌 v1.06.6 요약 (2026-04-30, v1.06.5 후속) — 먼저 이것만 보세요
+## 📌 v1.06.7 요약 (2026-04-30, v1.06.6 후속) — 먼저 이것만 보세요
+
+**뷰어 3종 종료 화면(`.viewer-end`) 신규 + 페이지 헤더 패턴 통일(nav + header 분리, top padding 36).** 핵심은 (1) viewer-yoko / viewer-koma / viewer-tate 의 마지막 페이지 다음에 「次の話を読む」 / 「水をあげて応援する」 두 버튼이 있는 종료 화면이 노출, (2) 기존 viewer-tate 의 스크롤 끝 자동 모달 오픈 제거 — 종료 화면 버튼 클릭으로만 모달 트리거, (3) series-register / series-manage-detail / episode-add 4종 페이지의 헤더를 nav(back link 단독 행) + header(제목·설명 가운데) 두 영역으로 분리 + 상단 패딩 72 → 36 통일.
+
+| 분류 | 내용 | 개발 영향 |
+|---|---|---|
+| **viewer-end (NEW)** | 뷰어 3종 공통 종료 화면 컴포넌트. text 블록(h2 28/38 w6 + p 12/18 w4 50% opacity) + 버튼 2개(btn-line 173px + btn-filled-sky w/ icon-water-drop-filled). gap 40 / 12 / 6. yoko·koma 는 root 에 `.viewer-{yoko,koma}--end` 토글로 spread/card 숨기고 노출, tate 는 stage 마지막에 1뷰포트 차지하며 자동 노출 | React: `<ViewerEnd onNext onWater />` 단일 컴포넌트 |
+| **viewer-koma 종료 화면 nav 보존** | 종료 화면 노출 시 card / dots 만 `visibility: hidden` (자리·치수 보존) → prev/next nav 버튼은 그대로 동작. 마지막 코마로 prev 클릭 시 종료 화면 해제 | (CSS 토글) |
+| **viewer-tate 자동 모달 제거** | 기존 스크롤 끝(>=99%) 도달 시 자동 모달 오픈 + MutationObserver 재오픈 로직 모두 제거. 종료 화면 버튼이 유일한 모달 트리거 | React: scroll observer hook 제거 |
+| **icon-water-drop-filled (NEW)** | 단순 teardrop SVG path (24×24 viewBox). viewer-end 「水をあげて応援する」 버튼 아이콘 | Material `water_drop` filled 변형 |
+| **페이지 헤더 nav + header 분리** | series-register / series-manage-detail / episode-add 4종(yoko·koma·tate 포함). 좌측 정렬 back link 단독 행(`__nav`) + 가운데 정렬 제목/설명(`__header`). 3-column grid 제거 | React: 두 컴포넌트로 분해 |
+| **헤더 상단 패딩 통일** | series-register / episode-add 4종의 `.workspace__content` top padding 72 → 36 (`var(--space-9)`) | (토큰 변경) |
+| **back button 동선** | series-register → workspace.html / series-manage-detail → series-post-management.html / episode-add 4종 → series-post-management.html | (페이지별 hardcoded href) |
+| **chrome 토글 예외** | viewer 3종 모두 종료 화면 버튼 (`.viewer-end__actions button`) 클릭은 chrome(progress/header/footer) 토글에서 제외 — 텍스트·여백 클릭은 일반 토글 동작 유지 | React: stopPropagation on button only |
+
+**하위 호환**
+- `#modal-water-support` 시그니처 무변경 — 트리거 진입점만 변경(스크롤 자동 → 종료 화면 버튼)
+- 페이지 헤더 BEM 셀렉터 — 옛 `__page-header-side` / `__page-header-center` 제거됨. 4 episode-add 페이지 inline 마크업 변경 필요
+- viewer-tate `.viewer-tate__stage` 의 `padding-bottom: 50vh` 제거 — 종료 화면 1뷰포트 자동 노출이 대체
+
+**확인할 곳**
+1. `js/pages/viewer-{yoko,koma,tate}.js` — 종료 화면 토글 + 버튼 바인딩
+2. `css/components/viewer-end.css` — 컴포넌트 단일 파일
+3. `styleguide.html` — Patterns > Viewer End 섹션 (인터랙티브 데모)
+4. [`COMPONENTS.md`](./COMPONENTS.md) — `.viewer-end` 항목
+
+---
+
+## 📌 v1.06.6 요약 (2026-04-30, v1.06.5 후속)
 
 **`#modal-water-support` Step 2(thanks) 비주얼 시퀀스 + JS 모듈화 + 자산 정리.** 핵심은 (1) 8s 동안 plant drop 5 + ground drop 20 + 새싹·오버레이 단계 전환 + 타이틀 typewriter type-in/erase + 자동 닫기로 구성된 시퀀스를 `js/components/modal-water-thanks.js` 단일 모듈로 추출, (2) 4 페이지(series-home / viewer-{yoko,koma,tate})의 inline JS ~150줄 × 4 외부화 + DOM 재사용 패턴(cloneNode-replaceWith 제거)으로 메모리·런타임 비용 감소, (3) 미참조 SVG 17개 디스크 삭제 + styleguide 카탈로그 동기화.
 

@@ -75,6 +75,7 @@
   <link rel="stylesheet" href="css/components/section-label.css">
   <link rel="stylesheet" href="css/components/character-card.css">
   <link rel="stylesheet" href="css/components/modal.css">
+  <link rel="stylesheet" href="css/components/viewer-end.css">
 
   <!-- Styleguide -->
   <link rel="stylesheet" href="css/styleguide.css">
@@ -90,7 +91,7 @@
     <span class="sg-header-logo">FunFan</span>
     <span class="sg-header-sep"></span>
     <span class="sg-header-subtitle">Design System</span>
-    <span class="sg-header-badge">v1.06.6</span>
+    <span class="sg-header-badge">v1.06.7</span>
   </header>
 
   <div class="sg-layout">
@@ -175,6 +176,7 @@
       <div class="sg-nav-section">
         <div class="sg-nav-label">Patterns</div>
         <a href="#modals">Modals</a>
+        <a href="#viewer-end">Viewer End</a>
       </div>
     </nav>
 
@@ -1272,6 +1274,16 @@
               <div class="sg-icon-info">
                 <span class="sg-icon-name">favorite-filled</span>
                 <code class="sg-type-classname">.icon-favorite-filled</code>
+              </div>
+            </div>
+
+            <div class="sg-icon-card">
+              <div class="sg-icon-preview">
+                <i class="icon icon-water-drop-filled"></i>
+              </div>
+              <div class="sg-icon-info">
+                <span class="sg-icon-name">water-drop-filled</span>
+                <code class="sg-type-classname">.icon-water-drop-filled</code>
               </div>
             </div>
 
@@ -7601,6 +7613,45 @@
                 Sub: <code>__scene</code>(img/img_seed_ceremony.svg — 흙바닥+씨앗 합본) · <code>__title</code> · <code>__form</code>(textarea 30자 + 植える 버튼).<br>
                 植える 버튼에 <code>data-modal-close</code> — 제출 = 닫기 (의식 완료).
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================
+           VIEWER END
+      ========================= -->
+      <section class="sg-section" id="viewer-end" data-section="viewer-end">
+        <div class="sg-section-header">
+          <h2 class="sg-section-title">Viewer End</h2>
+          <span class="sg-section-desc">뷰어(yoko/koma/tate)의 마지막 페이지 다음에 노출되는 종료 화면. 「次の話を読む」 / 「水をあげて応援する」 두 버튼.</span>
+        </div>
+        <div class="sg-type-table">
+          <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+          <div class="sg-type-row">
+            <div class="sg-type-preview">
+              <div class="viewer-end">
+                <div class="viewer-end__text">
+                  <h2 class="viewer-end__title text-h2-w6">今話を読み終えました</h2>
+                  <p class="viewer-end__subtext text-caption-w4">作家の夢と希望に水をあげて、応援メッセージを残してみてください。</p>
+                </div>
+                <div class="viewer-end__actions">
+                  <button class="btn btn-line btn--sm" type="button">
+                    <span class="text-caption-w4">次の話を読む</span>
+                  </button>
+                  <button class="btn btn-filled-sky btn--sm" type="button">
+                    <i class="icon icon-water-drop-filled"></i>
+                    <span class="text-caption-w4">水をあげて応援する</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <code class="sg-type-classname">.viewer-end<br>.viewer-end__text / __title / __subtext<br>.viewer-end__actions</code>
+            <div class="sg-type-meta">
+              <strong>구조</strong>: text 블록(title 28/38 w6 + subtext 12/18 w4 50% opacity) + actions(버튼 2개, gap 6).<br>
+              「次の話を読む」 = btn-line btn--sm 173px 고정 폭 / 「水をあげて応援する」 = btn-filled-sky btn--sm + icon-water-drop-filled.<br>
+              <strong>사용</strong>: viewer-yoko/koma 는 root 에 <code>.viewer-{yoko,koma}--end</code> 토글로 spread/card 숨기고 노출. viewer-tate 는 stage 마지막에 1뷰포트 차지하며 자동 노출.<br>
+              <strong>이벤트</strong>: 「水をあげて応援する」 클릭 → <code>#modal-water-support</code> 트리거 / 「次の話を読む」 → <code>window.close()</code>. 버튼 클릭은 chrome 토글 대상에서 제외.
             </div>
           </div>
         </div>

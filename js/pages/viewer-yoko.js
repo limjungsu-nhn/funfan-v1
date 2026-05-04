@@ -111,8 +111,9 @@
         if (animating) return;             // 애니메이션 중 차단 (Hover 시각은 유지)
         if (nextBtn.disabled) return;
         const { now, max } = readState();
-        if (now >= max) {                  // 마지막 장에서 next → 종료 모달
-          openEndModal();
+        if (root.classList.contains('viewer-yoko--end')) return; // 이미 종료 화면
+        if (now >= max) {                  // 마지막 장에서 next → 종료 화면 노출
+          root.classList.add('viewer-yoko--end');
           return;
         }
         if (setPage(1)) slide('next');
@@ -121,14 +122,29 @@
     if (prevBtn) {
       prevBtn.addEventListener('click', () => {
         if (animating) return;             // 애니메이션 중 차단
+        if (root.classList.contains('viewer-yoko--end')) {
+          // 종료 화면에서 prev → 마지막 장 spread 로 복귀
+          root.classList.remove('viewer-yoko--end');
+          return;
+        }
         if (!prevBtn.disabled && setPage(-1)) slide('prev');
       });
     }
   }
 
+  // 종료 화면 버튼 — 「水をあげて応援する」 → 모달, 「次の話を読む」 → 닫기
+  function bindEndActions() {
+    const water = root.querySelector('[data-viewer-end-water]');
+    if (water) water.addEventListener('click', openEndModal);
+    const next = root.querySelector('[data-viewer-end-next]');
+    if (next) next.addEventListener('click', () => window.close());
+  }
+
   function bindChromeToggle() {
     if (!content) return;
-    content.addEventListener('click', () => {
+    content.addEventListener('click', (e) => {
+      // 종료 화면 버튼 클릭만 chrome 토글 대상에서 제외 (텍스트·빈 영역은 일반 토글 동작)
+      if (e.target.closest('.viewer-end__actions button')) return;
       root.classList.toggle('viewer-yoko--chrome-hidden');
     });
   }
@@ -138,6 +154,7 @@
     const initialSpread = stage && stage.querySelector('.viewer-yoko__spread');
     if (initialSpread) applyPageImages(initialSpread, readState().now);
     bindNav();
+    bindEndActions();
     bindChromeToggle();
   }
 

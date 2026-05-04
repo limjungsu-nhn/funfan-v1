@@ -16,6 +16,7 @@
   <link rel="stylesheet" href="css/components/modal.css">
   <link rel="stylesheet" href="css/components/form-textarea.css">
   <link rel="stylesheet" href="css/components/emotion-pick.css">
+  <link rel="stylesheet" href="css/components/viewer-end.css">
 
   <!-- Page -->
   <link rel="stylesheet" href="css/pages/viewer-koma.css">
@@ -54,6 +55,23 @@
         <button class="viewer-koma__nav viewer-koma__nav--next" type="button" aria-label="次のコマ">
           <i class="icon icon-chevron-right"></i>
         </button>
+      </div>
+
+      <!-- 종료 화면 — root 에 .viewer-koma--end 클래스 토글로 card-row 숨기고 노출 -->
+      <div class="viewer-end" data-viewer-end>
+        <div class="viewer-end__text">
+          <h2 class="viewer-end__title text-h2-w6">今話を読み終えました</h2>
+          <p class="viewer-end__subtext text-caption-w4">作家の夢と希望に水をあげて、応援メッセージを残してみてください。</p>
+        </div>
+        <div class="viewer-end__actions">
+          <button class="btn btn-line btn--sm" type="button" data-viewer-end-next>
+            <span class="text-caption-w4">次の話を読む</span>
+          </button>
+          <button class="btn btn-filled-sky btn--sm" type="button" data-viewer-end-water>
+            <i class="icon icon-water-drop-filled"></i>
+            <span class="text-caption-w4">水をあげて応援する</span>
+          </button>
+        </div>
       </div>
 
       <!-- Dots indicator + 안내 캡션 — 카드 바로 하단 (한 그룹, gap 12) -->

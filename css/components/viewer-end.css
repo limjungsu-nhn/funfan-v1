@@ -1,0 +1,43 @@
+/* ============================================
+   viewer-end — viewer 3종(yoko / koma / tate)의 마지막 장 다음에 표시되는 종료 화면.
+   "今話を読み終えました" 텍스트 + 「次の話を読む」 / 「水をあげて応援する」 버튼 2개.
+   각 viewer 페이지의 stage / spread / card-row 안 마지막 슬롯에 들어가도록 inline-flex 컨테이너.
+   ============================================ */
+
+.viewer-end {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--space-10); /* 40 — 텍스트 블록 ↔ 버튼 그룹 */
+}
+
+.viewer-end__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3); /* 12 */
+}
+
+.viewer-end__title {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+  text-align: center;
+}
+
+.viewer-end__subtext {
+  margin: 0;
+  color: var(--color-font-primary-black-50);
+  text-align: center;
+}
+
+.viewer-end__actions {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--space-1_5); /* 6 */
+}
+
+/* "次の話を読む" 버튼은 173 고정 폭 */
+.viewer-end__actions .btn-line {
+  width: 173px;
+}

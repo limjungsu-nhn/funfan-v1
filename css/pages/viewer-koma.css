@@ -276,3 +276,20 @@
   color: var(--color-font-primary-black-100);
   font-weight: var(--font-weight-w6);
 }
+
+/* ---------- 종료 화면 (.viewer-koma--end 토글 시)
+   prev/next nav 버튼은 살려서 마지막 페이지로 되돌아갈 수 있게 함.
+   card / bottom 모두 visibility:hidden 으로 자리·치수 보존 → nav 버튼이 위/아래로 튀지 않음.
+   end view 는 stage 안에서 절대 위치로 가운데 정렬 */
+.viewer-koma .viewer-end { display: none; }
+.viewer-koma__stage { position: relative; }
+.viewer-koma--end .viewer-koma__card,
+.viewer-koma--end .viewer-koma__bottom { visibility: hidden; }
+.viewer-koma--end .viewer-end {
+  display: inline-flex;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  height: fit-content;
+  width: fit-content;
+}

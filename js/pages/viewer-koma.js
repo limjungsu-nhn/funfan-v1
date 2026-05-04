@@ -134,9 +134,10 @@
     if (nextBtn) {
       nextBtn.addEventListener('click', () => {
         if (animating) return;
+        if (root.classList.contains('viewer-koma--end')) return; // 이미 종료 화면
         const { now, max } = readState();
-        if (now >= max) {                  // 마지막 코마에서 next → 모달 오픈
-          openEndModal();
+        if (now >= max) {                  // 마지막 코마에서 next → 종료 화면 노출
+          root.classList.add('viewer-koma--end');
           return;
         }
         slideTo(now + 1);
@@ -144,18 +145,36 @@
     }
     if (prevBtn) prevBtn.addEventListener('click', () => {
       if (animating) return;
+      if (root.classList.contains('viewer-koma--end')) {
+        // 종료 화면에서 prev → 마지막 코마로 복귀
+        root.classList.remove('viewer-koma--end');
+        return;
+      }
       slideTo(readState().now - 1);
     });
     dots.forEach((dot, i) => {
-      dot.addEventListener('click', () => slideTo(readState().min + i));
+      dot.addEventListener('click', () => {
+        if (root.classList.contains('viewer-koma--end')) {
+          root.classList.remove('viewer-koma--end');
+        }
+        slideTo(readState().min + i);
+      });
     });
+  }
+
+  // 종료 화면 버튼 — 「水をあげて応援する」 → 모달, 「次の話を読む」 → 닫기
+  function bindEndActions() {
+    const water = root.querySelector('[data-viewer-end-water]');
+    if (water) water.addEventListener('click', openEndModal);
+    const next = root.querySelector('[data-viewer-end-next]');
+    if (next) next.addEventListener('click', () => window.close());
   }
 
   function bindChromeToggle() {
     if (!stage) return;
     stage.addEventListener('click', (e) => {
       // nav 버튼 / dot / 그 자식 아이콘 클릭은 chrome 토글 대상에서 제외
-      if (e.target.closest('.viewer-koma__nav, .viewer-koma__dot')) return;
+      if (e.target.closest('.viewer-koma__nav, .viewer-koma__dot, .viewer-end__actions button')) return;
       root.classList.toggle('viewer-koma--chrome-hidden');
     });
   }
@@ -164,6 +183,7 @@
     syncState();
     syncImage();
     bindNav();
+    bindEndActions();
     bindChromeToggle();
   }
 

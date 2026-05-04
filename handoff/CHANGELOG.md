@@ -8,6 +8,66 @@
 
 ---
 
+## v1.06.7 (2026-04-30, v1.06.6 후속)
+
+**뷰어 3종 종료 화면(`.viewer-end`) 신규 + 페이지 헤더 패턴 통일(nav 분리 + top padding 36) + viewer-tate 자동 모달 트리거 제거.** 신규 컴포넌트 1개(viewer-end), 신규 아이콘 1개(icon-water-drop-filled), 페이지 5종 헤더 구조 정리(series-register / series-manage-detail / episode-add 4종).
+
+### 신규 컴포넌트
+
+- **`css/components/viewer-end.css`** — 뷰어 마지막 페이지 다음에 표시되는 종료 화면.
+  - 구조: `.viewer-end__text` (h2 + p) + `.viewer-end__actions` (버튼 2개)
+  - text: title `text-h2-w6` (28/38) + subtext `text-caption-w4` (12/18, 50% opacity)
+  - actions: gap 6, 좌측 「次の話を読む」 (`btn-line btn--sm` 173px 고정 폭) + 우측 「水をあげて応援する」 (`btn-filled-sky btn--sm` + `icon-water-drop-filled`)
+  - 컨테이너: `inline-flex` column, gap 40 (텍스트 ↔ 버튼 그룹)
+- **`js/pages/viewer-{yoko,koma,tate}.js`** — 종료 화면 토글 + 버튼 바인딩 추가:
+  - viewer-yoko / viewer-koma: 마지막 페이지 next 클릭 → root 에 `.viewer-{yoko,koma}--end` 토글, prev 클릭 시 해제
+  - viewer-tate: stage 마지막에 자동 노출 (스크롤로 진입), 별도 토글 불필요
+  - `[data-viewer-end-water]` → 모달 오픈 / `[data-viewer-end-next]` → `window.close()`
+
+### 신규 아이콘
+
+- **`.icon-water-drop-filled`** — Material `water_drop` (filled) 변형. 단순 teardrop SVG path (24×24 viewBox). viewer-end 「水をあげて応援する」 버튼에 사용. handoff/ICONS.md 등록.
+
+### viewer 동작 변경
+
+- **viewer-yoko**: 마지막 페이지(6/6)에서 next 클릭 시 종료 모달 자동 오픈 → **종료 화면 토글**로 변경. 종료 화면 prev 클릭 시 마지막 페이지 spread 복귀.
+- **viewer-koma**: 마지막 코마(6/6)에서 next 클릭 시 종료 모달 자동 오픈 → **종료 화면 토글**로 변경. 종료 화면에서 card / dots 는 `visibility: hidden` 으로 자리만 보존(prev/next nav 버튼 흔들림 없이 그대로 동작 — 마지막 코마로 되돌아가기 가능).
+- **viewer-tate**: 스크롤 끝(>=99%) 도달 시 모달 자동 오픈 + MutationObserver 재오픈 로직 **모두 제거**. stage 의 `padding-bottom: 50vh` 도 제거. stage 마지막에 종료 화면이 1뷰포트 차지하며 자동 노출 → 사용자가 「水をあげて応援する」 버튼 클릭으로만 모달 트리거.
+- **chrome 토글 예외**: viewer 3종 공통 — 종료 화면 버튼(`.viewer-end__actions button`) 클릭은 chrome(progress/header/footer) 토글 대상에서 제외. 텍스트·여백 클릭은 일반 토글 유지.
+
+### 페이지 헤더 패턴 통일 (5 페이지)
+
+- 영향 페이지: `series-register.html` / `series-manage-detail.html` / `episode-add.html` / `episode-add-koma.html` / `episode-add-tate.html` / `episode-add-yoko.html`
+- **구조 변경**: 기존 3-column grid 헤더(좌 back / 중앙 제목+설명 / 우 빈 칸) → **2 영역 분리**:
+  - `__nav` — back link 단독 행, 좌측 정렬, form-card 와 동일 fluid 폭 `max(--p50, 50vw)`
+  - `__header` 또는 `__page-header` — 제목 + 설명, 가로 중앙 정렬
+- **상단 패딩**: `.workspace__content` top padding `var(--p5)` (72) → `var(--space-9)` (36)
+- **back button 동선**:
+  - series-register → `workspace.html` 「ワークスペースへ戻る」
+  - series-manage-detail → `series-post-management.html` 「作品管理へ戻る」
+  - episode-add 4종 → `series-post-management.html` 「シリーズ管理へ戻る」 (기존 유지)
+- **CSS 정리**: 옛 `__page-header-side` / `__page-header-side--start` / `__page-header-center` BEM 변형 제거 → 더 단순한 nav + header 두 블록
+
+### styleguide 동기화
+
+- 새 link `<link rel="stylesheet" href="css/components/viewer-end.css">` 추가
+- icons 섹션에 `icon-water-drop-filled` 카드 등록
+- `Patterns` 카테고리에 **Viewer End** 섹션 신설 — 인터랙티브 데모(.viewer-end 마크업) + 사용 페이지별 동작 / 이벤트 명세
+- 사이드바 nav 에 「Viewer End」 링크 추가
+
+### 하위 호환
+
+- `#modal-water-support` 시그니처 무변경 — 트리거 진입점만 변경
+- 페이지 헤더 옛 BEM 변형(`__page-header-side*`)은 제거됨 — React 이식 시 새 nav + header 두 영역으로 분해
+- viewer-tate `.viewer-tate__stage` 의 `padding-bottom: 50vh` 제거됨 — 종료 화면 1뷰포트 자동 노출이 대체
+
+### 영향 페이지
+
+- `viewer-yoko.html` / `viewer-koma.html` / `viewer-tate.html` — 종료 화면 신규
+- `series-register.html` / `series-manage-detail.html` / `episode-add.html` / `episode-add-koma.html` / `episode-add-tate.html` / `episode-add-yoko.html` — 헤더 구조 변경
+
+---
+
 ## v1.06.6 (2026-04-30, v1.06.5 후속)
 
 **`#modal-water-support` Step 2(thanks) 8s 비주얼 시퀀스 + JS 모듈화 + DOM 재사용 패턴 + 미참조 자산 정리.** 신규 JS 모듈 1개(modal-water-thanks), 신규 SVG 자산 8종(illust 184/185/186/187/188/189 + water_drop_176 단일화 + water_splash 단일화), 미참조 SVG 17개 디스크 삭제, 4 페이지 inline JS 외부화.
