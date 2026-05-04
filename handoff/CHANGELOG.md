@@ -54,7 +54,7 @@
   - hero-bg(video): `translate3d(0, scrollY * 0.5, 0)` — 0.5x 속도, 깊이감
   - content: `top: scrollY * 0.3` — 0.3x 속도, 더 천천히 (오래 머무름)
   - overlay: parallax 없음 (hero 와 함께 스크롤 — viewport-bound 한 듯한 안정감)
-  - overlay `--hero-darken`: `progress * 0.8` (0~0.80, 0.01 단위 양자화 + 변경 시에만 setProperty) — 스크롤할수록 점진적 어두워짐
+  - overlay `--hero-darken`: `progress * 1.0` (0~1.00, 0.01 단위 양자화 + 변경 시에만 setProperty) — 스크롤할수록 점진적 어두워져 hero 가 viewport 벗어나는 시점에 완전 검정 도달
 - **CTA**: 「作業室へ」 (btn-glass btn--lg, 147px 고정 폭, glass morphism backdrop-filter blur 20px) + 「作品を登録する」 (btn-filled-black btn--lg + icon-add)
 - **Navbar 모드 토글** (IntersectionObserver, `rootMargin: -64px 0 0 0`):
   - hero 가 viewport 와 겹침 → `.navbar--on-dark` + `logo--white` + `btn-ghost-dark` 적용

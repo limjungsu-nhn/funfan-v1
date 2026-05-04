@@ -769,7 +769,7 @@ A. 현재 프로토타입 **미지원**. 추후 검토.
   - hero-bg(video): `translate3d(0, scrollY * 0.5, 0)` — 0.5x 속도, 깊이감
   - content: `top: scrollY * 0.3` — 0.3x 속도, 더 천천히 (오래 머무름)
   - overlay 는 hero 자식이라 hero 와 함께 스크롤 (parallax 없음 — 그라디언트가 viewport-bound 한 듯한 안정감)
-  - overlay `--hero-darken`: `progress * 0.8` (0~0.80, 0.01 단위 양자화) — 스크롤할수록 점진적 어두워짐
+  - overlay `--hero-darken`: `progress * 1.0` (0~1.00, 0.01 단위 양자화) — 스크롤할수록 점진적 어두워져 hero 끝나는 시점(scrollY=heroH)에 완전 검정 도달
 - **Navbar 모드 토글** (IntersectionObserver, rootMargin: -64px 0 0 0):
   - hero 가 viewport 와 겹침 → `.navbar--on-dark` + `logo--white` + `btn-ghost-dark`
   - hero 완전히 통과 → 기본 흰 배경 navbar

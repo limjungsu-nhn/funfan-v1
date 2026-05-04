@@ -192,10 +192,10 @@
     /* 픽셀 단위로 라운딩 — sub-pixel 보간으로 인한 떨림(jitter) 방지 */
     if (heroBg) heroBg.style.transform = `translate3d(0, ${Math.round(y * 0.5)}px, 0)`;
     if (content) content.style.top = `${Math.round(y * 0.3)}px`;
-    /* 그라디언트 darken — heroH 도달 시 0.80. 0.01 단위로 양자화 + 변경 시에만 set (overlay 매 프레임 repaint 방지) */
+    /* 그라디언트 darken — heroH 도달 시 1.00 (완전 검정). 0.01 단위로 양자화 + 변경 시에만 set (overlay 매 프레임 repaint 방지) */
     if (overlay) {
       const progress = Math.min(1, y / heroH);
-      const darken = Math.round(progress * 80) / 100; // 0 ~ 0.80, 0.01 step
+      const darken = Math.round(progress * 100) / 100; // 0 ~ 1.00, 0.01 step
       if (darken !== lastDarken) {
         overlay.style.setProperty('--hero-darken', String(darken));
         lastDarken = darken;

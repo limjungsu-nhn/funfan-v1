@@ -93,10 +93,10 @@
   backface-visibility: hidden;
 }
 
-/* 어두운 그라디언트 + 스크롤에 따라 점진적으로 짙어지는 검정 색 레이어
+/* 어두운 그라디언트 + 스크롤 진행도에 따라 점진적으로 짙어지는 검정 색 레이어
    hero 의 직접 자식으로 inset:0 → 그라디언트가 hero 박스(800) 에 정확히 매핑됨.
-   Y=0 (hero 상단) alpha 1 → Y=800 (hero 하단) alpha 0
-   --hero-darken: JS 가 0 ~ 0.8 사이로 설정. 스크롤 0 = 0(투명), heroH 도달 = 0.8 */
+   Y=0 (hero 상단) alpha 0.8 → Y=800 (hero 하단) alpha 0
+   --hero-darken: JS 가 0 ~ 1.0 사이로 설정. 스크롤 0 = 0(투명), heroH 도달 = 1.0 (완전 검정) */
 .main-home__hero-overlay {
   position: absolute;
   inset: 0;
