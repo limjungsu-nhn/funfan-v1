@@ -7,6 +7,7 @@
    포함 모듈:
      1. Keyboard Focus Indicator   (마우스/키보드 분기 — body.using-mouse)
      2. Input Container Focus Delegation  (wrapper 패딩/경계 클릭 → 내부 input/textarea 포커스)
+     3. Viewer Popup (data-popup-viewer 속성 → viewer 미니 윈도우 1920×1080 오픈)
 
    각 모듈은 IIFE 로 격리되어 충돌 없이 결합된다.
    ============================================ */
@@ -73,5 +74,41 @@
       }
       return;
     }
+  });
+})();
+
+/* ============================================
+   3) Viewer Popup — data-popup-viewer 기반 미니 윈도우 진입
+
+   사용:
+     <a href="viewer-yoko.html" data-popup-viewer="yoko">...</a>
+
+   클릭 시 해당 viewer 페이지를 1920×1080 미니 윈도우로 오픈.
+   동일 name 으로 호출 시 같은 창 재사용 (target name = `viewer-{kind}`).
+   index.html 의 popup 링크와 동일한 사이즈/옵션.
+   ============================================ */
+(function () {
+  const POPUP_W = 1920;
+  const POPUP_H = 1080;
+
+  function openPopup(href, name) {
+    const x = (screen.availLeft || 0) + Math.max(0, (screen.availWidth - POPUP_W) / 2);
+    const y = (screen.availTop || 0) + Math.max(0, (screen.availHeight - POPUP_H) / 2);
+    window.open(
+      href, name,
+      'popup=yes,width=' + POPUP_W + ',height=' + POPUP_H +
+      ',left=' + x + ',top=' + y +
+      ',menubar=no,toolbar=no,location=no,status=no,resizable=yes,scrollbars=no'
+    );
+  }
+
+  document.addEventListener('click', (e) => {
+    const link = e.target.closest('[data-popup-viewer]');
+    if (!link) return;
+    /* 메타키 클릭(새 탭/창)은 브라우저 기본 동작 유지 */
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+    e.preventDefault();
+    const name = 'viewer-' + link.getAttribute('data-popup-viewer');
+    openPopup(link.getAttribute('href'), name);
   });
 })();

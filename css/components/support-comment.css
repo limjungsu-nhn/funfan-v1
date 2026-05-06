@@ -3,22 +3,15 @@
    사용처: creator-series-home / series-manage-detail 의 #modal-support-comments
    Figma: Frame 504×644 — 응원 댓글 리스트
 
-   HTML 구조:
+   HTML 구조 — 읽기 전용 행 (모달 안의 응원 댓글 표시. 클릭 영역 없음):
      <h2 class="modal__title">応援コメント</h2>
      <ul class="support-comment-list">
        <li class="support-comment">
          <img class="support-comment__thumb" src="..." alt="">
          <div class="support-comment__body">
            <p class="support-comment__text">댓글 본문</p>
-           <div class="support-comment__meta">
-             <span class="support-comment__name">유저명</span>
-             <span class="support-comment__sep" aria-hidden="true">·</span>
-             <time class="support-comment__date">2026/3/29 21:10</time>
-           </div>
-           <div class="support-comment__reactions">
-             <span class="support-comment__pill">💧 水やり</span>
-             <span class="support-comment__pill">😂 楽しい</span>
-           </div>
+           <div class="support-comment__meta">...</div>
+           <div class="support-comment__reactions">...</div>
          </div>
        </li>
      </ul>

@@ -197,6 +197,12 @@
   display: block;
   object-fit: cover;
   flex-shrink: 0;
+  transition: filter 0.18s ease;
+}
+
+/* hover 시 cover 검정색 반투명 효과 — episode-item 동일 패턴 */
+.work-card:hover .work-card__cover {
+  filter: brightness(0.7);
 }
 
 .work-card__body {

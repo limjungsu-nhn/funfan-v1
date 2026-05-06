@@ -1,5 +1,5 @@
 /* ============================================
-   Review Item Component — リビューリスト行
+   Review Item Component — リビューリスト行 (읽기 전용)
 
    water-card.css 내부에서 사용. 독립 재활용 가능.
 
@@ -8,15 +8,8 @@
        <img class="review-item__thumb" src="..." alt="작품 썸네일">
        <div class="review-item__body">
          <p class="text-body-sm-w4 review-item__text">コメント本文...</p>
-         <div class="review-item__meta">
-           <span class="text-overline-w6 review-item__meta-name">さくら✿</span>
-           <span class="text-overline-w4 review-item__meta-sep">·</span>
-           <span class="text-overline-w4 review-item__meta-time">5分前</span>
-         </div>
-         <div class="review-item__tags">
-           <span class="badge"><span class="text-overline-w4">💧 水やり</span></span>
-           <span class="badge"><span class="text-overline-w4">😂 楽しい</span></span>
-         </div>
+         <div class="review-item__meta">...</div>
+         <div class="review-item__tags">...</div>
        </div>
      </div>
 

@@ -8,6 +8,63 @@
 
 ---
 
+## v1.07.1 (2026-05-06, v1.07.0 후속)
+
+**리스트 카드 인터랙션 통일 + viewer 미니 윈도우 진입.** 5개 페이지의 이미지+텍스트 리스트(에피소드/작품 카드)에 press / focus / hover 통일 패턴 적용, 본문 에피소드 행을 클릭 영역화하여 `viewer-yoko.html` 1920×1080 미니 윈도우 오픈, 모달 안 읽기 전용 리스트(`support-comment` / `review-item`)는 의도적으로 인터랙티브 처리 배제.
+
+### 신규 — `js/core/_global.js` 모듈 3 (Viewer Popup)
+
+- 데이터 어트리뷰트 기반 미니 윈도우 진입 — `<a href="..." data-popup-viewer="yoko">` 형식
+- 이벤트 위임으로 단일 click 리스너 → 클릭 시 1920×1080 화면 중앙 popup 오픈 (index.html viewer 링크와 동일 사이즈/옵션)
+- target name `viewer-{kind}` 으로 동일 viewer 재클릭 시 같은 창 재사용
+- 메타키 클릭(⌘/Ctrl/Shift/middle-click) 은 브라우저 기본 동작 유지 (새 탭/창 옵션 보존)
+
+### 리스트 카드 인터랙션 통일 패턴
+
+5개 페이지 × 4 컴포넌트에 동일 인터랙션 패턴 적용:
+
+| 페이지 | 컴포넌트 | 항목 수 | 진입 |
+|---|---|---|---|
+| series-home.html | `.episode-item` | 5 | viewer-yoko popup |
+| author-profile.html | `.work-card` | 8 | series-home.html |
+| creator-series-home.html | `.creator-episode-row__link` (신규) | 2 | viewer-yoko popup |
+| series-manage-detail.html | `.creator-episode-row__link` (신규) | 12 | viewer-yoko popup |
+
+**3효과 통일 패턴**:
+- `:hover` — 썸네일 img 에 `filter: brightness(0.7)` (검정색 반투명 효과를 filter 로 일관 처리, 마크업 변경 없이 모든 컴포넌트 동일 동작)
+- `:active` — `transform: scale(...)` + `transition: transform 0.18s ease` (press-down 0.08s)
+- `:focus-visible` — `outline: none` + `box-shadow: 0 0 0 var(--ring-width) var(--color-gray-5)` + `border-radius: var(--radius-2xs)`
+
+**press scale 비율** (카드 사이즈에 맞춘 차등):
+- 0.97 — `.work-card` (160×318 정사각형)
+- 0.99 — `.episode-item` / `.creator-episode-row` (와이드 행, 0.97 은 과해서 ≈9px 축소가 적정)
+
+### 신규 컴포넌트 — `.creator-episode-row__link`
+
+작가용 에피소드 관리 행 (`creator-series-home` / `series-manage-detail` 본문) 의 thumb + body 부분을 anchor 로 래핑한 신규 sub-element. CSS 는 `css/pages/creator-series-home.css` 에 정의 (series-manage-detail.html 도 본 CSS 를 link 해 공유).
+
+- 마크업: `<li class="creator-episode-row"><a class="creator-episode-row__link" href="viewer-yoko.html" data-popup-viewer="yoko">[thumb][body]</a><button>編集</button></li>`
+- 編集 버튼은 link 의 sibling — anchor 안 button 은 invalid HTML 이라 의도적 분리. 編集 click 은 row 축소 안 됨 (link 의 `:active` 가 아니라서)
+- `:has(.creator-episode-row__link:active)` 로 row 전체 scale(0.99) 적용 — link area press 시 button 포함 행 전체가 누름 효과
+
+### 모달 읽기 전용 리스트 — 인터랙티브 처리 배제
+
+이전 시도에서 일괄 anchor 화 했던 다음 컴포넌트는 **읽기 전용** 으로 결정해 원복:
+
+- `.support-comment` — `creator-series-home` / `series-manage-detail` 의 `#modal-support-comments` 모달 안 응원 댓글 리스트 (15+15 행). `<li class="support-comment">` 형식 유지
+- `.review-item` (base variant — `__thumb` 가진 형식) — `workspace.html` 의 `.water-card` 안 최근 水やり 리스트 (14 행). `<div class="review-item">` 형식 유지. `--fan` / `--episode` 변형은 영향 없음
+
+이유: 모달/카드 내부 정보 디스플레이용으로 클릭 진입점이 없는 데이터 표시 영역. press/focus/hover 부여 시 의미 없는 인터랙션 신호가 되어 UX 혼동 야기.
+
+### 마이그레이션 메모 (개발팀)
+
+- popup 동작은 React 에서 동일하게 `window.open` + named target 으로 구현. 클릭 핸들러는 컴포넌트 prop 으로 받거나 router 와 분리
+- `.creator-episode-row__link` 패턴은 React 에서 `<Link>` (router) 로 thumb + body 를 감싸고 `<button>` (편집) 을 sibling 으로 두는 구조로 매핑. CSS `:has()` 사용해 row 의 press scale 을 link 활성에만 반응하도록 격리
+- 통일 인터랙션 패턴 (3효과) 은 디자인 시스템 mixin/utility 로 추출 권장. 예: `cardInteractive(scale)` mixin → `:hover/:active/:focus-visible` 한 번에 적용
+- modal 안 / 데이터 디스플레이용 리스트는 anchor 화 하지 말 것 — semantic role 이 link 가 아닌 listitem/cell 임을 유지
+
+---
+
 ## v1.07.0 (2026-05-06, v1.06.7 후속)
 
 **series-home 화단 bloom 시퀀스 전면 리워크 + 자산 최적화.** 진입점 변경(식물 클릭 → 「水をあげて応援する」 버튼), 시퀀스 이미지 192×216 사이즈 재조정본 → **WebP lossless 변환** (-43%), 후광 글로우(3겹 원형) 추가, sway 위상 보존, halo 진입/퇴장 애니메이션, 프리로드 타이밍을 모달 오픈 시점으로 이동, 정적 before/after PNG palette 양자화(-70%).

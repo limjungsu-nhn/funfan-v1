@@ -4,7 +4,34 @@
 
 ---
 
-## 📌 v1.07.0 요약 (2026-05-06, v1.06.7 후속) — 먼저 이것만 보세요
+## 📌 v1.07.1 요약 (2026-05-06, v1.07.0 후속) — 먼저 이것만 보세요
+
+**리스트 카드 인터랙션 통일 + viewer 미니 윈도우 진입.** 핵심은 (1) `.episode-item` / `.work-card` / 신규 `.creator-episode-row__link` 4개 컴포넌트에 press / focus / hover 통일 패턴 적용 (5개 페이지 × 19개 카드), (2) `js/core/_global.js` 모듈 3 추가 — `data-popup-viewer` 어트리뷰트 기반 viewer 1920×1080 미니 윈도우 진입 (이벤트 위임), (3) `.creator-episode-row` 안에 `__link` sub-element 신설로 thumb+body 를 클릭 영역화하면서 編集 button 은 sibling 으로 분리, (4) 모달 안 읽기 전용 리스트(`support-comment` 30개, `review-item` 14개)는 의도적으로 anchor 화 배제 — semantic role 보존.
+
+| 분류 | 내용 | 개발 영향 |
+|---|---|---|
+| **`js/core/_global.js` 모듈 3 (Viewer Popup) (NEW)** | `data-popup-viewer="yoko"` 속성 가진 anchor 클릭 시 1920×1080 미니 윈도우 오픈 (index.html viewer 링크와 동일 사이즈/옵션). 이벤트 위임 단일 click 리스너. target name = `viewer-{kind}` → 동일 viewer 재클릭 시 같은 창 재사용. 메타키 클릭(⌘/Ctrl/Shift/middle-click) 은 브라우저 기본 동작 유지 | React: `window.open` + named target 으로 동일 동작. router 와 분리하여 onClick prop 으로 노출 |
+| **카드 인터랙션 통일 패턴 (3효과)** | `:hover` 썸네일 `filter: brightness(0.7)` (검정 반투명 효과를 filter 로 일관 처리) / `:active` `transform: scale(...)` + `transition: transform 0.18s ease` (press-down 0.08s) / `:focus-visible` `outline: none` + `box-shadow ring-width gray-5` + `radius-2xs`. 적용: `.episode-item` (5), `.work-card` (8), `.creator-episode-row__link` (2+12). press scale 비율은 카드 사이즈 차등 — work-card 0.97 / 와이드 행 0.99 | 디자인 시스템 mixin/utility 로 추출 권장 (`cardInteractive(scale)`) |
+| **`.creator-episode-row__link` (NEW)** | 작가용 에피소드 관리 행 안 thumb+body 의 anchor 래퍼. `creator-series-home.html` (2 행) + `series-manage-detail.html` (12 행). CSS 는 `css/pages/creator-series-home.css` 에 정의 (양 페이지 공유). 編集 button 은 link 의 sibling — anchor 안 button 금지로 분리. row 전체 press scale 은 `:has(.creator-episode-row__link:active)` 로 link 활성에만 반응 | React: `<Link>` 로 thumb+body 감싸고 `<button>` sibling 으로 두는 구조 |
+| **viewer 진입 wiring** | series-home `.episode-item` 5 + creator-series-home `.creator-episode-row__link` 2 + series-manage-detail `.creator-episode-row__link` 12 = 총 **19 anchor** 에 `href="viewer-yoko.html" data-popup-viewer="yoko"` 적용 | popup 진입점 표준화 |
+| **읽기 전용 리스트 — 의도적 anchor 화 배제** | `.support-comment` (15+15 행, 모달 안 응원 댓글) / `.review-item` base variant (14 행, workspace water-card 안 최근 水やり). 정보 디스플레이 영역이라 클릭 진입 없음 — press/focus/hover 부여 시 의미 없는 인터랙션 신호. `<li class="support-comment">` / `<div class="review-item">` 형식 유지 | React: 각 컴포넌트 semantic role 을 listitem/cell 로 유지. 임의로 link 화 하지 말 것 |
+
+**하위 호환**
+- `.episode-item` / `.work-card` 기존 사용처 무변경 (이미 anchor 였음). 새로 추가된 `:hover/:active/:focus-visible` 효과만 적용
+- `.creator-episode-row` 마크업 변경 — 기존 thumb+body 가 직접 자식이었으나 이제 `__link` 로 래핑됨. CSS 는 `__link` 내부 자식에도 동일 동작하도록 셀렉터 재배치
+- `data-popup-viewer` 어트리뷰트는 신규 — 기존 마크업에 없으면 popup 동작 트리거 안 됨
+
+**확인할 곳**
+1. `js/core/_global.js` — 모듈 3 (Viewer Popup) 단일 진입점
+2. `css/pages/creator-series-home.css` — `.creator-episode-row__link` 정의 (series-manage-detail 도 공유)
+3. `css/components/episode-item.css` — 헤더 doc + hover/press/focus 통일 패턴 정의
+4. `css/pages/author-profile.css` — work-card hover/press/focus
+5. `series-home.html` / `creator-series-home.html` / `series-manage-detail.html` — 19개 anchor 의 href + data-popup-viewer 적용
+6. [`COMPONENTS.md`](./COMPONENTS.md) — `.episode-item` / `.work-card` / `.creator-episode-row` 항목 갱신본
+
+---
+
+## 📌 v1.07.0 요약 (2026-05-06, v1.06.7 후속)
 
 **series-home 화단 bloom 시퀀스 전면 리워크 + 자산 최적화.** 핵심은 (1) 진입점을 식물 클릭 → 우측 「水をあげて応援する」 버튼으로 일원화 (모달 close 1회 = 물주기 1회), (2) 시퀀스 이미지 192×216 사이즈 재조정본 → **WebP lossless 변환** (462 프레임 19.93MB → 11.38MB, **-43%**), `_after.png` 를 마지막 프레임과 시각 동일 에셋으로 통일, (3) 후광 글로우 `.garden__halo` 추가 (3겹 원형, body 직속 absolute 로 컨테이너 클립 우회) + 진입/퇴장 애니메이션, (4) sway 위상 보존 (`pinSwayTimings()` + `Animation.startTime` 복구) 으로 reorder 시 흔들림 리듬 끊김 제거, (5) 프리로드 타이밍을 모달 오픈 시점으로 이동 (9.5s 백그라운드 다운로드 → bloom 시 캐시 hit), (6) 정적 before/after PNG palette 양자화 (302KB → 90KB, **-70%**).
 

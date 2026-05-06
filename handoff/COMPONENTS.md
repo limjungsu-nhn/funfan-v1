@@ -544,9 +544,10 @@ instance.destroy();           // 정리
 #### `.water-card` → shadcn `Card` (variant=metric)
 - 작은 수치 + 아이콘 1개
 
-#### `.review-item` + `.fan-feed` → 커스텀 리스트
+#### `.review-item` + `.fan-feed` → 커스텀 리스트 (읽기 전용)
 - 아바타 + 댓글 + 이모지 반응 + 메타
 - fan-feed는 하단 fade mask 포함
+- **읽기 전용**: workspace.html 의 water-card 안 최근 水やり 리스트(14 행, base variant) / workroom.html 의 fan-feed (--fan variant). 정보 디스플레이용 — 클릭 진입점 없음. anchor / press / hover 효과 부여하지 않음 (의미 없는 인터랙션 신호 회피)
 
 #### `.review-item--episode` → 커스텀 (에피소드 카드 내부 리뷰 아이템)
 - 상단행: avatar xs + user-name(subtext-w6) · 우측 좋아요 버튼 (♥ + count assist-w4)
@@ -649,9 +650,11 @@ instance.destroy();           // 정리
 - 타이틀 `__title`: `.text-subtext-w6` (14/600/22) · `--color-font-primary-black-100`
 - 날짜 `__date`: `.text-overline-w4` (11/400/16) · `--color-font-primary-black-50`
 - 컨테이너 gap: `--space-5` (20px), 배경 `--color-white-100`
-- `<a>` 태그 사용 + 키보드 포커스링 (`focus-visible` 시 `box-shadow ring`, `--ring-width` `--color-gray-5`, `border-radius: var(--radius-2xs)`)
-- **press 효과**: `:active { transform: scale(0.99) }` + `transition: transform 0.18s ease` (press-down 0.08s). 928px 와이드 가로 행이라 0.97 은 과해서 0.99 (≈9px 축소) 사용 — work-card 와 다른 비율
-- TODO: 클릭 시 해당 에피소드 상세로 이동
+- **3효과 통일 인터랙션 패턴** (`.work-card` / `.creator-episode-row__link` 동일):
+  - `:hover` — 썸네일 img 에 `filter: brightness(0.7)` (검정색 반투명 효과)
+  - `:active` — `transform: scale(0.99)` + `transition: transform 0.18s ease` (press-down 0.08s). 928px 와이드 가로 행이라 0.97 은 과해서 0.99 (≈9px 축소) 사용
+  - `:focus-visible` (키보드 Tab) — `outline: none` + `box-shadow: 0 0 0 var(--ring-width) var(--color-gray-5)` + `border-radius: var(--radius-2xs)`
+- **클릭 진입 — viewer 미니 윈도우**: `<a class="episode-item" href="viewer-yoko.html" data-popup-viewer="yoko">` 형식. `js/core/_global.js` 의 모듈 3 이 클릭 위임으로 1920×1080 popup 오픈
 - Figma: Frame2087333324
 
 #### `.character-card` → shadcn `Card` composition (선택 카드)
@@ -680,6 +683,37 @@ instance.destroy();           // 정리
 - 카드 내부 `.episode-header`는 `width: 100%`로 확장 override (기본 1000 고정)
 - **정렬 토글** (`js/components/episode-card.js`): `.episode-header__sort` 클릭 시 라벨 `古い順 ↔ 新しい順` + `.episode-card__list` 자식 순서 역순 재배치
 - Figma: Frame2087333121
+
+#### `.creator-episode-row` → 커스텀 (작가용 에피소드 관리 행)
+사용처: `creator-series-home.html` (2 행) + `series-manage-detail.html` (12 행). CSS 는 `css/pages/creator-series-home.css` 정의 (양 페이지 공유).
+
+마크업 — thumb+body 가 `__link` anchor 로 래핑되고 編集 button 은 link 의 sibling:
+```html
+<li class="creator-episode-row">
+  <a class="creator-episode-row__link" href="viewer-yoko.html" data-popup-viewer="yoko">
+    <div class="creator-episode-row__thumb"><img src="..." alt=""></div>
+    <div class="creator-episode-row__body">
+      <div class="creator-episode-row__title-line">
+        <span class="badge badge--status">公開中</span>
+        <span class="creator-episode-row__title">第1話 出発</span>
+      </div>
+      <p class="creator-episode-row__meta">画像4枚...｜最終更新 2026/3/21</p>
+    </div>
+  </a>
+  <button class="btn btn-line">編集</button>
+</li>
+```
+
+- 행 layout: flex · align-items center · gap 20 (link ↔ button)
+- `__link`: flex 1 · gap 20 (thumb ↔ body) · text-decoration none · color inherit · radius 8 (focus ring)
+- `__thumb`: 120×80 · radius 8 · overflow hidden
+- `__body`: flex 1 · column · gap 8 (title-line ↔ meta)
+- **3효과 통일 인터랙션 패턴** (`.episode-item` / `.work-card` 동일):
+  - `:hover` — `__thumb img` 에 `filter: brightness(0.7)`
+  - `:active` — row 전체 scale(0.99) via `:has(.creator-episode-row__link:active)`. button click 은 link active 가 아니라 row 가 따라 축소되지 않음 (의도)
+  - `:focus-visible` (link 만) — `outline: none` + `box-shadow ring-width gray-5` + `radius-2xs`
+- **클릭 진입 — viewer 미니 윈도우**: `data-popup-viewer="yoko"` → `js/core/_global.js` 모듈 3 이 1920×1080 popup 오픈
+- 編集 button 분리: anchor 안 button 은 invalid HTML 이라 sibling 으로 둠. button click 은 row press 효과와 무관
 
 ---
 
@@ -809,9 +843,10 @@ A. 현재 프로토타입 **미지원**. 추후 검토.
 - `__body`: gap 16 (meta-line + stats)
 - `__meta-line`: gap 2 — `__tags` (단행본 | 12話, gap 6 + 1×10 divider, 12/18 w4 black-50) + `__title` (14/22 w6)
 - `__stats`: gap 8 — `__stat` × 2 (icon 16×16 + value 11/16 w6)
-- **상호작용**:
-  - `:focus-visible` (키보드 Tab 만): `outline: none` + `box-shadow: 0 0 0 var(--ring-width) var(--color-gray-5)` + `border-radius: var(--radius-2xs)` (episode-item / tab 동일 패턴)
-  - `:active` (press): `transform: scale(0.97)` + `transition: transform 0.18s ease` (press-down 0.08s)
+- **3효과 통일 인터랙션 패턴** (`.episode-item` / `.creator-episode-row__link` 동일):
+  - `:hover` — `__cover` 에 `filter: brightness(0.7)` (검정색 반투명 효과)
+  - `:active` (press) — `transform: scale(0.97)` + `transition: transform 0.18s ease` (press-down 0.08s). work-card 는 정사각형 카드라 0.97 (5px 축소) 사용 — 와이드 행 컴포넌트(0.99) 와 다른 비율
+  - `:focus-visible` (키보드 Tab) — `outline: none` + `box-shadow: 0 0 0 var(--ring-width) var(--color-gray-5)` + `border-radius: var(--radius-2xs)`
   - `text-decoration: none` + `color: inherit` 로 anchor 기본 스타일 무력화
 - TODO: 컴포넌트 승격 시 `.series-thumb-card` 등으로 리네이밍 검토
 
@@ -823,12 +858,13 @@ A. 현재 프로토타입 **미지원**. 추후 검토.
 - 진행 상태 단일 소스: `.viewer-*__progress[role="progressbar"]` aria-valuenow/min/max
 - 모든 뷰어 공통: 마지막 페이지/스크롤 끝 도달 시 `#modal-water-support` 모달 (감정 라디오 4개 + textarea + 풋터 「次の話を読む」/「水をあげて応援する」)
 
-#### `.support-comment` / `.support-comment-list` → 응원 댓글 모달 리스트 (creator-series-home / series-manage-detail)
+#### `.support-comment` / `.support-comment-list` → 응원 댓글 모달 리스트 (읽기 전용, creator-series-home / series-manage-detail)
 - 모달 안 스크롤 리스트 — 댓글 행(thumb 65×48 + body) 세로 스택
 - 행 구성: thumb · text(13/20 w4) · meta(name 11/16 w6 · sep 12/18 · date 11/16, 50% 반투명) · reactions(pill 2개)
 - pill: 28h, padding 12, radius 100, gray-5 outline + shadow, font 11/16 w4
 - 리스트 padding-bottom 40 + `.modal:has(.support-comment-list)::after` 그라디언트 페이드 아웃(40h, modal 하단 radius 보존)
 - 가로 28 인셋(좌측은 modal padding, 우측은 행 padding-right 12)
+- **읽기 전용**: 모달 안 응원 댓글 표시. 클릭 진입점 없음. anchor / press / hover 효과 부여하지 않음 (의미 없는 인터랙션 신호 회피). 마크업 `<li class="support-comment">` 형식 유지
 
 #### `.modal-backdrop` 변수 (일괄 제어)
 - `--modal-backdrop-base` (기본 `var(--color-bg-soft)` #F8F8FB) — 베이스 색
