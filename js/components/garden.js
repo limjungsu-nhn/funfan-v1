@@ -11,9 +11,10 @@
         + 첫 --before 에 --active 부여 (다음 차례 표시)
         + pinSwayTimings() 로 각 식물 sway duration/delay 인라인 고정
      2. 모달이 닫힐 때마다 active 식물 카운터 +1 (per-element WeakMap)
+        + 모달 오픈 시 해당 식물의 시퀀스 프레임 백그라운드 프리로드 시작
      3. WATER_THRESHOLD(=5) 도달 시 close 트랜지션 종료 후 bloom() 진입
         — body 직속 .garden__halo 글로우 페이드인 (3겹 원형, 컨테이너 클립 우회)
-        — 프레임 시퀀스 재생 (img/flower/flower_XX/flower_XX_{1..N}.png)
+        — 프레임 시퀀스 재생 (img/flower/flower_XX/flower_XX_{1..N}.webp, lossless)
         — sway 는 그대로 유지 → swap 시 흔들림 위상 끊김 없음
      4. 마지막 프레임 후 halo 퇴장 애니메이션 0.5s 대기 →
         src 를 img/img_flower_XX_after.png 로 swap + 클래스 정리 + reorder()
@@ -84,11 +85,15 @@
     return garden.querySelector('.garden__item--before.garden__item--active');
   }
 
+  /* 프레임 프리로드 — 모달 오픈 시점에 1회 호출 (id 별 idempotent).
+     모달 시퀀스 9.5s 동안 백그라운드로 다운로드 → bloom 시작 시 캐시에서 즉시 사용. */
+  const preloadedIds = new Set();
   function preloadFrames(id, total) {
-    /* 첫 트리거 시 한 번만 호출 — 브라우저 이미지 캐시에 미리 적재 */
+    if (preloadedIds.has(id)) return;
+    preloadedIds.add(id);
     for (let i = 1; i <= total; i++) {
       const img = new Image();
-      img.src = `img/flower/flower_${id}/flower_${id}_${i}.png`;
+      img.src = `img/flower/flower_${id}/flower_${id}_${i}.webp`;
     }
   }
 
@@ -103,7 +108,7 @@
       if (startTime === null) startTime = now;
       const elapsed = now - startTime;
       const frame = Math.min(total - 1, Math.floor(elapsed / FRAME_DURATION));
-      item.src = `img/flower/flower_${id}/flower_${id}_${frame + 1}.png`;
+      item.src = `img/flower/flower_${id}/flower_${id}_${frame + 1}.webp`;
       if (frame < total - 1) {
         requestAnimationFrame(step);
       } else {
@@ -182,6 +187,7 @@
     if (!id) return;
     item.classList.add('garden__item--blooming');
     item.classList.remove('garden__item--active');
+    /* 프리로드는 모달 오픈 시점에 이미 시작됨 — 안전망으로 한번 더 호출 (idempotent) */
     preloadFrames(id, FRAME_COUNTS[id] || 0);
     item._halo = addHalo(item);
     requestAnimationFrame(() => playSequence(item, garden));
@@ -199,8 +205,13 @@
       const isOpen = backdrop.classList.contains('modal-backdrop--open');
 
       if (!wasOpen && isOpen) {
-        /* 모달 오픈 — 이 시점의 active 식물을 캡처 */
+        /* 모달 오픈 — 이 시점의 active 식물 캡처 + 프레임 프리로드 시작.
+           WaterThanks 시퀀스 9.5s 동안 백그라운드로 다운로드 → bloom 시 캐시 hit */
         pendingActive = getActiveItem(garden);
+        if (pendingActive) {
+          const id = pendingActive.dataset.flowerId;
+          if (id && FRAME_COUNTS[id]) preloadFrames(id, FRAME_COUNTS[id]);
+        }
       } else if (wasOpen && !isOpen) {
         /* 모달 닫힘 — 카운터 +1, 임계치 도달 시 bloom */
         const target = pendingActive || getActiveItem(garden);

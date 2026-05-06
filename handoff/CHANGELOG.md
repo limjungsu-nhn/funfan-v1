@@ -10,7 +10,7 @@
 
 ## v1.07.0 (2026-05-06, v1.06.7 후속)
 
-**series-home 화단 bloom 시퀀스 전면 리워크.** 진입점 변경(식물 클릭 → 「水をあげて応援する」 버튼), 시퀀스 이미지 교체(192×216, 사이즈 재조정본), `_after.png` 를 마지막 프레임과 동일 에셋으로 통일, 후광 글로우(3겹 원형) 추가, sway 위상 보존, halo 진입/퇴장 애니메이션.
+**series-home 화단 bloom 시퀀스 전면 리워크 + 자산 최적화.** 진입점 변경(식물 클릭 → 「水をあげて応援する」 버튼), 시퀀스 이미지 192×216 사이즈 재조정본 → **WebP lossless 변환** (-43%), 후광 글로우(3겹 원형) 추가, sway 위상 보존, halo 진입/퇴장 애니메이션, 프리로드 타이밍을 모달 오픈 시점으로 이동, 정적 before/after PNG palette 양자화(-70%).
 
 ### 화단 동작 변경 — `js/components/garden.js` 전면 리라이트
 
@@ -28,13 +28,15 @@
 - **sway 위상 보존**:
   - `pinSwayTimings()`: 페이지 로드 시 모든 식물의 `animation-duration/delay` 를 `getComputedStyle()` 결과로 인라인 고정 → reorder 시 `:nth-child(2n/3n/5n)` 변형 변동 영향 차단
   - `reorder()` 안에서 `Animation.startTime` 캡처 → `replaceChildren()` 후 새로 생성된 Animation 의 `startTime` 을 원래 값으로 복구 → DOM 재배치로 인한 sway 재시작 방지
-- **시퀀스 / after 이미지 통일**: `img_flower_XX_after.png` 를 각 시퀀스의 마지막 프레임과 동일 에셋으로 덮어씀 (byte 단위 일치) → 시퀀스 마지막 → after 전환 시 시각적 변화 0
+- **시퀀스 / after 이미지 시각 통일**: `img_flower_XX_after.png` 를 각 시퀀스의 마지막 프레임과 시각 동일 에셋으로 덮어씀 → 시퀀스 마지막 → after 전환 시 체감 변화 0 (정적 PNG 는 palette 양자화로 byte 차이 있으나 dithering 영향 거의 없음)
+- **프리로드 타이밍**: 기존 `bloom()` 진입 시 일괄 호출 → 모달 close 직후 네트워크 폭주. 변경 후 모달 **오픈** 시점에 active 식물의 시퀀스 프레임 백그라운드 프리로드 → WaterThanks 9.5s 동안 다운로드 완료 → bloom 시 캐시 hit. `preloadedIds` Set 으로 id 별 idempotent 보장
 - **테스트 편의**: init 시 모든 `--before` 카운터를 `WATER_THRESHOLD - 1` (=4) 로 사전 적재 → 1회 물주기로 즉시 트리거
 
-### 시퀀스 이미지 교체
+### 자산 최적화
 
-- `img/flower/flower_{01,02,03,04}/flower_XX_{1..N}.png`: 사이즈 재조정한 새 에셋으로 전체 덮어쓰기 (192×216, 프레임 수 유지: 122/122/122/96)
-- `img/img_flower_{01..04}_after.png`: 각 폴더의 마지막 프레임으로 교체
+- **시퀀스 → WebP lossless**: `img/flower/flower_{01..04}/flower_XX_{1..N}.webp` (192×216, 122/122/122/96 프레임). 기존 PNG 사이즈 재조정본 대비 **-43%** (19.93MB → 11.38MB). lossless 라 시각 차이 0. 모던 브라우저 모두 native 지원이라 fallback 없음
+- **정적 PNG palette 양자화**: `img_flower_{01..04}_{before,after}.png` 8장. 256색 indexed + 최대 압축. **-70%** (302KB → 90KB). 일러스트라 dithering 거의 무의식
+- **누적 절감**: 약 21.3MB → 11.4MB (**-46%**)
 
 ### CSS — `css/components/garden.css`
 
@@ -48,6 +50,7 @@
 - halo 는 portal(`createPortal(halo, document.body)`)로 구현 권장 — overflow 클립 우회 + scroll 좌표 동기화
 - sway 위상 보존은 React 의 reconciliation 도 마찬가지 영향을 받으므로, 식물 리스트 key 를 안정적으로 부여 + `key` 변경 없는 reorder (배열 순서 재배치) 로 충분히 보존됨. `replaceChildren` 같은 강제 detach 만 피하면 추가 작업 불필요할 수 있음
 - **series-home.html 마크업 변경**: 각 `.garden__item` 에 다음이 추가됨 — `garden__item--before` / `garden__item--after` 상태 클래스, `data-flower-id="01..04"` (시퀀스 프레임 경로 도출), `data-state="before|after"` (표면 식별용). row 1/2 항목 순서도 갱신 (row1: after 4 + before 2, row2: before 4 + empty 2). 변경 전 마크업은 모든 item 이 plain `.garden__item` 였고 row 1 의 6개가 before·after 혼재였음
+- **WebP 호환성**: 시퀀스 자산 포맷이 `.webp` 로 전환됨. React 의 `<img src>` 또는 `Image()` 프리로드에 그대로 사용 가능 (Chrome/Firefox/Edge 전 버전, Safari 14+ 지원). 더 낮은 Safari 호환이 필요하면 `<picture>` 의 `<source type="image/webp">` + PNG fallback 패턴 사용 — 현재 프로토타입은 fallback 없음
 
 ---
 

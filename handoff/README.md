@@ -6,14 +6,16 @@
 
 ## 📌 v1.07.0 요약 (2026-05-06, v1.06.7 후속) — 먼저 이것만 보세요
 
-**series-home 화단 bloom 시퀀스 전면 리워크.** 핵심은 (1) 진입점을 식물 클릭 → 우측 「水をあげて応援する」 버튼으로 일원화 (모달 close 1회 = 물주기 1회), (2) 시퀀스 이미지 192×216 사이즈 재조정본으로 전체 교체 + `_after.png` 를 마지막 프레임과 동일 에셋으로 통일하여 swap 시 시각적 변화 0, (3) 후광 글로우 `.garden__halo` 추가 (3겹 원형, body 직속 absolute 로 컨테이너 클립 우회) + 진입/퇴장 애니메이션, (4) sway 위상 보존 (`pinSwayTimings()` + `Animation.startTime` 복구) 으로 reorder 시 흔들림 리듬 끊김 제거.
+**series-home 화단 bloom 시퀀스 전면 리워크 + 자산 최적화.** 핵심은 (1) 진입점을 식물 클릭 → 우측 「水をあげて応援する」 버튼으로 일원화 (모달 close 1회 = 물주기 1회), (2) 시퀀스 이미지 192×216 사이즈 재조정본 → **WebP lossless 변환** (462 프레임 19.93MB → 11.38MB, **-43%**), `_after.png` 를 마지막 프레임과 시각 동일 에셋으로 통일, (3) 후광 글로우 `.garden__halo` 추가 (3겹 원형, body 직속 absolute 로 컨테이너 클립 우회) + 진입/퇴장 애니메이션, (4) sway 위상 보존 (`pinSwayTimings()` + `Animation.startTime` 복구) 으로 reorder 시 흔들림 리듬 끊김 제거, (5) 프리로드 타이밍을 모달 오픈 시점으로 이동 (9.5s 백그라운드 다운로드 → bloom 시 캐시 hit), (6) 정적 before/after PNG palette 양자화 (302KB → 90KB, **-70%**).
 
 | 분류 | 내용 | 개발 영향 |
 |---|---|---|
 | **화단 진입점 변경** | 식물 자체 클릭 제거 → 우측 「水をあげて応援する」 버튼으로 단일화. `#modal-water-support` 모달 close 를 MutationObserver 로 감지 → 1회 = 1회 물주기. 5회 누적 시 close 트랜지션 후 bloom | React: `<Garden>` 의 식물 onClick 제거. 모달 close (또는 후속 액션) 에 카운트 hook |
 | **bloom 시퀀스 흐름** | (1) modal close 0.5s 대기 → (2) `.garden__halo` 페이드인 (0.4s, scale 0.6→1) + 프레임 시퀀스 재생 (sway 그대로 유지) → (3) 마지막 프레임 도달 → halo 퇴장 (0.5s, opacity 1→0 + scale 1→1.3) → (4) `src` swap + reorder | (애니메이션 시퀀스 도메인) |
 | **`.garden__halo` (NEW)** | 3겹 원형 글로우. 외곽 노랑(180×180, blur 40, opacity 0.5) → 중간 진노랑(150×150, blur 10, opacity 0.5) → 안쪽 흰색(130×130, blur 10). body 직속 absolute (`.garden { overflow:hidden }` 클립 우회), 좌표는 item `getBoundingClientRect + scrollX/Y` (시각 보정 +4px Y). compact 변형 `--halo-scale: 0.7` | React: `createPortal(halo, document.body)` 로 구현. position 은 ref + ResizeObserver 로 동기화 |
-| **시퀀스 이미지 교체** | `img/flower/flower_{01..04}/` 전체 덮어쓰기 (192×216, 122/122/122/96 프레임). 추가로 `img_flower_XX_after.png` 를 각 폴더 마지막 프레임과 byte 단위 동일 에셋으로 통일 → 시퀀스 마지막 → after swap 시 시각적 변화 0 | (자산 교체) |
+| **시퀀스 이미지 교체 + WebP 변환** | `img/flower/flower_{01..04}/flower_XX_{1..N}.webp` (192×216, 122/122/122/96 프레임, lossless WebP). PNG 원본 대비 **-43%** (19.93MB → 11.38MB). `img_flower_XX_after.png` 는 시퀀스 마지막 프레임과 시각 동일 (정적 PNG 는 palette 양자화 — dithering 미세 차이만, swap 시 체감 변화 없음) | (자산 교체 + 포맷 변경: dev 의 URL 패턴은 `.webp`) |
+| **정적 before/after PNG palette 압축** | 8장 (01~04 × before/after) palette quantization (256색 indexed) + 최대 압축. 302KB → 90KB (**-70%**). 일러스트 실사가 아니라 dithering 영향 거의 없음. URL/마크업 무변경 | (자산 압축) |
+| **프리로드 타이밍 개선** | 기존 `bloom()` 진입 시 일괄 프리로드 → 모달 close 직후 네트워크 폭주. 변경: 모달 **오픈** 시점에 active 식물의 시퀀스 프레임 백그라운드 프리로드 시작 → WaterThanks 9.5s 동안 다운로드 → bloom 시 캐시 hit. `preloadedIds` Set 으로 id 별 idempotent 보장 | React: 모달 onOpen hook 에서 `Image()` 또는 `<link rel="preload" as="image">` 디스패치 |
 | **sway 위상 보존** | (1) `pinSwayTimings()`: init 시 모든 식물의 `animation-duration/delay` 인라인 고정 → reorder 가 `:nth-child(2n/3n/5n)` 매칭을 바꿔도 영향 없음. (2) `reorder()` 에서 `Animation.startTime` 캡처 → `replaceChildren()` 후 새 Animation 의 `startTime` 을 원래 값으로 복구. 결과: bloom 시작부터 reorder 까지 흔들림 리듬 0회 끊김 | React: 안정적 key 부여 + 배열 reorder (강제 detach 없음)로 충분 |
 | **`.garden__item--blooming`** | sway 일시 정지 제거 (시퀀스 동안 흔들림 유지). `position: relative; z-index: 1` 추가 → halo (z-index:0) 위 stacking | (CSS state) |
 | **테스트 편의** | 모든 `--before` 카운터를 init 시점에 `WATER_THRESHOLD - 1` (=4) 로 사전 적재 → 1회 물주기로 즉시 bloom 트리거 | 프로덕션 배포 시 제거 또는 0 으로 변경 |
@@ -22,6 +24,7 @@
 - `.garden` 마크업 무변경 — `data-flower-id` / `data-state` / `--before` / `--after` / `--empty` 그대로
 - `garden.js` 는 series-home 전용 (creator-series-home / series-manage-detail / styleguide 의 `.garden` 은 정적 표시 — JS 미적용)
 - 기존 `--blooming` state 의 `animation: none` 제거됨 — 시퀀스 중 sway 가 동시 실행되도록 변경. 의도된 동작이며 frame swap 과 transform 은 독립적으로 처리되므로 충돌 없음
+- 시퀀스 자산이 PNG → WebP 로 포맷 전환됨. 프리로드 / 시퀀스 표시 코드는 `.webp` 경로를 직접 사용. 모던 브라우저(Chrome/Firefox/Edge 전 버전, Safari 14+) 모두 native 지원이라 fallback 불필요
 
 **확인할 곳**
 1. `js/components/garden.js` — bloom 시퀀스 / halo / sway 위상 보존 전체 로직
