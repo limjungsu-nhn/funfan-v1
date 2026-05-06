@@ -1,33 +1,35 @@
 /* ============================================
    Post Manage Component — 작품(시리즈) 관리 카드 + 행
 
-   HTML 구조:
+   HTML 구조 — thumb+body 가 .post-row__link anchor 로 래핑되고
+   編集 버튼은 link 의 sibling (anchor 안 button 금지로 분리):
      <section class="post-manage">
        <div class="post-manage__header">
-         <h2 class="post-manage__title text-body-lg-w6">作品一覧</h2>
-         <button class="btn btn-filled-black btn--sm">
-           <i class="icon icon-add"></i>
-           <span class="text-caption-w4">作品を登録する</span>
-         </button>
+         <h2 class="post-manage__title">作品一覧</h2>
+         <button class="btn btn-filled-black btn--sm">作品を登録する</button>
        </div>
        <ul class="post-manage__list">
          <li class="post-row">
-           <img class="post-row__thumb" src="..." alt="">
-           <div class="post-row__body">
-             <div class="post-row__title-line">
-               <span class="post-row__title text-body-md-w6">私の冒険</span>
-               <span class="badge badge--status"><span class="text-overline-w4">公開中</span></span>
+           <a class="post-row__link" href="series-manage-detail.html">
+             <img class="post-row__thumb" src="..." alt="">
+             <div class="post-row__body">
+               <div class="post-row__title-line">
+                 <span class="post-row__title">私の冒険</span>
+                 <span class="badge badge--status">公開中</span>
+               </div>
+               <p class="post-row__meta">ヨコ読み｜最終更新 2026/3/20</p>
              </div>
-             <p class="post-row__meta text-caption-w4">
-               <span>ヨコ読み</span>
-               <span class="post-row__meta-sep" aria-hidden="true"></span>
-               <span>最終更新 2026/3/20</span>
-             </p>
-           </div>
-           <button class="btn btn-line btn--sm"><span class="text-caption-w4">編集・話を追加</span></button>
+           </a>
+           <a class="btn btn-line btn--sm" href="series-manage-detail.html">編集・話を追加</a>
          </li>
        </ul>
      </section>
+
+   상호작용 (creator-episode-row__link / episode-item / work-card 동일 통일 패턴):
+     - press: row 전체 scale(0.99) — `:has(.post-row__link:active)` 로 link 활성에만 반응
+              (編集 버튼 click 은 row 축소 안 됨)
+     - hover: thumb 에 filter:brightness(0.7) (검정색 반투명 효과)
+     - focus-visible (link): outline:none + box-shadow ring + radius-2xs
 
    Notes:
      - 작품(시리즈) 리스트 관리. 한 행 = 한 시리즈
@@ -75,12 +77,42 @@
   gap: var(--space-4); /* 16 */
 }
 
-/* ---------- Row ---------- */
+/* ---------- Row ----------
+   thumb + body 는 .post-row__link anchor 로 래핑되어 series-manage-detail 진입.
+   編集 버튼은 link 외부 sibling — anchor 안 button 금지로 분리.
+   creator-episode-row 와 동일 패턴 (3효과 통일 인터랙션). */
 .post-row {
   align-self: stretch;
   display: flex;
   align-items: center;
   gap: var(--space-4); /* 16 */
+  /* press 효과 — link 가 :active 일 때만 행 전체 축소.
+     編集 버튼 click 은 link active 가 아니라 row 가 따라 축소되지 않음 (의도). */
+  transform-origin: center;
+  transition: transform 0.18s ease;
+}
+
+.post-row:has(.post-row__link:active) {
+  transform: scale(0.99);
+  transition-duration: 0.08s;
+}
+
+/* ---------- Link wrapper (thumb + body 행 영역 클릭) ---------- */
+.post-row__link {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);  /* 16 — 행 내부 gap 동일 */
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-2xs);  /* focus ring 둥글게 */
+}
+
+.post-row__link:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--ring-width) var(--color-gray-5);
 }
 
 .post-row__thumb {
@@ -89,6 +121,12 @@
   border-radius: var(--radius-2xs); /* 8 */
   object-fit: cover;
   flex-shrink: 0;
+  transition: filter 0.18s ease;
+}
+
+/* hover 시 썸네일 검정 반투명 효과 */
+.post-row__link:hover .post-row__thumb {
+  filter: brightness(0.7);
 }
 
 .post-row__body {

@@ -118,9 +118,15 @@ const buttonVariants = cva("...", {
 - 컨테이너 `.post-manage`: 720px(--p50), padding 32/28, radius-md, card shadow, gap 24
 - `.post-manage__header`: title(body-lg-w6) + 우측 action 버튼 (btn-filled-black btn--sm `作品を登録する`)
 - `.post-manage__list`: gap 16
-- `.post-row`: 썸네일 76×108(radius-2xs) + body(title-line + meta) + 우측 edit btn(btn-line btn--sm)
+- `.post-row`: thumb+body anchor 래퍼(`__link`) + 우측 edit btn(btn-line btn--sm). 둘 다 `series-manage-detail.html` 진입
+- `.post-row__link` (NEW): `<a>` 래퍼 — thumb + body 의 클릭 영역. `creator-episode-row__link` 와 동일 패턴 (편집 button 분리, anchor 안 button 금지)
+- `.post-row__thumb`: 76×108(radius-2xs)
 - `.post-row__title-line`: title(body-md-w6) + status badge(badge--status / status-gray / status-wood)
 - `.post-row__meta`: 가로 메타 (가로/세로 읽기 · 최종 업데이트), `__meta-sep` 1×10 black-30
+- **3효과 통일 인터랙션 패턴** (`.episode-item` / `.work-card` / `.creator-episode-row__link` 동일):
+  - `:hover` — `__thumb` 에 `filter: brightness(0.7)`
+  - `:active` — row 전체 scale(0.99) via `:has(.post-row__link:active)`. button click 은 link active 가 아니라 row 가 따라 축소되지 않음 (의도)
+  - `:focus-visible` (link 만) — `outline: none` + `box-shadow ring-width gray-5` + `radius-2xs`
 
 #### `.post-card` → shadcn `Card` (Pinterest masonry tile)
 - 핀터레스트 스타일 포스트 카드. main-home.html 4-col masonry에서 사용

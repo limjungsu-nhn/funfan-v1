@@ -8,6 +8,29 @@
 
 ---
 
+## v1.07.2 (2026-05-06, v1.07.1 후속)
+
+**`series-post-management.html` 의 `.post-row` 도 통일 인터랙션 패턴 적용.** 9개 작품 행에 thumb+body 클릭 영역화, press / hover / focus 3효과 추가.
+
+### `.post-row__link` (NEW)
+
+`series-post-management.html` 본문 작품 리스트 (`.post-row` × 9) 의 thumb + body 부분을 anchor 로 래핑한 신규 sub-element. CSS 는 `css/components/post-manage.css` 에 정의.
+
+- 마크업: `<li class="post-row"><a class="post-row__link" href="series-manage-detail.html">[thumb][body]</a><a class="btn btn-line">編集・話を追加</a></li>`
+- 編集 link 은 `__link` 의 sibling — 두 anchor 모두 `series-manage-detail.html` 로 동일 destination
+- `:has(.post-row__link:active)` 로 row 전체 scale(0.99) 적용 — `__link` 활성에만 반응 (編集 click 은 row 축소 안 됨)
+- 3효과 통일 인터랙션 패턴: `creator-episode-row__link` / `episode-item` / `work-card` 와 완전 동일
+  - hover: `__thumb` 에 `filter: brightness(0.7)`
+  - active: `transform: scale(0.99)` + transition 0.18s (press-down 0.08s)
+  - focus-visible: `outline: none` + `box-shadow ring-width gray-5` + `radius-2xs`
+
+### 마이그레이션 메모 (개발팀)
+
+- v1.07.1 의 `.creator-episode-row__link` 패턴이 `.post-row__link` 로 그대로 재현된 사례. 두 컴포넌트가 거의 동일한 구조이므로 React 에서 공통 `<RowWithLink>` 패턴/컴포넌트 추출 검토 가능
+- `series-post-management-empty.html` 변형은 행이 없어 영향 없음
+
+---
+
 ## v1.07.1 (2026-05-06, v1.07.0 후속)
 
 **리스트 카드 인터랙션 통일 + viewer 미니 윈도우 진입.** 5개 페이지의 이미지+텍스트 리스트(에피소드/작품 카드)에 press / focus / hover 통일 패턴 적용, 본문 에피소드 행을 클릭 영역화하여 `viewer-yoko.html` 1920×1080 미니 윈도우 오픈, 모달 안 읽기 전용 리스트(`support-comment` / `review-item`)는 의도적으로 인터랙티브 처리 배제.

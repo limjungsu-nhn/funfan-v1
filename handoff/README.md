@@ -4,7 +4,26 @@
 
 ---
 
-## 📌 v1.07.1 요약 (2026-05-06, v1.07.0 후속) — 먼저 이것만 보세요
+## 📌 v1.07.2 요약 (2026-05-06, v1.07.1 후속) — 먼저 이것만 보세요
+
+**`series-post-management.html` `.post-row` 통일 인터랙션 적용 (9 행).** v1.07.1 의 통일 패턴 (press / hover / focus) 을 작품 관리 리스트에도 확장. `.post-row__link` 신규 — thumb+body 를 anchor 로 래핑, 編集 link 은 sibling 으로 분리. 진입은 `series-manage-detail.html`. CSS 는 `css/components/post-manage.css` 정의.
+
+| 분류 | 내용 | 개발 영향 |
+|---|---|---|
+| **`.post-row__link` (NEW)** | `series-post-management.html` 작품 행 (9개) thumb+body 의 anchor 래퍼. `:has(.post-row__link:active)` 로 row 전체 scale(0.99) press, hover 시 thumb 에 `filter: brightness(0.7)`, focus-visible 시 ring. 編集 link 은 sibling — `series-manage-detail.html` 동일 destination | React: `<Link>` 로 thumb+body 감싸고 編集 link 도 sibling 으로. v1.07.1 `.creator-episode-row__link` 와 거의 동일 구조라 공통 컴포넌트 추출 검토 |
+
+**하위 호환**
+- `.post-row` 마크업 변경 — 기존 thumb+body 가 직접 자식이었으나 이제 `__link` 로 래핑됨. `series-post-management-empty.html` 변형은 행이 없어 영향 없음
+- `.post-row` press scale 은 `:has(.post-row__link:active)` 로 활성 — 일반 `:hover` 는 thumb 만 어두워지고 row 자체는 scale 없음
+
+**확인할 곳**
+1. `css/components/post-manage.css` — `.post-row__link` 정의 + 헤더 doc
+2. `series-post-management.html` — 9개 행 의 link 래핑 적용
+3. [`COMPONENTS.md`](./COMPONENTS.md) — `.post-row` 항목 갱신본
+
+---
+
+## 📌 v1.07.1 요약 (2026-05-06, v1.07.0 후속)
 
 **리스트 카드 인터랙션 통일 + viewer 미니 윈도우 진입.** 핵심은 (1) `.episode-item` / `.work-card` / 신규 `.creator-episode-row__link` 4개 컴포넌트에 press / focus / hover 통일 패턴 적용 (5개 페이지 × 19개 카드), (2) `js/core/_global.js` 모듈 3 추가 — `data-popup-viewer` 어트리뷰트 기반 viewer 1920×1080 미니 윈도우 진입 (이벤트 위임), (3) `.creator-episode-row` 안에 `__link` sub-element 신설로 thumb+body 를 클릭 영역화하면서 編集 button 은 sibling 으로 분리, (4) 모달 안 읽기 전용 리스트(`support-comment` 30개, `review-item` 14개)는 의도적으로 anchor 화 배제 — semantic role 보존.
 
