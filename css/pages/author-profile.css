@@ -150,16 +150,44 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
+  /* 5 컬럼 고정 grid — 5개 초과 시 다음 행으로 자동 줄바꿈.
+     컨텐츠 폭 936(부모 1008 - padding 36×2) - 카드 5×160 = 136px 의 여백을
+     justify-content: space-between 이 4개 컬럼 간격에 균등 분배 (≈34px).
+     두번째 행도 같은 컬럼 트랙을 따라가 정렬 일관성 유지 (flex-wrap + space-between
+     사용 시 행마다 다른 분배가 일어나는 문제 회피). */
+  display: grid;
+  grid-template-columns: repeat(5, 160px);
   justify-content: space-between;
-  align-items: flex-start;
+  row-gap: var(--space-6);  /* 24 — 행간 */
 }
 
-/* ---------- Work Card (페이지 전용 — 추후 공통 컴포넌트 승격 가능) ---------- */
+/* ---------- Work Card (페이지 전용 — 추후 공통 컴포넌트 승격 가능) ----------
+   <a> 링크 — 카드 전체 클릭 영역. press 시 살짝 축소 (scale 0.97).
+   transform-origin center 로 카드 중심 기준 축소 — 사방 균등하게 줄어드는 시각.
+---------------------------------------- */
 .work-card {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);  /* 16 — cover ↔ body */
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transform-origin: center;
+  transition: transform 0.18s ease;
+  /* 키보드 포커스 ring 만 노출 — 마우스 클릭 시 ring 표시 안 함
+     (anchor 의 마우스 click 에는 브라우저가 :focus-visible 적용 안 하므로 추가 처리 불필요) */
+  border-radius: var(--radius-2xs);  /* cover 와 동일 8 — focus ring 둥글게 */
+}
+
+/* ---------- Focus (keyboard only) — episode-item / tab 와 동일 패턴 ---------- */
+.work-card:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--ring-width) var(--color-gray-5);
+}
+
+.work-card:active {
+  transform: scale(0.97);
+  transition-duration: 0.08s;  /* press-down 은 더 빠르게 */
 }
 
 .work-card__cover {

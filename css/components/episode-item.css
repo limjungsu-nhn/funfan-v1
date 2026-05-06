@@ -30,6 +30,14 @@
   text-decoration: none;
   color: inherit;
   -webkit-tap-highlight-color: transparent;
+  /* press 효과 — 클릭 시 살짝 축소 (work-card 와 동일 패턴) */
+  transform-origin: center;
+  transition: transform 0.18s ease;
+}
+
+.episode-item:active {
+  transform: scale(0.99);
+  transition-duration: 0.08s;  /* press-down 은 더 빠르게 */
 }
 
 /* ---------- Thumbnail (left) ---------- */

@@ -649,7 +649,8 @@ instance.destroy();           // 정리
 - 타이틀 `__title`: `.text-subtext-w6` (14/600/22) · `--color-font-primary-black-100`
 - 날짜 `__date`: `.text-overline-w4` (11/400/16) · `--color-font-primary-black-50`
 - 컨테이너 gap: `--space-5` (20px), 배경 `--color-white-100`
-- `<a>` 태그 사용 + 키보드 포커스링 (`focus-visible` 시 `box-shadow ring`)
+- `<a>` 태그 사용 + 키보드 포커스링 (`focus-visible` 시 `box-shadow ring`, `--ring-width` `--color-gray-5`, `border-radius: var(--radius-2xs)`)
+- **press 효과**: `:active { transform: scale(0.99) }` + `transition: transform 0.18s ease` (press-down 0.08s). 928px 와이드 가로 행이라 0.97 은 과해서 0.99 (≈9px 축소) 사용 — work-card 와 다른 비율
 - TODO: 클릭 시 해당 에피소드 상세로 이동
 - Figma: Frame2087333324
 
@@ -799,14 +800,19 @@ A. 현재 프로토타입 **미지원**. 추후 검토.
 #### `.author-profile-works` → 투고 작품 그리드 (author-profile.html 전용)
 - 1008×auto 흰 카드, padding 40/36, radius 24, shadow, gap 24
 - `__header`: title 18/28 w6 + subtitle 11/16 w4, gap 2
-- `__grid`: flex `space-between` 5열 (work-card × 5)
+- `__grid`: **grid `repeat(5, 160px)` + `justify-content: space-between` + `row-gap: 24`**. 5개 초과 시 다음 행으로 자동 줄바꿈, 두번째 행도 같은 컬럼 트랙 따라 좌측부터 정렬 (flex-wrap 의 행별 분배 차이 회피). 현재 8개 (1행 5 + 2행 3)
 
-#### `.work-card` → 작품 카드 (author-profile-works 그리드 아이템)
+#### `.work-card` → 작품 카드 (author-profile-works 그리드 아이템, `<a>` 링크)
+- 카드 전체 클릭 영역 — `<li><a class="work-card" href="series-home.html">...</a></li>` 패턴
 - flex column gap 16 (cover + body)
 - `__cover`: 160×228, radius 8, object-cover
 - `__body`: gap 16 (meta-line + stats)
 - `__meta-line`: gap 2 — `__tags` (단행본 | 12話, gap 6 + 1×10 divider, 12/18 w4 black-50) + `__title` (14/22 w6)
 - `__stats`: gap 8 — `__stat` × 2 (icon 16×16 + value 11/16 w6)
+- **상호작용**:
+  - `:focus-visible` (키보드 Tab 만): `outline: none` + `box-shadow: 0 0 0 var(--ring-width) var(--color-gray-5)` + `border-radius: var(--radius-2xs)` (episode-item / tab 동일 패턴)
+  - `:active` (press): `transform: scale(0.97)` + `transition: transform 0.18s ease` (press-down 0.08s)
+  - `text-decoration: none` + `color: inherit` 로 anchor 기본 스타일 무력화
 - TODO: 컴포넌트 승격 시 `.series-thumb-card` 등으로 리네이밍 검토
 
 #### `.viewer-tate` / `.viewer-yoko` / `.viewer-koma` → 만화 뷰어 (popup window)

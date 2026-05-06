@@ -44,6 +44,14 @@
 - 신규 keyframes: `garden-halo-in` / `garden-halo-out`
 - `border-radius: var(--radius-full)`, 흰색은 `var(--color-white-100)` 사용. halo 글로우 노랑 컬러(`#FFFF00`, `#FFD400`)는 단일 effect 전용이라 리터럴 유지
 
+### UX 폴리시 — 카드 클릭 영역 + press 효과
+
+- **author-profile work-card**: 5개 → **8개** 확장 + 그리드 레이아웃 전환 (`flex space-between` → `grid repeat(5, 160px) + justify-content:space-between + row-gap:24`, 5개 초과 시 자동 줄바꿈). `<li>` → `<li><a class="work-card" href="series-home.html">` 로 카드 전체 클릭 영역화
+- **work-card / episode-item 공통 상호작용 패턴**:
+  - `:focus-visible` (키보드 Tab): `outline: none` + `box-shadow: 0 0 0 var(--ring-width) var(--color-gray-5)` + `border-radius: var(--radius-2xs)` (기존 episode-item / tab 동일)
+  - `:active` (press): `transform: scale(...)` + `transition: transform 0.18s ease` (press-down 0.08s)
+  - work-card 0.97 / episode-item 0.99 — 카드 사이즈에 맞춘 차등 (160 정사각 vs 928 와이드 행)
+
 ### 마이그레이션 메모 (개발팀)
 
 - 화단 진입점이 식물 → 외부 버튼으로 변경되었으므로 React 구현도 `<Garden>` 컴포넌트가 식물 자체에 onClick 을 두지 않도록 주의. 모달 close 이벤트 (또는 후속 액션)에 카운트 증가 로직을 묶는 게 자연스러움
