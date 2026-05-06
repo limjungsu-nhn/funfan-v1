@@ -8,6 +8,49 @@
 
 ---
 
+## v1.07.0 (2026-05-06, v1.06.7 후속)
+
+**series-home 화단 bloom 시퀀스 전면 리워크.** 진입점 변경(식물 클릭 → 「水をあげて応援する」 버튼), 시퀀스 이미지 교체(192×216, 사이즈 재조정본), `_after.png` 를 마지막 프레임과 동일 에셋으로 통일, 후광 글로우(3겹 원형) 추가, sway 위상 보존, halo 진입/퇴장 애니메이션.
+
+### 화단 동작 변경 — `js/components/garden.js` 전면 리라이트
+
+- **진입점 변경**: 기존 식물 클릭 → 우측 「水をあげて応援する」 버튼으로 일원화
+  - `#modal-water-support` 모달의 `modal-backdrop--open` 클래스 제거를 MutationObserver 로 감지 → 1회 = 1회 물주기
+  - 식물 자체는 항상 `pointer-events: none` (시각 표시만)
+  - 모달 오픈 시점의 `--active` 식물 캡처 → 닫힐 때 그 식물에 카운트 누적 (열려 있는 동안 reorder 가 일어나도 안전)
+- **bloom 시퀀스 흐름**:
+  1. 5회 누적 도달 시 modal close 트랜지션(0.5s) 후 `bloom()` 진입
+  2. `.garden__halo` 페이드인 (0.4s ease-out, scale 0.6→1)
+  3. 프레임 시퀀스 재생 (sway 그대로 유지 — 시퀀스와 흔들림 동시 진행)
+  4. 마지막 프레임 도달 → halo 퇴장 애니메이션 (0.5s ease-in, opacity 1→0 + scale 1→1.3)
+  5. halo 완료 후 `src` swap + 클래스 정리 + `reorder()`
+- **후광 글로우 (`.garden__halo`)**: body 직속 absolute (`.garden { overflow:hidden }` 클립 우회). 3겹 원형 — 외곽 노랑(180×180, blur 40, opacity 0.5) → 중간 진노랑(150×150, blur 10, opacity 0.5, inset 15) → 안쪽 흰색(130×130, blur 10, inset 25). 중심 좌표 = item 의 `getBoundingClientRect + scrollX/Y`, 시각 보정 +4px Y. compact 변형은 `--halo-scale: 0.7`
+- **sway 위상 보존**:
+  - `pinSwayTimings()`: 페이지 로드 시 모든 식물의 `animation-duration/delay` 를 `getComputedStyle()` 결과로 인라인 고정 → reorder 시 `:nth-child(2n/3n/5n)` 변형 변동 영향 차단
+  - `reorder()` 안에서 `Animation.startTime` 캡처 → `replaceChildren()` 후 새로 생성된 Animation 의 `startTime` 을 원래 값으로 복구 → DOM 재배치로 인한 sway 재시작 방지
+- **시퀀스 / after 이미지 통일**: `img_flower_XX_after.png` 를 각 시퀀스의 마지막 프레임과 동일 에셋으로 덮어씀 (byte 단위 일치) → 시퀀스 마지막 → after 전환 시 시각적 변화 0
+- **테스트 편의**: init 시 모든 `--before` 카운터를 `WATER_THRESHOLD - 1` (=4) 로 사전 적재 → 1회 물주기로 즉시 트리거
+
+### 시퀀스 이미지 교체
+
+- `img/flower/flower_{01,02,03,04}/flower_XX_{1..N}.png`: 사이즈 재조정한 새 에셋으로 전체 덮어쓰기 (192×216, 프레임 수 유지: 122/122/122/96)
+- `img/img_flower_{01..04}_after.png`: 각 폴더의 마지막 프레임으로 교체
+
+### CSS — `css/components/garden.css`
+
+- 신규 클래스: `.garden__item--active`, `.garden__item--blooming` (position:relative + z-index:1 → halo 위 stacking), `.garden__halo`, `.garden__halo--leaving`, `.garden__halo-ring--{outer,mid,inner}`
+- 신규 keyframes: `garden-halo-in` / `garden-halo-out`
+- `border-radius: var(--radius-full)`, 흰색은 `var(--color-white-100)` 사용. halo 글로우 노랑 컬러(`#FFFF00`, `#FFD400`)는 단일 effect 전용이라 리터럴 유지
+
+### 마이그레이션 메모 (개발팀)
+
+- 화단 진입점이 식물 → 외부 버튼으로 변경되었으므로 React 구현도 `<Garden>` 컴포넌트가 식물 자체에 onClick 을 두지 않도록 주의. 모달 close 이벤트 (또는 후속 액션)에 카운트 증가 로직을 묶는 게 자연스러움
+- halo 는 portal(`createPortal(halo, document.body)`)로 구현 권장 — overflow 클립 우회 + scroll 좌표 동기화
+- sway 위상 보존은 React 의 reconciliation 도 마찬가지 영향을 받으므로, 식물 리스트 key 를 안정적으로 부여 + `key` 변경 없는 reorder (배열 순서 재배치) 로 충분히 보존됨. `replaceChildren` 같은 강제 detach 만 피하면 추가 작업 불필요할 수 있음
+- **series-home.html 마크업 변경**: 각 `.garden__item` 에 다음이 추가됨 — `garden__item--before` / `garden__item--after` 상태 클래스, `data-flower-id="01..04"` (시퀀스 프레임 경로 도출), `data-state="before|after"` (표면 식별용). row 1/2 항목 순서도 갱신 (row1: after 4 + before 2, row2: before 4 + empty 2). 변경 전 마크업은 모든 item 이 plain `.garden__item` 였고 row 1 의 6개가 before·after 혼재였음
+
+---
+
 ## v1.06.7 (2026-04-30, v1.06.6 후속)
 
 **뷰어 3종 종료 화면(`.viewer-end`) 신규 + 페이지 헤더 패턴 통일 + main-home hero 신규 + 어두운 배경용 navbar/button 변형 + glass morphism + water-thanks 타이밍 조정.** 신규 컴포넌트 1개(viewer-end), 신규 변형 2개(navbar/button), 신규 아이콘 1개(icon-water-drop-filled), 페이지 5종 헤더 구조 정리, main-home hero 섹션 추가, 신규 자산 1개(hero_main.mp4).

@@ -35,6 +35,7 @@
   <script src="js/components/episode-card.js" defer></script>
   <script src="js/components/modal.js" defer></script>
   <script src="js/components/modal-water-thanks.js" defer></script>
+  <script src="js/components/garden.js" defer></script>
 
   <!-- 페이지 전용 App Shell (v1.03까지 이 HTML <style> 블록에 있던 내용) -->
   <link rel="stylesheet" href="css/pages/series-home.css">
@@ -109,18 +110,22 @@
                   <p class="garden-sign__name">長い名前のユーザー</p>
                 </div>
               </div>
-              <img class="garden__item" src="img/img_flower_01_before.png" alt="">
-              <img class="garden__item" src="img/img_flower_02_before.png" alt="">
-              <img class="garden__item" src="img/img_flower_03_before.png" alt="">
-              <img class="garden__item" src="img/img_flower_04_before.png" alt="">
-              <img class="garden__item" src="img/img_flower_01_after.png" alt="">
-              <img class="garden__item" src="img/img_flower_02_after.png" alt="">
+              <!-- 순차적으로: after 4개 → before 6개 → empty 2개 (총 12 슬롯).
+                   진입은 우측 「水をあげて応援する」 버튼 → #modal-water-support 모달 1회 = 물주기 1회.
+                   5회 누적 시 모달 close 후 시퀀스 애니메이션 + halo 글로우 → _after 로 swap + DOM 재정렬.
+                   garden.js (auto-attach via .garden) 가 핸들링 -->
+              <img class="garden__item garden__item--after" src="img/img_flower_01_after.png" alt="" data-flower-id="01" data-state="after">
+              <img class="garden__item garden__item--after" src="img/img_flower_02_after.png" alt="" data-flower-id="02" data-state="after">
+              <img class="garden__item garden__item--after" src="img/img_flower_03_after.png" alt="" data-flower-id="03" data-state="after">
+              <img class="garden__item garden__item--after" src="img/img_flower_04_after.png" alt="" data-flower-id="04" data-state="after">
+              <img class="garden__item garden__item--before" src="img/img_flower_01_before.png" alt="" data-flower-id="01" data-state="before">
+              <img class="garden__item garden__item--before" src="img/img_flower_02_before.png" alt="" data-flower-id="02" data-state="before">
             </div>
             <div class="garden__row">
-              <img class="garden__item" src="img/img_flower_03_after.png" alt="">
-              <img class="garden__item" src="img/img_flower_04_after.png" alt="">
-              <img class="garden__item" src="img/img_flower_01_before.png" alt="">
-              <img class="garden__item" src="img/img_flower_02_before.png" alt="">
+              <img class="garden__item garden__item--before" src="img/img_flower_03_before.png" alt="" data-flower-id="03" data-state="before">
+              <img class="garden__item garden__item--before" src="img/img_flower_04_before.png" alt="" data-flower-id="04" data-state="before">
+              <img class="garden__item garden__item--before" src="img/img_flower_01_before.png" alt="" data-flower-id="01" data-state="before">
+              <img class="garden__item garden__item--before" src="img/img_flower_02_before.png" alt="" data-flower-id="02" data-state="before">
               <span class="garden__item garden__item--empty" aria-hidden="true"></span>
               <span class="garden__item garden__item--empty" aria-hidden="true"></span>
             </div>

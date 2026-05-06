@@ -112,6 +112,93 @@
   animation: none;
 }
 
+/* ---------- Before / After / Blooming States ----------
+   .--before  : before 식물 (정적, 클릭 불가 — 진입은 「水をあげて応援する」 버튼 전용)
+   .--active  : 다음 차례 표시용 (JS 가 reorder 후 첫 --before 에 자동 부여).
+                현재는 시각 효과 없음 — 모달 close 시 카운트 누적 대상 식별에만 사용
+   .--after   : 만개 상태 (정적)
+   .--blooming: 시퀀스 프레임 재생 중 — JS 가 매 프레임 src 교체. sway 는 그대로 유지
+                (frame swap 시 흔들림 위상이 끊기지 않도록).
+                halo 보다 위에 그려지도록 position:relative + z-index:1 로 stacking 강제.
+                끝나면 halo 퇴장 완료 후 src 가 _after.png 로 swap + DOM 재정렬
+---------------------------------------- */
+.garden__item--before,
+.garden__item--blooming {
+  /* 식물은 항상 클릭 불가 (진입은 외부 버튼 전용) */
+  pointer-events: none;
+}
+
+.garden__item--blooming {
+  /* halo(body 직속 z-index:0) 위로 올라오도록 stacking 강제 */
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Bloom Halo (시퀀스 재생 중 배경 글로우) ----------
+   .garden 컨테이너가 overflow:hidden 이라 halo 를 내부에 두면 잘림.
+   JS 가 document.body 직속으로 .garden__halo 를 삽입하고
+   left/top 은 인라인으로 (page 좌표 = getBoundingClientRect + scroll) 지정.
+   3겹 원형 — 외곽 노랑(blur 40) → 중간 진노랑(blur 10) → 안쪽 흰색(blur 10).
+   --halo-scale 로 스케일을 외부에서 주입 (compact 0.7 / 기본 1).
+---------------------------------------- */
+.garden__halo {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  pointer-events: none;
+  /* blooming 식물(z-index:1) 보다 낮게 — 같은 root stacking 안에서 뒤로 깔림 */
+  z-index: 0;
+  --halo-scale: 1;
+  transform: translate(-50%, -50%) scale(var(--halo-scale));
+  animation: garden-halo-in 0.4s ease-out forwards;
+}
+
+.garden__halo--leaving {
+  animation: garden-halo-out 0.5s ease-in forwards;
+}
+
+.garden__halo-ring {
+  position: absolute;
+  border-radius: var(--radius-full);
+}
+
+/* halo 전용 글로우 컬러 — 다른 곳에 재사용되지 않는 단일 effect 색이라 토큰화 없이 리터럴 유지 */
+.garden__halo-ring--outer {
+  inset: 0;
+  background: #FFFF00;
+  opacity: 0.5;
+  filter: blur(40px);
+}
+
+.garden__halo-ring--mid {
+  left: 15px;
+  top: 15px;
+  width: 150px;
+  height: 150px;
+  background: #FFD400;
+  opacity: 0.5;
+  filter: blur(10px);
+}
+
+.garden__halo-ring--inner {
+  left: 25px;
+  top: 25px;
+  width: 130px;
+  height: 130px;
+  background: var(--color-white-100);
+  filter: blur(10px);
+}
+
+@keyframes garden-halo-in {
+  from { opacity: 0; transform: translate(-50%, -50%) scale(calc(var(--halo-scale) * 0.6)); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(var(--halo-scale)); }
+}
+
+@keyframes garden-halo-out {
+  from { opacity: 1; transform: translate(-50%, -50%) scale(var(--halo-scale)); }
+  to   { opacity: 0; transform: translate(-50%, -50%) scale(calc(var(--halo-scale) * 1.3)); }
+}
+
 /* ---------- Reduced Motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .garden__item {

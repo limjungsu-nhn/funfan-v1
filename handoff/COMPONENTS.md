@@ -608,6 +608,20 @@ instance.destroy();           // 정리
 - Row 2: `.garden__item` × 6, gap 12px → 636px, `align-items: center`으로 자동 센터 정렬
 - `.garden__item--empty`: `visibility: hidden`으로 빈 슬롯 레이아웃 유지
 - 꽃 이미지: `img/img_flower_0N_before.png` / `img/img_flower_0N_after.png` (01~04)
+- **물주기 + bloom 시퀀스 (`js/components/garden.js`, series-home 자동 활성)**:
+  - 마크업: `.garden__item--before` / `.garden__item--after` (둘 다 `pointer-events: none` — 식물 자체는 클릭 불가). 각 항목 `data-flower-id="01"` 등 attribute 보유
+  - **진입점**: 화단 우측 「水をあげて応援する」 버튼 → `#modal-water-support` 모달. 모달이 닫히는 시점이 1회 물주기 (MutationObserver 로 backdrop `modal-backdrop--open` 클래스 제거 감지)
+  - `.garden__item--active`: 다음 물주기 대상 식별용 (JS 가 reorder 후 첫 `--before` 에 자동 부여, 시각 효과 없음 — 누적 카운터 대상 표시)
+  - 누적 5회 도달 시 모달 close 트랜지션(0.5s) 후 `bloom()` 진입
+  - bloom 시퀀스:
+    - `.garden__halo` (3겹 원형 글로우, body 직속 absolute, 180×180, scale fade-in 0.4s) — `.garden { overflow: hidden }` 클립 우회 위해 body 에 삽입. position 은 `getBoundingClientRect + scrollX/Y` 로 계산, 시각 보정 +4px Y
+    - `.garden__item--blooming` 추가 (`position: relative; z-index: 1` 로 halo 위에) → 프레임 시퀀스 재생 (`img/flower/flower_XX/flower_XX_{1..N}.png`, 30fps, requestAnimationFrame 시간 기반 인덱싱). flower_01·02·03 = 122 프레임, flower_04 = 96 프레임
+    - sway 는 시퀀스 내내 그대로 유지 — 마지막 프레임 → `_after.png` swap 시 흔들림 위상이 끊기지 않음 (시퀀스 마지막 프레임 = `img_flower_XX_after.png` 동일 에셋)
+  - 종료: halo 퇴장 애니메이션 0.5s (opacity 1→0 + scale 1→1.3) 완료 → `src` swap + class 정리 + DOM 재정렬
+  - **재정렬 규칙**: after 4 → before 6 → empty 2 (총 12 슬롯, 6×2 row). garden-sign 은 첫 row 최상단 보존. `replaceChildren()` 으로 한번에 재구성. reorder 전후로 `Animation.startTime` 보존하여 sway 재시작 방지
+  - sway 타이밍 고정: 페이지 로드 시 `pinSwayTimings()` 가 모든 식물의 `animation-duration/delay` 를 `getComputedStyle()` 결과로 인라인 고정 → reorder 시 `:nth-child(2n/3n/5n)` 변형이 바뀌어도 각 식물 고유 리듬 유지
+  - 프리로드: bloom 진입 시 해당 flower id 의 모든 프레임을 한번에 `new Image()` 로 캐시 적재
+  - 테스트 편의: init 시 모든 `--before` 카운터를 `WATER_THRESHOLD - 1` (=4) 로 사전 적재 → 1회 물주기로 즉시 트리거
 - **`.garden--compact`**: 633×207, item 68×76, padding `0 32`, gap 12 (그대로). 내부 `.garden-sign` 도 같이 축소 (68×76, 이름 폰트 9/11, names top 18) — `.garden-card--compact` 안에서만 사용
 
 #### `.garden-card` → 커스텀 Card (garden + reaction-bar 조합)

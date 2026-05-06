@@ -4,7 +4,35 @@
 
 ---
 
-## 📌 v1.06.7 요약 (2026-04-30, v1.06.6 후속) — 먼저 이것만 보세요
+## 📌 v1.07.0 요약 (2026-05-06, v1.06.7 후속) — 먼저 이것만 보세요
+
+**series-home 화단 bloom 시퀀스 전면 리워크.** 핵심은 (1) 진입점을 식물 클릭 → 우측 「水をあげて応援する」 버튼으로 일원화 (모달 close 1회 = 물주기 1회), (2) 시퀀스 이미지 192×216 사이즈 재조정본으로 전체 교체 + `_after.png` 를 마지막 프레임과 동일 에셋으로 통일하여 swap 시 시각적 변화 0, (3) 후광 글로우 `.garden__halo` 추가 (3겹 원형, body 직속 absolute 로 컨테이너 클립 우회) + 진입/퇴장 애니메이션, (4) sway 위상 보존 (`pinSwayTimings()` + `Animation.startTime` 복구) 으로 reorder 시 흔들림 리듬 끊김 제거.
+
+| 분류 | 내용 | 개발 영향 |
+|---|---|---|
+| **화단 진입점 변경** | 식물 자체 클릭 제거 → 우측 「水をあげて応援する」 버튼으로 단일화. `#modal-water-support` 모달 close 를 MutationObserver 로 감지 → 1회 = 1회 물주기. 5회 누적 시 close 트랜지션 후 bloom | React: `<Garden>` 의 식물 onClick 제거. 모달 close (또는 후속 액션) 에 카운트 hook |
+| **bloom 시퀀스 흐름** | (1) modal close 0.5s 대기 → (2) `.garden__halo` 페이드인 (0.4s, scale 0.6→1) + 프레임 시퀀스 재생 (sway 그대로 유지) → (3) 마지막 프레임 도달 → halo 퇴장 (0.5s, opacity 1→0 + scale 1→1.3) → (4) `src` swap + reorder | (애니메이션 시퀀스 도메인) |
+| **`.garden__halo` (NEW)** | 3겹 원형 글로우. 외곽 노랑(180×180, blur 40, opacity 0.5) → 중간 진노랑(150×150, blur 10, opacity 0.5) → 안쪽 흰색(130×130, blur 10). body 직속 absolute (`.garden { overflow:hidden }` 클립 우회), 좌표는 item `getBoundingClientRect + scrollX/Y` (시각 보정 +4px Y). compact 변형 `--halo-scale: 0.7` | React: `createPortal(halo, document.body)` 로 구현. position 은 ref + ResizeObserver 로 동기화 |
+| **시퀀스 이미지 교체** | `img/flower/flower_{01..04}/` 전체 덮어쓰기 (192×216, 122/122/122/96 프레임). 추가로 `img_flower_XX_after.png` 를 각 폴더 마지막 프레임과 byte 단위 동일 에셋으로 통일 → 시퀀스 마지막 → after swap 시 시각적 변화 0 | (자산 교체) |
+| **sway 위상 보존** | (1) `pinSwayTimings()`: init 시 모든 식물의 `animation-duration/delay` 인라인 고정 → reorder 가 `:nth-child(2n/3n/5n)` 매칭을 바꿔도 영향 없음. (2) `reorder()` 에서 `Animation.startTime` 캡처 → `replaceChildren()` 후 새 Animation 의 `startTime` 을 원래 값으로 복구. 결과: bloom 시작부터 reorder 까지 흔들림 리듬 0회 끊김 | React: 안정적 key 부여 + 배열 reorder (강제 detach 없음)로 충분 |
+| **`.garden__item--blooming`** | sway 일시 정지 제거 (시퀀스 동안 흔들림 유지). `position: relative; z-index: 1` 추가 → halo (z-index:0) 위 stacking | (CSS state) |
+| **테스트 편의** | 모든 `--before` 카운터를 init 시점에 `WATER_THRESHOLD - 1` (=4) 로 사전 적재 → 1회 물주기로 즉시 bloom 트리거 | 프로덕션 배포 시 제거 또는 0 으로 변경 |
+
+**하위 호환**
+- `.garden` 마크업 무변경 — `data-flower-id` / `data-state` / `--before` / `--after` / `--empty` 그대로
+- `garden.js` 는 series-home 전용 (creator-series-home / series-manage-detail / styleguide 의 `.garden` 은 정적 표시 — JS 미적용)
+- 기존 `--blooming` state 의 `animation: none` 제거됨 — 시퀀스 중 sway 가 동시 실행되도록 변경. 의도된 동작이며 frame swap 과 transform 은 독립적으로 처리되므로 충돌 없음
+
+**확인할 곳**
+1. `js/components/garden.js` — bloom 시퀀스 / halo / sway 위상 보존 전체 로직
+2. `css/components/garden.css` — `.garden__halo*` 클래스 + keyframes
+3. `series-home.html` — 마크업 + 스크립트 진입
+4. `img/flower/flower_{01..04}/` 및 `img/img_flower_{01..04}_after.png` — 새 에셋
+5. [`COMPONENTS.md`](./COMPONENTS.md) — `.garden` 항목 갱신본
+
+---
+
+## 📌 v1.06.7 요약 (2026-04-30, v1.06.6 후속)
 
 **뷰어 3종 종료 화면(`.viewer-end`) 신규 + 페이지 헤더 패턴 통일 + main-home hero 신규 + 어두운 배경용 navbar/button 변형 + glass morphism + water-thanks 타이밍 조정.** 핵심은 (1) viewer-yoko / viewer-koma / viewer-tate 의 종료 화면 노출 + 페이지 헤더(series-register / series-manage-detail / episode-add 4종) nav+header 두 영역 분리, (2) main-home 상단에 1920×800 풀-블리드 video hero(시차 스크롤 + 동적 darken + IntersectionObserver navbar 모드 토글), (3) `.navbar--on-dark` / `.btn-ghost-dark` 신규 변형 + `.btn-glass` / `.btn-ghost-dark` 에 `backdrop-filter: blur(20px)` glass morphism 적용, (4) water-thanks 시퀀스의 낙하·splash 시간 조정.
 
