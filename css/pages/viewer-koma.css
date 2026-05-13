@@ -286,10 +286,9 @@
 .viewer-koma--end .viewer-koma__card,
 .viewer-koma--end .viewer-koma__bottom { visibility: hidden; }
 .viewer-koma--end .viewer-end {
-  display: inline-flex;
+  display: flex;             /* 컴포넌트 자체 width(400) 유지 — 가운데 정렬은 inset+margin auto */
   position: absolute;
   inset: 0;
   margin: auto;
   height: fit-content;
-  width: fit-content;
 }

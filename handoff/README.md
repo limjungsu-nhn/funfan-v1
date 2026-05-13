@@ -4,7 +4,38 @@
 
 ---
 
-## 📌 v1.07.2 요약 (2026-05-06, v1.07.1 후속) — 먼저 이것만 보세요
+## 📌 v1.07.3 요약 (2026-05-13, v1.07.2 후속) — 먼저 이것만 보세요
+
+**창작 파트너 시스템 + viewer-end 작가 메시지 카드 + IME 입력 버그 수정.** 핵심은 (1) 우측 패널 「設定」 → 창작 파트너 변경 모달 신설 (`.modal--panel-setting`) + `Chat.setPartner()` API 로 헤더/이름/직책/placeholder 일괄 동기화, (2) `.viewer-end` 전면 재설계 — 작가 あとがき 카드 + 안내 캡션 + 액션 (case 1/2 자동 분기, 버튼 사이즈 sm→base), (3) viewer-koma/tate 의 깨졌던 마크업 (`__bottom` / 닫는 div) 복원, (4) chat.js 의 IME 조합 중 Enter 송신 버그 수정, (5) `.btn-soft-red` 신규 + `.avatar-fuku/hana/tonton` 추가 + `.avatar-02` 제거.
+
+| 분류 | 내용 | 개발 영향 |
+|---|---|---|
+| **`.modal--panel-setting` (NEW)** | 14 페이지 동일 마크업. radio-card 3개 (트ント/하나/후쿠) `:has(:checked)` single-select. footer split + 카드 padding 비대칭 override | React: `<PartnerSettingModal>` 단일 컴포넌트. Context 로 currentPartner 관리 |
+| **`Chat.setPartner(name)` (NEW)** | 우측 panel-header avatar / name / subtext + chat-input placeholder 일괄 갱신. 모달 「話し方を変更する」 클릭 시 자동 호출. 모달 오픈 시 라디오 체크 상태도 currentPartner 와 동기화 | React: `useEffect` 로 partner 변경 시 DOM 갱신 / Context provider |
+| **`.btn-soft-red` (NEW)** | 약한 danger — `red-10` (#FFEAE8) 배경 + `red-100` (#FF1100) 텍스트. 「会話をリセット」 같은 비파괴적 주의 환기 액션용 | shadcn cva variant 추가 |
+| **창작 파트너 아바타 3종 (NEW)** | `.avatar-tonton` (パンダ) / `.avatar-hana` (羊) / `.avatar-fuku` (フクロウ) — 모두 base64 inline (외부 파일 의존 없음) | React Avatar 컴포넌트 variant 4종 (avatar-01 포함) |
+| **`.viewer-end` 전면 재설계** | width 400 고정, gap 24, padding-bottom 40. afterword 카드 (bg-soft + outline gray-6) + author 행 (avatar 36×36 + name) + caption + actions (flex:1 균등 분할). **case 1** (text 있음, padding 28/24): viewer-koma/tate / **case 2** (text 없음, padding 16/24): viewer-yoko — `:not(:has())` 자동 분기. 버튼 사이즈 `btn--sm`(36h) → base(40h) 상향 | React: 콘텐츠 prop 으로 case 자동 결정 |
+| **viewer-koma/tate 구조 복원** | 이전 세션 마크업 변환 중 `__bottom` 블록 (dots indicator + caption) + 닫는 `</div>` 누락 → 복원. modal 영역의 extra `</div>` 도 제거. 둘이 상쇄돼 div count 는 맞아 보였으나 실제 DOM 트리 깨짐 → layout 비정상의 원인이었음 | (일회성 수정 — React 마이그레이션 시 재발 없음) |
+| **IME 입력 버그 픽스** | `chat.js` textarea keydown 에 `!e.isComposing && e.keyCode !== 229` 가드. 한글/일본어/중국어 조합 중 Enter (입력기 확정) 가 송신을 트리거하지 않음 | React: `onCompositionStart/End` 또는 native `e.isComposing` |
+| **`.avatar-02` 제거** | 14 페이지의 모든 `avatar-02` 참조를 `avatar-hana` 로 일괄 교체 + CSS 클래스 + `img/img_avatar02.png` 파일 삭제. 우측 패널 디폴트 파트너도 `はな` → **`トントン`** 으로 변경 | (자산 정리) |
+| **IME / 토큰 / SVG 마이너** | `panel-header.css` / `chat-msg.css` 의 `2px` → `var(--space-0_5)` 토큰화. `icon-water-drop-filled` SVG path 신규 디자인 |  |
+
+**하위 호환**
+- `.avatar-02` 더 이상 사용 불가 — 대신 `.avatar-hana` 사용 (캐릭터 매핑 시) 또는 `.avatar-tonton` 등 새 4 variant 사용
+- `.viewer-end` 마크업 전면 변경 — 이전 `__text` / `__title` / `__subtext` 클래스는 제거됨. 새 `__intro` / `__afterword` / `__caption` 계층 사용
+- `.modal--panel-setting` 의 partner 값 (`tonton/hana/fuku`) 이 곧 avatar 클래스 suffix — 매핑 테이블 분리 불필요
+
+**확인할 곳**
+1. `css/components/modal.css` — `.modal--panel-setting` 영역 (sub-elements + footer/padding override)
+2. `css/components/button.css` — `.btn-soft-red` 변형
+3. `css/components/avatar.css` — 4 variants (모두 base64 inline)
+4. `css/components/viewer-end.css` — case 1/2 + `:not(:has())` 분기
+5. `js/components/chat.js` — `setPartner` / 모달 wiring / IME 가드
+6. [`COMPONENTS.md`](./COMPONENTS.md) — Avatar / Button table / `.modal--panel-setting` / `.viewer-end` / `.panel-header` 항목 갱신본
+
+---
+
+## 📌 v1.07.2 요약 (2026-05-06, v1.07.1 후속)
 
 **`series-post-management.html` `.post-row` 통일 인터랙션 적용 (9 행).** v1.07.1 의 통일 패턴 (press / hover / focus) 을 작품 관리 리스트에도 확장. `.post-row__link` 신규 — thumb+body 를 anchor 로 래핑, 編集 link 은 sibling 으로 분리. 진입은 `series-manage-detail.html`. CSS 는 `css/components/post-manage.css` 정의.
 

@@ -263,10 +263,9 @@
 .viewer-yoko__stage:has(.viewer-end) { /* stage 가 viewer-end 컨테이너 — 가로/세로 중앙 정렬 컨텍스트 유지 */ }
 .viewer-yoko--end .viewer-yoko__spread { display: none; }
 .viewer-yoko--end .viewer-end {
-  display: inline-flex;
+  display: flex;             /* 컴포넌트 자체 width(400) 유지 — 가운데 정렬은 inset+margin auto */
   position: absolute;
   inset: 0;
   margin: auto;
   height: fit-content;
-  width: fit-content;
 }

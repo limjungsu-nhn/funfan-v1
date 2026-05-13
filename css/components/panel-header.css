@@ -51,7 +51,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: var(--space-0_5);
 }
 
 /* ---------- Name ---------- */
@@ -82,7 +82,7 @@
 .panel-header__link {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: var(--space-0_5);
   font-size: var(--font-size-overline);
   line-height: var(--line-height-overline);
   font-weight: var(--font-weight-w4);

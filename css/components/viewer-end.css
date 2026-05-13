@@ -1,43 +1,134 @@
 /* ============================================
    viewer-end — viewer 3종(yoko / koma / tate)의 마지막 장 다음에 표시되는 종료 화면.
-   "今話を読み終えました" 텍스트 + 「次の話を読む」 / 「水をあげて応援する」 버튼 2개.
-   각 viewer 페이지의 stage / spread / card-row 안 마지막 슬롯에 들어가도록 inline-flex 컨테이너.
+
+   두 가지 콘텐츠 케이스 — `<p class="viewer-end__afterword-text">` 엘리먼트 유무로 자동 분기:
+     case 1: 본문 + 작가 행 (사용: viewer-koma / viewer-tate) — afterword padding 28/24
+     case 2: 작가 행만 (사용: viewer-yoko) — afterword padding 16/24
+              → CSS `:not(:has(.viewer-end__afterword-text))` 셀렉터가 자동 처리
+
+   구조 (case 1):
+     <div class="viewer-end">
+       <div class="viewer-end__intro">             <!-- afterword 카드 + 안내 캡션 (gap 20) -->
+         <article class="viewer-end__afterword">
+           <div class="viewer-end__afterword-body">
+             <p class="viewer-end__afterword-text">あとがき 본문 ...</p>      <!-- case 2: 이 줄 제거 -->
+             <div class="viewer-end__author">
+               <i class="avatar avatar-01 viewer-end__author-avatar"></i>
+               <span class="viewer-end__author-name">海野ハル</span>
+             </div>
+           </div>
+         </article>
+         <p class="viewer-end__caption">作家の夢と希望に水をあげて、応援メッセージを残してみてください。</p>
+       </div>
+       <div class="viewer-end__actions">          <!-- MD 사이즈 (40h, modifier 없음) -->
+         <button class="btn btn-line" data-viewer-end-next>...次の話を読む</button>
+         <button class="btn btn-filled-sky" data-viewer-end-water>...水をあげて応援する</button>
+       </div>
+     </div>
+
+   콘텐츠 폭: 400 고정. afterword 카드 / actions 행 모두 align-self:stretch 로 400 동일.
+   행간: intro ↔ actions gap 24 (외곽). intro 내부 afterword ↔ caption gap 20.
    ============================================ */
 
 .viewer-end {
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: var(--space-10); /* 40 — 텍스트 블록 ↔ 버튼 그룹 */
-}
-
-.viewer-end__text {
+  width: 400px;                   /* 고정 폭 — actions 197+6+197 합과 일치 (Figma 원본 동등) */
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--space-3); /* 12 */
+  gap: var(--space-6);            /* 24 — intro ↔ actions */
+  padding-bottom: var(--space-10); /* 40 */
 }
 
-.viewer-end__title {
-  margin: 0;
-  color: var(--color-font-primary-black-100);
-  text-align: center;
+/* ---------- Intro (afterword 카드 + 안내 캡션) ---------- */
+.viewer-end__intro {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);            /* 20 */
 }
 
-.viewer-end__subtext {
-  margin: 0;
-  color: var(--color-font-primary-black-50);
-  text-align: center;
-}
-
-.viewer-end__actions {
+/* ---------- Afterword 카드 ----------
+   - case 1 (content 있음, afterword-text 존재): padding 28/24
+   - case 2 (content 없음, author 행만): padding 16/24 — `:has()` 로 자동 분기 */
+.viewer-end__afterword {
+  align-self: stretch;
+  padding: var(--space-7) var(--space-6);  /* 28 / 24 — case 1 기본 */
+  background: var(--color-bg-soft);
+  border-radius: var(--radius-md);          /* 16 */
+  outline: 1px solid var(--color-gray-6);
+  outline-offset: -1px;
   display: inline-flex;
+  justify-content: flex-start;
   align-items: flex-start;
+  gap: var(--space-3);
+}
+
+/* case 2: afterword-text 가 없을 때 padding 축소 (16/24) */
+.viewer-end__afterword:not(:has(.viewer-end__afterword-text)) {
+  padding: var(--space-4) var(--space-6); /* 16 / 24 */
+}
+
+.viewer-end__afterword-body {
+  flex: 1 1 0;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-5);   /* 20 — 본문 ↔ 작가 행 */
+}
+
+.viewer-end__afterword-text {
+  margin: 0;
+  align-self: stretch;
+  color: var(--color-font-primary-black-100);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: var(--font-weight-w4);
+  word-wrap: break-word;
+}
+
+/* ---------- Author 행 (avatar + name) ---------- */
+.viewer-end__author {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2_5); /* 10 */
+}
+
+.viewer-end__author-avatar {
+  /* avatar 컴포넌트 위에 36×36 일회성 사이즈 (--sm 32 / --md 40 의 중간값, 토큰 없음) */
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+}
+
+.viewer-end__author-name {
+  color: var(--color-font-primary-black-100);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: var(--font-weight-w4);
+}
+
+/* ---------- 안내 캡션 (사용자에게 의도 전달) ---------- */
+.viewer-end__caption {
+  margin: 0;
+  text-align: center;
+  color: var(--color-font-primary-black-50);
+  font-size: var(--font-size-overline);     /* 11 */
+  line-height: var(--line-height-overline); /* 16 */
+  font-weight: var(--font-weight-w4);
+}
+
+/* ---------- Actions (버튼 2개 — 카드 폭에 맞춰 50/50 분할) ---------- */
+.viewer-end__actions {
+  align-self: stretch;
+  display: flex;
+  align-items: stretch;
   gap: var(--space-1_5); /* 6 */
 }
 
-/* "次の話を読む" 버튼은 173 고정 폭 */
-.viewer-end__actions .btn-line {
-  width: 173px;
+/* 두 버튼이 행 폭을 균등 분할 — (720 - 6) / 2 ≈ 357 each */
+.viewer-end__actions .btn-line,
+.viewer-end__actions .btn-filled-sky {
+  flex: 1 1 0;
+  min-width: 0;
 }

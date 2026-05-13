@@ -219,12 +219,12 @@
     <div class="right-panel">
 
       <div class="panel-header">
-        <i class="avatar avatar-02"></i>
+        <i class="avatar avatar-tonton"></i>
         <div class="panel-header__body">
-          <span class="panel-header__name">はな</span>
+          <span class="panel-header__name">トントン</span>
           <div class="panel-header__meta">
-            <span class="panel-header__subtext">漫画鑑定士</span>
-            <a class="panel-header__link">
+            <span class="panel-header__subtext">こころほぐし師</span>
+            <a class="panel-header__link" data-modal-open="#modal-panel-setting" href="#">
               設定
               <svg class="panel-header__link-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8.40016 8L5.3335 4.93333L6.26683 4L10.2668 8L6.26683 12L5.3335 11.0667L8.40016 8Z" fill="var(--color-black-100)"/>
@@ -237,7 +237,7 @@
       <div class="right-panel__chat">
 
         <div class="chat-msg">
-          <div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>
+          <div class="chat-msg__header"><i class="avatar avatar-tonton avatar--sm"></i></div>
           <div class="chat-msg__body"><p class="chat-msg__text">こんにちは！漫画についてなんでも聞いてください。</p></div>
         </div>
 
@@ -246,7 +246,7 @@
       <div class="right-panel__footer">
         <div class="chat-input">
           <div class="chat-input__field">
-            <textarea class="chat-input__textarea" aria-label="AIへのメッセージ" placeholder="はなに話しかけてみましょう..." rows="1"></textarea>
+            <textarea class="chat-input__textarea" aria-label="AIへのメッセージ" placeholder="トントンに話しかけてみましょう..." rows="1"></textarea>
           </div>
           <div class="chat-input__actions">
             <button class="icon-btn" type="button" aria-label="作品コンテキストを追加" data-modal-open="#modal-context">
@@ -380,6 +380,56 @@
     })();
   </script>
 
+
+  <!-- Modal: 패널 設定 — 창작 파트너 변경 -->
+  <div class="modal-backdrop" id="modal-panel-setting">
+    <div class="modal modal--panel-setting" role="dialog" aria-modal="true" aria-labelledby="modal-panel-setting-title">
+      <button class="modal__close" type="button" data-modal-close aria-label="閉じる">
+        <i class="icon icon-close"></i>
+      </button>
+      <h2 class="modal__title" id="modal-panel-setting-title">創作パートナー設定</h2>
+      <div class="modal-panel-setting__body">
+        <div class="modal-panel-setting__section">
+          <h3 class="modal-panel-setting__section-title text-subtext-w6">話し方を変える</h3>
+          <p class="modal-panel-setting__section-sub text-overline-w4">これまでの会話の文脈は引き継がれます。パートナーを変えますか?</p>
+        </div>
+        <div class="modal-panel-setting__partners">
+          <label class="radio-card">
+            <input class="radio-card__input" type="radio" name="modal-panel-partner" value="tonton" checked>
+            <i class="avatar avatar-tonton modal-panel-setting__avatar" aria-hidden="true"></i>
+            <div class="radio-card__content">
+              <span class="radio-card__title">トントン</span>
+              <span class="radio-card__sub">気持ちに寄り添い、共に考えるパンダ。こころほぐし師。</span>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input class="radio-card__input" type="radio" name="modal-panel-partner" value="hana">
+            <i class="avatar avatar-hana modal-panel-setting__avatar" aria-hidden="true"></i>
+            <div class="radio-card__content">
+              <span class="radio-card__title">はな</span>
+              <span class="radio-card__sub">作品の面白さを一番先に見つけてくれる羊。漫画鑑定士。</span>
+            </div>
+          </label>
+          <label class="radio-card">
+            <input class="radio-card__input" type="radio" name="modal-panel-partner" value="fuku">
+            <i class="avatar avatar-fuku modal-panel-setting__avatar" aria-hidden="true"></i>
+            <div class="radio-card__content">
+              <span class="radio-card__title">ふく</span>
+              <span class="radio-card__sub">問題の構造を見通し、具体的な次の一手を示してくれるフクロウ。</span>
+            </div>
+          </label>
+        </div>
+      </div>
+      <div class="modal__footer modal__footer--split">
+        <button class="btn btn-soft-red btn--sm" type="button">
+          <span class="text-caption-w4">会話をリセット</span>
+        </button>
+        <button class="btn btn-filled-nature btn--sm" type="button">
+          <span class="text-caption-w4">話し方を変更する</span>
+        </button>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

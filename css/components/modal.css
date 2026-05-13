@@ -854,6 +854,63 @@
      - 폭 400 (기본 504 보다 작음) · height auto · padding 48 28 32 · gap 36 · 가운데 정렬
      - 내부 구성: 일러스트(240×146) + 제목/서브 + divider 텍스트 + 액션 버튼 2개 (stack)
    ============================================ */
+/* ============================================
+   .modal--panel-setting — 우측 패널「設定」 클릭 시 노출되는 창작 파트너 변경 모달.
+   기본 504×644 사용. body 영역은 flex-1 로 늘리고 footer 는 자동으로 하단에 배치.
+   사용처: 14개 페이지(workspace shell + styleguide).
+   ============================================ */
+.modal-panel-setting__body {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6); /* 24 */
+}
+
+.modal-panel-setting__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);  /* 4 */
+}
+
+.modal-panel-setting__section-title {
+  margin: 0;
+  color: var(--color-font-primary-black-100);
+}
+
+.modal-panel-setting__section-sub {
+  margin: 0;
+  color: var(--color-font-primary-black-50);
+}
+
+.modal-panel-setting__partners {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1_5); /* 6 */
+}
+
+/* radio-card 안 character 아바타 — 48×48 로 사이즈 override
+   (기본 .avatar 는 40px, .radio-card__avatar 는 48px이지만 둘 다 결합되도록 일회성 클래스) */
+.modal-panel-setting__avatar {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+}
+
+/* Figma 명세 — 카드 padding: 16/20/16/16 (top/right/bot/left). 기본 .radio-card 는
+   좌우 모두 20 이지만 이 모달 안에서만 우측 16 으로 비대칭 적용 */
+.modal--panel-setting .radio-card {
+  padding-right: var(--space-4);  /* 16 */
+}
+
+/* footer 좌우 마진 0 — 카드(width 448, modal padding 28 기준) 폭과 정렬.
+   기본 .modal__footer--split 은 margin-inline 28 인데 modal padding 28 위에 이중 inset 이 됨. */
+.modal--panel-setting .modal__footer--split {
+  margin-inline: 0;
+}
+
+/* ============================================ */
+
 .modal--work-end {
   width: 400px;
   height: auto;

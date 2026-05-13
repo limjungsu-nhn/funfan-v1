@@ -27,7 +27,7 @@
 |---|---|---|
 | Typography | (없음) | `text-{scale}-{weight}` utility 직접 사용. scale 14종 × weight 2종 = 28개 |
 | Icon | `lucide-react` | `ICONS.md` 참조. 현재 40개 사용 |
-| Avatar | `Avatar` | 5 사이즈: xs(20) / sm(32) / md(40) / lg(56) / xl(80) · 10+ variant (avatar-01~) |
+| Avatar | `Avatar` | 5 사이즈: xs(20) / sm(32) / md(40) / lg(56) / xl(80) · 4 variants (모두 base64 inline): `.avatar-01` (人物 — 海野ハル) / `.avatar-tonton` (パンダ 창작 파트너) / `.avatar-hana` (羊 창작 파트너) / `.avatar-fuku` (フクロウ 창작 파트너) |
 | Logo | (이미지 only) | `.logo-funfan` 단일 variant |
 | Badge | `Badge` | 5 variants: 기본(white 배경 + gray-5 outline + shadow) / `.badge--nature`(nature-6 배경 + nature-2 텍스트, outline/shadow 없음, min-height 30) / `.badge--status`(nature-6 배경 + nature-2 텍스트, radius 8px, padding 8/4, overline-w4 권장 — 상태 표시용 컴팩트) / `.badge--status-wood`(wood-6 배경 + wood-3 텍스트, status 형제) / `.badge--status-gray`(gray-6 배경 + secondary 텍스트, status 형제 — 예: 非公開) |
 
@@ -46,6 +46,7 @@
 | Filled Nature | `.btn-filled-nature` | nature-3 | nature-2 | nature-2 + scale(.97) | 3px gray-5 |
 | Filled Black | `.btn-filled-black` | black-100 | black-100 | black-100 + scale(.97) | 3px gray-5 |
 | Filled Red | `.btn-filled-red` | red-100 | red-100 | red-100 + scale(.97) | 3px gray-5 |
+| Soft Red | `.btn-soft-red` | red-10 (#FFEAE8) + red-100 text | red-30 | red-30 + scale(.97) | 3px gray-5 |
 | Filled Wood | `.btn-filled-wood` | wood-3 | wood-2 | wood-2 + scale(.97) | 3px gray-5 |
 | Filled Sky | `.btn-filled-sky` | sky-3 | sky-2 | sky-2 + scale(.97) | 3px gray-5 |
 | Glass | `.btn-glass` | white-50 | white-100 | white-100 + scale(.97) | 3px gray-5 |
@@ -334,6 +335,24 @@ attachment.destroy();           // ObjectURL 해제 + 이벤트 해제 + DOM 비
 - 접근성: `role="dialog"` · `aria-modal="true"` · `aria-labelledby` 필수
 - TODO: 포커스 트랩 완전 구현 (현재는 첫 focusable 포커스만)
 
+#### `.modal--panel-setting` → shadcn `Dialog` (창작 파트너 변경)
+- **사용**: 우측 패널 헤더의 「設定」 링크 (`data-modal-open="#modal-panel-setting"`). 14 페이지 동일 마크업 (workspace shell 12 + account-setting + styleguide)
+- **기본 사이즈**: 504×644 (`.modal` base) — override 없음
+- **Sub-elements**:
+  - `.modal-panel-setting__body` (flex 1, gap 24) — body 영역. footer 가 자동으로 하단에 배치되도록 flex grow
+  - `.modal-panel-setting__section` (gap 4) — 섹션 헤더 그룹
+  - `.modal-panel-setting__section-title` (subtext-w6 14/22) — 「話し方を変える」
+  - `.modal-panel-setting__section-sub` (overline-w4 11/16 50% black) — 안내 문구
+  - `.modal-panel-setting__partners` (gap 6) — radio-card 3개 묶음
+  - `.modal-panel-setting__avatar` (48×48) — radio-card 안 character 아바타 사이즈 override (avatar 기본 40 / radio-card__avatar 48 양쪽 결합)
+- **partner cards**: 기존 `.radio-card` 재활용. `.radio-card--selected` 정적 클래스 제거됨 — `:has(.radio-card__input:checked)` 만으로 시각 분기 → 라디오 그룹 single-select 자동 동작
+- **partner avatar 매핑** (`Chat.PARTNER_NAMES`): `tonton` → トントン (パンダ) / `hana` → はな (羊) / `fuku` → ふく (フクロウ)
+- **카드 padding override**: `.modal--panel-setting .radio-card { padding-right: var(--space-4) }` — Figma 명세 (좌 20 / 우 16) 비대칭
+- **footer 마진 override**: `.modal--panel-setting .modal__footer--split { margin-inline: 0 }` — modal padding 28 위에 이중 inset 방지
+- **JS 통합** (`js/components/chat.js`):
+  - 모달 트리거 클릭 시 라디오 체크 상태를 `currentPartner` 로 동기화 (모달 오픈 직전 핸들러)
+  - 「話し方を変更する」 (`.btn-filled-nature`) 클릭 → 선택된 라디오 값으로 `setPartner()` 호출 → panel-header avatar / name / subtext / chat-input placeholder 갱신 + 모달 close
+
 #### `.modal--work-end` → shadcn `Dialog` (workroom mini 모드 작업 종료 모달)
 - **사용**: workroom.html mini 모드 우측 상단 「作業終了」 버튼 (`data-modal-open="#modal-work-end"`)
 - **컨테이너 override**: 폭 400 · `height:auto` · padding 48 28 32 · gap 36 · `align-items:center`
@@ -402,10 +421,19 @@ instance.destroy();           // 정리
 - **노출 시점**:
   - viewer-yoko / viewer-koma: 마지막 페이지에서 next 버튼 클릭 → root 에 `.viewer-{yoko,koma}--end` 토글, spread / card-row 숨기고 종료 화면 노출. prev 버튼 클릭으로 마지막 페이지 복귀
   - viewer-tate: 스테이지 마지막(이미지 다음) 에 1뷰포트 차지하며 자동 노출 (스크롤만으로 진입)
-- **구조**: `.viewer-end__text` (h2 28/38 w6 + p 12/18 w4 50% opacity) + `.viewer-end__actions` (버튼 2개, gap 6)
-  - 좌측: `btn-line btn--sm` 「次の話を読む」 (173px 고정 폭)
-  - 우측: `btn-filled-sky btn--sm` + `icon-water-drop-filled` 「水をあげて応援する」 — `#modal-water-support` 트리거
-- **신규 아이콘**: `.icon-water-drop-filled` 단순 teardrop SVG path (24×24 viewBox)
+- **구조 (v1.07.3 갱신 — 작가 あとがき 카드 + 안내 캡션 + 액션)**:
+  - `.viewer-end` (width 400 고정, flex column gap 24, padding-bottom 40)
+  - `.viewer-end__intro` (gap 20) — afterword 카드 + 안내 캡션
+  - `.viewer-end__afterword` (bg-soft, radius-md, outline gray-6) — case 1: padding 28/24 / case 2: padding 16/24 (afterword-text 부재 시 `:not(:has())` 셀렉터로 자동 분기)
+  - `.viewer-end__afterword-body` (gap 20) — 본문 + 작가 행
+  - `.viewer-end__afterword-text` (13/20 w4) — 작가 메시지 본문 (case 1 만)
+  - `.viewer-end__author` (gap 10) — `.viewer-end__author-avatar` (36×36, avatar 컴포넌트 사이즈 override) + `.viewer-end__author-name` (13/20 w4)
+  - `.viewer-end__caption` (11/16 w4 50% black) — 안내 멘트
+  - `.viewer-end__actions` (gap 6, stretch) — 버튼 2개 flex 1 균등 분할
+- **사용 case**:
+  - case 1 (afterword-text 있음, padding 28/24): viewer-koma / viewer-tate
+  - case 2 (afterword-text 없음, padding 16/24): viewer-yoko
+- **버튼**: 둘 다 base size(40h, modifier 없음) + flex:1 분할. 「水をあげて応援する」 에 `icon-water-drop-filled`
 - **JS 통합**: 각 viewer 페이지의 `data-viewer-end-water` / `data-viewer-end-next` 버튼에 클릭 핸들러 바인딩 (water → openEndModal, next → window.close)
 
 #### `.modal--water-thanks` (水をあげて応援する Step 2 시퀀스) → shadcn `Dialog` (재사용 모듈)
@@ -527,7 +555,10 @@ instance.destroy();           // 정리
 - 내부: header · chat area · suggestions · footer(chat-input)
 
 #### `.panel-header` → 커스텀
-- 아바타 + 이름 + 서브텍스트 + 옵션 액션
+- 아바타 (44×44) + 이름 + 서브텍스트 + 옵션 액션 (`.panel-header__link` 「設定」 — `data-modal-open="#modal-panel-setting"` 으로 창작 파트너 변경 모달 트리거)
+- **Case 1 (left-panel 유저)**: `<i class="avatar avatar-01">` + name (예: 「つちだ さん」), meta 없음
+- **Case 2 (right-panel 창작 파트너)**: `<i class="avatar avatar-{tonton|hana|fuku}">` + name + meta (subtext + 設定 링크). 기본 파트너 `tonton` (`トントン` / `こころほぐし師`)
+- **JS 동기화**: `js/components/chat.js` 의 `Chat.setPartner(name)` 가 호출되면 panel-header avatar 클래스 / name / subtext 일괄 갱신
 
 #### `.tab` + `.tab-group` → shadcn `Tabs`
 - states: default / hover / **selected** / pressed / focus(ring)

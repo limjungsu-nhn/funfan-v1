@@ -8,6 +8,64 @@
 
 ---
 
+## v1.07.3 (2026-05-13, v1.07.2 후속)
+
+**창작 파트너 시스템 + viewer-end 작가 메시지 카드 + viewer 마지막 페이지 마크업 복구 + IME 입력 버그 수정.** 다섯 가지 큰 묶음: (1) 우측 패널의 「設定」 → 창작 파트너 변경 모달 신규 + `Chat.setPartner()` 시스템, (2) `.viewer-end` 전면 재설계 (作家あとがき 카드 + 안내 캡션 + 액션, case 1/2 분기), (3) viewer-koma/tate 구조 복원 (이전 마크업 변환 중 누락된 `__bottom` / `</div>` 보강), (4) chat.js 의 한글/일본어 IME 조합 중 Enter 키 송신 버그 픽스, (5) 창작 파트너 아바타 3종 추가 + `.avatar-02` 제거.
+
+### 신규 — 창작 파트너 모달 + 시스템
+
+- **`.modal--panel-setting`** (modal.css): 504×644 모달 — 창작 파트너 변경 UI
+  - `.modal-panel-setting__body` (flex 1, gap 24) / `__section` (gap 4) / `__section-title` (subtext-w6) / `__section-sub` (overline-w4 50%) / `__partners` (gap 6) / `__avatar` (48×48 사이즈 override)
+  - radio-card 3개 (トントン / はな / ふく), `:has(:checked)` 만으로 single-select 시각 분기 (정적 `--selected` 클래스 사용 안 함)
+  - 카드 padding 비대칭 override (좌 20 / 우 16) + footer 좌우 마진 0 override
+- **`.btn-soft-red`** (button.css): 약한 danger 표현 — `red-10` (#FFEAE8) 배경 + `red-100` (#FF1100) 텍스트. Hover/Pressed/Focus 5 상태
+- **창작 파트너 아바타 3종** (avatar.css, base64 inline): `.avatar-tonton` (パンダ) / `.avatar-hana` (羊) / `.avatar-fuku` (フクロウ)
+- **`Chat.setPartner(name)` API** (chat.js): 우측 패널 헤더 avatar/name/subtext, chat-input placeholder 일괄 갱신
+- **모달 자동 동기화**: 트리거 클릭 시 라디오 체크 상태를 `currentPartner` 로 자동 설정 → 항상 현재 파트너가 미리 선택된 상태로 모달 오픈
+- **「話し方を変更する」 클릭 핸들러**: 선택된 라디오 값으로 `setPartner()` 호출 + 모달 close
+- **14 페이지 동일 마크업 삽입**: workspace shell 12 + account-setting + styleguide. panel-header 「設定」 링크에 `data-modal-open="#modal-panel-setting"` 부여
+
+### `.viewer-end` 전면 재설계 (v1.07.0 의 단순 텍스트 → 작가 メッセージ 카드)
+
+- 외곽 width 400 고정, gap 24, padding-bottom 40
+- `.viewer-end__intro` (gap 20) — 메시지 카드 + 안내 캡션
+- `.viewer-end__afterword` 카드 (bg-soft, radius-md, gray-6 outline)
+  - **case 1** (afterword-text 있음, padding 28/24): viewer-koma / viewer-tate
+  - **case 2** (afterword-text 없음, padding 16/24): viewer-yoko — `:not(:has(.viewer-end__afterword-text))` 셀렉터로 자동 분기
+- `.viewer-end__author` (gap 10) — `__author-avatar` (36×36) + `__author-name` (13/20 w4)
+- `.viewer-end__caption` (11/16 w4 50% black) — 안내 멘트
+- `.viewer-end__actions` (gap 6, align-self stretch) — 버튼 2개 `flex: 1` 균등 분할
+- 버튼: 기존 `btn--sm` (36h) → **base (40h, modifier 없음)** 으로 사이즈 한 단계 상향. 「水をあげて応援する」 의 `icon-water-drop-filled` SVG path 도 새 디자인으로 교체
+
+### viewer-koma / viewer-tate 구조 복원
+
+이전 세션에서 viewer-end 블록 일괄 재작성 중 일부 닫는 태그/형제 요소가 누락된 상태였음:
+- viewer-koma.html: `__bottom` (dots indicator + caption) 블록 + `__stage` 닫는 `</div>` 복원
+- viewer-tate.html: `__stage` 닫는 `</div>` + modal 영역의 extra `</div>` 제거 (둘이 서로 상쇄돼 div count 는 맞았으나 실제 DOM 트리는 깨진 상태였음 — layout 비정상화의 원인)
+
+### IME (한글/일본어) 입력 버그 수정
+
+- `chat.js` 의 textarea keydown 핸들러에 `!e.isComposing && e.keyCode !== 229` 가드 추가
+- 이전: IME 조합 중 Enter (입력기 확정용) 도 `sendMessage()` 호출 → 메시지 잔여 / 의도치 않은 송신
+- 수정 후: 한글 "안녕" 조합 중 Enter 는 IME 확정만, Enter 다시 누르면 송신
+
+### 정리
+
+- `.avatar-02` 클래스 + `img/img_avatar02.png` 자산 제거 — 14 페이지의 모든 `avatar-02` 참조를 `avatar-hana` 로 일괄 교체
+- 기존 panel-header 디폴트 파트너 はな → **トントン** 으로 변경 (13 페이지 마크업: avatar / name / subtext / placeholder)
+- 신규 시퀀스 자산 `img/img_fuku.png` / `img/img_hana.png` / `img/img_tonton.png` (각 13-16KB) 추가 + base64 inline 화 — 외부 파일 의존 없이 어떤 환경에서도 표시 보장
+- `.icon-water-drop-filled` SVG path 신규 디자인으로 교체
+- 토큰화: `panel-header.css` / `chat-msg.css` 의 `2px` → `var(--space-0_5)`
+
+### 마이그레이션 메모 (개발팀)
+
+- 창작 파트너 시스템 → React 에서 Context/Zustand 등으로 partner state 관리. Chat 컴포넌트에서 `<Avatar variant={partner}>` 패턴
+- `:has()` 셀렉터 다용 (radio-card single-select, viewer-end case 분기) — Safari 15.4+ 지원, 일반적인 브라우저 모두 OK
+- IME 처리는 input/textarea 의 표준 패턴 — `compositionstart/end` 이벤트 또는 `e.isComposing` 체크 (React: `onCompositionStart/End` 또는 ref 로 native event)
+- viewer-koma/tate 의 구조 복원은 일회성 — React 마이그레이션 시에는 컴포넌트 분리로 재발 방지
+
+---
+
 ## v1.07.2 (2026-05-06, v1.07.1 후속)
 
 **`series-post-management.html` 의 `.post-row` 도 통일 인터랙션 패턴 적용.** 9개 작품 행에 thumb+body 클릭 영역화, press / hover / focus 3효과 추가.

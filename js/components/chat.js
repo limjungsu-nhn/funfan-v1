@@ -29,6 +29,60 @@ window.Chat = (() => {
   const TEXTAREA_MIN    = 32;   // px
   const TEXTAREA_MAX    = 120;  // px
 
+  /* 창작 파트너 — 모달 「創作パートナー設定」 의 라디오 선택값과 동기화.
+     panel-header HTML 의 초기 마크업 (.avatar-{name})을 우선 읽고, 없으면 'hana' 기본값.
+     setPartner(name) 호출 시 panel-header / textarea placeholder 동기화 + appendBotMessage 의 아바타도 갱신. */
+  const VALID_PARTNERS = ['tonton', 'hana', 'fuku'];
+  const PARTNER_NAMES  = { tonton: 'トントン', hana: 'はな', fuku: 'ふく' };
+  const PARTNER_SUBTEXTS = { tonton: 'こころほぐし師', hana: '漫画鑑定士', fuku: '構造アドバイザー' };
+  let currentPartner = (() => {
+    const av = document.querySelector('.right-panel .panel-header .avatar');
+    if (av) {
+      for (const p of VALID_PARTNERS) if (av.classList.contains('avatar-' + p)) return p;
+    }
+    return 'hana';
+  })();
+
+  function setPartner(name) {
+    if (!VALID_PARTNERS.includes(name)) return;
+    currentPartner = name;
+    /* 1) panel-header 의 아바타 클래스 갱신 */
+    document.querySelectorAll('.right-panel .panel-header .avatar').forEach((el) => {
+      VALID_PARTNERS.forEach((p) => el.classList.remove('avatar-' + p));
+      el.classList.add('avatar-' + name);
+    });
+    /* 2) panel-header 의 이름 갱신 */
+    const nameEl = document.querySelector('.right-panel .panel-header .panel-header__name');
+    if (nameEl) nameEl.textContent = PARTNER_NAMES[name];
+    /* 3) panel-header 의 서브텍스트(직책) 갱신 — 가능한 경우 */
+    const subEl = document.querySelector('.right-panel .panel-header .panel-header__subtext');
+    if (subEl && PARTNER_SUBTEXTS[name]) subEl.textContent = PARTNER_SUBTEXTS[name];
+    /* 4) chat-input placeholder 갱신 */
+    const ta = document.querySelector('.right-panel .chat-input__textarea');
+    if (ta) ta.setAttribute('placeholder', PARTNER_NAMES[name] + 'に話しかけてみましょう...');
+  }
+
+  /* 모달「話し方を変更する」 클릭 시 라디오 선택값으로 파트너 변경 + 모달 닫기 */
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('#modal-panel-setting .btn-filled-nature');
+    if (!btn) return;
+    const checked = document.querySelector('#modal-panel-setting input[name="modal-panel-partner"]:checked');
+    if (!checked) return;
+    setPartner(checked.value);
+    const closeBtn = document.querySelector('#modal-panel-setting [data-modal-close]');
+    if (closeBtn) closeBtn.click();
+  });
+
+  /* 모달 오픈 트리거 클릭 시점에 라디오 체크 상태를 현재 파트너로 동기화.
+     defer 로딩 순서상 chat.js 가 modal.js 보다 먼저라서 이 핸들러가 먼저 실행됨 → 라디오 갱신 후 모달 오픈. */
+  document.addEventListener('click', (e) => {
+    const opener = e.target.closest('[data-modal-open="#modal-panel-setting"]');
+    if (!opener) return;
+    document.querySelectorAll('#modal-panel-setting input[name="modal-panel-partner"]').forEach((r) => {
+      r.checked = (r.value === currentPartner);
+    });
+  });
+
   const MY_MSG_TAIL_SVG =
     '<svg class="my-msg__tail" width="16" height="11" viewBox="0 0 16 11" xmlns="http://www.w3.org/2000/svg">' +
       '<path d="M0 0H12L15.111 9.33315C15.4129 10.2387 14.4188 11.027 13.6059 10.5267C10.9214 8.87468 7.83106 8 4.67894 8H0V0Z"/>' +
@@ -51,7 +105,7 @@ window.Chat = (() => {
     const wrap = document.createElement('div');
     wrap.className = 'chat-msg chat-msg--new';
     wrap.innerHTML =
-      '<div class="chat-msg__header"><i class="avatar avatar-02 avatar--sm"></i></div>' +
+      '<div class="chat-msg__header"><i class="avatar avatar-' + currentPartner + ' avatar--sm"></i></div>' +
       '<div class="chat-msg__body"><p class="chat-msg__text"></p></div>';
     chatArea.appendChild(wrap);
     chatArea.scrollTop = chatArea.scrollHeight;
@@ -117,7 +171,9 @@ window.Chat = (() => {
 
     sendBtn.addEventListener('click', sendMessage);
     textarea.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && !e.shiftKey) {
+      /* IME 조합 중(한글/일본어/중국어 등) Enter 는 입력기 확정 신호 → sendMessage 호출 차단.
+         e.isComposing: 모던 API, keyCode 229: IME active 시 일부 브라우저 fallback */
+      if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229) {
         e.preventDefault();
         sendMessage();
       }
@@ -141,5 +197,5 @@ window.Chat = (() => {
     return { sendMessage, chatArea, textarea, sendBtn };
   }
 
-  return { typeText, appendBotMessage, appendMyMessage, setup };
+  return { typeText, appendBotMessage, appendMyMessage, setup, setPartner, getPartner: () => currentPartner };
 })();

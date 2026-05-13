@@ -392,6 +392,27 @@
   box-shadow: 0px 1px 2px var(--color-shadow-light);
   color: var(--color-white-100);
 }
+
+/* ============================================
+   Soft Red — 위험 액션의 "약한" 표현 (light red bg + red text)
+   사용: 「会話をリセット」 등 비파괴적이지만 주의 환기가 필요한 작업
+   ============================================ */
+.btn-soft-red {
+  background: var(--color-red-10);   /* #FFEAE8 */
+  color: var(--color-red-100);        /* #FF1100 */
+}
+.btn-soft-red .icon { color: var(--color-red-100); }
+.btn-soft-red:hover:not(.btn-soft-red--disabled) {
+  background: var(--color-red-30);
+}
+.btn-soft-red:active:not(.btn-soft-red--disabled) {
+  background: var(--color-red-30);
+  transform: scale(0.97);
+}
+.btn-soft-red:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--ring-width) var(--color-gray-5), 0 1px 2px var(--color-shadow-light);
+}
 .btn-filled-red .icon {
   color: var(--color-white-100);
 }
