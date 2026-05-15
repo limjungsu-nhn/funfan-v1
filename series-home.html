@@ -34,6 +34,9 @@
   <script src="js/components/series-card.js" defer></script>
   <script src="js/components/episode-card.js" defer></script>
   <script src="js/components/modal.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js" defer></script>
+  <script src="img/animations/watering.js" defer></script>
+  <script src="img/animations/light.js" defer></script>
   <script src="js/components/modal-water-thanks.js" defer></script>
   <script src="js/components/garden.js" defer></script>
 
@@ -105,19 +108,19 @@
               <div class="garden-sign">
                 <img class="garden-sign__bg" src="img/img_signs.png" alt="">
                 <div class="garden-sign__names">
-                  <a class="garden-sign__name text-link" href="author-profile.html">海野ハル</a>
-                  <p class="garden-sign__name">さくら✿</p>
-                  <p class="garden-sign__name">長い名前のユーザー</p>
+                  <p class="garden-sign__name" data-typed-text="海野ハル"></p>
+                  <p class="garden-sign__name" data-typed-text="さくら✿"></p>
+                  <p class="garden-sign__name" data-typed-text="長い名前のユーザー"></p>
                 </div>
               </div>
-              <!-- 순차적으로: after 4개 → before 6개 → empty 2개 (총 12 슬롯).
+              <!-- 최초 상태: before 10개 + empty 2개 (총 12 슬롯). 작가가 등록한 에피소드 수만큼 before 가 존재.
                    진입은 우측 「水をあげて応援する」 버튼 → #modal-water-support 모달 1회 = 물주기 1회.
-                   5회 누적 시 모달 close 후 시퀀스 애니메이션 + halo 글로우 → _after 로 swap + DOM 재정렬.
+                   1·2·3회 → garden-sign 애니메이션(라인별 닉네임 타이핑), 5회 누적 시 bloom (개화) → _after 로 swap + reorder.
                    garden.js (auto-attach via .garden) 가 핸들링 -->
-              <img class="garden__item garden__item--after" src="img/img_flower_01_after.png" alt="" data-flower-id="01" data-state="after">
-              <img class="garden__item garden__item--after" src="img/img_flower_02_after.png" alt="" data-flower-id="02" data-state="after">
-              <img class="garden__item garden__item--after" src="img/img_flower_03_after.png" alt="" data-flower-id="03" data-state="after">
-              <img class="garden__item garden__item--after" src="img/img_flower_04_after.png" alt="" data-flower-id="04" data-state="after">
+              <img class="garden__item garden__item--before" src="img/img_flower_01_before.png" alt="" data-flower-id="01" data-state="before">
+              <img class="garden__item garden__item--before" src="img/img_flower_02_before.png" alt="" data-flower-id="02" data-state="before">
+              <img class="garden__item garden__item--before" src="img/img_flower_03_before.png" alt="" data-flower-id="03" data-state="before">
+              <img class="garden__item garden__item--before" src="img/img_flower_04_before.png" alt="" data-flower-id="04" data-state="before">
               <img class="garden__item garden__item--before" src="img/img_flower_01_before.png" alt="" data-flower-id="01" data-state="before">
               <img class="garden__item garden__item--before" src="img/img_flower_02_before.png" alt="" data-flower-id="02" data-state="before">
             </div>
@@ -292,34 +295,7 @@
       <button class="modal__close" type="button" data-modal-close aria-label="閉じる">
         <i class="icon icon-close"></i>
       </button>
-      <img class="modal-water-thanks__image" src="img/img_water_thanks.svg" alt="" aria-hidden="true">
-      <!-- 뒤쪽 물방울 — illust 앞 DOM 위치 → 식물보다 뒤에 렌더 -->
-      <img class="modal-water-thanks__illust" src="img/img_illust_183.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__illust-overlay" src="img/img_illust_185.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <img class="modal-water-thanks__drop modal-water-thanks__drop--ground" src="img/img_water_drop_176.svg" alt="" aria-hidden="true">
-      <!-- 중간 물방울 (mid) — illust 와 front 사이 DOM. 사이즈 40 / opacity 0.85 — 깊이감 중간층 -->
-      <!-- 앞쪽 물방울 — DOM 마지막 → 가장 위 -->
-      <p class="modal-water-thanks__title">花壇に水を届けています</p>
+      <div class="modal-water-thanks__lottie" data-lottie-container></div>
     </div>
   </div>
 

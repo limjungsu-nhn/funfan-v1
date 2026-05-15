@@ -8,6 +8,80 @@
 
 ---
 
+## v1.07.4 (2026-05-15, v1.07.3 후속)
+
+**Lottie 통합 + garden-sign 닉네임 시스템 + 물주기 흐름 정책 강화.** 네 가지 큰 묶음: (1) **Lottie 통합** — water-thanks 모달 시퀀스 + garden bloom 시퀀스(꽃 4종) + halo 글로우 모두 손코딩 SVG/이미지 시퀀스 → Lottie JSON 으로 교체, (2) **garden-sign 닉네임 시스템** — 1·2·3회 물주기마다 sign 뒤 halo + 라인별 닉네임 타이핑, 글로벌 카운터로 garden 전체 최초 3회만 발동, (3) **물주기 흐름 정책 강화** — 폼 제출(thanks step 진입) 만 카운트 + bloom 중 다음 꽃으로 자동 이월 + 5회/꽃 정책 + 초기 상태 10 before flowers, (4) **Lottie 렌더링 최적화** — `rendererSettings` (hideOnTransparent / progressiveLoad / preserveAspectRatio) + CSS `contain: paint` + `will-change` composite hint.
+
+### Lottie 통합 (3 카테고리)
+
+- **water-thanks 모달 시퀀스** (`js/components/modal-water-thanks.js`, `img/animations/watering.js` 902KB)
+  - 기존: 손코딩 물방울 사이클 + illust stage 전환 + 타이틀 타이핑 keyframe → 모두 제거
+  - 신규: `WaterThanks.start(thanksModal)` 가 `window.WATERING_LOTTIE_DATA` 로 lottie 인스턴스 생성. 자연 종료(`complete`) 시 close 버튼 자동 클릭 → 모달 close → garden bloom 트리거 자연 연결
+  - `modal-water-thanks__lottie` 컨테이너 (data-lottie-container) 모달 안에 배치
+- **garden bloom 시퀀스** (`js/components/garden.js`, `img/animations/flower_01-04.js` 각 1.5-2.2MB)
+  - 기존: WebP 이미지 시퀀스 (462 프레임) → 삭제 (12MB 절감)
+  - 신규: 모달 오픈 시 해당 flower id 의 JS wrapper 를 dynamic script tag 으로 백그라운드 프리로드. bloom 진입 시 body 직속 `.garden__bloom-lottie` overlay 컨테이너 생성 → Lottie 재생 → `complete` 이벤트 시 finish (after 이미지 swap + reorder)
+  - overlay 는 item 의 **at-rest 좌표** (sway 회전 전 page coords) 로 위치 — `getItemAtRestPageRect()` 가 `offsetParent` 체인으로 계산. sway 위상 동기화는 Web Animations API `startTime` 복사
+- **halo (light) 글로우** (`img/animations/light.js` 5KB)
+  - 기존: 3겹 CSS 원형 + `@keyframes` 등장/퇴장 → 모두 제거
+  - 신규: 단일 `.garden__halo` div 에 light Lottie 인스턴스 — 등장/유지/퇴장이 Lottie 안에 모두 포함된 4s 시퀀스. 컨테이너 260×260 (compact 0.7 스케일)
+  - garden-sign 동작에도 동일 light Lottie 재사용 (`addHalo()` 공통 헬퍼)
+
+### garden-sign 닉네임 시스템 (NEW 정책)
+
+- **`data-typed-text` 속성**: 1·2·3번 줄 각각의 원본 닉네임 보관. `<p>` 본문은 비어있는 상태로 시작
+- **`fireSignAnimation(garden, lineIdx)`**: 해당 라인에 타이핑 + sign 뒤 light Lottie halo 재생. 빠른 연타 시 이전 halo destroy 후 fresh restart (early-return 가드 제거 — 라인 스킵 방지)
+- **`typeName(el)`**: 한 글자씩 1.5s 동안 textContent 누적. Array.from() 으로 서로게이트 페어/이모지 안전 분리
+- **글로벌 카운터** (`globalWaterCount`): garden 전체 누적 1·2·3회째에만 sign 애니메이션 발동. 4회째 이후로는 sign 변화 없음 (라인 3개가 다 채워지면 그대로 유지). bloom 종료에도 라인은 리셋되지 않음 (글로벌 정책)
+- **HTML 정리**: `<a class="garden-sign__name text-link" href="author-profile.html">` 링크 제거 → 정적 `<p>` (3개 페이지: series-home / creator-series-home / series-manage-detail)
+- **트리거 진화**: (a) 초기 sign 자체 클릭 → (b) reaction-bar 의 「看板アニメーション」 텍스트 버튼 → (c) **최종: 물주기 모달 close 자동 트리거** (정책 확정). 트리거 텍스트 버튼과 `[data-sign-trigger]` 인터페이스는 제거됨
+
+### 물주기 흐름 정책 강화
+
+- **제출 게이팅**: 모달 close 시점에 `[data-step="thanks"]` 에 `modal--inactive` 가 없을 때만 카운트 (= 폼 제출 → thanks Lottie → 자동 close 한 사이클만 1회). X/閉じる 로 form 단계 취소는 카운트 0
+- **target 재해결**: pendingActive 캐시 제거 — close 시점에 `getActiveItem()` 으로 fresh 하게 재해결. bloom 진행 중(active 없음) 이면 `getNextWaterableItem()` fallback 으로 다음 `--before` (non-blooming) 꽃에 이월 → off-by-one 해결 (이전: 11회째 bloom → 이제: 정확히 10회째 bloom)
+- **per-flower bloom 카운터 + global sign 카운터 병행**: counters WeakMap 은 꽃별 5회 → 개화 카운트, globalWaterCount 는 garden 전체 최초 3회 → sign 발동만
+- **pre-fill 제거**: init 시 모든 before 꽃에 4회 채워두던 데모 편의 코드 제거 — 자연 누적 1→5 흐름 관찰 가능
+- **garden 초기 상태**: series-home 의 row 1+2 가 4 after + 6 before + 2 empty → **0 after + 10 before + 2 empty** (작가가 에피소드를 등록한 만큼 before 꽃 생성, 개화는 아직 없는 상태)
+
+### Lottie 렌더링 최적화
+
+모든 `lottie.loadAnimation` 호출에 공통 `rendererSettings` 추가:
+```js
+rendererSettings: {
+  preserveAspectRatio: 'xMidYMid meet',
+  progressiveLoad: false,   // 시작 전 전체 frame 사전 마운트 → 첫 프레임 jank 방지
+  hideOnTransparent: true,  // 투명도 0 인 레이어 페인트 skip
+}
+```
+
+CSS 측 paint isolation + composite layer 승격:
+- `.garden__halo`, `.garden__bloom-lottie`, `.modal-water-thanks__lottie` 에 `contain: layout style paint`
+- `will-change: opacity` (halo) / `will-change: transform` (나머지) — composite layer 강제 승격으로 GPU 합성
+
+### `.garden__bloom-lottie` (NEW) — bloom Lottie overlay 클래스
+
+- body 직속 `position: absolute; z-index: 2` (halo z:0, blooming item z:1 보다 위)
+- `garden-sway` 애니메이션 인라인 적용 + Web Animations API 로 underlying item 과 startTime 동기화 → 시퀀스 종료 후 sway 위상 끊김 없음
+- `--blooming` 클래스가 부여된 item 은 `visibility: hidden` — bloom overlay 가 비주얼 전담, 밑단 `_before.png` 와 외곽선 이중 노출 방지
+
+### 정리 — 자산 + dead code
+
+- **이미지 시퀀스 삭제**: `img/flower/` 폴더 전체 (WebP 462 프레임, 12MB)
+- **Lottie 실험 잔재 정리**: `img/animations/seed_1.js`, `seed_2.js` (1.4MB) — series-register 에서 시도 후 메인 thread 막힘으로 revert
+- **Lottie 자산 (정상 사용)**: `flower_01-04.js`, `light.js`, `watering.js`
+- **dead 코드 제거**: `resetSign()`, `attachSignHaloHandlers()` 텍스트 트리거 핸들러, water-thanks 모달의 SEED_TIMING 일부 미사용 키, 인라인 트리거 버튼 마크업 (3페이지)
+
+### 마이그레이션 메모 (개발팀)
+
+- **Lottie 라이브러리 의존**: `lottie-web@5.12.2` (cdnjs) 사용. file:// 프로토콜 fetch 차단 회피로 모든 JSON 을 `window.X_LOTTIE_DATA` 글로벌로 노출하는 JS 래퍼 패턴. React 마이그레이션 시 `lottie-react` 또는 `@lottiefiles/react-lottie-player` 로 교체 + `animationData` import 로 단순화 가능
+- **garden-sign 정책 (글로벌 사인 카운터)**: 실 서비스에서는 더미 닉네임 → 실제 첫 3 명의 후원자 닉네임 주입. 새 후원자는 사인에 추가되지 않음 (라인 3개 고정)
+- **모달 close 게이팅**: thanks step `modal--inactive` 클래스로 제출 완료 여부 판별 — React 에서는 form submit state 로 명시 추적 권장
+- **at-rest rect 계산**: sway 회전을 고려해 `offsetParent` 체인으로 계산. React 의 ref + `useLayoutEffect` 로 동일 패턴 가능
+- **모든 Lottie 안에 텍스트 일부 포함**: bloom 시퀀스/water-thanks 시퀀스 모두 안내 텍스트가 Lottie 내부에 일러스트와 합성됨. DOM 측 별도 텍스트 노드 없음 — 다국어 대응 필요 시 Lottie 텍스트 레이어 분리 export 필요
+
+---
+
 ## v1.07.3 (2026-05-13, v1.07.2 후속)
 
 **창작 파트너 시스템 + viewer-end 작가 메시지 카드 + viewer 마지막 페이지 마크업 복구 + IME 입력 버그 수정.** 다섯 가지 큰 묶음: (1) 우측 패널의 「設定」 → 창작 파트너 변경 모달 신규 + `Chat.setPartner()` 시스템, (2) `.viewer-end` 전면 재설계 (作家あとがき 카드 + 안내 캡션 + 액션, case 1/2 분기), (3) viewer-koma/tate 구조 복원 (이전 마크업 변환 중 누락된 `__bottom` / `</div>` 보강), (4) chat.js 의 한글/일본어 IME 조합 중 Enter 키 송신 버그 픽스, (5) 창작 파트너 아바타 3종 추가 + `.avatar-02` 제거.

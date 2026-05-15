@@ -99,10 +99,30 @@
 }
 
 /* ---------- Water-Thanks (water-support submit 후 단계 모달) ----------
-   배경 이미지: 모달 vertical 중앙(50%)에 이미지 상단을 앵커로 배치, 모달 폭 채움.
+   v1.07.4 부터 Lottie (`img/animations/watering.js`, 7.5s) 로 시퀀스 통합.
+   기존 plant-drop / ground-drop / illust 마크업은 제거, 단일 `__lottie` 컨테이너만 남음.
    modal overflow: hidden 으로 모달 경계 밖 자동 마스크. */
 .modal--water-thanks {
   overflow: hidden;
+}
+
+/* Lottie 컨테이너 — 모달 전체 채움, 아래쪽에 정렬되도록 bottom 기준.
+   Paint isolation 으로 Lottie SVG 프레임 invalidate 가 박스 내부로 격리. */
+.modal-water-thanks__lottie {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  contain: layout style paint;
+  will-change: transform;
+}
+.modal-water-thanks__lottie svg {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .modal-water-thanks__image {
@@ -234,36 +254,6 @@
   .modal-water-thanks__drop {
     animation: none;
   }
-}
-
-/* 본문 텍스트 — 일러스트 하단에서 32 간격 (= top 124 + height 196 + 32 = 352)
-   element 가 텍스트 폭 만큼만 차지하도록 left:50% + translate(-50%) 로 가로 중앙 배치 → clip-path 가 텍스트 영역에 정확히 일치 */
-.modal-water-thanks__title {
-  position: absolute;
-  top: 352px;
-  left: 50%;
-  transform: translateX(-50%);
-  margin: 0;
-  white-space: nowrap;
-  font-size: var(--font-size-h3);          /* 22 */
-  line-height: var(--line-height-h3);      /* 32 */
-  font-weight: var(--font-weight-w6);
-  color: var(--color-white-100);
-  /* 기본 상태: 전부 가림. modal 이 active 가 되면 typewriter 애니메이션으로 점진 노출 */
-  clip-path: inset(0 100% 0 0);
-}
-
-/* 자동 트리거 제거 — JS 가 3단계 텍스트 swap 마다 typewriter 를 inline animation 으로 재적용 */
-
-@keyframes water-thanks-typewriter {
-  from { clip-path: inset(0 100% 0 0); }
-  to   { clip-path: inset(0 0 0 0); }
-}
-
-/* 지우개 — 우→좌 (backspace 처럼 마지막 글자부터 사라짐) */
-@keyframes water-thanks-eraser {
-  from { clip-path: inset(0 0 0 0); }
-  to   { clip-path: inset(0 100% 0 0); }
 }
 
 /* ---------- Container ---------- */

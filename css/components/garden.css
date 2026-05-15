@@ -132,71 +132,60 @@
   /* halo(body 직속 z-index:0) 위로 올라오도록 stacking 강제 */
   position: relative;
   z-index: 1;
+  /* bloom Lottie overlay 가 등장→만개 비주얼을 전담 — 밑단 _before.png 가 보이면
+     Lottie 외곽과 미세하게 어긋나 이중 윤곽으로 겹쳐 보이므로 시퀀스 중에는 숨김.
+     끝나면 `--blooming` 제거 + `_after.png` swap 으로 다시 표시됨. */
+  visibility: hidden;
 }
 
 /* ---------- Bloom Halo (시퀀스 재생 중 배경 글로우) ----------
    .garden 컨테이너가 overflow:hidden 이라 halo 를 내부에 두면 잘림.
    JS 가 document.body 직속으로 .garden__halo 를 삽입하고
    left/top 은 인라인으로 (page 좌표 = getBoundingClientRect + scroll) 지정.
-   3겹 원형 — 외곽 노랑(blur 40) → 중간 진노랑(blur 10) → 안쪽 흰색(blur 10).
+   v1.07.4+: 3겹 CSS 원형 → Lottie 애니메이션 (`light.js`, 400×400, 4s) 로 교체.
+   등장/유지/퇴장이 Lottie 안에 모두 포함되어 별도 CSS keyframe 없음.
    --halo-scale 로 스케일을 외부에서 주입 (compact 0.7 / 기본 1).
 ---------------------------------------- */
 .garden__halo {
   position: absolute;
-  width: 180px;
-  height: 180px;
+  width: 260px;
+  height: 260px;
   pointer-events: none;
   /* blooming 식물(z-index:1) 보다 낮게 — 같은 root stacking 안에서 뒤로 깔림 */
   z-index: 0;
   --halo-scale: 1;
   transform: translate(-50%, -50%) scale(var(--halo-scale));
-  animation: garden-halo-in 0.4s ease-out forwards;
+  /* Paint isolation — Lottie SVG 의 매 프레임 invalidate 가 이 박스 내부로 격리되어
+     다른 요소 페인트에 영향 없음. will-change: opacity 로 composite layer 승격. */
+  contain: layout style paint;
+  will-change: opacity;
+}
+.garden__halo svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-.garden__halo--leaving {
-  animation: garden-halo-out 0.5s ease-in forwards;
-}
-
-.garden__halo-ring {
+/* Lottie 기반 bloom 시퀀스 overlay — item 의 화면 좌표 위에 정확히 겹쳐 표시.
+   v1.07.4+: image sequence(WebP 122프레임) 를 Lottie JSON 으로 교체.
+   z-index 2 로 halo(0) 과 blooming item(1) 보다 위에 — Lottie 가 꽃을 가림 */
+.garden__bloom-lottie {
   position: absolute;
-  border-radius: var(--radius-full);
+  pointer-events: none;
+  z-index: 2;
+  /* 밑단 .garden__item 과 동일한 sway — JS 가 animation-duration/delay 를 인라인으로
+     복사해 위상을 맞추므로, 시퀀스 종료 후 item 이 다시 보이는 순간에도 흔들림이
+     끊기지 않고 그대로 이어진다. */
+  transform-origin: bottom center;
+  animation: garden-sway 2.6s ease-in-out infinite;
+  will-change: transform;
+  /* Paint isolation — Lottie SVG 의 프레임별 invalidate 영역을 박스 내부로 격리 */
+  contain: layout style paint;
 }
-
-/* halo 전용 글로우 컬러 — 다른 곳에 재사용되지 않는 단일 effect 색이라 토큰화 없이 리터럴 유지 */
-.garden__halo-ring--outer {
-  inset: 0;
-  background: #FFFF00;
-  opacity: 0.5;
-  filter: blur(40px);
-}
-
-.garden__halo-ring--mid {
-  left: 15px;
-  top: 15px;
-  width: 150px;
-  height: 150px;
-  background: #FFD400;
-  opacity: 0.5;
-  filter: blur(10px);
-}
-
-.garden__halo-ring--inner {
-  left: 25px;
-  top: 25px;
-  width: 130px;
-  height: 130px;
-  background: var(--color-white-100);
-  filter: blur(10px);
-}
-
-@keyframes garden-halo-in {
-  from { opacity: 0; transform: translate(-50%, -50%) scale(calc(var(--halo-scale) * 0.6)); }
-  to   { opacity: 1; transform: translate(-50%, -50%) scale(var(--halo-scale)); }
-}
-
-@keyframes garden-halo-out {
-  from { opacity: 1; transform: translate(-50%, -50%) scale(var(--halo-scale)); }
-  to   { opacity: 0; transform: translate(-50%, -50%) scale(calc(var(--halo-scale) * 1.3)); }
+.garden__bloom-lottie svg {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 /* ---------- Reduced Motion ---------- */

@@ -4,7 +4,39 @@
 
 ---
 
-## 📌 v1.07.3 요약 (2026-05-13, v1.07.2 후속) — 먼저 이것만 보세요
+## 📌 v1.07.4 요약 (2026-05-15, v1.07.3 후속) — 먼저 이것만 보세요
+
+**Lottie 통합 + garden-sign 닉네임 시스템 + 물주기 흐름 정책 강화.** 핵심은 (1) **Lottie 통합** — water-thanks 모달 시퀀스 + garden bloom 시퀀스 + halo 글로우 모두 손코딩 SVG/이미지 시퀀스 → Lottie JSON 으로 교체 (lottie-web@5.12.2), (2) **garden-sign 닉네임 시스템** — 1·2·3회 물주기마다 sign 뒤 halo + 라인별 닉네임 타이핑, 글로벌 카운터로 garden 전체 최초 3회만 발동, (3) **물주기 흐름 정책** — 폼 제출만 카운트 + bloom 중 다음 꽃 자동 이월 + 5회/꽃 정책 + 초기 상태 10 before flowers, (4) **Lottie 렌더링 최적화** — `rendererSettings` + `contain: paint` + `will-change`.
+
+| 분류 | 내용 | 개발 영향 |
+|---|---|---|
+| **Lottie water-thanks** | `WaterThanks.start()` 가 `window.WATERING_LOTTIE_DATA` 로 인스턴스 생성. 자연 종료(`complete`) → close 버튼 자동 클릭 → garden bloom 트리거 자연 연결 | React: `lottie-react` 로 교체 + `onComplete` prop |
+| **Lottie garden bloom** | 모달 오픈 시 해당 flower id JS wrapper dynamic preload → bloom 진입 시 body 직속 `.garden__bloom-lottie` overlay 컨테이너 + Lottie 인스턴스 → complete 시 after.png swap + reorder. overlay 좌표는 **at-rest** (sway 회전 전, `offsetParent` 체인) | React: useLayoutEffect + Lottie 컴포넌트 |
+| **Lottie halo (light)** | 단일 `.garden__halo` div 에 light Lottie — 등장/유지/퇴장 4s 시퀀스 내장. compact 0.7 스케일. garden-sign animation 도 동일 light Lottie 재사용 (`addHalo()` 공통) | React: `<HaloLottie scale={compact ? 0.7 : 1}>` |
+| **garden-sign 닉네임 시스템 (NEW)** | `data-typed-text` 로 1·2·3 라인 닉네임 보관 + `<p>` 본문은 빈 상태. `fireSignAnimation(garden, lineIdx)` 가 해당 라인 1.5s 타이핑 + halo 재생. `globalWaterCount` 가 garden 전체 최초 3회만 발동 보장 (per-flower 가 아니라 garden 전체 글로벌) | React: Context 의 globalWaterCount 상태 + `<SignName typedText="...">` 컴포넌트 |
+| **garden-sign 링크 제거** | 3개 페이지 (series-home / creator-series-home / series-manage-detail) 의 `<a class="garden-sign__name text-link" href="author-profile.html">` → 정적 `<p class="garden-sign__name" data-typed-text="...">` | (마크업 정리) |
+| **물주기 제출 게이팅** | close 시점에 `[data-step="thanks"]` 가 `modal--inactive` 없을 때만 카운트 (= 폼 제출 → thanks → 자동 close 한 사이클만 1회). 취소 close 는 카운트 0 | React: form submit state 명시 추적 |
+| **target 재해결 + bloom race fallback** | pendingActive 캐시 제거 → close 시점 `getActiveItem()` fresh. bloom 진행 중이면 `getNextWaterableItem()` 으로 다음 `--before` 꽃에 이월. off-by-one 해결 (이전 11회 → 정확히 10회 bloom) | (정책 로직) |
+| **garden 초기 상태 (10 before)** | series-home row 1+2: 4 after + 6 before + 2 empty → **0 after + 10 before + 2 empty**. 작가가 등록한 에피소드만큼 before 꽃 생성, 개화는 아직 없는 상태 | (콘텐츠 데이터 정책) |
+| **Lottie 렌더링 최적화** | 모든 `loadAnimation` 에 `rendererSettings: { preserveAspectRatio, progressiveLoad: false, hideOnTransparent: true }`. CSS 측 `contain: layout style paint` + `will-change: opacity/transform` (composite layer 승격) | React: 동일 옵션 전달 + CSS 그대로 |
+| **`.garden__bloom-lottie` (NEW)** | body 직속 `position: absolute; z-index: 2`. `garden-sway` 인라인 + WAAPI `startTime` 으로 underlying item 과 위상 동기화. `--blooming` item 은 `visibility: hidden` 으로 외곽선 이중 노출 방지 | React: 동일 패턴 |
+| **자산 정리** | `img/flower/` 폴더(WebP 462프레임, 12MB) 삭제 / `img/animations/seed_*.js`(1.4MB) 미사용 정리 / `resetSign()`·`attachSignHaloHandlers()` dead code 제거 | (자산 정리) |
+
+**하위 호환**
+- `.garden-sign__name` 의 사용법 변경 — `<a href>` 로 사용 불가. 데이터 보관용 `data-typed-text` 속성 패턴
+- bloom 시퀀스 호출법 동일 (`bloom(item, garden)`) — 내부 구현만 Lottie 화. ID 별 frame swap 코드 (`FRAME_COUNTS`, `FRAME_DURATION` 등) 제거됨
+- water-thanks 시퀀스: DOM 측 텍스트 노드/illust stage 클래스 제거됨. 안내 텍스트가 Lottie 안에 일러스트와 합성됨 — **다국어 대응 시 Lottie 텍스트 레이어 분리 export 필요**
+
+**확인할 곳**
+1. `js/components/garden.js` — at-rest rect 계산 / fireSignAnimation / globalWaterCount / bloom Lottie integration
+2. `js/components/modal-water-thanks.js` — `WaterThanks.start/cancel/reset` Lottie API
+3. `img/animations/` — `flower_01-04.js`, `light.js`, `watering.js` (lottie-web 글로벌 패턴)
+4. `css/components/garden.css`, `garden-sign.css` — `.garden__halo` (260×260) / `.garden__bloom-lottie` / sign z-index 정책
+5. [`COMPONENTS.md`](./COMPONENTS.md) — `.garden`, `.garden-sign`, `.reaction-bar`, `.seed-ceremony` (참고용 원본 유지) 항목
+
+---
+
+## 📌 v1.07.3 요약 (2026-05-13, v1.07.2 후속)
 
 **창작 파트너 시스템 + viewer-end 작가 메시지 카드 + IME 입력 버그 수정.** 핵심은 (1) 우측 패널 「設定」 → 창작 파트너 변경 모달 신설 (`.modal--panel-setting`) + `Chat.setPartner()` API 로 헤더/이름/직책/placeholder 일괄 동기화, (2) `.viewer-end` 전면 재설계 — 작가 あとがき 카드 + 안내 캡션 + 액션 (case 1/2 자동 분기, 버튼 사이즈 sm→base), (3) viewer-koma/tate 의 깨졌던 마크업 (`__bottom` / 닫는 div) 복원, (4) chat.js 의 IME 조합 중 Enter 송신 버그 수정, (5) `.btn-soft-red` 신규 + `.avatar-fuku/hana/tonton` 추가 + `.avatar-02` 제거.
 
