@@ -4,7 +4,37 @@
 
 ---
 
-## 📌 v1.07.4 요약 (2026-05-15, v1.07.3 후속) — 먼저 이것만 보세요
+## 📌 v1.07.5 요약 (2026-05-18, v1.07.4 후속) — 먼저 이것만 보세요
+
+**series-register 씨앗 의식 모달 — 손코딩 WAAPI/SVG 시퀀스 → Lottie 2종 swap 으로 전면 교체.** v1.07.4 의 garden / water-thanks Lottie 통합에 이어 마지막 손코딩 시퀀스 (씨앗 심기 의식) 도 Lottie 화. 핵심은 (1) **Lottie 2종** (planting_seeds_1 idle 1s + planting_seeds_2 시퀀스 7.5s, 3008×1692 원본 사이즈 SVG 렌더) JSON 직접 로드, (2) **DOM 단순화** — 8 img/h2/p → Lottie 컨테이너 1개, (3) **JS 단순화** — WAAPI 3-phase gather/fall/bounce + tamp 200+줄 → 단일 setTimeout 7s + redirect, (4) **자산 정리** — 미사용 SVG 9개 삭제로 12.2MB 절감.
+
+| 분류 | 내용 | 개발 영향 |
+|---|---|---|
+| **Lottie 2종 통합** | `img/animations/planting_seeds_{1,2}.json` (471KB + 618KB, 3008×1692, 100fps × 100/750 frames). `path` 옵션으로 JSON 직접 로드 — file:// 차단 회피 위해 정적 서버 필요 | React: `import data from './planting_seeds_1.json'` + `animationData={data}` 로 단순화 |
+| **단일 컨테이너 `.seed-ceremony__lottie`** | `position: fixed; left/top: 50%; transform: translate(-50%,-50%); width: 3008px; height: 1692px` — 원본 사이즈 정중앙, 비율 유지. `contain: layout style paint` + `will-change: transform` | React: 동일 구조 |
+| **SVG renderer** | 원본 사이즈에서는 path 수 기반 SVG 가 canvas (픽셀 수 기반) 보다 가벼움. `rendererSettings: { progressiveLoad: false, hideOnTransparent: true }` | (렌더러 선택 가이드) |
+| **흐름 단순화** | 오픈 → MutationObserver 가 seed_1 (idle) 자동 시작 → 植える 클릭 → `.is-planted` (폼 fade out) + seed_2 시작 → **7s 고정 setTimeout** → modal-backdrop--open 제거 → 400ms 후 redirect | React: state machine 또는 useEffect 체인 |
+| **DOM/JS 단순화** | 모달 자식: 13 → 2 (Lottie + form). JS: SEED_TIMING 8 상수 + WAAPI 3-phase (gather/fall/bounce 프로파일 3종) + 220+줄 → 단일 setTimeout (~30줄) | React: 컴포넌트 작아짐 |
+| **race condition 해결** | 이전: inline opacity 강제 + MutationObserver inline reset 충돌. 현재: class 제거만으로 CSS 트랜지션 처리. Observer 의 destroyLottie + is-planted 리셋은 280ms 지연 (close 트랜지션 완료 후) | (안정성 픽스) |
+| **상태 클래스 단순화** | `.is-planted` → `.is-covered` → `.is-tamped` 체인 → **`.is-planted` 만** | (Lottie 가 모든 시각 단계 담당) |
+| **자산 정리 (-12.2MB)** | 미사용 SVG 9개 삭제: `img_seed_ceremony.svg`(10.4MB), `img_seed_cover.svg`(1.7MB), `img_soil_hole/_covered.svg`, `img_seed_01/02/03.svg`, `img_shovel.svg`, `img_seed_status_border.svg`. **유지**: `img_seed_input_border.svg`, `img_seed_submit_border.svg` (폼 wavy 테두리) | (자산 정리) |
+| **styleguide 정리** | Seed Ceremony 자산 row 9개 → 2개. `.seed-ceremony` 컴포넌트 메타 갱신 (Lottie 기반 + 새 흐름) | — |
+
+**하위 호환**
+- `.seed-ceremony__scene/__seed--01/02/03/__soil-*/__shovel/__title/__planting-status/__planted-message` 클래스 모두 제거 — Lottie 가 비주얼/안내 텍스트 전담
+- `SEED_TIMING` 상수 + WAAPI gather/fall/bounce 프로파일 객체 모두 제거
+- `.is-covered`, `.is-tamped` 상태 클래스 제거. `.is-planted` 만 유지 (폼 fade-out 트리거)
+- **file:// 사용 불가** — lottie `path` 옵션이 fetch 차단됨. 로컬 테스트 시 `python3 -m http.server` 같은 정적 서버 필요
+
+**확인할 곳**
+1. `series-register.html` — inline `<script>` 의 Lottie 2종 swap 로직 (MutationObserver + 7s setTimeout + redirect)
+2. `img/animations/planting_seeds_1.json` (idle) + `planting_seeds_2.json` (시퀀스)
+3. `css/components/seed-ceremony.css` — Lottie 컨테이너 (3008×1692 정중앙) + 폼 + `.is-planted .form` fade-out
+4. [`COMPONENTS.md`](./COMPONENTS.md) — `.seed-ceremony` 항목 갱신본
+
+---
+
+## 📌 v1.07.4 요약 (2026-05-15, v1.07.3 후속)
 
 **Lottie 통합 + garden-sign 닉네임 시스템 + 물주기 흐름 정책 강화.** 핵심은 (1) **Lottie 통합** — water-thanks 모달 시퀀스 + garden bloom 시퀀스 + halo 글로우 모두 손코딩 SVG/이미지 시퀀스 → Lottie JSON 으로 교체 (lottie-web@5.12.2), (2) **garden-sign 닉네임 시스템** — 1·2·3회 물주기마다 sign 뒤 halo + 라인별 닉네임 타이핑, 글로벌 카운터로 garden 전체 최초 3회만 발동, (3) **물주기 흐름 정책** — 폼 제출만 카운트 + bloom 중 다음 꽃 자동 이월 + 5회/꽃 정책 + 초기 상태 10 before flowers, (4) **Lottie 렌더링 최적화** — `rendererSettings` + `contain: paint` + `will-change`.
 

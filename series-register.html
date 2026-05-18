@@ -48,6 +48,9 @@
   <script src="js/components/chat.js" defer></script>
   <script src="js/components/modal.js" defer></script>
   <script src="js/components/modal-context.js" defer></script>
+  <!-- Lottie for seed-ceremony modal: idle (planting_seeds_1) + planting sequence (planting_seeds_2).
+       JSON 직접 로드 (lottie 의 path 옵션 사용). 원본 사이즈 3008×1692 SVG 렌더. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js" defer></script>
 </head>
 <body>
 
@@ -388,20 +391,10 @@
 
   </div>
 
-  <!-- Modal: 種を植える儀式 — 애니메이션 시퀀스가 backdrop 전체를 캔버스로 사용하므로
-       표준 .modal 래퍼를 두지 않고 backdrop 자식으로 직접 배치. 닫기는 자체 시퀀스 종료 시. -->
-  <div class="modal-backdrop" id="modal-series-register-confirm" role="dialog" aria-modal="true" aria-labelledby="seed-ceremony-title">
-    <h2 class="seed-ceremony__title" id="seed-ceremony-title">この物語に込めたい気持ちを、ひとこと書いてみましょうか。</h2>
-    <img class="seed-ceremony__scene" src="img/img_seed_ceremony.svg" alt="" aria-hidden="true">
-    <img class="seed-ceremony__soil-hole" src="img/img_soil_hole.svg" alt="" aria-hidden="true">
-    <img class="seed-ceremony__seed seed-ceremony__seed--01" src="img/img_seed_01.svg" alt="" aria-hidden="true">
-    <img class="seed-ceremony__seed seed-ceremony__seed--02" src="img/img_seed_02.svg" alt="" aria-hidden="true">
-    <img class="seed-ceremony__seed seed-ceremony__seed--03" src="img/img_seed_03.svg" alt="" aria-hidden="true">
-    <img class="seed-ceremony__soil-cover" src="img/img_seed_cover.svg" alt="" aria-hidden="true">
-    <img class="seed-ceremony__soil-covered" src="img/img_soil_covered.svg" alt="" aria-hidden="true">
-    <img class="seed-ceremony__shovel" src="img/img_shovel.svg" alt="" aria-hidden="true">
-    <div class="seed-ceremony__planting-status" aria-live="polite">種を植えています。</div>
-    <p class="seed-ceremony__planted-message" aria-live="polite">創作のタネを植えました。<br>ここからどんな物語が育っていくのか、楽しみですね。<br>あなたのペースで、一緒に育てていきましょう。</p>
+  <!-- Modal: 種を植える儀式 — Lottie 2종 swap (planting_seeds_1 idle / planting_seeds_2 시퀀스).
+       비주얼/안내 텍스트는 모두 Lottie 안에 포함되어 있어 DOM 에는 폼만 유지. -->
+  <div class="modal-backdrop" id="modal-series-register-confirm" role="dialog" aria-modal="true" aria-label="種を植える儀式">
+    <div class="seed-ceremony__lottie" data-seed-lottie aria-hidden="true"></div>
     <form class="seed-ceremony__form">
       <label class="seed-ceremony__input">
         <textarea class="seed-ceremony__textarea" rows="1" maxlength="30" placeholder="意気込みを入力してください" aria-label="意気込み"></textarea>
@@ -461,91 +454,87 @@
       update();
     });
 
-    // 씨앗 의식 — 植える 클릭 후 시퀀스: gather → fall → bounce → cover → tamp → close → redirect.
-    // 타이밍/회전 프로파일은 모두 아래 상수에서만 관리.
-    const SEED_TIMING = {
-      PLANT_DELAY:    900,   // 클릭 후 씨앗 모이기 시작 전 지연
-      GATHER_DUR:     800,   // Phase 1 — apex로 모이기
-      FALL_DUR:       700,   // Phase 2 — 회전 낙하
-      FALL_STAGGER:   250,   // 씨앗 간 낙하 시차
-      COVER_DELAY:    180,   // bounce 종료 후 soil-cover 페이드인까지
-      TAMP_DELAY:     500,   // is-covered 후 삽 등장(is-tamped)까지
-      MESSAGE_HOLD:  3500,   // is-covered → 모달 닫기까지(메시지 슬라이드 인 + 유지)
-      REDIRECT_DELAY: 400,   // 모달 닫힘 후 페이지 이동까지
-    };
-    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    // 씨앗 의식 — Lottie 2종 swap. JSON 직접 로드 (lottie path 옵션).
+    //   1) 모달 오픈 → planting_seeds_1 (idle, 1회)
+    //   2) 植える 클릭 → planting_seeds_2 (시퀀스, 1회) → 7초 후 자동 close + redirect
+    const SEED_LOTTIE_PATH_IDLE     = 'img/animations/planting_seeds_1.json';
+    const SEED_LOTTIE_PATH_SEQUENCE = 'img/animations/planting_seeds_2.json';
+    const SEED_AUTO_CLOSE_MS        = 7000;  // 植える 클릭 후 close 까지 (Lottie complete 의존 없음)
+    const SEED_REDIRECT_DELAY_MS    = 400;   // close 트랜지션(240ms) + 버퍼 후 redirect
+    const SEED_REDIRECT_URL         = 'series-post-management.html';
+
+    let seedLottieInstance = null;
+    function destroySeedLottie() {
+      if (seedLottieInstance) {
+        try { seedLottieInstance.destroy(); } catch (e) { /* noop */ }
+        seedLottieInstance = null;
+      }
+    }
+    function playSeedLottie(container, jsonPath, options) {
+      destroySeedLottie();
+      if (!container || !jsonPath || typeof window.lottie === 'undefined') return null;
+      container.innerHTML = '';
+      /* JSON 직접 로드 (path 옵션) — 단, file:// 프로토콜에서는 fetch/XHR 차단됨.
+         로컬 테스트 시 `python3 -m http.server` 같은 정적 서버 사용 권장. */
+      seedLottieInstance = window.lottie.loadAnimation({
+        container,
+        renderer: 'svg',
+        loop: !!(options && options.loop),
+        autoplay: true,
+        path: jsonPath,
+        rendererSettings: {
+          preserveAspectRatio: 'xMidYMid meet',
+          progressiveLoad: false,
+          hideOnTransparent: true,
+        },
+      });
+      return seedLottieInstance;
+    }
+
+    // 모달 오픈 감지 → planting_seeds_1 (idle, 1회) 자동 시작.
+    // close 시점에 Lottie 정리 + is-planted 리셋 (다음 오픈을 위해).
+    (() => {
+      const backdrop = document.getElementById('modal-series-register-confirm');
+      if (!backdrop) return;
+      const container = backdrop.querySelector('[data-seed-lottie]');
+      if (!container) return;
+      const observer = new MutationObserver(() => {
+        const isOpen = backdrop.classList.contains('modal-backdrop--open');
+        if (isOpen && !backdrop.classList.contains('is-planted')) {
+          playSeedLottie(container, SEED_LOTTIE_PATH_IDLE, { loop: false });
+        } else if (!isOpen) {
+          /* 모달이 완전히 닫힌 후 (트랜지션 240ms 후) Lottie 정리 + is-planted 리셋.
+             즉시 처리하면 close 트랜지션 도중 form 이 다시 보이는 글리치 발생. */
+          setTimeout(() => {
+            destroySeedLottie();
+            backdrop.classList.remove('is-planted');
+          }, 280);
+        }
+      });
+      observer.observe(backdrop, { attributes: true, attributeFilter: ['class'] });
+    })();
 
     document.querySelectorAll('[data-seed-plant]').forEach((btn) => {
-      btn.addEventListener('click', async (e) => {
+      btn.addEventListener('click', (e) => {
         e.preventDefault();
         const backdrop = btn.closest('.modal-backdrop');
-        if (!backdrop) return;
+        if (!backdrop || backdrop.classList.contains('is-planted')) return;
         backdrop.classList.add('is-planted');
 
-        const order = ['--02', '--03', '--01']; // 가운데 → 오른쪽 → 왼쪽
-        const APEX_TRANSLATE = '0 -8vh';
-        const FLOOR_TRANSLATE = '0 calc(30vh + 40px)';
-        // 회전 누적값(deg). apex(살짝 기울임) → floor(낙하 중 회전) → bounce → 최종(360 배수).
-        const profiles = {
-          '--02': { apexRot: -20, floorRot:  200, h1: '22vh', r1Mid:  380, r1End:  560, h2: '27vh', r2Mid:  660, rEnd:  720, dur: 1000 },
-          '--03': { apexRot:  25, floorRot: -200, h1: '24vh', r1Mid: -380, r1End: -560, h2: '28vh', r2Mid: -660, rEnd: -720, dur: 1100 },
-          '--01': { apexRot: -30, floorRot:  200, h1: '20vh', r1Mid:  380, r1End:  560, h2: '26vh', r2Mid:  660, rEnd:  720, dur:  950 },
-        };
-        const T = (rot) => `translate(-50%, -50%) rotate(${rot}deg)`;
+        const container = backdrop.querySelector('[data-seed-lottie]');
+        playSeedLottie(container, SEED_LOTTIE_PATH_SEQUENCE, { loop: false });
 
-        // 씨앗 1개의 gather → fall → bounce 시퀀스. 종료 시 promise 해소.
-        async function animateSeed(seed) {
-          const variant = order.find((v) => seed.classList.contains(`seed-ceremony__seed${v}`));
-          if (!variant) return;
-          const cs = getComputedStyle(seed);
-          const startTransform = cs.transform;
-          const startTranslate = cs.translate;
-          // 현재 float 프레임 고정
-          seed.style.animation = 'none';
-          seed.style.transform = startTransform;
-          seed.style.translate = startTranslate;
-          void seed.offsetHeight;
-
-          const p = profiles[variant];
-          // Phase 1 — apex로 모임
-          await seed.animate([
-            { transform: startTransform, translate: startTranslate },
-            { transform: T(p.apexRot), translate: APEX_TRANSLATE },
-          ], { duration: SEED_TIMING.GATHER_DUR, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' }).finished;
-
-          // Phase 2 — 텐션 + 회전 낙하 (stagger)
-          await wait(order.indexOf(variant) * SEED_TIMING.FALL_STAGGER);
-          await seed.animate([
-            { transform: T(p.apexRot),  translate: APEX_TRANSLATE },
-            { transform: T(p.floorRot), translate: FLOOR_TRANSLATE },
-          ], { duration: SEED_TIMING.FALL_DUR, easing: 'cubic-bezier(0.55, 0, 0.85, 0.3)', fill: 'forwards' }).finished;
-
-          // Phase 3 — 3-hit bounce, 최종 360°의 배수(=0도)로 안착
-          await seed.animate([
-            { transform: T(p.floorRot), translate: FLOOR_TRANSLATE, offset: 0,    easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
-            { transform: T(p.r1Mid),    translate: `0 ${p.h1}`,     offset: 0.20, easing: 'cubic-bezier(0.55, 0, 0.85, 0.3)' },
-            { transform: T(p.r1End),    translate: FLOOR_TRANSLATE, offset: 0.40, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
-            { transform: T(p.r2Mid),    translate: `0 ${p.h2}`,     offset: 0.55, easing: 'cubic-bezier(0.55, 0, 0.85, 0.3)' },
-            { transform: T(p.rEnd),     translate: FLOOR_TRANSLATE, offset: 0.70 },
-            { transform: T(p.rEnd),     translate: FLOOR_TRANSLATE, offset: 1 },
-          ], { duration: p.dur, fill: 'forwards' }).finished;
-        }
-
-        await wait(SEED_TIMING.PLANT_DELAY);
-        await Promise.all([...backdrop.querySelectorAll('.seed-ceremony__seed')].map(animateSeed));
-
-        await wait(SEED_TIMING.COVER_DELAY);
-        backdrop.classList.add('is-covered');
-        await wait(SEED_TIMING.TAMP_DELAY);
-        backdrop.classList.add('is-tamped');
-        await wait(SEED_TIMING.MESSAGE_HOLD - SEED_TIMING.TAMP_DELAY);
-
-        backdrop.classList.remove('modal-backdrop--open');
-        if (!document.querySelector('.modal-backdrop--open')) {
-          document.body.style.overflow = '';
-        }
-        await wait(SEED_TIMING.REDIRECT_DELAY);
-        window.location.href = 'series-post-management.html';
+        /* 클릭 후 7초 고정 타이머로 자동 close — Lottie complete 이벤트 의존 없음.
+           class 제거만으로 CSS 트랜지션이 fade-out 처리. 닫힘 후 series-post-management 로 redirect. */
+        setTimeout(() => {
+          backdrop.classList.remove('modal-backdrop--open');
+          if (!document.querySelector('.modal-backdrop--open')) {
+            document.body.style.overflow = '';
+          }
+          setTimeout(() => {
+            window.location.href = SEED_REDIRECT_URL;
+          }, SEED_REDIRECT_DELAY_MS);
+        }, SEED_AUTO_CLOSE_MS);
       });
     });
 

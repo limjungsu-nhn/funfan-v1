@@ -8,6 +8,64 @@
 
 ---
 
+## v1.07.5 (2026-05-18, v1.07.4 후속)
+
+**series-register 씨앗 의식 모달 — 손코딩 WAAPI/SVG 시퀀스 → Lottie 2종 swap 으로 전면 교체.** v1.07.4 의 garden / water-thanks Lottie 통합에 이어 마지막 손코딩 시퀀스였던 씨앗 심기 의식을 Lottie 로 전환. 큰 묶음: (1) **Lottie 2종 통합** (planting_seeds_1 idle + planting_seeds_2 시퀀스), (2) **DOM 단순화** — 8개 img/h2/p 요소 → Lottie 컨테이너 1개로 통합, (3) **JS 단순화** — 220+ 줄의 WAAPI gather/fall/bounce/tamp 프로파일 → 단일 setTimeout 7s + 자동 redirect, (4) **JSON 직접 로드** — `path` 옵션 (file:// 사용 시 정적 서버 필요), (5) **자산 정리** — 미사용 SVG 9개 삭제로 12.2MB 절감.
+
+### Lottie 통합 — Seed Ceremony
+
+- **`img/animations/planting_seeds_1.json`** (471KB, 3008×1692, 1s 1회 @ 100fps) — 클릭 전 idle 비주얼 (씨앗 떠다니기 + 안내 텍스트, Lottie 내부에 모두 포함)
+- **`img/animations/planting_seeds_2.json`** (618KB, 3008×1692, 7.5s 1회 @ 100fps) — 植える 클릭 후 시퀀스 (gather → 낙하 → 흙 덮기 → 토닥 + 완료 메시지 일체)
+- **단일 컨테이너 `.seed-ceremony__lottie`** — `position: fixed; left/top: 50%; transform: translate(-50%,-50%)` 로 원본 사이즈 3008×1692 정중앙 배치, 비율 유지. `contain: layout style paint` + `will-change: transform` 으로 paint isolation + composite layer
+- **SVG renderer** — 원본 사이즈에서 canvas 보다 path 기반 SVG 가 더 가벼움 (캔버스 픽셀 폭주 회피)
+- **JSON 직접 로드 (`path` 옵션)** — `animationData` + JS wrapper 대신 lottie 의 `path` 로 JSON 을 fetch. file:// 프로토콜에서는 fetch 가 차단되므로 **`python3 -m http.server 8000` 같은 정적 서버 필요**
+
+### 흐름 (단순화)
+
+```
+「投稿する」 클릭 → 모달 오픈
+  ↓ MutationObserver: modal-backdrop--open 클래스 감지
+planting_seeds_1 (idle, 1회) 자동 시작
+  ↓ 사용자가 폼 입력 + 「植える」 클릭
+backdrop.classList.add('is-planted') → 폼 fade out
+playSeedLottie(planting_seeds_2) → 시퀀스 시작
+  ↓ 7s 고정 setTimeout (Lottie complete 이벤트 의존 없음)
+modal-backdrop--open 제거 → CSS fade-out 240ms
+  ↓ 400ms (CSS 트랜지션 완료)
+window.location.href = 'series-post-management.html'
+  ↓ 280ms 후 (close 트랜지션 완료 시점)
+destroySeedLottie() + is-planted 리셋 (다음 오픈 대비)
+```
+
+총 클릭 → 페이지 이동: **약 7.4초**.
+
+### 코드 단순화 정리 (v1.07.4 → v1.07.5)
+
+| 항목 | v1.07.4 | v1.07.5 |
+|---|---|---|
+| 모달 DOM | h2 + 8 img + 2 p + form (13 자식) | Lottie 컨테이너 1개 + form |
+| JS 로직 | SEED_TIMING 8 상수 + WAAPI 3-phase (gather/fall/bounce 프로파일 3종) + 회전 누적 720° 계산 + cover/tamp 클래스 체인 + 200+ 줄 | 단순 Lottie play + setTimeout 7s + redirect (~30 줄) |
+| CSS keyframes | `seed-ceremony-float` + `seed-ceremony-shovel-tamp` | (없음 — Lottie 가 모든 시각 표현 담당) |
+| 상태 클래스 체인 | `.is-planted` → `.is-covered` → `.is-tamped` | `.is-planted` 만 (폼 fade out 트리거) |
+| Race condition | 인라인 opacity 강제 + MutationObserver inline reset 충돌 | class 제거만으로 CSS 트랜지션 처리 (race 없음) |
+
+### 자산 정리
+
+- **미사용 SVG 9개 삭제** (12.2MB 절감)
+  - `img_seed_ceremony.svg` (10.4MB), `img_seed_cover.svg` (1.7MB), `img_soil_hole.svg`, `img_soil_covered.svg`, `img_shovel.svg`, `img_seed_status_border.svg`, `img_seed_01/02/03.svg`
+- **유지 (폼 wavy 테두리)**: `img_seed_input_border.svg`, `img_seed_submit_border.svg`
+- **styleguide.html**: Seed Ceremony 자산 row 9개 → 2개로 축소 + `.seed-ceremony` 메타 갱신 (Lottie 기반 + 새 흐름)
+
+### 마이그레이션 메모 (개발팀)
+
+- **lottie path 옵션 의존**: file:// 에서 차단됨. 로컬 정적 서버 (`python3 -m http.server`, `npx serve`, VS Code Live Server 등) 필수
+- **JSON 직접 import 패턴**: React 이식 시 `import data from './planting_seeds_1.json'` + `animationData={data}` 로 단순화 가능 (Webpack/Vite 가 JSON loader 처리)
+- **렌더러 선택**: 원본 사이즈 3008×1692 에서는 SVG > canvas (path 수 기반 렌더가 픽셀 수 기반보다 가벼움). 더 작은 컨테이너로 사용 시 canvas 선택지 검토
+- **자동 close 타이밍**: Lottie `complete` 이벤트는 일부 환경에서 누락 가능 — 단일 setTimeout 이 더 신뢰성 높음. seed_2 7.5s 재생, 7s 에 close 트리거 (마지막 0.5s 는 Lottie 의 자체 fade-out 으로 처리)
+- **다국어**: 안내 텍스트가 Lottie 안에 일러스트와 합성됨 → 다국어 대응 시 Lottie 텍스트 레이어 분리 export 필요
+
+---
+
 ## v1.07.4 (2026-05-15, v1.07.3 후속)
 
 **Lottie 통합 + garden-sign 닉네임 시스템 + 물주기 흐름 정책 강화.** 네 가지 큰 묶음: (1) **Lottie 통합** — water-thanks 모달 시퀀스 + garden bloom 시퀀스(꽃 4종) + halo 글로우 모두 손코딩 SVG/이미지 시퀀스 → Lottie JSON 으로 교체, (2) **garden-sign 닉네임 시스템** — 1·2·3회 물주기마다 sign 뒤 halo + 라인별 닉네임 타이핑, 글로벌 카운터로 garden 전체 최초 3회만 발동, (3) **물주기 흐름 정책 강화** — 폼 제출(thanks step 진입) 만 카운트 + bloom 중 다음 꽃으로 자동 이월 + 5회/꽃 정책 + 초기 상태 10 before flowers, (4) **Lottie 렌더링 최적화** — `rendererSettings` (hideOnTransparent / progressiveLoad / preserveAspectRatio) + CSS `contain: paint` + `will-change` composite hint.
