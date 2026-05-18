@@ -19,6 +19,7 @@
 - **단일 컨테이너 `.seed-ceremony__lottie`** — `position: fixed; left/top: 50%; transform: translate(-50%,-50%)` 로 원본 사이즈 3008×1692 정중앙 배치, 비율 유지. `contain: layout style paint` + `will-change: transform` 으로 paint isolation + composite layer
 - **SVG renderer** — 원본 사이즈에서 canvas 보다 path 기반 SVG 가 더 가벼움 (캔버스 픽셀 폭주 회피)
 - **JSON 직접 로드 (`path` 옵션)** — `animationData` + JS wrapper 대신 lottie 의 `path` 로 JSON 을 fetch. file:// 프로토콜에서는 fetch 가 차단되므로 **`python3 -m http.server 8000` 같은 정적 서버 필요**
+- **백그라운드 프리로드 + 메모리 캐시** — 페이지 로드 시 두 JSON 을 비동기 fetch 해서 `seedLottieCache.{idle,sequence}` 에 저장. 사용자가 폼 입력하는 동안 (5~30s) 백그라운드 fetch 완료 → 모달 오픈 / 植える 클릭 시 캐시 hit 시 `animationData` 로 즉시 swap (네트워크 wait 0 → seed_1 destroy → seed_2 적용 사이의 빈 컨테이너 frame 제거). 캐시 미스(file:// 등) 시 path 옵션 fallback 으로 동작 유지
 
 ### 흐름 (단순화)
 
@@ -62,6 +63,7 @@ destroySeedLottie() + is-planted 리셋 (다음 오픈 대비)
 - **JSON 직접 import 패턴**: React 이식 시 `import data from './planting_seeds_1.json'` + `animationData={data}` 로 단순화 가능 (Webpack/Vite 가 JSON loader 처리)
 - **렌더러 선택**: 원본 사이즈 3008×1692 에서는 SVG > canvas (path 수 기반 렌더가 픽셀 수 기반보다 가벼움). 더 작은 컨테이너로 사용 시 canvas 선택지 검토
 - **자동 close 타이밍**: Lottie `complete` 이벤트는 일부 환경에서 누락 가능 — 단일 setTimeout 이 더 신뢰성 높음. seed_2 7.5s 재생, 7s 에 close 트리거 (마지막 0.5s 는 Lottie 의 자체 fade-out 으로 처리)
+- **프리로드 패턴**: 두 단계 Lottie swap 의 깜빡임 (전환 사이 빈 컨테이너) 은 페이지 로드 시 백그라운드 fetch + `animationData` 캐시로 해결. React 에서는 `import data from './x.json'` 으로 Webpack/Vite 가 bundle 시 처리하면 자동 캐시 효과 (또는 React Query / SWR 로 prefetch)
 - **다국어**: 안내 텍스트가 Lottie 안에 일러스트와 합성됨 → 다국어 대응 시 Lottie 텍스트 레이어 분리 export 필요
 
 ---

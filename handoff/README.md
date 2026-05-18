@@ -11,6 +11,7 @@
 | 분류 | 내용 | 개발 영향 |
 |---|---|---|
 | **Lottie 2종 통합** | `img/animations/planting_seeds_{1,2}.json` (471KB + 618KB, 3008×1692, 100fps × 100/750 frames). `path` 옵션으로 JSON 직접 로드 — file:// 차단 회피 위해 정적 서버 필요 | React: `import data from './planting_seeds_1.json'` + `animationData={data}` 로 단순화 |
+| **백그라운드 프리로드 캐시** | 페이지 로드 시 두 JSON 을 비동기 fetch → `seedLottieCache` 저장. 폼 입력 동안(5~30s) 백그라운드 fetch 완료 → 클릭 시 캐시 hit 면 `animationData` 즉시 swap (깜빡임 0). 미스 시 path fallback | React: bundler 가 자동 처리, 또는 React Query / SWR prefetch |
 | **단일 컨테이너 `.seed-ceremony__lottie`** | `position: fixed; left/top: 50%; transform: translate(-50%,-50%); width: 3008px; height: 1692px` — 원본 사이즈 정중앙, 비율 유지. `contain: layout style paint` + `will-change: transform` | React: 동일 구조 |
 | **SVG renderer** | 원본 사이즈에서는 path 수 기반 SVG 가 canvas (픽셀 수 기반) 보다 가벼움. `rendererSettings: { progressiveLoad: false, hideOnTransparent: true }` | (렌더러 선택 가이드) |
 | **흐름 단순화** | 오픈 → MutationObserver 가 seed_1 (idle) 자동 시작 → 植える 클릭 → `.is-planted` (폼 fade out) + seed_2 시작 → **7s 고정 setTimeout** → modal-backdrop--open 제거 → 400ms 후 redirect | React: state machine 또는 useEffect 체인 |

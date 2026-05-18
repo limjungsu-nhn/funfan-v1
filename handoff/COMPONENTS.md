@@ -362,19 +362,21 @@ attachment.destroy();           // ObjectURL 해제 + 이벤트 해제 + DOM 비
 #### `.seed-ceremony` (種を植える儀式 모달 콘텐츠) → 커스텀 풀스크린 Lottie 다이얼로그
 - **사용 페이지**: series-register.html — `#modal-series-register-confirm` 의 backdrop 자식으로 직접 배치 (`投稿する` 버튼 클릭 시 오픈)
 - **목적**: 작품 등록 직전, "이 이야기에 담고 싶은 마음을 한마디" 입력 받는 의식 인터랙션 (씨앗을 심는 메타포)
-- **v1.07.5+ 비주얼**: 손코딩 SVG + WAAPI 시퀀스 (씨앗 3개 float / gather / fall / bounce + soil cover + shovel tamp) → **Lottie 2종 swap** 으로 교체. 비주얼/안내 텍스트 모두 Lottie 안에 포함 → DOM 에는 폼만 유지
-  - `img/animations/planting_seeds_1.js` (`window.PLANTING_SEEDS_1_DATA`, 3008×1692, 1s 1회) — 클릭 전 idle (씨앗 떠다니는 비주얼)
-  - `img/animations/planting_seeds_2.js` (`window.PLANTING_SEEDS_2_DATA`, 3008×1692, 7.5s 1회) — 植える 클릭 후 시퀀스 (gather → 낙하 → 흙 덮기 → 토닥 + 완료 메시지 일체)
-  - 단일 컨테이너 `.seed-ceremony__lottie` 에 순차 swap. **canvas renderer + dpr:1 + subframe off** (큰 원본의 main thread 막힘 방지). 컨테이너 `width: min(1280px, 100vw)` + `aspect-ratio: 3008/1692` — 원본 비율 유지하면서 픽셀 수 제한
+- **v1.07.5 비주얼**: 손코딩 SVG + WAAPI 시퀀스 (씨앗 3개 float / gather / fall / bounce + soil cover + shovel tamp) → **Lottie 2종 swap** 으로 전면 교체. 비주얼/안내 텍스트 모두 Lottie 안에 포함 → DOM 에는 폼만 유지
+  - `img/animations/planting_seeds_1.json` (471KB, 3008×1692, 1s 1회 @ 100fps) — 클릭 전 idle (씨앗 떠다니는 비주얼 + 안내 텍스트)
+  - `img/animations/planting_seeds_2.json` (618KB, 3008×1692, 7.5s 1회 @ 100fps) — 植える 클릭 후 시퀀스 (gather → 낙하 → 흙 덮기 → 토닥 + 완료 메시지 일체)
+  - 단일 컨테이너 `.seed-ceremony__lottie` 에 순차 swap. **SVG renderer** (원본 사이즈에서는 path 수 기반 SVG 가 canvas 픽셀 수 기반보다 가벼움). 컨테이너 `width: 3008px; height: 1692px` — 원본 사이즈 정중앙 배치, 비율 유지, 리사이징 없음. `contain: layout style paint` + `will-change: transform` 으로 paint isolation + composite layer 승격
+- **로딩 방식**: lottie 의 `path` 옵션으로 JSON 직접 로드 — `animationData` + JS wrapper 패턴 회피 (JSON.parse 가 JS 객체 리터럴 파싱보다 3~10× 빠름, V8 fast path). **file:// 프로토콜은 fetch 차단** → 로컬 테스트 시 `python3 -m http.server` 같은 정적 서버 필요
+- **백그라운드 프리로드 + 메모리 캐시**: 페이지 로드 시 두 JSON 을 비동기 fetch → `seedLottieCache.{idle,sequence}` 에 저장. 사용자가 폼 입력하는 동안 (5~30s) fetch 완료 → 클릭 시 캐시 hit 시 `animationData` 로 즉시 swap (네트워크 wait 0). 캐시 미스 시 `path` 옵션 fallback. **2-단계 swap 의 깜빡임 (전환 사이 빈 컨테이너) 해결책**
 - **로컬 토큰 (modal-backdrop 스코프)**: `--seed-ease: cubic-bezier(0.22, 1, 0.36, 1)` · `--seed-dur-slide: 900ms` · `--seed-dur-fade: 600ms` · `--seed-dur-fade-long: 700ms`
 - **Sub-elements**:
   - `.seed-ceremony__lottie` — Lottie 비주얼 컨테이너 (단일, `data-seed-lottie`)
   - `.seed-ceremony__form` — 입력 카드(`img_seed_input_border.svg` 636×80 wavy 테두리) + 植える 버튼(`img_seed_submit_border.svg` 117×80)
   - `.seed-ceremony__textarea` + `.seed-ceremony__counter` — maxlength 30 · `data-seed-counter` 로 N/30 카운터 갱신
 - **상태 클래스 (modal-backdrop)**:
-  - `.is-planted` — 植える 클릭 시 부여. 폼 페이드 아웃 + Lottie 가 planting_seeds_2 로 swap
-- **흐름**: 모달 오픈 시 planting_seeds_1 (1회) 자동 시작 → 植える 클릭 → `.is-planted` 부여 → planting_seeds_2 (1회) 시작 → Lottie `complete` 이벤트(또는 8s hard timer fallback) → `modal-backdrop--open` 제거 + inline opacity/pointer-events 강제 세팅 → 400ms (fade-out 240ms + 버퍼) 후 `series-post-management.html` 로 이동
-- **React 이식**: `<SeedCeremony />` 단일 컴포넌트. lottie-web `loadAnimation({ animationData, loop:false, renderer:'canvas', rendererSettings:{ dpr:1, hideOnTransparent:true } })` + `complete` listener + fallback timer 패턴
+  - `.is-planted` — 植える 클릭 시 부여. 폼 페이드 아웃 (`translate Y +50vh + opacity 0`) + Lottie 가 planting_seeds_2 로 swap
+- **흐름**: 모달 오픈 시 planting_seeds_1 (1회) 자동 시작 → 植える 클릭 → `.is-planted` 부여 + planting_seeds_2 시작 → **7s 고정 setTimeout** (Lottie complete 의존 없음, complete 이벤트 누락 가능 환경 대비) → `modal-backdrop--open` 제거 → CSS 트랜지션 fade-out 240ms → 400ms 후 `series-post-management.html` 로 이동. close 트랜지션 도중 글리치 방지 위해 Lottie 인스턴스 destroy 와 is-planted 리셋은 280ms 지연 (MutationObserver 안에서)
+- **React 이식**: `<SeedCeremony />` 단일 컴포넌트. lottie-web `loadAnimation({ animationData, loop:false, renderer:'svg', rendererSettings:{ preserveAspectRatio:'xMidYMid meet', progressiveLoad:false, hideOnTransparent:true } })`. JSON 은 `import data from './x.json'` 으로 Webpack/Vite bundle 처리 시 자동 캐시 (별도 prefetch 코드 불필요)
 
 #### `#modal-context` (作品コンテキスト 공통 모달) → shadcn `Dialog` (재사용 컴포넌트)
 - **SSOT JS 모듈 (v1.06.2+)**: `js/components/modal-context.js` — 데이터 기반 conditional render 모듈 (이전 정적 HTML 주입 방식에서 리팩토링)
