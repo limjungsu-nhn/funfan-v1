@@ -454,14 +454,32 @@
       update();
     });
 
-    // 씨앗 의식 — Lottie 2종 swap. JSON 직접 로드 (lottie path 옵션).
+    // 씨앗 의식 — Lottie 2종 swap. JSON 직접 로드 + 페이지 로드 시 비동기 프리로드 + 메모리 캐시.
     //   1) 모달 오픈 → planting_seeds_1 (idle, 1회)
     //   2) 植える 클릭 → planting_seeds_2 (시퀀스, 1회) → 7초 후 자동 close + redirect
+    //   캐시된 데이터(animationData)가 있으면 즉시 swap (네트워크 wait 없음 → 깜빡임 제거).
+    //   캐시 미스 시 path 옵션으로 fallback.
     const SEED_LOTTIE_PATH_IDLE     = 'img/animations/planting_seeds_1.json';
     const SEED_LOTTIE_PATH_SEQUENCE = 'img/animations/planting_seeds_2.json';
     const SEED_AUTO_CLOSE_MS        = 7000;  // 植える 클릭 후 close 까지 (Lottie complete 의존 없음)
     const SEED_REDIRECT_DELAY_MS    = 400;   // close 트랜지션(240ms) + 버퍼 후 redirect
     const SEED_REDIRECT_URL         = 'series-post-management.html';
+
+    /* 페이지 로드 시 두 Lottie 를 비동기 백그라운드 fetch 해서 메모리에 캐시.
+       사용자가 폼 채우는 동안 (5~30s) fetch 가 끝나, 植える 클릭 순간 즉시 swap 가능.
+       fail (file:// 등) 시에도 path 옵션 fallback 으로 동작 유지. */
+    const seedLottieCache = { idle: null, sequence: null };
+    (function preloadSeedLotties() {
+      [
+        [SEED_LOTTIE_PATH_IDLE,     'idle'],
+        [SEED_LOTTIE_PATH_SEQUENCE, 'sequence'],
+      ].forEach(([path, key]) => {
+        fetch(path)
+          .then((r) => r.ok ? r.json() : null)
+          .then((data) => { if (data) seedLottieCache[key] = data; })
+          .catch(() => { /* noop — path fallback */ });
+      });
+    })();
 
     let seedLottieInstance = null;
     function destroySeedLottie() {
@@ -470,18 +488,19 @@
         seedLottieInstance = null;
       }
     }
-    function playSeedLottie(container, jsonPath, options) {
+    /* 캐시된 데이터 우선 (animationData = 즉시 시작, 깜빡임 없음).
+       캐시 미스 시 path 옵션 (fetch 시간만큼 빈 컨테이너 상태 발생 가능). */
+    function playSeedLottie(container, cacheKey, jsonPath, options) {
       destroySeedLottie();
-      if (!container || !jsonPath || typeof window.lottie === 'undefined') return null;
+      if (!container || typeof window.lottie === 'undefined') return null;
       container.innerHTML = '';
-      /* JSON 직접 로드 (path 옵션) — 단, file:// 프로토콜에서는 fetch/XHR 차단됨.
-         로컬 테스트 시 `python3 -m http.server` 같은 정적 서버 사용 권장. */
+      const cached = seedLottieCache[cacheKey];
       seedLottieInstance = window.lottie.loadAnimation({
         container,
         renderer: 'svg',
         loop: !!(options && options.loop),
         autoplay: true,
-        path: jsonPath,
+        ...(cached ? { animationData: cached } : { path: jsonPath }),
         rendererSettings: {
           preserveAspectRatio: 'xMidYMid meet',
           progressiveLoad: false,
@@ -501,7 +520,7 @@
       const observer = new MutationObserver(() => {
         const isOpen = backdrop.classList.contains('modal-backdrop--open');
         if (isOpen && !backdrop.classList.contains('is-planted')) {
-          playSeedLottie(container, SEED_LOTTIE_PATH_IDLE, { loop: false });
+          playSeedLottie(container, 'idle', SEED_LOTTIE_PATH_IDLE, { loop: false });
         } else if (!isOpen) {
           /* 모달이 완전히 닫힌 후 (트랜지션 240ms 후) Lottie 정리 + is-planted 리셋.
              즉시 처리하면 close 트랜지션 도중 form 이 다시 보이는 글리치 발생. */
@@ -522,7 +541,7 @@
         backdrop.classList.add('is-planted');
 
         const container = backdrop.querySelector('[data-seed-lottie]');
-        playSeedLottie(container, SEED_LOTTIE_PATH_SEQUENCE, { loop: false });
+        playSeedLottie(container, 'sequence', SEED_LOTTIE_PATH_SEQUENCE, { loop: false });
 
         /* 클릭 후 7초 고정 타이머로 자동 close — Lottie complete 이벤트 의존 없음.
            class 제거만으로 CSS 트랜지션이 fade-out 처리. 닫힘 후 series-post-management 로 redirect. */
