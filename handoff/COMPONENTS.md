@@ -436,15 +436,14 @@ instance.destroy();           // 정리
 #### `.modal--water-thanks` (水をあげて応援する Step 2 시퀀스) → shadcn `Dialog` (재사용 모듈)
 - **SSOT JS 모듈**: `js/components/modal-water-thanks.js` — `WaterThanks.start(thanksModal)` / `WaterThanks.reset(backdrop)` / `WaterThanks.cancel()` 3 함수 노출
 - **사용 페이지**: series-home / viewer-yoko / viewer-koma / viewer-tate (4 페이지 동일 시퀀스)
-- **시퀀스 (8s 총 재생, 모달 오픈 = t=0)**:
-  - **plant drop** 5회 착지 (modal+2 / 3.5 / 5 / 6.5 / 8s) — 새싹 위 1.5s 간격 splash
-  - **ground drop** 20개 — 모달 가로 전체에 taper 분배(t=1~8s, idx 순 stopTime), X 좌표 중심 편향(3개 uniform 평균) + 활성 X 회피 (`MIN_X_DIST=12%`)
-  - **새싹 + 오버레이 일러스트** 단계 전환 (t=2/3.5/5s): 184/186/187 + 185/188/189
-  - **타이틀 typewriter** 3단계 type-in/erase (t=0/2.667/5.333s, 각 0.5s · 마지막은 erase 없음)
-  - **wet-spot** ground drop 착지 시 #875B48 타원 (scale 0→1.95 + fade-out, 0.8s)
-  - **t=9s**: thanks 모달 `[data-modal-close]` 자동 클릭 → 닫힘
-- **DOM 재사용 패턴**: 매 사이클 `cloneNode-replaceWith` 대신 단일 element 에 `style.animation = 'none'` → reflow → inline animation 재할당으로 재시작 (DOM 생성/제거 비용 제거). wet-spot 만 동적 생성
-- **cancel 흐름**: `dropCycleCancels` 배열로 모든 setTimeout / animationend 리스너 일괄 정리. 모달 reset 시 illust/overlay/title/drop 인라인 state 초기화
+- **v1.07.4 비주얼**: 손코딩 시퀀스 (plant/ground drop × 25, illust 3단계 swap, title typewriter, wet-spot pop, `dropCycleCancels` 배열 정리) → **단일 Lottie 로 전면 교체**
+  - `img/animations/watering.js` (`window.WATERING_LOTTIE_DATA`, 1008×900, 100fps × 750 frames = 7.5s, loop:false) — 물주기 비주얼 + 안내 텍스트 일체 (DOM 측 텍스트/이미지 노드 모두 제거)
+  - 단일 컨테이너 `.modal-water-thanks__lottie` (`data-lottie-container`) — `position: absolute; left/right: 0; bottom: 0; width: 100%; height: auto` (bottom-anchored, 비율 유지)
+  - `rendererSettings: { progressiveLoad: false, hideOnTransparent: true }` + CSS `contain: layout style paint` + `will-change: transform`
+- **흐름**: 폼 제출 → form fade-out → thanks 모달 active 전환 시점에 `WaterThanks.start(thanksModal)` 호출 → Lottie 시작 (7.5s) → 자연 종료(`complete` 이벤트) → `[data-modal-close]` 자동 클릭 → 모달 close → garden bloom 트리거 자연 연결
+- **cancel 흐름**: `cancels` 배열로 `complete` 리스너 정리 + lottieInstance.destroy. 모달 reset 시 cancel 만 수행 (form 단계 복귀는 페이지 측이 처리)
+- **사이즈**: `.modal` 기본값 504×644 상속. modal-water-support (504×450) 와 다른 변형
+- **React 이식**: `<WaterThanksModal />` 단일 컴포넌트. `lottie-react` 의 `onComplete` 콜백 → `setTimeout` 또는 직접 close. modal-sprout-grow 와 공통 `<LottieAutoCloseModal>` 추출 가능
 
 #### `.modal--sprout-grow` (episode-add 4종 投稿する 후 모달) → shadcn `Dialog` (재사용 모듈)
 - **SSOT JS 모듈**: `js/components/modal-sprout-grow.js` — `SproutGrow.start(modal)` / `SproutGrow.cancel()` / `SproutGrow.reset(backdrop)` (modal-water-thanks 와 동일 패턴)

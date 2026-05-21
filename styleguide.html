@@ -2231,92 +2231,11 @@
           </div>
         </div>
 
-        <!-- Spot Illustrations (196×196 SVG 일러스트, water-thanks 모달 단계별 자산) -->
-        <div class="sg-subsection">
-          <p class="sg-subsection-title">Spot Illustrations (196 SVG, water-thanks 모달 새싹 단계 + 오버레이)</p>
-          <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
-            <div class="sg-type-row">
-              <div class="sg-type-preview">
-                <img src="img/img_illust_183.svg" alt="illustration 183" class="sg-img-thumb" width="120" height="120">
-              </div>
-              <code class="sg-type-classname">img/img_illust_183.svg</code>
-              <div class="sg-type-meta"><strong>새싹 — Stage 0 (initial)</strong><br>196 × 196 (SVG)<br>모달 오픈 ~ t=2s. <code>.modal-water-thanks__illust</code> 의 default src</div>
-            </div>
-            <div class="sg-type-row">
-              <div class="sg-type-preview">
-                <img src="img/img_illust_184.svg" alt="illustration 184" class="sg-img-thumb" width="120" height="120">
-              </div>
-              <code class="sg-type-classname">img/img_illust_184.svg</code>
-              <div class="sg-type-meta"><strong>새싹 — Stage 1</strong><br>t=2s 에 swap (plant drop 1 착지 시점)</div>
-            </div>
-            <div class="sg-type-row">
-              <div class="sg-type-preview">
-                <img src="img/img_illust_186.svg" alt="illustration 186" class="sg-img-thumb" width="120" height="120">
-              </div>
-              <code class="sg-type-classname">img/img_illust_186.svg</code>
-              <div class="sg-type-meta"><strong>새싹 — Stage 2</strong><br>t=3.5s 에 swap</div>
-            </div>
-            <div class="sg-type-row">
-              <div class="sg-type-preview">
-                <img src="img/img_illust_187.svg" alt="illustration 187" class="sg-img-thumb" width="120" height="120">
-              </div>
-              <code class="sg-type-classname">img/img_illust_187.svg</code>
-              <div class="sg-type-meta"><strong>새싹 — Stage 3 (final)</strong><br>t=5s 에 swap (만개)</div>
-            </div>
-            <div class="sg-type-row">
-              <div class="sg-type-preview">
-                <img src="img/img_illust_185.svg" alt="illustration 185" class="sg-img-thumb" width="120" height="120">
-              </div>
-              <code class="sg-type-classname">img/img_illust_185.svg</code>
-              <div class="sg-type-meta"><strong>오버레이 — Stage 1</strong><br>t=2s 에 <code>.modal-water-thanks__illust-overlay</code> 표시 + 이 src 로 swap</div>
-            </div>
-            <div class="sg-type-row">
-              <div class="sg-type-preview">
-                <img src="img/img_illust_188.svg" alt="illustration 188" class="sg-img-thumb" width="120" height="120">
-              </div>
-              <code class="sg-type-classname">img/img_illust_188.svg</code>
-              <div class="sg-type-meta"><strong>오버레이 — Stage 2</strong><br>t=3.5s 에 swap</div>
-            </div>
-            <div class="sg-type-row">
-              <div class="sg-type-preview">
-                <img src="img/img_illust_189.svg" alt="illustration 189" class="sg-img-thumb" width="120" height="120">
-              </div>
-              <code class="sg-type-classname">img/img_illust_189.svg</code>
-              <div class="sg-type-meta"><strong>오버레이 — Stage 3 (final)</strong><br>t=5s 에 swap (꽃 만개)</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Water Drop (모달 내 떨어지는 물방울 SVG) -->
-        <div class="sg-subsection">
-          <p class="sg-subsection-title">Water Drop (54 SVG, water-thanks 모달 낙하 애니메이션용)</p>
-          <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
-            <div class="sg-type-row">
-              <div class="sg-type-preview">
-                <img src="img/img_water_drop_176.svg" alt="water drop 176" class="sg-img-thumb" width="54" height="54">
-              </div>
-              <code class="sg-type-classname">img/img_water_drop_176.svg</code>
-              <div class="sg-type-meta"><strong>Drop</strong><br>54 × 54 (SVG)<br>plant drop 1개 + ground drop 20개가 모두 이 단일 자산을 사용. WaterThanks 모듈이 매 사이클 element 하나에 inline animation 재할당으로 재시작</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Water Splash (drop 착지 시점에 src 가 swap 되는 splash 이미지) -->
-        <div class="sg-subsection">
-          <p class="sg-subsection-title">Water Splash (drop 착지 시점 src swap)</p>
-          <div class="sg-type-table">
-            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
-            <div class="sg-type-row">
-              <div class="sg-type-preview">
-                <img src="img/img_water_splash.svg" alt="water splash" class="sg-img-thumb" width="97" height="45">
-              </div>
-              <code class="sg-type-classname">img/img_water_splash.svg</code>
-              <div class="sg-type-meta"><strong>Splash</strong><br>97 × 45 (SVG)<br>drop 낙하 종료(animationend) 시 JS 가 drop &lt;img&gt; 의 src 를 이 파일로 swap + <code>.modal-water-thanks__drop--landed</code> 추가. 앵커 동일(bottom-center) 유지</div>
-            </div>
-          </div>
-        </div>
+        <!-- (v1.07.4 Lottie 통합으로 손코딩 시퀀스 자산 9종 삭제됨:
+             img_illust_183~189 (새싹 4단계 + 오버레이 3단계),
+             img_water_drop_176 (낙하 물방울),
+             img_water_splash (착지 splash).
+             현재 water-thanks 비주얼은 img/animations/watering.js 의 단일 Lottie 로 통합됨.) -->
       </section>
 
       <!-- ========================
