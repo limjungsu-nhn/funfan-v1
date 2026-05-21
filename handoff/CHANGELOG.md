@@ -52,6 +52,11 @@ window.location.href = redirect
 - **redirect URL 페이지별 분리**: episode-add-yoko 만 series-manage-detail.html 로 가는 기존 동작 보존 (작품 자체 등록 vs 시리즈 상세 진입 분기)
 - **컴파운드 셀렉터 specificity**: `.modal.modal--sprout-grow` 사용 — 같은 single class 보다 우선. modal.css 안에서 base `.modal` 이 variant 뒤에 오더라도 (즉 source order 와 무관하게) 안전하게 override
 
+### 후속 hotfix (post-release)
+
+- **modal-water-thanks 의 sprout 잔상 제거** — Lottie 데이터 끝부분 페이드아웃 때문에 `complete`(t=7.5s) 시점엔 이미 sprout 가 사라진 상태 → "빈 모달" 잔상 발생. `complete` 이벤트 단독 의존을 `enterFrame` 감시 + `CLOSE_BEFORE_END_S = 0.5`(끝 0.5s 전) 조기 close 패턴으로 변경. `complete` 이벤트는 안전망 fallback 유지, `closed` flag idempotent 보장
+- **stale 정리** — v1.07.4 Lottie 통합 후 잔재였던 modal-water-thanks 손코딩 시퀀스 CSS 119줄 + 미사용 SVG 9개 (img_illust_183~189, img_water_drop_176, img_water_splash) 삭제 + styleguide deregister. handoff/COMPONENTS.md 의 `.modal--water-thanks` 항목 갱신
+
 ---
 
 ## v1.07.5 (2026-05-18, v1.07.4 후속)
