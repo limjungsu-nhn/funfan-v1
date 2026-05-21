@@ -64,22 +64,41 @@
     }
   }
 
-  /** 시퀀스 시작 — thanks 모달이 active 가 되기 직전에 호출 */
+  /** 시퀀스 시작 — thanks 모달이 active 가 되기 직전에 호출.
+      Lottie 데이터 끝부분에 sprout 페이드아웃이 포함되어 있어 `complete` 이벤트(t=7.5s)
+      시점엔 이미 sprout 가 사라진 상태 → 모달이 close 되기 전 "빈 모달" 이 잠깐 보임.
+      해결: 자연 종료보다 CLOSE_BEFORE_END_S 만큼 일찍 close 트리거 → sprout 여전히 보일 때
+      모달이 CSS fade-out 으로 자연스럽게 가려짐. complete 이벤트는 안전망 fallback. */
+  const CLOSE_BEFORE_END_S = 0.5;
+
   function start(thanksModal) {
     cancel();
     if (!thanksModal) return;
 
-    // Lottie 시작 + 자연 종료 시점에 모달 close
     const anim = loadLottie(thanksModal);
     if (!anim) return;
 
-    const onComplete = () => {
+    let closed = false;
+    const closeOnce = () => {
+      if (closed) return;
+      closed = true;
       const closeBtn = thanksModal.querySelector('[data-modal-close]');
       if (closeBtn) closeBtn.click();
     };
-    anim.addEventListener('complete', onComplete);
+
+    /* enterFrame 마다 남은 시간 확인 — CLOSE_BEFORE_END_S 이하로 들어오면 즉시 close */
+    const onFrame = () => {
+      const remainingS = (anim.totalFrames - anim.currentFrame) / anim.frameRate;
+      if (remainingS <= CLOSE_BEFORE_END_S) closeOnce();
+    };
+    anim.addEventListener('enterFrame', onFrame);
+
+    /* 안전망 — 어떤 이유로 enterFrame 임계치를 못 넘기더라도 complete 시점에 close */
+    anim.addEventListener('complete', closeOnce);
+
     cancels.push(() => {
-      try { anim.removeEventListener('complete', onComplete); } catch (e) { /* noop */ }
+      try { anim.removeEventListener('enterFrame', onFrame); } catch (e) { /* noop */ }
+      try { anim.removeEventListener('complete', closeOnce); } catch (e) { /* noop */ }
     });
   }
 

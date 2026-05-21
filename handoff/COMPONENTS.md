@@ -440,7 +440,8 @@ instance.destroy();           // 정리
   - `img/animations/watering.js` (`window.WATERING_LOTTIE_DATA`, 1008×900, 100fps × 750 frames = 7.5s, loop:false) — 물주기 비주얼 + 안내 텍스트 일체 (DOM 측 텍스트/이미지 노드 모두 제거)
   - 단일 컨테이너 `.modal-water-thanks__lottie` (`data-lottie-container`) — `position: absolute; left/right: 0; bottom: 0; width: 100%; height: auto` (bottom-anchored, 비율 유지)
   - `rendererSettings: { progressiveLoad: false, hideOnTransparent: true }` + CSS `contain: layout style paint` + `will-change: transform`
-- **흐름**: 폼 제출 → form fade-out → thanks 모달 active 전환 시점에 `WaterThanks.start(thanksModal)` 호출 → Lottie 시작 (7.5s) → 자연 종료(`complete` 이벤트) → `[data-modal-close]` 자동 클릭 → 모달 close → garden bloom 트리거 자연 연결
+- **흐름**: 폼 제출 → form fade-out → thanks 모달 active 전환 시점에 `WaterThanks.start(thanksModal)` 호출 → Lottie 시작 (7.5s) → **enterFrame 이벤트로 남은 시간 감시 → 끝 0.5s 전(`CLOSE_BEFORE_END_S = 0.5`) 시점에 `[data-modal-close]` 자동 클릭** → 모달 CSS fade-out 240~400ms 동안 Lottie 는 계속 재생 → sprout 가 보이는 상태로 모달이 가려짐 → garden bloom 트리거 자연 연결. `complete` 이벤트는 안전망 fallback 으로 유지 (closed flag 로 idempotent)
+- **이른 close 의 이유**: Lottie 데이터 끝부분에 sprout 페이드아웃이 포함되어 있어 `complete`(t=7.5s) 시점엔 이미 sprout 가 사라진 상태. 끝 0.5s 전 close 트리거로 "빈 모달" 잔상 제거
 - **cancel 흐름**: `cancels` 배열로 `complete` 리스너 정리 + lottieInstance.destroy. 모달 reset 시 cancel 만 수행 (form 단계 복귀는 페이지 측이 처리)
 - **사이즈**: `.modal` 기본값 504×644 상속. modal-water-support (504×450) 와 다른 변형
 - **React 이식**: `<WaterThanksModal />` 단일 컴포넌트. `lottie-react` 의 `onComplete` 콜백 → `setTimeout` 또는 직접 close. modal-sprout-grow 와 공통 `<LottieAutoCloseModal>` 추출 가능
