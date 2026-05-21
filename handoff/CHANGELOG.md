@@ -8,6 +8,52 @@
 
 ---
 
+## v1.07.6 (2026-05-21, v1.07.5 후속)
+
+**episode-add 4종 페이지 `投稿する` 후 새싹 피어남 Lottie 모달 신규 (`modal--sprout-grow`).** episode-add{,-koma,-tate,-yoko}.html 의 「投稿する」 버튼이 기존엔 곧바로 페이지 이동했던 것을 → 모달 오픈 + 새싹 피어남 Lottie 재생 (4s) + 1s hold + 자동 close + redirect 흐름으로 교체. modal-water-thanks 와 동일한 SSOT 모듈 패턴 (`SproutGrow.start/cancel/reset`).
+
+### 신규 — `.modal--sprout-grow` (episode-add 4종)
+
+- **`img/animations/sprout.js`** (1.4MB) — `window.SPROUT_LOTTIE_DATA` (JS 래퍼). 1008×900, 100fps × 400 frames = 4s, loop:false. 새싹 피어남 비주얼 일체
+- **`js/components/modal-sprout-grow.js`** — `SproutGrow.start(modal)` / `cancel()` / `reset(backdrop)` 3 함수 노출. modal-water-thanks 와 동일한 패턴
+  - Lottie 인스턴스 destroy/재생성 + `complete` 이벤트 listener + cancels 배열로 정리
+  - **1s hold after complete** — Lottie 종료 후 마지막 프레임 1초 유지 → close 자동 클릭
+- **모달 박스 사이즈 504 × 450** — `.modal.modal--sprout-grow { height: 450px }` 컴파운드 셀렉터로 base `.modal { height: 644px }` override. modal-water-support 와 동일 사이즈
+- **Lottie 비율 매칭**: 1008/900 = 504/450 = 1.12 — 모달과 Lottie source 비율 정확히 일치 → 흰 여백 없이 꽉 채움
+- **CSS** (`css/components/modal.css`):
+  - `.modal.modal--sprout-grow` — height 450 + `overflow: hidden`
+  - `.modal-sprout-grow__lottie` — `position: absolute; left/right: 0; bottom: 0; width: 100%; height: auto` (water-thanks 와 동일) + `contain: layout style paint` + `will-change: transform`
+
+### 흐름 (episode-add 4종 공통)
+
+```
+필수 입력 채움 → 投稿する 활성화
+  ↓ 클릭
+backdrop.classList.add('modal-backdrop--open') + body overflow lock
+SproutGrow.start(modal) → sprout Lottie 시작 (4s, loop:false)
+  ↓ Lottie complete
+1s hold (마지막 프레임 유지)
+  ↓
+[data-modal-close].click() → modal.js 의 close 핸들러 → modal-backdrop--open 제거
+  ↓ MutationObserver 감지 (페이지별 인라인 스크립트)
+400ms 대기 (CSS fade-out 240ms + 버퍼)
+  ↓
+window.location.href = redirect
+  · episode-add / -koma / -tate → series-post-management.html
+  · episode-add-yoko → series-manage-detail.html
+```
+
+총 클릭 → 이동: **약 5.6초**.
+
+### 마이그레이션 메모 (개발팀)
+
+- **SproutGrow 모듈 패턴**: WaterThanks 와 정확히 동일한 3-함수 API (`start/cancel/reset`). React 이식 시 두 모달을 공통 `<LottieAutoCloseModal data={X} holdAfterCompleteMs={Y} onClose={...}>` 컴포넌트로 추출 가능
+- **1s hold 의미**: Lottie 의 마지막 프레임이 의미있는 정적 비주얼(완료 상태) 인 경우 짧게 보여주고 close 하는 UX 패턴. `HOLD_AFTER_COMPLETE_MS` 상수로 모듈 내부에서만 관리
+- **redirect URL 페이지별 분리**: episode-add-yoko 만 series-manage-detail.html 로 가는 기존 동작 보존 (작품 자체 등록 vs 시리즈 상세 진입 분기)
+- **컴파운드 셀렉터 specificity**: `.modal.modal--sprout-grow` 사용 — 같은 single class 보다 우선. modal.css 안에서 base `.modal` 이 variant 뒤에 오더라도 (즉 source order 와 무관하게) 안전하게 override
+
+---
+
 ## v1.07.5 (2026-05-18, v1.07.4 후속)
 
 **series-register 씨앗 의식 모달 — 손코딩 WAAPI/SVG 시퀀스 → Lottie 2종 swap 으로 전면 교체.** v1.07.4 의 garden / water-thanks Lottie 통합에 이어 마지막 손코딩 시퀀스였던 씨앗 심기 의식을 Lottie 로 전환. 큰 묶음: (1) **Lottie 2종 통합** (planting_seeds_1 idle + planting_seeds_2 시퀀스), (2) **DOM 단순화** — 8개 img/h2/p 요소 → Lottie 컨테이너 1개로 통합, (3) **JS 단순화** — 220+ 줄의 WAAPI gather/fall/bounce/tamp 프로파일 → 단일 setTimeout 7s + 자동 redirect, (4) **JSON 직접 로드** — `path` 옵션 (file:// 사용 시 정적 서버 필요), (5) **자산 정리** — 미사용 SVG 9개 삭제로 12.2MB 절감.

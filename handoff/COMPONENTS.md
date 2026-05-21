@@ -446,6 +446,17 @@ instance.destroy();           // 정리
 - **DOM 재사용 패턴**: 매 사이클 `cloneNode-replaceWith` 대신 단일 element 에 `style.animation = 'none'` → reflow → inline animation 재할당으로 재시작 (DOM 생성/제거 비용 제거). wet-spot 만 동적 생성
 - **cancel 흐름**: `dropCycleCancels` 배열로 모든 setTimeout / animationend 리스너 일괄 정리. 모달 reset 시 illust/overlay/title/drop 인라인 state 초기화
 
+#### `.modal--sprout-grow` (episode-add 4종 投稿する 후 모달) → shadcn `Dialog` (재사용 모듈)
+- **SSOT JS 모듈**: `js/components/modal-sprout-grow.js` — `SproutGrow.start(modal)` / `SproutGrow.cancel()` / `SproutGrow.reset(backdrop)` (modal-water-thanks 와 동일 패턴)
+- **사용 페이지**: episode-add.html / episode-add-koma.html / episode-add-tate.html / episode-add-yoko.html (4 페이지)
+- **구조**: modal-water-thanks 와 동일 형식 — 단일 modal + Lottie 컨테이너(`.modal-sprout-grow__lottie` / `data-sprout-lottie-container`) + close 버튼. `overflow: hidden` 으로 모달 경계 마스크
+- **Lottie**: `img/animations/sprout.js` (`window.SPROUT_LOTTIE_DATA`, 1008×900, 100fps × 400 frames = 4s, loop:false) — 새싹 피어남 비주얼
+- **모달 박스 사이즈**: **504 × 450** — `.modal.modal--sprout-grow { height: 450px }` 컴파운드 셀렉터로 base `.modal { height: 644px }` override (source order 무관 specificity 우선). modal-water-support 와 동일 사이즈. Lottie 원본 비율(1008/900 = 1.12)과 모달 비율(504/450 = 1.12) 정확히 일치 → 흰 여백 없이 꽉 채움
+- **트리거**: 페이지 별 `data-submit-btn` 의 click 이벤트 — 필수 입력 채워져 `disabled` 해제된 상태에서 클릭 시 모달 오픈 + `SproutGrow.start(modal)`
+- **타이밍**: Lottie 4s 재생 → `complete` 이벤트 → **1s hold** (마지막 프레임 유지) → 자동 `[data-modal-close]` 클릭 → 모달 fade-out (CSS 240ms) → MutationObserver 가 backdrop 클래스 제거 감지 → 400ms 후 redirect. **총 클릭 → 이동: ~5.6s**
+- **redirect 대상**: episode-add / -koma / -tate → `series-post-management.html` · episode-add-yoko → `series-manage-detail.html`
+- **React 이식**: `<SproutGrowModal />` 단일 컴포넌트, `lottie-react` 의 `onComplete` 콜백 안에 `setTimeout(close, 1000)` 으로 동일 hold 구현
+
 #### `.chat-input` → shadcn `Textarea` + icon buttons
 - Container: `.chat-input__field` (textarea 감싸는 필드)
 - Actions: `.chat-input__actions` (첨부/전송)

@@ -91,7 +91,7 @@
     <span class="sg-header-logo">FunFan</span>
     <span class="sg-header-sep"></span>
     <span class="sg-header-subtitle">Design System</span>
-    <span class="sg-header-badge">v1.07.5</span>
+    <span class="sg-header-badge">v1.07.6</span>
   </header>
 
   <div class="sg-layout">
@@ -5548,6 +5548,21 @@
               </div>
               <code class="sg-type-classname">.modal--water-support<br>.modal-water-support__head<br>.modal-water-support__body<br>.modal-water-support__emotions<br>.modal-water-support__textarea</code>
               <div class="sg-type-meta"><strong>504 · padding 40 28 · gap 20</strong><br>head: title + helper · gap 4<br>emotions: 4× emotion-pick · gap 20 · 가운데 정렬<br>textarea: 140px 고정 + 0/300 카운터<br>footer: 閉じる(line) + 水やり CTA(filled-sky, 감정/입력 둘 다 비면 disabled)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Variant: sprout-grow (episode-add 4종 投稿する 후 모달) -->
+        <div class="sg-subsection" id="modal-sprout-grow">
+          <p class="sg-subsection-title">Variant — sprout-grow (episode-add 4종)</p>
+          <div class="sg-type-table">
+            <div class="sg-type-thead"><span>Preview</span><span>Class</span><span>Notes</span></div>
+            <div class="sg-type-row">
+              <div class="sg-type-preview">
+                <a href="episode-add.html" target="_blank" rel="noopener" class="text-caption-w4">episode-add.html → 投稿する 활성화 후 클릭</a>
+              </div>
+              <code class="sg-type-classname">.modal--sprout-grow<br>.modal-sprout-grow__lottie</code>
+              <div class="sg-type-meta"><strong>새싹 피어남 모달</strong> · <strong>504 × 450</strong> (modal-water-support 와 동일 사이즈)<br>episode-add{,-koma,-tate,-yoko}.html 의 <code>投稿する</code> 버튼이 트리거.<br>구조: 단일 Lottie 컨테이너 + close 버튼. Lottie 원본(1008×900) 과 모달 비율(504/450) 이 정확히 일치 → 빈 여백 없이 꽉 채움.<br>Lottie: <code>img/animations/sprout.js</code> 1008×900 · 4s · loop:false.<br>자연 종료(<code>complete</code>) 시 close 자동 + 400ms 후 페이지 redirect.</div>
             </div>
           </div>
         </div>

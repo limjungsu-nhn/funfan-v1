@@ -125,6 +125,32 @@
   height: auto;
 }
 
+/* ---------- Sprout-Grow (episode-add 4종의 `投稿する` 후 단계 모달) ----------
+   v1.07.6 — modal-water-support 와 동일한 504×450 사이즈 (.modal 기본 644 을 450 으로 override).
+   단일 Lottie 컨테이너 (`__lottie`) 가 모달 전체를 채움.
+   `.modal.modal--sprout-grow` 컴파운드 셀렉터로 specificity 0,0,2,0 → base .modal(0,0,1,0) source order 와 무관하게 우선. */
+.modal.modal--sprout-grow {
+  height: 450px;
+  overflow: hidden;
+}
+
+.modal-sprout-grow__lottie {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  contain: layout style paint;
+  will-change: transform;
+}
+.modal-sprout-grow__lottie svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .modal-water-thanks__image {
   position: absolute;
   top: 50%;          /* 모달 vertical center 에 이미지 상단 */

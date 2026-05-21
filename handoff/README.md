@@ -4,7 +4,34 @@
 
 ---
 
-## 📌 v1.07.5 요약 (2026-05-18, v1.07.4 후속) — 먼저 이것만 보세요
+## 📌 v1.07.6 요약 (2026-05-21, v1.07.5 후속) — 먼저 이것만 보세요
+
+**episode-add 4종 페이지 `投稿する` 후 새싹 피어남 Lottie 모달 신규 (`.modal--sprout-grow`).** episode-add{,-koma,-tate,-yoko}.html 의 「投稿する」 버튼이 기존엔 곧바로 페이지 이동했던 것을 → 모달 오픈 + 새싹 피어남 Lottie 재생(4s) + 1s hold + 자동 close + redirect 흐름으로 교체. modal-water-thanks 와 동일한 SSOT 모듈 패턴 (`SproutGrow.start/cancel/reset`).
+
+| 분류 | 내용 | 개발 영향 |
+|---|---|---|
+| **신규 모듈 `js/components/modal-sprout-grow.js`** | `SproutGrow.start(modal)` / `cancel()` / `reset(backdrop)`. modal-water-thanks 와 동일한 3-함수 API. Lottie 인스턴스 destroy/재생성 + `complete` 이벤트 listener + **1s hold 후 자동 close** | React: `<LottieAutoCloseModal>` 공통 컴포넌트로 추출 가능 (WaterThanks 와 묶기) |
+| **`img/animations/sprout.js` (1.4MB)** | `window.SPROUT_LOTTIE_DATA` JS 래퍼. 1008×900, 4s, loop:false, 새싹 피어남 비주얼 일체 | React: `import data from './sprout.json'` |
+| **`.modal--sprout-grow` (NEW)** | **504 × 450** — `.modal.modal--sprout-grow { height: 450px }` 컴파운드 셀렉터로 base `.modal { height: 644px }` override. modal-water-support 와 동일 사이즈. Lottie 1008/900 = 모달 504/450 = 1.12 비율 정확 일치 → 흰 여백 없이 꽉 채움 | (사이즈 토큰 매칭) |
+| **`.modal-sprout-grow__lottie`** | `position: absolute; left/right: 0; bottom: 0; width: 100%; height: auto` (water-thanks 패턴 동일) + `contain: layout style paint` + `will-change: transform` | (paint isolation) |
+| **흐름 (5.6s 총)** | 投稿する 클릭 → backdrop 오픈 + `SproutGrow.start` → Lottie 4s → complete → 1s hold → close → MutationObserver 감지 + 400ms 후 redirect | React: `useEffect` 안에서 동일 시퀀스 |
+| **redirect 분기** | episode-add / -koma / -tate → `series-post-management.html` · episode-add-yoko → `series-manage-detail.html` | (기존 동작 보존) |
+| **styleguide / handoff sync** | `#modal-sprout-grow` variant 섹션 신설 (modal-water-thanks 옆) + `.modal--sprout-grow` COMPONENTS.md 항목 등록 | — |
+
+**하위 호환**
+- episode-add 4종의 `投稿する` 클릭 동작 변경 — 기존 직접 redirect → 모달 거쳐 redirect (URL 동일)
+- 모달 외에 다른 곳에서 `投稿する` 핸들러 사용 안 함 (페이지 한정)
+
+**확인할 곳**
+1. `js/components/modal-sprout-grow.js` — SSOT 모듈
+2. `img/animations/sprout.js` — Lottie 데이터
+3. `css/components/modal.css` — `.modal.modal--sprout-grow` + `.modal-sprout-grow__lottie`
+4. 4종 episode-add 페이지의 inline `<script>` — submit 핸들러
+5. [`COMPONENTS.md`](./COMPONENTS.md) — `.modal--sprout-grow` 항목
+
+---
+
+## 📌 v1.07.5 요약 (2026-05-18, v1.07.4 후속)
 
 **series-register 씨앗 의식 모달 — 손코딩 WAAPI/SVG 시퀀스 → Lottie 2종 swap 으로 전면 교체.** v1.07.4 의 garden / water-thanks Lottie 통합에 이어 마지막 손코딩 시퀀스 (씨앗 심기 의식) 도 Lottie 화. 핵심은 (1) **Lottie 2종** (planting_seeds_1 idle 1s + planting_seeds_2 시퀀스 7.5s, 3008×1692 원본 사이즈 SVG 렌더) JSON 직접 로드, (2) **DOM 단순화** — 8 img/h2/p → Lottie 컨테이너 1개, (3) **JS 단순화** — WAAPI 3-phase gather/fall/bounce + tamp 200+줄 → 단일 setTimeout 7s + redirect, (4) **자산 정리** — 미사용 SVG 9개 삭제로 12.2MB 절감.
 

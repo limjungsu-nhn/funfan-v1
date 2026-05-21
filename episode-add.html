@@ -50,6 +50,10 @@
   <script src="js/components/modal.js" defer></script>
   <script src="js/components/modal-context.js" defer></script>
   <script src="js/components/page-attachment.js" defer></script>
+  <!-- Lottie for sprout-grow modal: 投稿する 후 새싹 피어남 비주얼 (4s) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bodymovin/5.12.2/lottie.min.js" defer></script>
+  <script src="img/animations/sprout.js" defer></script>
+  <script src="js/components/modal-sprout-grow.js" defer></script>
 </head>
 <body>
 
@@ -353,7 +357,25 @@
       afterwordInput?.addEventListener('input', validateForm);
       submitBtn?.addEventListener('click', () => {
         if (submitBtn.disabled) return;
-        window.location.href = 'series-post-management.html';
+        const backdrop = document.getElementById('modal-sprout-grow');
+        const modal = backdrop?.querySelector('.modal--sprout-grow');
+        if (!backdrop || !modal) {
+          window.location.href = 'series-post-management.html';
+          return;
+        }
+        /* 모달 오픈 + Lottie 재생 → 자연 종료 시 자동 close → redirect */
+        backdrop.classList.add('modal-backdrop--open');
+        document.body.style.overflow = 'hidden';
+        if (window.SproutGrow) SproutGrow.start(modal);
+
+        /* close 감지 (modal-backdrop--open 클래스 제거) → 400ms fade-out 후 redirect */
+        const obs = new MutationObserver(() => {
+          if (!backdrop.classList.contains('modal-backdrop--open')) {
+            obs.disconnect();
+            setTimeout(() => { window.location.href = 'series-post-management.html'; }, 400);
+          }
+        });
+        obs.observe(backdrop, { attributes: true, attributeFilter: ['class'] });
       });
 
       const attachment = PageAttachment.init({
@@ -465,6 +487,17 @@
           <span class="text-caption-w4">話し方を変更する</span>
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- Modal: 새싹 피어남 — 投稿する 클릭 시 오픈, Lottie 자연 종료 후 자동 close + redirect.
+       구조는 modal-water-thanks 와 동일 (단일 modal + Lottie 컨테이너 + close 버튼). -->
+  <div class="modal-backdrop" id="modal-sprout-grow">
+    <div class="modal modal--sprout-grow" role="dialog" aria-modal="true" aria-label="新しい話を投稿しました">
+      <button class="modal__close" type="button" data-modal-close aria-label="閉じる">
+        <i class="icon icon-close"></i>
+      </button>
+      <div class="modal-sprout-grow__lottie" data-sprout-lottie-container></div>
     </div>
   </div>
 
